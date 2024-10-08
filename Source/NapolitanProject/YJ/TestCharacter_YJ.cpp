@@ -54,6 +54,7 @@ void ATestCharacter_YJ::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	
+	// GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Lerp());
 }
 
 
@@ -122,8 +123,10 @@ void ATestCharacter_YJ::Look(const FInputActionValue& Value)
 
 void ATestCharacter_YJ::StartCrouch()
 {
-	GetCapsuleComponent()->SetCapsuleHalfHeight(CrouchingCapsuleHalfHeight);
 	GetCharacterMovement()->MaxWalkSpeed = CrouchingWalkSpeed;
+
+	GetCapsuleComponent()->SetCapsuleRadius(CrouchingCapsuleRadius);
+	GetCapsuleComponent()->SetCapsuleHalfHeight(CrouchingCapsuleHalfHeight);
 
 	// Crouch down using Character's built-in function
 	Crouch();
@@ -131,9 +134,9 @@ void ATestCharacter_YJ::StartCrouch()
 
 void ATestCharacter_YJ::StopCrouch()
 {
-	GetCapsuleComponent()->SetCapsuleHalfHeight(StandingCapsuleHalfHeight);
 	GetCharacterMovement()->MaxWalkSpeed = StandingWalkSpeed;
-
+	GetCapsuleComponent()->SetCapsuleRadius(StandingCapsuleRadius);
+	GetCapsuleComponent()->SetCapsuleHalfHeight(StandingCapsuleHalfHeight);
 	// Stand up using Character's built-in function
 	UnCrouch();
 }
