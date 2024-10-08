@@ -73,8 +73,15 @@ public:
 	bool bCrouched;
 	
 	float StandingCapsuleHalfHeight;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Crouch)
 	float CrouchingCapsuleHalfHeight;
+
+	float StandingCapsuleRadius;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Crouch)
+	float CrouchingCapsuleRadius;
+	
 	float StandingWalkSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Crouch)
 	float CrouchingWalkSpeed;
 	
 };

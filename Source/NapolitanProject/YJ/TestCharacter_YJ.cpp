@@ -33,7 +33,11 @@ ATestCharacter_YJ::ATestCharacter_YJ()
 
 
 	StandingCapsuleHalfHeight = GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight();
-	CrouchingCapsuleHalfHeight = StandingCapsuleHalfHeight / 2.0f;  // Example value, adjust as needed
+	CrouchingCapsuleHalfHeight = StandingCapsuleHalfHeight / 4.0f;  // Example value, adjust as needed
+
+	StandingCapsuleRadius =GetCapsuleComponent()->GetUnscaledCapsuleRadius();
+	CrouchingCapsuleRadius = StandingCapsuleRadius / 4.0f;
+	
 	StandingWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
 	CrouchingWalkSpeed = StandingWalkSpeed / 2.0f;  // Example value, adjust as needed
 
