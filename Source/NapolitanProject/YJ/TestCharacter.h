@@ -9,6 +9,13 @@
 /**
  * 
  */
+enum class PlayerState:uint8
+{
+	Idle,
+	Talking,
+	Die
+};
+
 UCLASS()
 class NAPOLITANPROJECT_API ATestCharacter : public ACharacter
 {
@@ -72,13 +79,16 @@ public:
 		// 누르고 있는 동안 && 쿨타임 내에서 
 	float runCooltime =3.f;
 	bool bIsRunning;
-	float pressedRunTime;
+	bool bIsRunGageRemains;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=run)
+	float RunGage =runCooltime ;
 	
 	void OnRunAction(const FInputActionValue& Value);
 
 	void EndRunAction(const FInputActionValue& Value);
 
 	void UpdateRunAction(float DeltaTime);
+	void UpdateNotRunAction(float DeltaTime);
 ////////////////// 업드리기 기능 //////////////////////////
 ///
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
@@ -103,6 +113,8 @@ public:
 	float CrouchingWalkSpeed;
 	
 };
+
+
 
 
 

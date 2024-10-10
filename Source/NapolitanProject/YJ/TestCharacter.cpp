@@ -54,9 +54,13 @@ void ATestCharacter::BeginPlay()
 void ATestCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	if (bIsRunning)
+	if (bIsRunning) // 달리기 누르면 실행하는 함수
 	{
 		UpdateRunAction(DeltaSeconds);
+	}
+	else
+	{
+		UpdateNotRunAction(DeltaSeconds);
 	}
 	// GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Lerp());
 }
@@ -130,10 +134,12 @@ void ATestCharacter::Look(const FInputActionValue& Value)
 
 void ATestCharacter::OnRunAction(const FInputActionValue& Value)
 {
-	// 누르고 있는동안 시간을 재기
-	pressedRunTime=GetWorld()->GetTimeSeconds();
+	// 누르면 함수 호출
 	bIsRunning=true;
-	GetCharacterMovement()->MaxWalkSpeed=runSpeed;
+	if (bIsRunGageRemains)
+	{
+		GetCharacterMovement()->MaxWalkSpeed=runSpeed;
+	}
 }
 
 void ATestCharacter::EndRunAction(const FInputActionValue& Value)
@@ -145,16 +151,29 @@ void ATestCharacter::EndRunAction(const FInputActionValue& Value)
 
 void ATestCharacter::UpdateRunAction(float DeltaTime)
 {
-	// 누르고 있는 시간 계산
-	float HeldDuration = GetWorld()->GetTimeSeconds() - pressedRunTime;
-
+		// 누르는 동안 계속 호
+	
+		RunGage -= DeltaTime;
+		RunGage=FMath::Max(RunGage,0.f);
+		// 5초가 넘으면 원래 속도로 전환
+		if (RunGage <= 0)
+		{
+			bIsRunGageRemains=false;
+			GetCharacterMovement()->MaxWalkSpeed = StandingWalkSpeed;
+		}
+	
+}
+void ATestCharacter::UpdateNotRunAction(float DeltaTime)
+{
+	// 누르는 동안 계속 호출
+	RunGage += DeltaTime;
+	RunGage = FMath::Min(runCooltime, RunGage);
 	// 5초가 넘으면 원래 속도로 전환
-	if (HeldDuration >= runCooltime)
+	if (RunGage >= runCooltime)
 	{
-		GetCharacterMovement()->MaxWalkSpeed = StandingWalkSpeed;
+		bIsRunGageRemains=true;
 	}
 }
-
 
 void ATestCharacter::StartCrouch()
 {
