@@ -62,12 +62,23 @@ public:
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 /////////////////// 달리기 기능 ////////////////////////
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* IA_Run;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=run)
-	float runSpeed;
-	// 특정 키를 누르면 달리기 
-	float runCooltime;
+	float runSpeed = StandingWalkSpeed*2.f;
+	// 특정 키를 누르면 달리기
+		// 누르고 있는 동안 && 쿨타임 내에서 
+	float runCooltime =3.f;
+	bool bIsRunning;
+	float pressedRunTime;
 	
+	void OnRunAction(const FInputActionValue& Value);
+
+	void EndRunAction(const FInputActionValue& Value);
+
+	void UpdateRunAction(float DeltaTime);
 ////////////////// 업드리기 기능 //////////////////////////
 ///
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
@@ -92,6 +103,7 @@ public:
 	float CrouchingWalkSpeed;
 	
 };
+
 
 
 

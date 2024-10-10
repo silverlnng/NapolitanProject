@@ -48,12 +48,16 @@ ATestCharacter::ATestCharacter()
 void ATestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	runSpeed = StandingWalkSpeed*3.f;
 }
 
 void ATestCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	
+	if (bIsRunning)
+	{
+		UpdateRunAction(DeltaSeconds);
+	}
 	// GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Lerp());
 }
 
@@ -88,6 +92,9 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATestCharacter::Look);
 
 		EnhancedInputComponent->BindAction(IA_Crouched, ETriggerEvent::Started, this, &ATestCharacter::CrouchToggle);
+
+		EnhancedInputComponent->BindAction(IA_Run, ETriggerEvent::Started, this, &ATestCharacter::OnRunAction);
+		EnhancedInputComponent->BindAction(IA_Run, ETriggerEvent::Completed, this, &ATestCharacter::EndRunAction);
 	}
 	else
 	{
@@ -120,6 +127,34 @@ void ATestCharacter::Look(const FInputActionValue& Value)
 		AddControllerPitchInput(LookAxisVector.Y);
 	}
 }
+
+void ATestCharacter::OnRunAction(const FInputActionValue& Value)
+{
+	// 누르고 있는동안 시간을 재기
+	pressedRunTime=GetWorld()->GetTimeSeconds();
+	bIsRunning=true;
+	GetCharacterMovement()->MaxWalkSpeed=runSpeed;
+}
+
+void ATestCharacter::EndRunAction(const FInputActionValue& Value)
+{
+	// 타이머 종료
+	bIsRunning=false;
+	GetCharacterMovement()->MaxWalkSpeed=StandingWalkSpeed;
+}
+
+void ATestCharacter::UpdateRunAction(float DeltaTime)
+{
+	// 누르고 있는 시간 계산
+	float HeldDuration = GetWorld()->GetTimeSeconds() - pressedRunTime;
+
+	// 5초가 넘으면 원래 속도로 전환
+	if (HeldDuration >= runCooltime)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = StandingWalkSpeed;
+	}
+}
+
 
 void ATestCharacter::StartCrouch()
 {
