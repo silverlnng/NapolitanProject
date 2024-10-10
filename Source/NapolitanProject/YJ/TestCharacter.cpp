@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TestCharacter_YJ.h"
+#include "TestCharacter.h"
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
@@ -9,7 +9,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
-ATestCharacter_YJ::ATestCharacter_YJ()
+ATestCharacter::ATestCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
@@ -45,12 +45,12 @@ ATestCharacter_YJ::ATestCharacter_YJ()
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
 }
 
-void ATestCharacter_YJ::BeginPlay()
+void ATestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 }
 
-void ATestCharacter_YJ::Tick(float DeltaSeconds)
+void ATestCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	
@@ -58,7 +58,7 @@ void ATestCharacter_YJ::Tick(float DeltaSeconds)
 }
 
 
-void ATestCharacter_YJ::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(InputComponent);
 
@@ -82,12 +82,12 @@ void ATestCharacter_YJ::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATestCharacter_YJ::Move);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATestCharacter::Move);
 
 		// Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATestCharacter_YJ::Look);
+		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATestCharacter::Look);
 
-		EnhancedInputComponent->BindAction(IA_Crouched, ETriggerEvent::Started, this, &ATestCharacter_YJ::CrouchToggle);
+		EnhancedInputComponent->BindAction(IA_Crouched, ETriggerEvent::Started, this, &ATestCharacter::CrouchToggle);
 	}
 	else
 	{
@@ -95,7 +95,7 @@ void ATestCharacter_YJ::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	}
 }
 
-void ATestCharacter_YJ::Move(const FInputActionValue& Value)
+void ATestCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
@@ -108,7 +108,7 @@ void ATestCharacter_YJ::Move(const FInputActionValue& Value)
 	}
 }
 
-void ATestCharacter_YJ::Look(const FInputActionValue& Value)
+void ATestCharacter::Look(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
@@ -121,7 +121,7 @@ void ATestCharacter_YJ::Look(const FInputActionValue& Value)
 	}
 }
 
-void ATestCharacter_YJ::StartCrouch()
+void ATestCharacter::StartCrouch()
 {
 	GetCharacterMovement()->MaxWalkSpeed = CrouchingWalkSpeed;
 
@@ -132,7 +132,7 @@ void ATestCharacter_YJ::StartCrouch()
 	Crouch();
 }
 
-void ATestCharacter_YJ::StopCrouch()
+void ATestCharacter::StopCrouch()
 {
 	GetCharacterMovement()->MaxWalkSpeed = StandingWalkSpeed;
 	GetCapsuleComponent()->SetCapsuleRadius(StandingCapsuleRadius);
@@ -141,7 +141,7 @@ void ATestCharacter_YJ::StopCrouch()
 	UnCrouch();
 }
 
-void ATestCharacter_YJ::CrouchToggle(const FInputActionValue& Value)
+void ATestCharacter::CrouchToggle(const FInputActionValue& Value)
 {
 	bCrouched = !bCrouched;
 	if ( bCrouched )

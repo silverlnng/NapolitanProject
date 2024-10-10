@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "NapolitanProject/NapolitanProjectCharacter.h"
-#include "TestCharacter_YJ.generated.h"
+#include "TestCharacter.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class NAPOLITANPROJECT_API ATestCharacter_YJ : public ACharacter
+class NAPOLITANPROJECT_API ATestCharacter : public ACharacter
 {
 	GENERATED_BODY()
 	/** Pawn mesh: 1st person view (arms; seen only by self) */
@@ -30,7 +30,7 @@ class NAPOLITANPROJECT_API ATestCharacter_YJ : public ACharacter
 	UInputAction* MoveAction;
 	
 public:
-	ATestCharacter_YJ();
+	ATestCharacter();
 
 protected:
 	virtual void BeginPlay();
@@ -61,6 +61,13 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+/////////////////// 달리기 기능 ////////////////////////
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=run)
+	float runSpeed;
+	// 특정 키를 누르면 달리기 
+	float runCooltime;
+	
 ////////////////// 업드리기 기능 //////////////////////////
 ///
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)

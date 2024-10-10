@@ -20,4 +20,7 @@ public:
 	TSubclassOf<class UInventoryWidget> InventoryFactory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UInventoryWidget* InventoryUI;
+
+	
+	
 };

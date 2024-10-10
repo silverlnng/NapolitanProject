@@ -17,4 +17,8 @@ class NAPOLITANPROJECT_API UInventoryWidget : public UUserWidget
 public:
 	virtual void NativeConstruct() override;
 	
+	UPROPERTY(meta = (BindWidget))
+	class UUniformGridPanel* GridPanel_Slot;
+	
+	
 };
