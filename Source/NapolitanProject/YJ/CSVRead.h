@@ -18,11 +18,11 @@ struct FNPCResult
 };
 
 USTRUCT(BlueprintType)
-struct FNPCState
+struct FNPCDialogue
 {
 	GENERATED_BODY()
-	FString NPC_ID;
-	FString State;
+	FString Dialogue_Kor;
+	FString Dialogue_Eng;
 };
 
 
@@ -45,11 +45,17 @@ public:
 public:
 	TMap<int32,FNPCResult> NPCResultMap;
 	
+	TMap<int32,FNPCDialogue> NPCDialogueMap;
+	
 	bool LoadResultFromCSV(const FString& FilePath);
+	
+	bool LoadDialogueFromCSV(const FString& FilePath);
 
 	//  어떤 npc , 어떤 상황에서 분기점에서 마지막 대사  
 	FString GetNPCResult(const FString& NPC_ID, const FString& State, const FString& Result ,const FString& Lang);
 	
 	FString GetNPCDialogue(const FString& NPC_ID, const FString& State, const int32 order ,const FString& Lang);
 };
+
+
 
