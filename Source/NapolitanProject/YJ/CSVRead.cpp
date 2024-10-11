@@ -58,11 +58,13 @@ bool ACSVRead::LoadDialogueFromCSV(const FString& FilePath)
 		
 		// 1행의 0 ,1 ,2 ,3 ....열
 		
-		int32 npc_id=FCString::Atoi(Row[0]);
+		/*int32 npc_id=FCString::Atoi(Row[0]);
 		int32 npc_state=FCString::Atoi(Row[1]);
 		int32 npc_order=FCString::Atoi(Row[2]);
-		int32 FindKey =(npc_id*100)+(npc_state*10)+npc_order;
-		
+		int32 FindKey =(npc_id*100)+(npc_state*10)+npc_order;*/
+
+		int32 FindKey=FCString::Atoi(Row[3]);
+			
 		FNPCDialogue Dialogue;
 		Dialogue.Dialogue_Kor = Row[4];
 		Dialogue.Dialogue_Eng = Row[5];
@@ -98,9 +100,11 @@ bool ACSVRead::LoadResultFromCSV(const FString& FilePath)
 		
 		// 1행의 0 ,1 ,2 ,3 ....열
 		
-		int32 npc_id=FCString::Atoi(Row[0]);
+		/*int32 npc_id=FCString::Atoi(Row[0]);
 		int32 npc_state=FCString::Atoi(Row[1]);
-		int32 FindKey =(npc_id*100)+npc_state;
+		int32 FindKey =(npc_id*100)+npc_state;*/
+
+		int32 FindKey=FCString::Atoi(Row[2]);
 		
 		FNPCResult Dialogue;
 		Dialogue.result_Good_Kor = Row[3];
@@ -144,8 +148,10 @@ FString ACSVRead::GetNPCDialogue(const FString& NPC_ID, const FString& State, co
 	int32 npc_id=FCString::Atoi(*NPC_ID);
 	int32 npc_state=FCString::Atoi(*State);
 	int32 FindKey =(npc_id*100)+npc_state*10+order;
+
+	UE_LOG(LogTemp, Warning, TEXT("FindKey:%d"), FindKey);
 	
-	if (!NPCResultMap.Contains(FindKey))
+	if (!NPCDialogueMap.Contains(FindKey))
 	{
 		return TEXT("NPC를 찾을 수 없습니다.");
 	}
@@ -156,7 +162,7 @@ FString ACSVRead::GetNPCDialogue(const FString& NPC_ID, const FString& State, co
 	{
 		return Dialogue.Dialogue_Kor;
 	}
-	else
+	else if(Lang == TEXT("eng"))
 	{
 		return Dialogue.Dialogue_Eng;
 	}
