@@ -81,6 +81,6 @@ public:
 	class ATestCharacter* player; //플레이어
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	class APlayerHUD* hud; //HUD
+	class APlayerHUD* huds; //HUD
 
 };

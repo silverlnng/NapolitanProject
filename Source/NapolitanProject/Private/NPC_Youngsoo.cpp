@@ -28,13 +28,11 @@ void ANPC_Youngsoo::BeginPlay()
 	
 	YSCol->OnComponentBeginOverlap.AddDynamic(this, &ANPC_Youngsoo::ChoiceUIOverlap);
 
-	//월드에서 플레이어 찾아오기
-	auto actor = UGameplayStatics::GetActorOfClass(GetWorld(), ATestCharacter::StaticClass());
 	//플레이어 캐스팅
-	player = CastChecked<ATestCharacter>(actor);
+	player = CastChecked<ATestCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
 
-	auto* pc = GetController<APlayerController>();
-	APlayerHUD* hud = pc->GetHUD<APlayerHUD>();
+	auto* pc = player->GetController<APlayerController>();
+	huds = pc->GetHUD<APlayerHUD>();
 
 }
 
@@ -123,8 +121,8 @@ void ANPC_Youngsoo::ChoiceUIOverlap(UPrimitiveComponent* OverlappedComponent, AA
 
 void ANPC_Youngsoo::initNYSUI()
 {
-	if (hud) {
-		hud->NYSUi->SetVisibility(ESlateVisibility::Visible);
+	if (huds) {
+		huds->NYSUi->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
