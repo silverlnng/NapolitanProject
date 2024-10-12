@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -10,6 +10,7 @@ UENUM(BlueprintType)
 enum class ChaseStatueState : uint8 {
 	Idle,
 	Move,
+	Attack,
 };
 
 UCLASS()
@@ -33,9 +34,24 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	class UCapsuleComponent* CSCol; //�ݸ���
+	class UCapsuleComponent* CSCol; //콜리전
 
+public:
+	//상태 변수
 	UPROPERTY()
 	ChaseStatueState mState = ChaseStatueState::Idle;
 
+	//상태 함수
+	UFUNCTION(BlueprintCallable, Category = State)
+	void TickIdle(const float& DeltaTime);
+
+	UFUNCTION(BlueprintCallable, Category = State)
+	void TickMove(const float& DeltaTime);
+
+	UFUNCTION(BlueprintCallable, Category = State)
+	void TickAttack(const float& DeltaTime); //플레이어 공격 -> 사망이벤트 발생
+
+public:
+	UPROPERTY()
+	class ATestCharacter* Target; //플레이어 추격
 };

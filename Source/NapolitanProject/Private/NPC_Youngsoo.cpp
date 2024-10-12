@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "NPC_Youngsoo.h"
@@ -28,7 +28,7 @@ void ANPC_Youngsoo::BeginPlay()
 	
 	YSCol->OnComponentBeginOverlap.AddDynamic(this, &ANPC_Youngsoo::ChoiceUIOverlap);
 
-	//ÇÃ·¹ÀÌ¾î Ä³½ºÆÃ
+	//í”Œë ˆì´ì–´ ìºìŠ¤íŒ…
 	player = CastChecked<ATestCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
 
 	auto* pc = player->GetController<APlayerController>();
@@ -50,70 +50,70 @@ void ANPC_Youngsoo::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 }
 
-//¹Ì¼ú ÀÛÇ°À» º¸¸é¼­ ¿ï°í ÀÖ´Â °æ¿ì
+//ë¯¸ìˆ  ì‘í’ˆì„ ë³´ë©´ì„œ ìš¸ê³  ìˆëŠ” ê²½ìš°
 void ANPC_Youngsoo::YSFirstState()
 {
-	//´ë±â »óÅÂ·Î ¿ì´Â ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı
+	//ëŒ€ê¸° ìƒíƒœë¡œ ìš°ëŠ” ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒ
 }
 
-//½ºÄ«ÇÁ¸¦ ºÒÅÂ¿ö¾ßÇÏ´Â °æ¿ì
+//ìŠ¤ì¹´í”„ë¥¼ ë¶ˆíƒœì›Œì•¼í•˜ëŠ” ê²½ìš°
 void ANPC_Youngsoo::YSSecondState()
 {
-	//¿ì¼±Àº ´ë±â »óÅÂ·Î ÀÖ´Ù°¡ ÇÃ·¹ÀÌ¾î°¡ ´Ù°¡¿À¸é ´ÙÀ½ ÇÔ¼ö¸¦ ¿À¹ö·¦À¸·Î ºÎ¸¥´Ù. 
+	//ìš°ì„ ì€ ëŒ€ê¸° ìƒíƒœë¡œ ìˆë‹¤ê°€ í”Œë ˆì´ì–´ê°€ ë‹¤ê°€ì˜¤ë©´ ë‹¤ìŒ í•¨ìˆ˜ë¥¼ ì˜¤ë²„ë©ìœ¼ë¡œ ë¶€ë¥¸ë‹¤. 
 }
 
-//³²ÀÚ°¡ ÀÛÇ°À» º¸¸ç ¿ôÀ» ¶§ -> ±× ¿µ¿ª ¾È¿¡ µé¾î¿ÓÀ» ¶§ ÃßÀû ÈÄ ¹«Á¶°Ç »ç¸Á
+//ë‚¨ìê°€ ì‘í’ˆì„ ë³´ë©° ì›ƒì„ ë•Œ -> ê·¸ ì˜ì—­ ì•ˆì— ë“¤ì–´ì™“ì„ ë•Œ ì¶”ì  í›„ ë¬´ì¡°ê±´ ì‚¬ë§
 void ANPC_Youngsoo::YSThirdState()
 {
-	//¿ì¼±Àº ´ë±â »óÅÂ·Î ¿ô°íÀÖ´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ÀÛµ¿
+	//ìš°ì„ ì€ ëŒ€ê¸° ìƒíƒœë¡œ ì›ƒê³ ìˆëŠ” ì• ë‹ˆë©”ì´ì…˜ì„ ì‘ë™
 }
 
-//·£´ıÀ¸·Î »óÅÂÁöÁ¤
+//ëœë¤ìœ¼ë¡œ ìƒíƒœì§€ì •
 NYSState ANPC_Youngsoo::YSRandomState()
 {
-	//·£´ıÀ¸·Î »óÅÂ ÁöÁ¤
+	//ëœë¤ìœ¼ë¡œ ìƒíƒœ ì§€ì •
 	TArray<NYSState> RanStates = {
 		NYSState::YSFirst,
 		NYSState::YSSecond,
 		NYSState::YSThird,
 	};
 
-	//·£´ıÀ¸·Î ¼±ÅÃ
+	//ëœë¤ìœ¼ë¡œ ì„ íƒ
 	int32 RandomIndex = FMath::RandRange(0, RanStates.Num() - 1);
 	NYSState NewState = RanStates[RandomIndex];
 
 	return NewState;
 }
 
-//Á¶°Ç ÇØ±İ ÈÄ ¿òÁ÷ÀÎ ´ÙÀ½ ÇÃ·¹ÀÌ¾îÀÇ ½Ã¾ß¿¡¼­ »ç¶óÁü
+//ì¡°ê±´ í•´ê¸ˆ í›„ ì›€ì§ì¸ ë‹¤ìŒ í”Œë ˆì´ì–´ì˜ ì‹œì•¼ì—ì„œ ì‚¬ë¼ì§
 void ANPC_Youngsoo::YSMoveState()
 {
 }
 
-//ÇÃ·¹ÀÌ¾î Ãß°İ ÈÄ ÇÃ·¹ÀÌ¾î´Â ¹İµå½Ã »ç¸Á
+//í”Œë ˆì´ì–´ ì¶”ê²© í›„ í”Œë ˆì´ì–´ëŠ” ë°˜ë“œì‹œ ì‚¬ë§
 void ANPC_Youngsoo::YSChaseState()
 {
 }
 
 void ANPC_Youngsoo::SetState(NYSState newState)
 {
-	mState = newState; //»óÅÂ ÁöÁ¤
-	// ³ªÁß¿¡ ¾Ö´Ï¸ŞÀÌ¼Ç »óÅÂµµ º¯°æÇÏ±â
+	mState = newState; //ìƒíƒœ ì§€ì •
+	// ë‚˜ì¤‘ì— ì• ë‹ˆë©”ì´ì…˜ ìƒíƒœë„ ë³€ê²½í•˜ê¸°
 }
 
 void ANPC_Youngsoo::ChoiceUIOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor && (OtherActor != this) && OtherComp) {
-		//¸¸¾à ¿µ¼ö¿Í ºÎµúÈù °ÍÀÌ ÇÃ·¹ÀÌ¾îÀÏ °æ¿ì
+		//ë§Œì•½ ì˜ìˆ˜ì™€ ë¶€ë”ªíŒ ê²ƒì´ í”Œë ˆì´ì–´ì¼ ê²½ìš°
 		auto* AttackTarget = Cast<ATestCharacter>(OtherActor);
 		if (AttackTarget) {
 			bIsChat = true;
-			//bIsChatÀÌ trueÀÏ °æ¿ì¿¡¸¸
+			//bIsChatì´ trueì¼ ê²½ìš°ì—ë§Œ
 			if (bIsChat && mState == NYSState::YSFirst) { 
-				initNYSUI(); //µü ÇÑ¹ø¸¸ UI°¡ ¶ßµµ·Ï ¼³Á¤
+				initNYSUI(); //ë”± í•œë²ˆë§Œ UIê°€ ëœ¨ë„ë¡ ì„¤ì •
 			}
 			else if (bIsChat && mState == NYSState::YSSecond) {
-				//½ºÄ«ÇÁ¸¦ ºÒÅÂ¿ì´Â ÇÔ¼ö È£Ãâ
+				//ìŠ¤ì¹´í”„ë¥¼ ë¶ˆíƒœìš°ëŠ” í•¨ìˆ˜ í˜¸ì¶œ
 			}
 		}
 	}

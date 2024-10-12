@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -6,7 +6,7 @@
 #include "GameFramework/Character.h"
 #include "NPC_Youngsoo.generated.h"
 
-//ÀüÃ¼ »óÅÂ
+//  Ã¼     
 UENUM(BlueprintType)
 enum class NYSState : uint8 {
 	YSFirst,
@@ -38,35 +38,35 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
-	//»óÅÂ º¯¼ö
+	//ìƒíƒœ ë³€ìˆ˜
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = FSM)
-	NYSState mState = NYSState::YSRandom; //ÀÏ´Ü Ã³À½¿£ »óÅÂ¸¦ ·£´ı ÁöÁ¤
+	NYSState mState = NYSState::YSRandom; //ì¼ë‹¨ ì²˜ìŒì—” ìƒíƒœë¥¼ ëœë¤ ì§€ì •
 
-	//»óÅÂ ÇÔ¼ö
+	//ìƒíƒœ í•¨ìˆ˜
 	UFUNCTION(BlueprintCallable, Category = State)
-	void YSFirstState(); //¹Ì¼ú ÀÛÇ°À» º¸¸é¼­ ¿ï°í ÀÖ´Â °æ¿ì
-
-	UFUNCTION(BlueprintCallable, Category = State)
-	void YSSecondState(); //½ºÄ«ÇÁ¸¦ ºÒÅÂ¿ö¾ßÇÏ´Â °æ¿ì
+	void YSFirstState(); //ë¯¸ìˆ  ì‘í’ˆì„ ë³´ë©´ì„œ ìš¸ê³  ìˆëŠ” ê²½ìš°
 
 	UFUNCTION(BlueprintCallable, Category = State)
-	void YSThirdState(); //³²ÀÚ°¡ ÀÛÇ°À» º¸¸ç ¿ôÀ» ¶§ -> ±× ¿µ¿ª ¾È¿¡ µé¾î¿ÓÀ» ¶§ ÃßÀû ÈÄ ¹«Á¶°Ç »ç¸Á
+	void YSSecondState(); //ìŠ¤ì¹´í”„ë¥¼ ë¶ˆíƒœì›Œì•¼í•˜ëŠ” ê²½ìš°
 
 	UFUNCTION(BlueprintCallable, Category = State)
-	NYSState YSRandomState(); //·£´ıÀ¸·Î »óÅÂÁöÁ¤
+	void YSThirdState(); //ë‚¨ìê°€ ì‘í’ˆì„ ë³´ë©° ì›ƒì„ ë•Œ -> ê·¸ ì˜ì—­ ì•ˆì— ë“¤ì–´ì™“ì„ ë•Œ ì¶”ì  í›„ ë¬´ì¡°ê±´ ì‚¬ë§
 
 	UFUNCTION(BlueprintCallable, Category = State)
-	void YSMoveState(); //Á¶°Ç ÇØ±İ ÈÄ ¿òÁ÷ÀÎ ´ÙÀ½ ÇÃ·¹ÀÌ¾îÀÇ ½Ã¾ß¿¡¼­ »ç¶óÁü
+	NYSState YSRandomState(); //ëœë¤ìœ¼ë¡œ ìƒíƒœì§€ì •
 
 	UFUNCTION(BlueprintCallable, Category = State)
-	void YSChaseState(); //¹Ì¼ú ÀÛÇ°À» º¸¸é¼­ ¿ï°í ÀÖ´Â °æ¿ì
+	void YSMoveState(); //ì¡°ê±´ í•´ê¸ˆ í›„ ì›€ì§ì¸ ë‹¤ìŒ í”Œë ˆì´ì–´ì˜ ì‹œì•¼ì—ì„œ ì‚¬ë¼ì§
+
+	UFUNCTION(BlueprintCallable, Category = State)
+	void YSChaseState(); //ë¯¸ìˆ  ì‘í’ˆì„ ë³´ë©´ì„œ ìš¸ê³  ìˆëŠ” ê²½ìš°
 
 	UFUNCTION()
 	void SetState(NYSState newState);
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	class UCapsuleComponent* YSCol; // ¸¸¾à ´êÀ» ½Ã¿¡ ¼±ÅÃÁö UI »ı¼º
+	class UCapsuleComponent* YSCol; // ë§Œì•½ ë‹¿ì„ ì‹œì— ì„ íƒì§€ UI ìƒì„±
 
 	bool bIsChat = false;
 
@@ -78,7 +78,7 @@ public:
 	void initNYSUI();
 
 	UPROPERTY()
-	class ATestCharacter* player; //ÇÃ·¹ÀÌ¾î
+	class ATestCharacter* player; //í”Œë ˆì´ì–´
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	class APlayerHUD* huds; //HUD
