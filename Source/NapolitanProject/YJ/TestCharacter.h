@@ -9,6 +9,13 @@
 /**
  * 
  */
+enum class PlayerState:uint8
+{
+	Idle,
+	Talking,
+	Die
+};
+
 UCLASS()
 class NAPOLITANPROJECT_API ATestCharacter : public ACharacter
 {
@@ -62,12 +69,26 @@ public:
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
 /////////////////// 달리기 기능 ////////////////////////
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* IA_Run;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=run)
-	float runSpeed;
-	// 특정 키를 누르면 달리기 
-	float runCooltime;
+	float runSpeed = StandingWalkSpeed*2.f;
+	// 특정 키를 누르면 달리기
+		// 누르고 있는 동안 && 쿨타임 내에서 
+	float runCooltime =3.f;
+	bool bIsRunning;
+	bool bIsRunGageRemains;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=run)
+	float RunGage =runCooltime ;
 	
+	void OnRunAction(const FInputActionValue& Value);
+
+	void EndRunAction(const FInputActionValue& Value);
+
+	void UpdateRunAction(float DeltaTime);
+	void UpdateNotRunAction(float DeltaTime);
 ////////////////// 업드리기 기능 //////////////////////////
 ///
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
@@ -92,6 +113,9 @@ public:
 	float CrouchingWalkSpeed;
 	
 };
+
+
+
 
 
 

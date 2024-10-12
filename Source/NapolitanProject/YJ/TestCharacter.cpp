@@ -48,12 +48,20 @@ ATestCharacter::ATestCharacter()
 void ATestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	runSpeed = StandingWalkSpeed*3.f;
 }
 
 void ATestCharacter::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	
+	if (bIsRunning) // 달리기 누르면 실행하는 함수
+	{
+		UpdateRunAction(DeltaSeconds);
+	}
+	else
+	{
+		UpdateNotRunAction(DeltaSeconds);
+	}
 	// GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Lerp());
 }
 
@@ -88,6 +96,9 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATestCharacter::Look);
 
 		EnhancedInputComponent->BindAction(IA_Crouched, ETriggerEvent::Started, this, &ATestCharacter::CrouchToggle);
+
+		EnhancedInputComponent->BindAction(IA_Run, ETriggerEvent::Started, this, &ATestCharacter::OnRunAction);
+		EnhancedInputComponent->BindAction(IA_Run, ETriggerEvent::Completed, this, &ATestCharacter::EndRunAction);
 	}
 	else
 	{
@@ -118,6 +129,49 @@ void ATestCharacter::Look(const FInputActionValue& Value)
 		// add yaw and pitch input to controller
 		AddControllerYawInput(LookAxisVector.X);
 		AddControllerPitchInput(LookAxisVector.Y);
+	}
+}
+
+void ATestCharacter::OnRunAction(const FInputActionValue& Value)
+{
+	// 누르면 함수 호출
+	bIsRunning=true;
+	if (bIsRunGageRemains)
+	{
+		GetCharacterMovement()->MaxWalkSpeed=runSpeed;
+	}
+}
+
+void ATestCharacter::EndRunAction(const FInputActionValue& Value)
+{
+	// 타이머 종료
+	bIsRunning=false;
+	GetCharacterMovement()->MaxWalkSpeed=StandingWalkSpeed;
+}
+
+void ATestCharacter::UpdateRunAction(float DeltaTime)
+{
+		// 누르는 동안 계속 호
+	
+		RunGage -= DeltaTime;
+		RunGage=FMath::Max(RunGage,0.f);
+		// 5초가 넘으면 원래 속도로 전환
+		if (RunGage <= 0)
+		{
+			bIsRunGageRemains=false;
+			GetCharacterMovement()->MaxWalkSpeed = StandingWalkSpeed;
+		}
+	
+}
+void ATestCharacter::UpdateNotRunAction(float DeltaTime)
+{
+	// 누르는 동안 계속 호출
+	RunGage += DeltaTime;
+	RunGage = FMath::Min(runCooltime, RunGage);
+	// 5초가 넘으면 원래 속도로 전환
+	if (RunGage >= runCooltime)
+	{
+		bIsRunGageRemains=true;
 	}
 }
 
