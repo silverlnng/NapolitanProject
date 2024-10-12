@@ -21,6 +21,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UInventoryWidget* InventoryUI;
 
+
+	//===========±è¿µ¼ö
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	TSubclassOf<class UUserWidget> NYSFactory;
+	UPROPERTY()
+	class UNYS_Choice* NYSUi; 
 	
 	
 };
