@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "NapolitanProject/YJ/TestCharacter.h"
 
+
 // Sets default values
 AChaseStatue::AChaseStatue()
 {
@@ -57,16 +58,44 @@ void AChaseStatue::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AChaseStatue::TickIdle(const float& DeltaTime)
 {
-	//플레이어가 안에 들어왔고, 그 안에서 자신을 바라보지 않을 때
-	//if (Target != null)
+	//플레이어가 안에 들어왔고, 그 안에서 자신을 바라보지 않을 때 우선은 대기 상태로 있는다.
+	FVector targetLoc = Target->GetActorLocation();
+	FVector myLoc = me->GetActorLocation();
+	FVector dirR = targetLoc - myLoc;
+	FRotator rot = dirR.Rotation();
+
+	me-> SetActorRotation(FRotator(0, rot.Yaw, 0));
+
+	//만약 플레이어가 일정 거리 안에 들어왓을 경우 움직이는 모드로 변경
+	if (dirR.Size() >= 500.0f)
+	{
+		mState = ChaseStatueState::Move;
+	}
 }
 
 void AChaseStatue::TickMove(const float& DeltaTime)
 {
+	//플레이어가 안에 들어왔고, 그 안에서 자신을 바라보지 않을 때 우선은 대기 상태로 있는다.
+	FVector targetLoc = Target->GetActorLocation();
+	FVector myLoc = me->GetActorLocation();
+	FVector dirR = targetLoc - myLoc;
+	FRotator rot = dirR.Rotation();
+
+	//일정 거리 안에 있을 경우 움직이기
+	if (dirR.Size() >= 500.0f)
+	{
+		me->AddMovementInput(dirR.GetSafeNormal());
+	}
+	else if (dirR.Size() <= 170.0f)
+	{
+		//가까울 경우 사망
+		mState = ChaseStatueState::Attack;
+	}
 }
 
 void AChaseStatue::TickAttack(const float& DeltaTime)
 {
+	//사망 코드 넣기
 }
 
 

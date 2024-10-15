@@ -54,4 +54,7 @@ public:
 public:
 	UPROPERTY()
 	class ATestCharacter* Target; //플레이어 추격
+
+	UPROPERTY()
+	class AChaseStatue* me; // 나 자신
 };
