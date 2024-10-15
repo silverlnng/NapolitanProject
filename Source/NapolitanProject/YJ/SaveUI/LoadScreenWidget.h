@@ -31,10 +31,10 @@ public:
 	class USaveSlotSwitcherWidget* SaveSlotSwitcherWidget_2;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class USaveQuestWidget> SaveQuestWidgetFactory;
+	TSubclassOf<class USaveConfirmWidget> SaveQuestWidgetFactory;
 	
 	UPROPERTY(meta=(BindWidget))
-	class USaveQuestWidget* SaveQuestWidget;
+	class USaveConfirmWidget* SaveConfirmWidget;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TMap<int32, class USaveSlotSwitcherWidget*> SaveSlotSwitcherList;

@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "SaveQuestWidget.generated.h"
+#include "SaveConfirmWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class NAPOLITANPROJECT_API USaveQuestWidget : public UUserWidget
+class NAPOLITANPROJECT_API USaveConfirmWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:

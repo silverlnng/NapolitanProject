@@ -25,10 +25,10 @@ public:
 	int32 SlotNumber;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class USaveQuestWidget> SaveQuestWidgetFactory;
+	TSubclassOf<class USaveConfirmWidget> SaveConfirmWidgetFactory;
 	
 	UPROPERTY(meta=(BindWidget))
-	class USaveQuestWidget* SaveQuestWidget;
+	class USaveConfirmWidget* SaveConfirmUI;
 	
 	UFUNCTION()
 	void OnClicked_SaveGame_Clicked();

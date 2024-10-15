@@ -3,7 +3,7 @@
 
 #include "LoadScreenWidget.h"
 
-#include "SaveQuestWidget.h"
+#include "SaveConfirmWidget.h"
 #include "SaveSlotSwitcherWidget.h"
 #include "VacantSaveWidget.h"
 #include "Components/Button.h"
@@ -34,12 +34,12 @@ void ULoadScreenWidget::OnSaveQuestionWidgetCreate_0()
 {
 	
 	// 위젯생성하고
-	SaveQuestWidget =CreateWidget<USaveQuestWidget>(this,SaveQuestWidgetFactory);
+	SaveConfirmWidget =CreateWidget<USaveConfirmWidget>(this,SaveQuestWidgetFactory);
 
 	// 클릭한 슬롯 넘버를 parent 넘버로 지정하기 
-	SaveQuestWidget->SaveSlotSwitcherWidget = SaveSlotSwitcherWidget_0;
+	SaveConfirmWidget->SaveSlotSwitcherWidget = SaveSlotSwitcherWidget_0;
 	
-	CanvasPanel->AddChild(SaveQuestWidget);
+	CanvasPanel->AddChild(SaveConfirmWidget);
 	
 }
 

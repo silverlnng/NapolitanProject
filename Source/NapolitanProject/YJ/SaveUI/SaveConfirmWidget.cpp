@@ -1,22 +1,23 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "SaveQuestWidget.h"
+#include "SaveConfirmWidget.h"
 #include "Components/Button.h"
 
-void USaveQuestWidget::NativeConstruct()
+void USaveConfirmWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	//버튼에
-	Btn_Yes->OnClicked.AddDynamic(this,&USaveQuestWidget::OnClickYes);
+	Btn_Yes->OnClicked.AddDynamic(this,&USaveConfirmWidget::OnClickYes);
 }
 
-void USaveQuestWidget::OnClickYes()
+void USaveConfirmWidget::OnClickYes()
 {
 	// 나자신을 생성한 위젯에 대한 정보를 알수있나 ??
 	
 }
 
-void USaveQuestWidget::OnClickNo()
+void USaveConfirmWidget::OnClickNo()
 {
 }
+
