@@ -1,8 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "ChaseStatue.h"
 #include "Components/CapsuleComponent.h"
+#include "NapolitanProject/YJ/TestCharacter.h"
 
 // Sets default values
 AChaseStatue::AChaseStatue()
@@ -26,6 +27,8 @@ AChaseStatue::AChaseStatue()
 void AChaseStatue::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Target = CastChecked<ATestCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
 	
 }
 
@@ -34,6 +37,15 @@ void AChaseStatue::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	switch (mState)
+	{
+	case ChaseStatueState::Idle:
+		TickIdle(DeltaTime);
+	case ChaseStatueState::Move:
+		TickMove(DeltaTime);
+	case ChaseStatueState::Attack:
+		TickAttack(DeltaTime);
+	}
 }
 
 // Called to bind functionality to input
@@ -42,4 +54,20 @@ void AChaseStatue::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
+
+void AChaseStatue::TickIdle(const float& DeltaTime)
+{
+	//플레이어가 안에 들어왔고, 그 안에서 자신을 바라보지 않을 때
+	//if (Target != null)
+}
+
+void AChaseStatue::TickMove(const float& DeltaTime)
+{
+}
+
+void AChaseStatue::TickAttack(const float& DeltaTime)
+{
+}
+
+
 
