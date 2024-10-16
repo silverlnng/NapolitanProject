@@ -5,15 +5,51 @@
 
 #include "Components/Button.h"
 #include "Components/Slider.h"
+#include "Kismet/GameplayStatics.h"
 
 void USettingWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+	
+	Slider_Total->OnValueChanged.AddDynamic(this,&USettingWidget::OnSlider_Total_Changed);
+	
+	Slider_BG->OnValueChanged.AddDynamic(this,&USettingWidget::OnSlider_BG_Changed);
+
+	Slider_SFX->OnValueChanged.AddDynamic(this,&USettingWidget::OnSlider_SFX_Changed);
+	
 	Button_Setting->OnClicked.AddDynamic(this,&USettingWidget::OnClickeSetting);
+}
+
+void USettingWidget::OnSlider_Total_Changed(float value)
+{
+	// 딱한번만 플레이 시키기
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),MasterMix,MyMasterClass,value,1,0);
+}
+
+void USettingWidget::OnSlider_BG_Changed(float value)
+{
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),BackGroundMix,BackGroundClass,value,1,0);	
+}
+
+void USettingWidget::OnSlider_SFX_Changed(float value)
+{
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),SFXMix,MySFXClass,value,1,0);
+
+	// 테스트 용으로 하나 플레이시키기 
+}
+
+void USettingWidget::OnSlider_Setting_Changed(float value)
+{
 }
 
 void USettingWidget::OnClickeSetting()
 {
 	// 이시점의 value를 가져와서 세팅하기
 	//Slider_Total->GetValue()
+
+	// 설정한 값 저장하기 
+	//UGameplayStatics::CreateSaveGameObject()
+
+	// 플레이 되고있는거 종료하고 
+	
 }
