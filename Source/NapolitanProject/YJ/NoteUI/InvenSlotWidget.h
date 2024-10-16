@@ -13,5 +13,7 @@ UCLASS()
 class NAPOLITANPROJECT_API UInvenSlotWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+public:	
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Img_Thumnail;
 };

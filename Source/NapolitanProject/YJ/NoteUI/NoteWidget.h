@@ -13,5 +13,7 @@ UCLASS()
 class NAPOLITANPROJECT_API UNoteWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+public:
+	UPROPERTY(meta = (BindWidget))
+	class UInventoryWidget* WBP_Inventory;
 };
