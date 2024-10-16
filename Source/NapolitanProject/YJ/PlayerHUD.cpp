@@ -2,19 +2,19 @@
 
 
 #include "PlayerHUD.h"
-#include "InventoryWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "NYS_Choice.h"
+#include "NoteUI/NoteWidget.h"
 
 void APlayerHUD::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	InventoryUI =CreateWidget<UInventoryWidget>(GetWorld(),InventoryFactory);
-	if (InventoryUI)
+	NoteUI =CreateWidget<UNoteWidget>(GetWorld(),NoteWidgetFactory);
+	if (NoteUI)
 	{
-		InventoryUI->AddToViewport();
-		InventoryUI->SetVisibility(ESlateVisibility::Hidden);
+		NoteUI->AddToViewport();
+		NoteUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	// 초반에 slot 을 생성해주기

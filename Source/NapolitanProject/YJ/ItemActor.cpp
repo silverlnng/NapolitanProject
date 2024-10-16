@@ -15,6 +15,18 @@ AItemActor::AItemActor()
 void AItemActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	///Script/Engine.DataTable'/Game/YJ/Item/DT_Item.DT_Item'
+	
+	UDataTable* DT_itemData =LoadObject<UDataTable>(nullptr,TEXT("'/Game/YJ/Item/DT_Item.DT_Item'"));
+
+	//먼저 모든 행단위로 가져오기  
+	TArray<FName> RowNames = DT_itemData->GetRowNames();
+	
+	for (int i = 0; i < RowNames.Num(); i++)
+	{
+		UE_LOG(LogTemp,Warning,TEXT("%s"),*RowNames[i].ToString());
+	}
 	
 }
 
