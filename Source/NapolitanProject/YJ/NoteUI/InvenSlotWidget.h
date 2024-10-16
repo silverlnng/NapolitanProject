@@ -13,7 +13,17 @@ UCLASS()
 class NAPOLITANPROJECT_API UInvenSlotWidget : public UUserWidget
 {
 	GENERATED_BODY()
-public:	
+public:
+
+	virtual void NativeConstruct() override;
+	
 	UPROPERTY(meta = (BindWidget))
 	class UImage* Img_Thumnail;
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_InvenSlot;
+
+	UFUNCTION()
+	void OnClickedInvenSlot();
+	UFUNCTION()
+	void OnHoverInvenSlot();
 };
