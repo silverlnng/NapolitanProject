@@ -6,23 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "ItemActor.generated.h"
 
-USTRUCT(BlueprintType)
-struct FItemData : public FTableRowBase
-{
-	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	bool IsHad;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	int32 ItemInt;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	UTexture2D* thumnail;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	UStaticMesh* ItemMesh;
-};
 
 UCLASS()
 class NAPOLITANPROJECT_API AItemActor : public AActor
@@ -41,9 +25,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Item)
-	TMap<FString,FItemData> ItemMap;
-
+	
+	
 //////언리얼 데이터 테이블 읽어오기 	//////////////////////////////////////////////////////////
 	
 	UPROPERTY(VisibleAnywhere)
@@ -52,7 +35,6 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class APlayerHUD* PlayerHUD;
 
-	UPROPERTY(VisibleAnywhere)
-	UDataTable* DT_itemData;
+	
 	
 };

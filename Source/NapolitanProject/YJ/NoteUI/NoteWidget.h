@@ -16,4 +16,6 @@ class NAPOLITANPROJECT_API UNoteWidget : public UUserWidget
 public:
 	UPROPERTY(meta = (BindWidget))
 	class UInventoryWidget* WBP_Inventory;
+	UPROPERTY(meta = (BindWidget))
+	class USouvenirWidget* WBP_Souvenir;
 };
