@@ -81,12 +81,33 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	FName curNum_ = FName(FString::FromInt(curNum));
 	FSouvenirData* SouvenirData = GI->DT_SouvenirData->FindRow<FSouvenirData>(curNum_,TEXT(""));
 	if (!SouvenirData){return;} // 방어코드
+
+	// SouvenirData->IsHad 값에 따라서 
+	if(!SouvenirData->IsHad)
+	{
+		SouvenirUI->Img_Souvenir_left->SetColorAndOpacity(FLinearColor(0.01,0.01,0.01,1));
+	}
+	else
+	{
+		SouvenirUI->Img_Souvenir_left->SetColorAndOpacity(FLinearColor(1,1,1,1));
+	}
+	
 	SouvenirUI->Img_Souvenir_left->SetBrushFromTexture(SouvenirData->thumnail);
 	SouvenirUI->Text_Souvenir_left->SetText( FText::FromString(SouvenirData->SouvenirInfo));
 
 	FName nextNum_ = FName(FString::FromInt(curNum+1));
 	FSouvenirData* SouvenirDataNext = GI->DT_SouvenirData->FindRow<FSouvenirData>(nextNum_,TEXT(""));
-	if (!SouvenirDataNext){return;} // 방어코드 
+	if (!SouvenirDataNext){return;} // 방어코드
+
+	if(!SouvenirDataNext->IsHad)
+	{
+		SouvenirUI->Img_Souvenir_right->SetColorAndOpacity(FLinearColor(0.01,0.01,0.01,1));
+	}
+	else
+	{
+		SouvenirUI->Img_Souvenir_right->SetColorAndOpacity(FLinearColor(1,1,1,1));
+	}
+	
 	SouvenirUI->Img_Souvenir_right->SetBrushFromTexture(SouvenirDataNext->thumnail);
 	SouvenirUI->Text_Souvenir_right->SetText( FText::FromString(SouvenirDataNext->SouvenirInfo));
 	
