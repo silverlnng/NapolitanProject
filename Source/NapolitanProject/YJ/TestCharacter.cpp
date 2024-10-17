@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "PlayerHUD.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -225,8 +226,9 @@ void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)
 	}
 	else
 	{
+		UWidgetBlueprintLibrary::SetFocusToGameViewport();
 		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
-		PC->SetInputMode(FInputModeUIOnly());
+		PC->SetInputMode(FInputModeGameAndUI());
 		PC->SetShowMouseCursor(true);
 	}
 }

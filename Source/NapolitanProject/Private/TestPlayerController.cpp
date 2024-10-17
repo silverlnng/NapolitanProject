@@ -73,10 +73,12 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	//GI 의 SouvenirMap에서 앍어오기
 	 // curNum 을 fname으로 바꾸기
 
+	////////// 버튼 보이게,안보이게 처리
 	if (0==curNum){SouvenirUI->Btn_Souvenir_Back->SetVisibility(ESlateVisibility::Hidden);}
 	if (0!=curNum){SouvenirUI->Btn_Souvenir_Back->SetVisibility(ESlateVisibility::Visible);}
 	if (SouvenirUI->MaxPage==curNum){SouvenirUI->Btn_Souvenir_front->SetVisibility(ESlateVisibility::Hidden);}
 	if (SouvenirUI->MaxPage!=curNum){SouvenirUI->Btn_Souvenir_front->SetVisibility(ESlateVisibility::Visible);}
+	//////////
 	
 	FName curNum_ = FName(FString::FromInt(curNum));
 	FSouvenirData* SouvenirData = GI->DT_SouvenirData->FindRow<FSouvenirData>(curNum_,TEXT(""));
@@ -91,7 +93,6 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	{
 		SouvenirUI->Img_Souvenir_left->SetColorAndOpacity(FLinearColor(1,1,1,1));
 	}
-	
 	SouvenirUI->Img_Souvenir_left->SetBrushFromTexture(SouvenirData->thumnail);
 	SouvenirUI->Text_Souvenir_left->SetText( FText::FromString(SouvenirData->SouvenirInfo));
 
