@@ -17,12 +17,12 @@ public:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
-	TSubclassOf<class UInventoryWidget> InventoryFactory;
+	TSubclassOf<class UNoteWidget> NoteWidgetFactory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
-	class UInventoryWidget* InventoryUI;
+	class UNoteWidget* NoteUI;
 
 
-	//===========±è¿µ¼ö
+	//===========ï¿½è¿µï¿½ï¿½
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TSubclassOf<class UUserWidget> NYSFactory;
 	UPROPERTY()

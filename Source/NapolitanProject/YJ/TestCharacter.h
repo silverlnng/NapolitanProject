@@ -68,6 +68,12 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	UPROPERTY(VisibleAnywhere)
+	class APlayerController* PC;
+
+	UPROPERTY(VisibleAnywhere)
+	class APlayerHUD* PlayerHUD;
+
 /////////////////// 달리기 기능 ////////////////////////
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -111,7 +117,13 @@ public:
 	float StandingWalkSpeed;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Crouch)
 	float CrouchingWalkSpeed;
-	
+
+/////////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* IA_Tab;
+
+	UFUNCTION()
+	void NoteUIToggle(const FInputActionValue& Value);
 };
 
 

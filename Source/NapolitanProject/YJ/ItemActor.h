@@ -7,16 +7,16 @@
 #include "ItemActor.generated.h"
 
 USTRUCT(BlueprintType)
-struct FItemData
+struct FItemData : public FTableRowBase
 {
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	int32 ItemInt;
-
+	bool IsHad;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	FString ItemName;
-
+	int32 ItemInt;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	UTexture2D* thumnail;
 
@@ -43,5 +43,16 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Item)
 	TMap<FString,FItemData> ItemMap;
+
+//////언리얼 데이터 테이블 읽어오기 	//////////////////////////////////////////////////////////
+	
+	UPROPERTY(VisibleAnywhere)
+	class APlayerController* PC;
+
+	UPROPERTY(VisibleAnywhere)
+	class APlayerHUD* PlayerHUD;
+
+	UPROPERTY(VisibleAnywhere)
+	UDataTable* DT_itemData;
 	
 };

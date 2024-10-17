@@ -5,9 +5,11 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "PlayerHUD.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "NoteUI/NoteWidget.h"
 
 ATestCharacter::ATestCharacter()
 {
@@ -49,6 +51,8 @@ void ATestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	runSpeed = StandingWalkSpeed*3.f;
+	PC = Cast<APlayerController>(Controller);
+	PlayerHUD=PC->GetHUD<APlayerHUD>();
 }
 
 void ATestCharacter::Tick(float DeltaSeconds)
@@ -99,6 +103,9 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 		EnhancedInputComponent->BindAction(IA_Run, ETriggerEvent::Started, this, &ATestCharacter::OnRunAction);
 		EnhancedInputComponent->BindAction(IA_Run, ETriggerEvent::Completed, this, &ATestCharacter::EndRunAction);
+
+
+		EnhancedInputComponent->BindAction(IA_Tab, ETriggerEvent::Started, this, &ATestCharacter::NoteUIToggle);
 	}
 	else
 	{
@@ -205,5 +212,21 @@ void ATestCharacter::CrouchToggle(const FInputActionValue& Value)
 	else
 	{
 		StopCrouch();
+	}
+}
+
+void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)
+{
+	if (PlayerHUD->NoteUI->IsVisible())
+	{
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Hidden);
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->SetShowMouseCursor(false);
+	}
+	else
+	{
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
+		PC->SetInputMode(FInputModeUIOnly());
+		PC->SetShowMouseCursor(true);
 	}
 }
