@@ -8,8 +8,8 @@
 void UInvenSlotWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	Btn_InvenSlot->OnHovered.AddDynamic(this,UInvenSlotWidget::OnClickedInvenSlot);
-	Btn_InvenSlot->OnClicked.AddDynamic(this,UInvenSlotWidget::OnClickedInvenSlot);
+	Btn_InvenSlot->OnHovered.AddDynamic(this,&UInvenSlotWidget::OnClickedInvenSlot);
+	Btn_InvenSlot->OnClicked.AddDynamic(this,&UInvenSlotWidget::OnClickedInvenSlot);
 }
 
 void UInvenSlotWidget::OnClickedInvenSlot()
