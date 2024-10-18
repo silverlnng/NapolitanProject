@@ -136,7 +136,11 @@ void ATestPlayerController::SetCurNPC(ANPCCharacter* curNPC_)
 
 void ATestPlayerController::CallCurNPCResultEvent(int32 value)
 {
-	curNPC->ResultEvent(value);
+	UE_LOG(LogTemp,Warning,TEXT("%d"),value);
+	if (curNPC)
+	{
+		curNPC->ResultEvent(value);
+	}
 }
 void ATestPlayerController::SetCurNPCSelectUI(const int32& NPC_ID, const int32& State, const FString& Lang)
 {
@@ -177,3 +181,4 @@ void ATestPlayerController::SetCurNPCSelectUI(const int32& NPC_ID, const int32& 
 	// 한번호출
 	PlayerHUD->NPCDialogueUI->CreateSelectionChildren(count,str,result);
 }
+

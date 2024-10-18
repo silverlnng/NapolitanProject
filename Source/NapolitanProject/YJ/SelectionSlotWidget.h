@@ -16,6 +16,10 @@ class NAPOLITANPROJECT_API USelectionSlotWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	virtual void NativeConstruct() override;
+
+	class ATestPlayerController* TestPlayerController;
+	
 	UPROPERTY(meta=(BindWidget))
 	class UButton* Btn_Selection;
 	UPROPERTY(meta=(BindWidget))
