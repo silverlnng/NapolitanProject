@@ -10,6 +10,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "NoteUI/NoteWidget.h"
 
 ATestCharacter::ATestCharacter()
@@ -54,6 +55,10 @@ void ATestCharacter::BeginPlay()
 	runSpeed = StandingWalkSpeed*3.f;
 	PC = Cast<APlayerController>(Controller);
 	PlayerHUD=PC->GetHUD<APlayerHUD>();
+
+	// 타이머로 trace 작동시키기
+	
+	
 }
 
 void ATestCharacter::Tick(float DeltaSeconds)
@@ -231,4 +236,42 @@ void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)
 		PC->SetInputMode(FInputModeGameAndUI());
 		PC->SetShowMouseCursor(true);
 	}
+}
+
+void ATestCharacter::SphereTraceFromCamera()
+{
+	// 타이머로 작동시키기
+
+	FVector CameraLocation;
+	FRotator CameraRotation;
+	PC->GetPlayerViewPoint(CameraLocation,CameraRotation);
+
+	// 트레이스 시작점 및 끝점 설정
+	FVector TraceStart = CameraLocation;
+	FVector TraceEnd = TraceStart + (CameraRotation.Vector() * traceLength); // 1000 유닛 앞까지 트레이스
+
+	// 트레이스 채널 설정 (여기서는 ECC_Visibility 사용)
+	ECollisionChannel TraceChannel = ECC_Visibility;
+	// 트레이스 파라미터 설정
+	FHitResult HitResult;
+	
+	FCollisionQueryParams TraceParams;
+
+	//bool SweepSingleByChannel(struct FHitResult& OutHit, const FVector& Start, const FVector& End, const FQuat& Rot, ECollisionChannel TraceChannel, const FCollisionShape& CollisionShape, const FCollisionQueryParams& Params = FCollisionQueryParams::DefaultQueryParam, const FCollisionResponseParams& ResponseParam = FCollisionResponseParams::DefaultResponseParam) const;
+
+	bool bHit = GetWorld()->SweepSingleByChannel(
+		 HitResult,
+		 TraceStart,
+		 TraceEnd,
+		 FQuat::Identity, // 회전 없음
+		 TraceChannel,
+		 FCollisionShape::MakeSphere(SphereRadius),
+		 TraceParams // 탐색 방법에 대한 설정 값을 모아둔 구조체
+	 );
+
+	// 디버그용으로 트레이스 구체를 그립니다
+	FColor TraceColor = bHit ? FColor::Red : FColor::Green;
+	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, TraceColor, false, 2.0f, 0, 2.0f);
+	DrawDebugSphere(GetWorld(), TraceStart, SphereRadius, 12, TraceColor, false, 2.0f);
+	DrawDebugSphere(GetWorld(), TraceEnd, SphereRadius, 12, TraceColor, false, 2.0f);
 }

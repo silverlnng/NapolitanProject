@@ -124,6 +124,15 @@ public:
 
 	UFUNCTION()
 	void NoteUIToggle(const FInputActionValue& Value);
+
+	UFUNCTION()
+	void SphereTraceFromCamera();
+
+	UPROPERTY(VisibleAnywhere)
+	float SphereRadius=50.f;
+	UPROPERTY(VisibleAnywhere)
+	int32 traceLength=1000;
+	
 };
 
 

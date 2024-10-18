@@ -52,15 +52,27 @@ class NAPOLITANPROJECT_API UTestGameInstance : public UGameInstance
 	GENERATED_BODY()
 public:
 	virtual void Init() override;
-	
+
+//////////// 소모성 아이템 데이터 ///////////////////////	
 	UPROPERTY(VisibleAnywhere)
 	UDataTable* DT_itemData;
 	UPROPERTY(VisibleAnywhere)
 	TArray<FName> itemDataRowNames;
-
+	
+	//////////// 유물 데이터 ///////////////////////	
 	UPROPERTY(VisibleAnywhere)
 	UDataTable* DT_SouvenirData;
 	UPROPERTY(VisibleAnywhere)
 	TArray<FName> SouvenirDataRowNames;
+
+	//////////// 언어 선택 ///////////////////////
+	UPROPERTY(VisibleAnywhere)
+	int32 lang;
+
+	UFUNCTION()
+	void SetGameInstanceLang(int32 value);
+
+	UFUNCTION()
+	int32 GetGameInstanceLang();
 	
 };
