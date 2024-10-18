@@ -29,6 +29,6 @@ public:
 	UFUNCTION()
 	void OnClickedSelection();
 	UFUNCTION()
-	void SetText(FString str);
+	void SetTextSelection(FString str);
 	
 };

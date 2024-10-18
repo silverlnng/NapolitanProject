@@ -16,6 +16,11 @@ void UTestGameInstance::Init()
 
 	// 언어선택 기본값 한글 :0 ,영어:1
 	lang=0;
+
+	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("npc_Dialogue.csv"));
+	LoadResultFromCSV(FPaths::ProjectDir() / TEXT("npc_result2.csv"));
+	LoadSelectFromCSV(FPaths::ProjectDir() / TEXT("SelectionSlot.csv"));
+		
 }
 
 void UTestGameInstance::SetGameInstanceLang(int32 value)
@@ -130,11 +135,51 @@ bool UTestGameInstance::LoadSelectFromCSV(const FString& FilePath)
 		FNPCSelect NPCSelect;
 		NPCSelect.Check=FCString::Atoi(Col[4]);
 		NPCSelect.Select_Kor = Col[5];
-		NPCSelect.Select_Kor = Col[6];
+		NPCSelect.Select_Eng = Col[5];
 		
 		
 		// NPC Select 를  NPCSelectMap 맵에 저장
 		NPCSelectMap.Add(FindKey, NPCSelect);
 	}
 	return true;
+}
+
+void UTestGameInstance::GetNPCSelect(const int32& NPC_ID, const int32& State, const FString& Lang)
+{
+	int32 npc_id=NPC_ID;
+	int32 npc_state=State;
+	
+	int32 FindKey =(npc_id*100)+(npc_state*10); // 시작하는 키값
+
+	// 110~115 까지 키값을 순회하기 => 선택지는 최대 5개까지니까 
+
+	for (int i=FindKey ; i<=(FindKey+5); i++)
+	{
+		if (NPCSelectMap.Contains(FindKey)) // 있는 경우
+		{
+			// 위젯생성 하고 값 넣어주기 
+			
+			const FNPCSelect& Select = NPCSelectMap[FindKey];
+			if (Lang == TEXT("kor"))
+			{
+				// Select.Select_Kor;
+			}
+			else if(Lang == TEXT("eng"))
+			{
+				// Select.Select_Eng;
+			}
+		}
+		else // 없는경우
+		{
+			UE_LOG(LogTemp,Warning,TEXT("Select 를 찾을 수 없습니다."));
+			return;
+		}
+	}
+	
+	
+	
+
+	
+
+	
 }

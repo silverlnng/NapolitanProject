@@ -13,6 +13,7 @@
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 #include "NapolitanProject/YJ/NoteUI/SouvenirWidget.h"
 #include "Components/Image.h"
+#include "NapolitanProject/YJ/NPCDialogueWidget.h"
 
 void ATestPlayerController::PostInitializeComponents()
 {
@@ -116,6 +117,18 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	
 }
 
+void ATestPlayerController::SetNPCDialougueVisible(bool value)
+{
+	if (value)
+	{
+		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
+	}
+	else
+	{
+		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
+	}
+}
+
 void ATestPlayerController::SetCurNPC(ANPCCharacter* curNPC_)
 {
 	curNPC = curNPC_;
@@ -124,4 +137,43 @@ void ATestPlayerController::SetCurNPC(ANPCCharacter* curNPC_)
 void ATestPlayerController::CallCurNPCResultEvent(int32 value)
 {
 	curNPC->ResultEvent(value);
+}
+void ATestPlayerController::SetCurNPCSelectUI(const int32& NPC_ID, const int32& State, const FString& Lang)
+{
+	int32 npc_id=NPC_ID;
+	int32 npc_state=State;
+	
+	int32 FindKey =(npc_id*100)+(npc_state*10); // 시작하는 키값
+	int32 count=0;
+	TArray<FString> str;
+	TArray<int32> result;
+
+	// 110~115 까지 키값을 순회하기 => 선택지는 최대 5개까지니까 
+
+	for (int i=FindKey ; i<=(FindKey+5); i++)
+	{
+		if (GI->NPCSelectMap.Contains(i)) // 있는 경우
+		{
+			// 위젯생성 하고 값 넣어주기 
+			count++;
+			const FNPCSelect& Select = GI->NPCSelectMap[i];
+			result.Add(Select.Check);
+			if (Lang == TEXT("kor"))
+			{
+				str.Add(*Select.Select_Kor);
+			}
+			else if(Lang == TEXT("eng"))
+			{
+				str.Add(*Select.Select_Eng);
+			}
+		}
+		else // 없는경우
+		{
+			UE_LOG(LogTemp,Warning,TEXT("Select 를 찾을 수 없습니다."));
+			break;
+		}
+	}
+
+	// 한번호출
+	PlayerHUD->NPCDialogueUI->CreateSelectionChildren(count,str,result);
 }

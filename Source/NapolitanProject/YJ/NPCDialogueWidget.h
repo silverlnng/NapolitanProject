@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "SelectionSlotWidget.h"
 #include "NPCDialogueWidget.generated.h"
 
 /**
@@ -33,11 +34,18 @@ public:
 	UFUNCTION()
 	void SetText_Dialogue(const FString& str);
 
-	/// 동적으로 UniformGridPanel_Selection 의 자식으로 선택지를 생성시켜야 함 
+	/// 동적으로 UniformGridPanel_Selection 의 자식으로 선택지를 생성시켜야 함
+	UPROPERTY()
+	TMap<int,USelectionSlotWidget*> SelectionSlotMap;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class USelectionSlotWidget> SelectionSlotUIFactory;
+	
+	
 	UPROPERTY(meta=(BindWidget))
 	class UUniformGridPanel* UniformGridPanel_Selection;
 
 	UFUNCTION()
-	void CreateSelectionChildren();
+	void CreateSelectionChildren(int32 count,TArray<FString> str,TArray<int32> result);
 	
 };

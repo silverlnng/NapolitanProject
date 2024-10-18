@@ -35,9 +35,16 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class ANPCCharacter* curNPC=nullptr;
 
+	UFUNCTION(BlueprintCallable)
+	void SetNPCDialougueVisible(bool value);
+	
 	UFUNCTION()
 	void SetCurNPC(ANPCCharacter* curNPC_);
 
 	UFUNCTION()
 	void CallCurNPCResultEvent(int32 value);
+
+	UFUNCTION(BlueprintCallable)
+	void SetCurNPCSelectUI(const int32& NPC_ID,const int32& State,const FString& Lang);
 };
+

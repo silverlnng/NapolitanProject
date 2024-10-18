@@ -15,7 +15,7 @@ void USelectionSlotWidget::OnClickedSelection()
 	
 }
 
-void USelectionSlotWidget::SetText(FString str)
+void USelectionSlotWidget::SetTextSelection(FString str)
 {
 	Text_Selection->SetText(FText::FromString(str));
 }

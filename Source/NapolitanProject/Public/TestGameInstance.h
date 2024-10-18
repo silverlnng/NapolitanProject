@@ -121,6 +121,10 @@ public:
 	FString GetNPCResult(const FString& NPC_ID, const FString& State, const FString& Result ,const FString& Lang);
 	
 	FString GetNPCDialogue(const FString& NPC_ID, const FString& State, const int32 order ,const FString& Lang);
+
+	void GetNPCSelect(const int32& NPC_ID,const int32& State,const FString& Lang);
+	// npc 만날떄 한번 호출로 선택지 모두 생성시키기 
+	
 	
 };
 
