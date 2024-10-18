@@ -2,6 +2,8 @@
 
 
 #include "PlayerHUD.h"
+
+#include "NPCDialogueWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "NYS_Choice.h"
 #include "NoteUI/NoteWidget.h"
@@ -18,6 +20,13 @@ void APlayerHUD::BeginPlay()
 	}
 
 	// 초반에 slot 을 생성해주기
+	
+	NPCDialogueUI =CreateWidget<UNPCDialogueWidget>(GetWorld(),NPCDialogueWidgetFactory);
+	if (NPCDialogueUI)
+	{
+		NPCDialogueUI->AddToViewport();
+		NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
+	}
 	
 
 	if (!NYSFactory)

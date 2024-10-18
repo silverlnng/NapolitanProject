@@ -3,6 +3,8 @@
 
 #include "TestGameInstance.h"
 
+#include "Serialization/Csv/CsvParser.h"
+
 void UTestGameInstance::Init()
 {
 	Super::Init();
@@ -24,4 +26,115 @@ void UTestGameInstance::SetGameInstanceLang(int32 value)
 int32 UTestGameInstance::GetGameInstanceLang()
 {
 	return lang;
+}
+
+bool UTestGameInstance::LoadResultFromCSV(const FString& FilePath)
+{
+	// FString CSVPath = FPaths::ProjectDir() / TEXT("NPCData.csv");
+	FString CSVContent; // csv 내용을 저장할 변수
+    
+	// CSV 파일 읽기
+	if (!FFileHelper::LoadFileToString(CSVContent, *FilePath))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to load CSV file: %s"), *FilePath);
+		return false;
+	}
+	// 먼저 행 단위로 나누기 
+	FCsvParser Parser(CSVContent);
+	const FCsvParser::FRows& Rows = Parser.GetRows();
+	
+	// 첫 번째 줄 (헤더) 건너뛰기 
+	for (int32 RowIdx = 1; RowIdx < Rows.Num(); ++RowIdx)
+	{
+		const TArray<const TCHAR*>& Row = Rows[RowIdx]; // 1행 부터 ....n 행
+		
+		
+		// 1행의 0 ,1 ,2 ,3 ....열
+		
+		int32 FindKey=FCString::Atoi(Row[2]);
+		
+		FNPCResult Dialogue;
+		Dialogue.result_Good_Kor = Row[3];
+		Dialogue.result_bad_Kor = Row[4];
+		Dialogue.result_Good_Eng= Row[5];
+		Dialogue.result_bad_Eng = Row[6];
+		
+		// NPC 대사를 맵에 저장
+		NPCResultMap.Add(FindKey, Dialogue);
+	}
+	return true;
+}
+
+bool UTestGameInstance::LoadDialogueFromCSV(const FString& FilePath)
+{
+	FString CSVContent; // csv 내용을 저장할 변수
+    
+	// CSV 파일 읽기
+	if (!FFileHelper::LoadFileToString(CSVContent, *FilePath))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to load CSV file: %s"), *FilePath);
+		return false;
+	}
+	// 먼저 행 단위로 나누기 
+	FCsvParser Parser(CSVContent);
+	const FCsvParser::FRows& Rows = Parser.GetRows();
+
+	
+	// 첫 번째 줄 (헤더) 건너뛰기 
+	for (int32 RowIdx = 1; RowIdx < Rows.Num(); ++RowIdx)
+	{
+		const TArray<const TCHAR*>& Col = Rows[RowIdx]; // 1행 부터 ....n 행
+		
+		
+		// 1행의 0 ,1 ,2 ,3 ....열
+		
+		int32 FindKey=FCString::Atoi(Col[3]);
+			
+		FNPCDialogue Dialogue;
+		Dialogue.Dialogue_Kor = Col[4];
+		Dialogue.Dialogue_Eng = Col[5];
+		
+		
+		// NPC 대사를 맵에 저장
+		NPCDialogueMap.Add(FindKey, Dialogue);
+	}
+	return true;
+}
+
+bool UTestGameInstance::LoadSelectFromCSV(const FString& FilePath)
+{
+	FString CSVContent; // csv 내용을 저장할 변수
+    
+	// CSV 파일 읽기
+	if (!FFileHelper::LoadFileToString(CSVContent, *FilePath))
+	{
+		UE_LOG(LogTemp, Error, TEXT("Failed to load CSV file: %s"), *FilePath);
+		return false;
+	}
+	// 먼저 행 단위로 나누기 
+	FCsvParser Parser(CSVContent);
+	const FCsvParser::FRows& Rows = Parser.GetRows();
+
+	
+	// 첫 번째 줄 (헤더) 건너뛰기 
+	for (int32 RowIdx = 1; RowIdx < Rows.Num(); ++RowIdx)
+	{
+		const TArray<const TCHAR*>& Col = Rows[RowIdx]; // 1행 부터 ....n 행
+		
+		
+		// 1행의 0 ,1 ,2 ,3 ....열
+		
+		
+		int32 FindKey=FCString::Atoi(Col[3]);
+			
+		FNPCSelect NPCSelect;
+		NPCSelect.Check=FCString::Atoi(Col[4]);
+		NPCSelect.Select_Kor = Col[5];
+		NPCSelect.Select_Kor = Col[6];
+		
+		
+		// NPC Select 를  NPCSelectMap 맵에 저장
+		NPCSelectMap.Add(FindKey, NPCSelect);
+	}
+	return true;
 }

@@ -46,6 +46,35 @@ struct FSouvenirData : public FTableRowBase
 	FString SouvenirInfo;
 };
 
+USTRUCT(BlueprintType)
+struct FNPCResult
+{
+	GENERATED_BODY()
+	FString State;
+	FString result_Good_Kor;
+	FString result_bad_Kor;
+	FString result_Good_Eng;
+	FString result_bad_Eng;
+};
+
+USTRUCT(BlueprintType)
+struct FNPCDialogue
+{
+	GENERATED_BODY()
+	FString Dialogue_Kor;
+	FString Dialogue_Eng;
+};
+
+USTRUCT(BlueprintType)
+struct FNPCSelect
+{
+	GENERATED_BODY()
+	int32 Check;
+	FString Select_Kor;
+	FString Select_Eng;
+};
+
+
 UCLASS()
 class NAPOLITANPROJECT_API UTestGameInstance : public UGameInstance
 {
@@ -74,5 +103,24 @@ public:
 
 	UFUNCTION()
 	int32 GetGameInstanceLang();
+
+	/////////CSV Read 하기
+	TMap<int32,FNPCResult> NPCResultMap;
+	
+	TMap<int32,FNPCDialogue> NPCDialogueMap;
+
+	TMap<int32,FNPCSelect> NPCSelectMap;
+	
+	bool LoadResultFromCSV(const FString& FilePath);   // NPCResultMap 에 키-대사 넣어주는 함수
+	
+	bool LoadDialogueFromCSV(const FString& FilePath); // NPCDialogueMap 에 키-대사 넣어주는 함수
+
+	bool LoadSelectFromCSV(const FString& FilePath);
+	
+	//  어떤 npc , 어떤 상황에서 분기점에서 마지막 대사  
+	FString GetNPCResult(const FString& NPC_ID, const FString& State, const FString& Result ,const FString& Lang);
+	
+	FString GetNPCDialogue(const FString& NPC_ID, const FString& State, const int32 order ,const FString& Lang);
 	
 };
+

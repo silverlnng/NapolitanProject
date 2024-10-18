@@ -132,6 +132,10 @@ public:
 	float SphereRadius=50.f;
 	UPROPERTY(VisibleAnywhere)
 	int32 traceLength=1000;
+
+	//////// 지금 대화하고 있는 npc 가 누구인지 기억하기
+	UPROPERTY(VisibleAnywhere)
+	class ANPCCharacter* curNPC=nullptr;
 	
 };
 

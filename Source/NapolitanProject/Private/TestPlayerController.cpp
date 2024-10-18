@@ -3,6 +3,7 @@
 
 #include "TestPlayerController.h"
 
+#include "NPCCharacter.h"
 #include "TestGameInstance.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
@@ -113,4 +114,14 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	SouvenirUI->Text_Souvenir_right->SetText( FText::FromString(SouvenirDataNext->SouvenirInfo));
 	
 	
+}
+
+void ATestPlayerController::SetCurNPC(ANPCCharacter* curNPC_)
+{
+	curNPC = curNPC_;
+}
+
+void ATestPlayerController::CallCurNPCResultEvent(int32 value)
+{
+	curNPC->ResultEvent(value);
 }

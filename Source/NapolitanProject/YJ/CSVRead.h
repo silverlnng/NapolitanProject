@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CSVRead.generated.h"
 
+/*
 USTRUCT(BlueprintType)
 struct FNPCResult
 {
@@ -24,6 +25,7 @@ struct FNPCDialogue
 	FString Dialogue_Kor;
 	FString Dialogue_Eng;
 };
+*/
 
 
 UCLASS()
@@ -43,9 +45,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 public:
-	TMap<int32,FNPCResult> NPCResultMap;
+	//TMap<int32,FNPCResult> NPCResultMap;
 	
-	TMap<int32,FNPCDialogue> NPCDialogueMap;
+	//TMap<int32,FNPCDialogue> NPCDialogueMap;
 	
 	bool LoadResultFromCSV(const FString& FilePath);
 	

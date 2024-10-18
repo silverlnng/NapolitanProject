@@ -19,14 +19,14 @@ void ACSVRead::BeginPlay()
 {
 	Super::BeginPlay();
 
-	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("npc_Dialogue.csv"));
+	/*LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("npc_Dialogue.csv"));
 	FString Dialogue = GetNPCDialogue(TEXT("1"), TEXT("2"),0,TEXT("kor"));
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *Dialogue);
 
 	
 	LoadResultFromCSV(FPaths::ProjectDir() / TEXT("npc_result2.csv"));
 	FString result = GetNPCResult(TEXT("1"), TEXT("2"), TEXT("Bad"),TEXT("kor"));
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *result);
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *result);*/
 }
 
 // Called every frame
@@ -37,7 +37,7 @@ void ACSVRead::Tick(float DeltaTime)
 }
 bool ACSVRead::LoadDialogueFromCSV(const FString& FilePath)
 {
-	FString CSVContent; // csv 내용을 저장할 변수
+	/*FString CSVContent; // csv 내용을 저장할 변수
     
 	// CSV 파일 읽기
 	if (!FFileHelper::LoadFileToString(CSVContent, *FilePath))
@@ -61,7 +61,7 @@ bool ACSVRead::LoadDialogueFromCSV(const FString& FilePath)
 		/*int32 npc_id=FCString::Atoi(Row[0]);
 		int32 npc_state=FCString::Atoi(Row[1]);
 		int32 npc_order=FCString::Atoi(Row[2]);
-		int32 FindKey =(npc_id*100)+(npc_state*10)+npc_order;*/
+		int32 FindKey =(npc_id*100)+(npc_state*10)+npc_order;#1#
 
 		int32 FindKey=FCString::Atoi(Row[3]);
 			
@@ -72,13 +72,13 @@ bool ACSVRead::LoadDialogueFromCSV(const FString& FilePath)
 		
 		// NPC 대사를 맵에 저장
 		NPCDialogueMap.Add(FindKey, Dialogue);
-	}
+	}*/
 	return true;
 }
 
 bool ACSVRead::LoadResultFromCSV(const FString& FilePath)
 {
-	// FString CSVPath = FPaths::ProjectDir() / TEXT("NPCData.csv");
+	/*// FString CSVPath = FPaths::ProjectDir() / TEXT("NPCData.csv");
 	FString CSVContent; // csv 내용을 저장할 변수
     
 	// CSV 파일 읽기
@@ -102,7 +102,7 @@ bool ACSVRead::LoadResultFromCSV(const FString& FilePath)
 		
 		/*int32 npc_id=FCString::Atoi(Row[0]);
 		int32 npc_state=FCString::Atoi(Row[1]);
-		int32 FindKey =(npc_id*100)+npc_state;*/
+		int32 FindKey =(npc_id*100)+npc_state;#1#
 
 		int32 FindKey=FCString::Atoi(Row[2]);
 		
@@ -114,13 +114,13 @@ bool ACSVRead::LoadResultFromCSV(const FString& FilePath)
 		
 		// NPC 대사를 맵에 저장
 		NPCResultMap.Add(FindKey, Dialogue);
-	}
+	}*/
 	return true;
 }
 
 FString ACSVRead::GetNPCResult(const FString& NPC_ID, const FString& State, const FString& Result,const FString& Lang)
 {
-	int32 npc_id=FCString::Atoi(*NPC_ID);
+	/*int32 npc_id=FCString::Atoi(*NPC_ID);
 	int32 npc_state=FCString::Atoi(*State);
 	int32 FindKey =(npc_id*100)+npc_state;
 	
@@ -138,13 +138,13 @@ FString ACSVRead::GetNPCResult(const FString& NPC_ID, const FString& State, cons
 	else if (Result == TEXT("Bad"))
 	{
 		return (Lang == TEXT("kor")) ? Dialogue.result_bad_Kor : Dialogue.result_bad_Eng;
-	}
+	}*/
 	return TEXT("대사를 찾을 수 없습니다.");
 }
 
 FString ACSVRead::GetNPCDialogue(const FString& NPC_ID, const FString& State, const int32 order, const FString& Lang )
 {
-	// 매개변수로 NPC_ID , State 가 주어지면 order 에 따라서 dialogue출력될수있도록 만들기
+	/*// 매개변수로 NPC_ID , State 가 주어지면 order 에 따라서 dialogue출력될수있도록 만들기
 	int32 npc_id=FCString::Atoi(*NPC_ID);
 	int32 npc_state=FCString::Atoi(*State);
 	int32 FindKey =(npc_id*100)+npc_state*10+order;
@@ -165,7 +165,7 @@ FString ACSVRead::GetNPCDialogue(const FString& NPC_ID, const FString& State, co
 	else if(Lang == TEXT("eng"))
 	{
 		return Dialogue.Dialogue_Eng;
-	}
+	}*/
 	
 	return TEXT("대사를 찾을 수 없습니다.");
 }

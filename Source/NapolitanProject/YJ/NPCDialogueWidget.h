@@ -32,5 +32,12 @@ public:
 	void OnClickfrontButton();
 	UFUNCTION()
 	void SetText_Dialogue(const FString& str);
+
+	/// 동적으로 UniformGridPanel_Selection 의 자식으로 선택지를 생성시켜야 함 
+	UPROPERTY(meta=(BindWidget))
+	class UUniformGridPanel* UniformGridPanel_Selection;
+
+	UFUNCTION()
+	void CreateSelectionChildren();
 	
 };

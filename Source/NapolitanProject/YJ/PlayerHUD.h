@@ -21,6 +21,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UNoteWidget* NoteUI;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UNPCDialogueWidget> NPCDialogueWidgetFactory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
+	class UNPCDialogueWidget* NPCDialogueUI;
+
 
 	//===========�迵��
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

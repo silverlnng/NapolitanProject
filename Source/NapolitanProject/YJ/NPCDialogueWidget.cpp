@@ -29,3 +29,8 @@ void UNPCDialogueWidget::SetText_Dialogue(const FString& str)
 {
 	Text_Dialogue->SetText(FText::FromString(str));
 }
+
+void UNPCDialogueWidget::CreateSelectionChildren()
+{
+	
+}

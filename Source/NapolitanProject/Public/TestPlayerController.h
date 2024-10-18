@@ -30,4 +30,14 @@ public:
 	// SouvenirUI
 	UFUNCTION()
 	void SetSouvenirUICurNumber(int curNum);
+
+	//////// 지금 대화하고 있는 npc 가 누구인지 기억하기
+	UPROPERTY(VisibleAnywhere)
+	class ANPCCharacter* curNPC=nullptr;
+
+	UFUNCTION()
+	void SetCurNPC(ANPCCharacter* curNPC_);
+
+	UFUNCTION()
+	void CallCurNPCResultEvent(int32 value);
 };
