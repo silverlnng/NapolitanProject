@@ -59,7 +59,7 @@ public:
 	void YSMoveState(); //조건 해금 후 움직인 다음 플레이어의 시야에서 사라짐
 
 	UFUNCTION(BlueprintCallable, Category = State)
-	void YSChaseState(); //미술 작품을 보면서 울고 있는 경우
+	void YSChaseState(); //이 상태라면 추격후 반드시 사망
 
 	UFUNCTION()
 	void SetState(NYSState newState);
