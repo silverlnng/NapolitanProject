@@ -18,7 +18,7 @@ void UTestGameInstance::Init()
 	lang=0;
 
 	// 로드해서 저장해두기 
-	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("npc_Dialogue.csv"));
+	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("npcDialogue1022 .csv"));
 	LoadResultFromCSV(FPaths::ProjectDir() / TEXT("npc_result2.csv"));
 	LoadSelectFromCSV(FPaths::ProjectDir() / TEXT("SelectionSlot.csv"));
 		
@@ -52,18 +52,18 @@ bool UTestGameInstance::LoadResultFromCSV(const FString& FilePath)
 	// 첫 번째 줄 (헤더) 건너뛰기 
 	for (int32 RowIdx = 1; RowIdx < Rows.Num(); ++RowIdx)
 	{
-		const TArray<const TCHAR*>& Row = Rows[RowIdx]; // 1행 부터 ....n 행
+		const TArray<const TCHAR*>& col = Rows[RowIdx]; // 1행 부터 ....n 행
 		
 		
 		// 1행의 0 ,1 ,2 ,3 ....열
 		
-		int32 FindKey=FCString::Atoi(Row[2]);
+		int32 FindKey=FCString::Atoi(col[2]);
 		
 		FNPCResult Dialogue;
-		Dialogue.result_Good_Kor = Row[3];
-		Dialogue.result_bad_Kor = Row[4];
-		Dialogue.result_Good_Eng= Row[5];
-		Dialogue.result_bad_Eng = Row[6];
+		Dialogue.result_Good_Kor = col[3];
+		Dialogue.result_bad_Kor = col[4];
+		Dialogue.result_Good_Eng= col[5];
+		Dialogue.result_bad_Eng = col[6];
 		
 		// NPC 대사를 맵에 저장
 		NPCResultMap.Add(FindKey, Dialogue);
@@ -97,8 +97,11 @@ bool UTestGameInstance::LoadDialogueFromCSV(const FString& FilePath)
 		int32 FindKey=FCString::Atoi(Col[3]);
 			
 		FNPCDialogue Dialogue;
-		Dialogue.Dialogue_Kor = Col[4];
-		Dialogue.Dialogue_Eng = Col[5];
+		Dialogue.Who = Col[4];
+		Dialogue.Font = Col[5];
+		Dialogue.Color = Col[6];
+		Dialogue.Dialogue_Kor = Col[7];
+		Dialogue.Dialogue_Eng = Col[8];
 		
 		
 		// NPC 대사를 맵에 저장
@@ -176,11 +179,4 @@ void UTestGameInstance::GetNPCSelect(const int32& NPC_ID, const int32& State, co
 			return;
 		}
 	}
-	
-	
-	
-
-	
-
-	
 }

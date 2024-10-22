@@ -39,3 +39,7 @@ void ANPCCharacter::ResultEvent(int32 result)
 	// result에 따라서 경우의 수 나누기 
 }
 
+void ANPCCharacter::Interact()
+{
+}
+

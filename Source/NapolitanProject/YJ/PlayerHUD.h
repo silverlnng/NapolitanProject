@@ -26,6 +26,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UNPCDialogueWidget* NPCDialogueUI;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UInteractWidget> InteractWidgetFactory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
+	class UInteractWidget* InteractUI;
 
 	//===========�迵��
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)

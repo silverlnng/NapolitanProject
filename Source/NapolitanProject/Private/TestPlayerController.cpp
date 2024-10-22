@@ -13,7 +13,7 @@
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 #include "NapolitanProject/YJ/NoteUI/SouvenirWidget.h"
 #include "Components/Image.h"
-#include "NapolitanProject/YJ/NPCDialogueWidget.h"
+#include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 void ATestPlayerController::PostInitializeComponents()
 {
@@ -127,6 +127,20 @@ void ATestPlayerController::SetNPCDialougueVisible(bool value)
 	{
 		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
 	}
+}
+
+void ATestPlayerController::SetNPCDialougueText()
+{
+	int32 npcID =curNPC->NPC_ID;
+	int32 npcState =curNPC->State;
+
+	// 이걸로 해당 대사의 처음 과 끝을 가져오기
+
+	int32 count=0;
+	int32 FindKey =(npcID*1000)+(npcState*100); // 시작하는 키값
+	TArray<FString> str;
+	
+	
 }
 
 void ATestPlayerController::SetCurNPC(ANPCCharacter* curNPC_)

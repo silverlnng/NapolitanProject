@@ -131,11 +131,26 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	float SphereRadius=30.f;
 	UPROPERTY(VisibleAnywhere)
-	int32 traceLength=1000;
+	int32 traceLength=500;
 
 	//////// 지금 대화하고 있는 npc 가 누구인지 기억하기
 	UPROPERTY(VisibleAnywhere)
 	class ANPCCharacter* curNPC=nullptr;
+
+	UPROPERTY(VisibleAnywhere)
+	bool InteractHit =false;
+
+	// 지금 상호작용 대상을 알고있기
+	UPROPERTY(VisibleAnywhere)
+	AActor* Interact =nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* IA_Interact;
+
+	void OnInteraction();
+
+	UPROPERTY()
+	class ATestPlayerController* TestPC;
 	
 };
 

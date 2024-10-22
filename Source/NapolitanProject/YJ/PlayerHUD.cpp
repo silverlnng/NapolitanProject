@@ -3,7 +3,8 @@
 
 #include "PlayerHUD.h"
 
-#include "NPCDialogueWidget.h"
+#include "InteractWidget.h"
+#include "DialogueUI/NPCDialogueWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "NYS_Choice.h"
 #include "NoteUI/NoteWidget.h"
@@ -27,7 +28,13 @@ void APlayerHUD::BeginPlay()
 		NPCDialogueUI->AddToViewport();
 		NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
 	}
+
 	
+	InteractUI=CreateWidget<UInteractWidget>(GetWorld(),InteractWidgetFactory);
+	if (InteractUI)
+	{
+		InteractUI->AddToViewport();
+	}
 
 	if (!NYSFactory)
 		return;

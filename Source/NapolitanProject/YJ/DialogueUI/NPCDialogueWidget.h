@@ -31,6 +31,7 @@ public:
 	void OnClickbackButton();
 	UFUNCTION()
 	void OnClickfrontButton();
+	
 	UFUNCTION()
 	void SetText_Dialogue(const FString& str);
 

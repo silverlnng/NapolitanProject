@@ -61,6 +61,9 @@ USTRUCT(BlueprintType)
 struct FNPCDialogue
 {
 	GENERATED_BODY()
+	FString Who;
+	FString Font;
+	FString Color;
 	FString Dialogue_Kor;
 	FString Dialogue_Eng;
 };

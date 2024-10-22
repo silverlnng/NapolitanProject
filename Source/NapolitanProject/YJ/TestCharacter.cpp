@@ -5,7 +5,11 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "IInteract.h"
+#include "InteractWidget.h"
+#include "NPCCharacter.h"
 #include "PlayerHUD.h"
+#include "TestPlayerController.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -54,6 +58,7 @@ void ATestCharacter::BeginPlay()
 	Super::BeginPlay();
 	runSpeed = StandingWalkSpeed*3.f;
 	PC = Cast<APlayerController>(Controller);
+	TestPC = Cast<ATestPlayerController>(PC);
 	PlayerHUD=PC->GetHUD<APlayerHUD>();
 
 	// 타이머로 trace 작동시키기
@@ -115,6 +120,9 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 
 		EnhancedInputComponent->BindAction(IA_Tab, ETriggerEvent::Started, this, &ATestCharacter::NoteUIToggle);
+
+		EnhancedInputComponent->BindAction(IA_Interact, ETriggerEvent::Started, this, &ATestCharacter::OnInteraction);
+		
 	}
 	else
 	{
@@ -264,7 +272,7 @@ void ATestCharacter::SphereTraceFromCamera()
 
 	//bool SweepSingleByChannel(struct FHitResult& OutHit, const FVector& Start, const FVector& End, const FQuat& Rot, ECollisionChannel TraceChannel, const FCollisionShape& CollisionShape, const FCollisionQueryParams& Params = FCollisionQueryParams::DefaultQueryParam, const FCollisionResponseParams& ResponseParam = FCollisionResponseParams::DefaultResponseParam) const;
 
-	bool bHit = GetWorld()->SweepSingleByChannel(
+	InteractHit = GetWorld()->SweepSingleByChannel(
 		 HitResult,
 		 TraceStart,
 		 TraceEnd,
@@ -275,12 +283,37 @@ void ATestCharacter::SphereTraceFromCamera()
 	 );
 
 	// 디버그용으로 트레이스 구체를 그립니다
-	FColor TraceColor = bHit ? FColor::Red : FColor::Green;
+	FColor TraceColor = InteractHit ? FColor::Red : FColor::Green;
 	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, TraceColor, false, 2.0f, 0, 2.0f);
 	//DrawDebugSphere(GetWorld(), TraceStart, SphereRadius, 12, TraceColor, false, 2.0f);
-	if (bHit)
+	if (InteractHit)
 	{
-		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, SphereRadius*0.3f, 12, TraceColor, false, 2.0f);
+		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, SphereRadius, 12, TraceColor, false, 2.0f);
+
+		Interact =HitResult.GetActor();
+		PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Visible);
 	}
-	DrawDebugSphere(GetWorld(), TraceEnd, SphereRadius*0.3f, 12, TraceColor, false, 2.0f);
+	else
+	{
+		DrawDebugSphere(GetWorld(), TraceEnd, SphereRadius, 12, TraceColor, false, 2.0f);
+		PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
+	}
+}
+
+void ATestCharacter::OnInteraction()
+{
+	if (InteractHit && Interact)
+	{
+		// 상호작용 대상에게 만들어져있는 상호작용 함수 호출시키기
+		// 컨트롤러 의  curNPC에 담아주기 
+		 // Interact 을 npc로 캐스팅 가능하다면
+		ANPCCharacter* InteractNPC =Cast<ANPCCharacter>(Interact);
+		if (InteractNPC)
+		{
+			TestPC->curNPC =InteractNPC;
+		   // TestPC 에서 대화창 시작하는 함수 시작하기 
+		}
+		
+		// 그냥 아이템 이라면 아이템으로 캐스트해서 
+	}
 }

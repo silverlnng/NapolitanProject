@@ -30,6 +30,8 @@ void UNPCDialogueWidget::OnClickfrontButton()
 
 void UNPCDialogueWidget::SetText_Dialogue(const FString& str)
 {
+	//Text_Dialogue->SetColorAndOpacity(FLinearColor(1,1,1,1));
+	//Text_Dialogue->SetFont()
 	Text_Dialogue->SetText(FText::FromString(str));
 }
 

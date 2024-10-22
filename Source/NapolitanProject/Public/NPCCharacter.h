@@ -32,4 +32,7 @@ public:
 	
 	virtual void ResultEvent(int32 result);
 
+	virtual void Interact();
+
 };
+
