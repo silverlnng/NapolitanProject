@@ -3,12 +3,14 @@
 
 #include "NPCCharacter.h"
 
+#include "Components/CapsuleComponent.h"
+
 // Sets default values
 ANPCCharacter::ANPCCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("NPC"));
 }
 
 // Called when the game starts or when spawned

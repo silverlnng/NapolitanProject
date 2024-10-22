@@ -57,7 +57,10 @@ void ATestCharacter::BeginPlay()
 	PlayerHUD=PC->GetHUD<APlayerHUD>();
 
 	// 타이머로 trace 작동시키기
+	FTimerHandle TimerHandle;
 	
+
+	GetWorldTimerManager().SetTimer(TimerHandle,this,&ATestCharacter::SphereTraceFromCamera,0.2f,true);
 	
 }
 
@@ -251,11 +254,13 @@ void ATestCharacter::SphereTraceFromCamera()
 	FVector TraceEnd = TraceStart + (CameraRotation.Vector() * traceLength); // 1000 유닛 앞까지 트레이스
 
 	// 트레이스 채널 설정 (여기서는 ECC_Visibility 사용)
-	ECollisionChannel TraceChannel = ECC_Visibility;
+	// Interact : ECC_GameTraceChannel3
+	ECollisionChannel TraceChannel = ECC_GameTraceChannel3;
 	// 트레이스 파라미터 설정
 	FHitResult HitResult;
 	
 	FCollisionQueryParams TraceParams;
+	TraceParams.AddIgnoredActor(this);
 
 	//bool SweepSingleByChannel(struct FHitResult& OutHit, const FVector& Start, const FVector& End, const FQuat& Rot, ECollisionChannel TraceChannel, const FCollisionShape& CollisionShape, const FCollisionQueryParams& Params = FCollisionQueryParams::DefaultQueryParam, const FCollisionResponseParams& ResponseParam = FCollisionResponseParams::DefaultResponseParam) const;
 
@@ -272,6 +277,10 @@ void ATestCharacter::SphereTraceFromCamera()
 	// 디버그용으로 트레이스 구체를 그립니다
 	FColor TraceColor = bHit ? FColor::Red : FColor::Green;
 	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, TraceColor, false, 2.0f, 0, 2.0f);
-	DrawDebugSphere(GetWorld(), TraceStart, SphereRadius, 12, TraceColor, false, 2.0f);
-	DrawDebugSphere(GetWorld(), TraceEnd, SphereRadius, 12, TraceColor, false, 2.0f);
+	//DrawDebugSphere(GetWorld(), TraceStart, SphereRadius, 12, TraceColor, false, 2.0f);
+	if (bHit)
+	{
+		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, SphereRadius*0.3f, 12, TraceColor, false, 2.0f);
+	}
+	DrawDebugSphere(GetWorld(), TraceEnd, SphereRadius*0.3f, 12, TraceColor, false, 2.0f);
 }

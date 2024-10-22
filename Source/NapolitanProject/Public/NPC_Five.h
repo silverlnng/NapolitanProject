@@ -15,6 +15,12 @@ class NAPOLITANPROJECT_API ANPC_Five : public ANPCCharacter
 	GENERATED_BODY()
 
 public:
-	void ResultEvent(int32 result) override;
+	virtual void ResultEvent(int32 result) override;
+	
+	int32 NPC_ID =5;
+	
+	int32 State =0;
+
+	
 	
 };

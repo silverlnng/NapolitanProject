@@ -17,6 +17,7 @@ void UTestGameInstance::Init()
 	// 언어선택 기본값 한글 :0 ,영어:1
 	lang=0;
 
+	// 로드해서 저장해두기 
 	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("npc_Dialogue.csv"));
 	LoadResultFromCSV(FPaths::ProjectDir() / TEXT("npc_result2.csv"));
 	LoadSelectFromCSV(FPaths::ProjectDir() / TEXT("SelectionSlot.csv"));

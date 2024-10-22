@@ -126,10 +126,10 @@ public:
 	void NoteUIToggle(const FInputActionValue& Value);
 
 	UFUNCTION()
-	void SphereTraceFromCamera();
+	void SphereTraceFromCamera(); //상호작용 함수 
 
 	UPROPERTY(VisibleAnywhere)
-	float SphereRadius=50.f;
+	float SphereRadius=30.f;
 	UPROPERTY(VisibleAnywhere)
 	int32 traceLength=1000;
 

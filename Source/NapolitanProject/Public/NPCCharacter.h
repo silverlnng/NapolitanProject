@@ -26,6 +26,10 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	int32 NPC_ID =-1;
+
+	int32 State =-1;
+	
 	virtual void ResultEvent(int32 result);
 
 };
