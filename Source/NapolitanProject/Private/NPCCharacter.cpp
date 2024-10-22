@@ -34,6 +34,16 @@ void ANPCCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 }
 
+int32 ANPCCharacter::GetNPCID()
+{
+	return NPC_ID;
+}
+
+int32 ANPCCharacter::GetState()
+{
+	return State;
+}
+
 void ANPCCharacter::ResultEvent(int32 result)
 {
 	// result에 따라서 경우의 수 나누기 

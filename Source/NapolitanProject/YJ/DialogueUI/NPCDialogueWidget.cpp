@@ -4,28 +4,35 @@
 #include "NPCDialogueWidget.h"
 
 #include "SelectionSlotWidget.h"
+#include "TestPlayerController.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/UniformGridPanel.h"
+#include "NapolitanProject/NapolitanProject.h"
 
 
 void UNPCDialogueWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-
+	TestPC=GetOwningPlayer<ATestPlayerController>();
 	Btn_Back->OnClicked.AddDynamic(this,&UNPCDialogueWidget::OnClickbackButton);
 	Btn_Next->OnClicked.AddDynamic(this,&UNPCDialogueWidget::OnClickfrontButton);
 }
 
 void UNPCDialogueWidget::OnClickbackButton()
 {
-	
+	if(curOrder<0){return;}
+	curOrder-=1;
+	TestPC->SetNPCDialougueText(curOrder);
 }
 
 void UNPCDialogueWidget::OnClickfrontButton()
 {
 	// 다음 ui 가 출력되도록
-	
+	if(curOrder>MaxOrder){return;}
+	curOrder+=1;
+	UE_LOG(LogTemp,Warning,TEXT("%s,curOrder : %d"),*CALLINFO,curOrder);
+	TestPC->SetNPCDialougueText(curOrder);
 }
 
 void UNPCDialogueWidget::SetText_Dialogue(const FString& str)
@@ -33,6 +40,18 @@ void UNPCDialogueWidget::SetText_Dialogue(const FString& str)
 	//Text_Dialogue->SetColorAndOpacity(FLinearColor(1,1,1,1));
 	//Text_Dialogue->SetFont()
 	Text_Dialogue->SetText(FText::FromString(str));
+}
+
+void UNPCDialogueWidget::SetSelectSlotVisible(bool value)
+{
+	if (value)
+	{
+		UniformGridPanel_Selection->SetVisibility(ESlateVisibility::Visible);
+	}
+	else
+	{
+		UniformGridPanel_Selection->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 void UNPCDialogueWidget::CreateSelectionChildren(int32 count,TArray<FString> str,TArray<int32> result)

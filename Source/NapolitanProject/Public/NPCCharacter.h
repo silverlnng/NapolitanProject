@@ -29,6 +29,10 @@ public:
 	int32 NPC_ID =-1;
 
 	int32 State =-1;
+
+	virtual int32 GetNPCID();
+
+	virtual int32 GetState();
 	
 	virtual void ResultEvent(int32 result);
 

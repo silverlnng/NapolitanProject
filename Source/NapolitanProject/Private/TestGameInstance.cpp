@@ -2,7 +2,7 @@
 
 
 #include "TestGameInstance.h"
-
+#include "NapolitanProject/NapolitanProject.h"
 #include "Serialization/Csv/CsvParser.h"
 
 void UTestGameInstance::Init()
@@ -18,7 +18,7 @@ void UTestGameInstance::Init()
 	lang=0;
 
 	// 로드해서 저장해두기 
-	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("npcDialogue1022 .csv"));
+	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("npcDialogue1022.csv"));
 	LoadResultFromCSV(FPaths::ProjectDir() / TEXT("npc_result2.csv"));
 	LoadSelectFromCSV(FPaths::ProjectDir() / TEXT("SelectionSlot.csv"));
 		
@@ -103,7 +103,7 @@ bool UTestGameInstance::LoadDialogueFromCSV(const FString& FilePath)
 		Dialogue.Dialogue_Kor = Col[7];
 		Dialogue.Dialogue_Eng = Col[8];
 		
-		
+		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue.Dialogue_Kor);
 		// NPC 대사를 맵에 저장
 		NPCDialogueMap.Add(FindKey, Dialogue);
 	}

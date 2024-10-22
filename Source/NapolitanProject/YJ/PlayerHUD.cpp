@@ -25,7 +25,7 @@ void APlayerHUD::BeginPlay()
 	NPCDialogueUI =CreateWidget<UNPCDialogueWidget>(GetWorld(),NPCDialogueWidgetFactory);
 	if (NPCDialogueUI)
 	{
-		NPCDialogueUI->AddToViewport();
+		NPCDialogueUI->AddToViewport(1);
 		NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 

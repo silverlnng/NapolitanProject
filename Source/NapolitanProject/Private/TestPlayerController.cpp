@@ -13,6 +13,8 @@
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 #include "NapolitanProject/YJ/NoteUI/SouvenirWidget.h"
 #include "Components/Image.h"
+#include "NapolitanProject/NapolitanProject.h"
+#include "NapolitanProject/YJ/InteractWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 void ATestPlayerController::PostInitializeComponents()
@@ -70,6 +72,21 @@ void ATestPlayerController::BeginPlay()
 	
 }
 
+void ATestPlayerController::SetUIMode(bool value)
+{
+	if (!value)
+	{
+		
+		SetInputMode(FInputModeGameOnly());
+		SetShowMouseCursor(false);
+	}
+	else
+	{
+		SetInputMode(FInputModeGameAndUI());
+		SetShowMouseCursor(true);
+	}
+}
+
 void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 {
 	//GI 의 SouvenirMap에서 앍어오기
@@ -117,28 +134,89 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	
 }
 
-void ATestPlayerController::SetNPCDialougueVisible(bool value)
+void ATestPlayerController::StartNPCDialougue(bool value)
 {
 	if (value)
 	{
+		SetUIMode(true);
+		PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
+		PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업 
 		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
+		
+		int32 npcID =curNPC->GetNPCID();
+		UE_LOG(LogTemp,Warning,TEXT("%s,npcID : %d"),*CALLINFO,npcID);
+		int32 npcState =curNPC->GetState();
+		SetCurNPCSelectUI(npcID,npcState,"kor");
+		
+		SetNPCDialougueMaxSize();
 	}
 	else
 	{
 		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
+		PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업 
 	}
 }
 
-void ATestPlayerController::SetNPCDialougueText()
+void ATestPlayerController::SetNPCDialougueMaxSize()
 {
-	int32 npcID =curNPC->NPC_ID;
-	int32 npcState =curNPC->State;
+	PlayerHUD->NPCDialogueUI->MaxOrder=0; // 초기화 작업
+	
+	int32 npcID =curNPC->GetNPCID();
+	int32 npcState =curNPC->GetState();
+	int32 FindKey =(npcID*1000)+(npcState*100);
+	for (int i=FindKey ; i<(FindKey+100); i++)
+	{
+		if (GI->NPCDialogueMap.Contains(i))
+		{
+			PlayerHUD->NPCDialogueUI->MaxOrder++;
+		}
+		else
+		{
+			break;
+		}
+	}
+}
 
-	// 이걸로 해당 대사의 처음 과 끝을 가져오기
+// 최대값 설정해줘야함 
+void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
+{
+	//curOrder 을 받아서 상황처리 하기 
+	UE_LOG(LogTemp,Warning,TEXT("%s,curOrder :%d"),*CALLINFO,curOrder);
+	int32 npcID =curNPC->GetNPCID();
+	UE_LOG(LogTemp,Warning,TEXT("%s,npcID : %d"),*CALLINFO,npcID);
+	int32 npcState =curNPC->GetState();
+	UE_LOG(LogTemp,Warning,TEXT("%s,npcState : %d"),*CALLINFO,npcState);
+	int32 FindKey =(npcID*1000)+(npcState*100)+curOrder; // 시작하는 키값
+	UE_LOG(LogTemp,Warning,TEXT("%s,%d"),*CALLINFO,FindKey);
+	
+	UE_LOG(LogTemp,Warning,TEXT("%s,MaxOrder : %d"),*CALLINFO,PlayerHUD->NPCDialogueUI->MaxOrder);
+	
+	////////// 버튼 보이게,안보이게 처리
+	if (0==curOrder){PlayerHUD->NPCDialogueUI->Btn_Back->SetVisibility(ESlateVisibility::Hidden);}
+	if (0!=curOrder){PlayerHUD->NPCDialogueUI->Btn_Back->SetVisibility(ESlateVisibility::Visible);}
+	if (PlayerHUD->NPCDialogueUI->MaxOrder!=curOrder)
+	{
+		PlayerHUD->NPCDialogueUI->Btn_Next->SetVisibility(ESlateVisibility::Visible);
+		// 선택창 나오도록 
+		PlayerHUD->NPCDialogueUI->SetSelectSlotVisible(false);
+	}
+	if (PlayerHUD->NPCDialogueUI->MaxOrder==curOrder)
+	{
+		PlayerHUD->NPCDialogueUI->Btn_Next->SetVisibility(ESlateVisibility::Hidden);
 
-	int32 count=0;
-	int32 FindKey =(npcID*1000)+(npcState*100); // 시작하는 키값
-	TArray<FString> str;
+		// 선택창 나오도록 
+		PlayerHUD->NPCDialogueUI->SetSelectSlotVisible(true);
+	}
+	/////////////////////////////////////
+	
+	
+	if (GI->NPCDialogueMap.Contains(FindKey)) // 있으면 출력하기 
+	{
+		FNPCDialogue Dialogue_=GI->NPCDialogueMap[FindKey];
+
+		PlayerHUD->NPCDialogueUI->SetText_Dialogue(Dialogue_.Dialogue_Kor);
+		
+	}
 	
 	
 }
@@ -147,6 +225,8 @@ void ATestPlayerController::SetCurNPC(ANPCCharacter* curNPC_)
 {
 	curNPC = curNPC_;
 }
+
+
 
 void ATestPlayerController::CallCurNPCResultEvent(int32 value)
 {

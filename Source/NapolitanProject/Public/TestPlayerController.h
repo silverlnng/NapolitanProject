@@ -26,6 +26,9 @@ public:
 	class APlayerHUD* PlayerHUD;
 	UPROPERTY(VisibleAnywhere)
 	class USouvenirWidget* SouvenirUI;
+
+	UFUNCTION()
+	void SetUIMode(bool value);
 	
 	// SouvenirUI
 	UFUNCTION()
@@ -38,11 +41,14 @@ public:
 	UFUNCTION()
 	void SetCurNPC(ANPCCharacter* curNPC_);
 
+	UFUNCTION()
+	void SetNPCDialougueMaxSize();
+	
 	UFUNCTION(BlueprintCallable)
-	void SetNPCDialougueVisible(bool value);
+	void StartNPCDialougue(bool value);
 
 	UFUNCTION()
-	void SetNPCDialougueText(); // npc 상호작용 할때 딱한번 작동할 함수
+	void SetNPCDialougueText(int32 curOrder); // NPC_ID ,State,curOrder 에 따라서 알맞는 대화를 출력하는 함수 
 
 	
 

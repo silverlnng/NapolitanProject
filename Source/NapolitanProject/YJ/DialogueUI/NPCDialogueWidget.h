@@ -27,6 +27,14 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	class UTextBlock* Text_Dialogue;
 
+	UPROPERTY(VisibleAnywhere)
+	int32 curOrder=0;
+
+	UPROPERTY(VisibleAnywhere)
+	int32 MaxOrder=0;
+
+	class ATestPlayerController* TestPC;
+
 	UFUNCTION()
 	void OnClickbackButton();
 	UFUNCTION()
@@ -46,6 +54,9 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	class UUniformGridPanel* UniformGridPanel_Selection;
 
+	UFUNCTION()
+	void SetSelectSlotVisible(bool value);
+	
 	UFUNCTION()
 	void CreateSelectionChildren(int32 count,TArray<FString> str,TArray<int32> result);
 	

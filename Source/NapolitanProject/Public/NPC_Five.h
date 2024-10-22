@@ -20,11 +20,15 @@ public:
 	
 	virtual void ResultEvent(int32 result) override;
 	
-	int32 NPC_ID =5;
+	int32 NPC_ID =6;
 	
-	int32 State =0;
-
+	int32 State =1;
+	
 	virtual void Interact() override;
+
+	virtual int32 GetNPCID() override;
+
+	virtual int32 GetState() override;
 	
 	
 };

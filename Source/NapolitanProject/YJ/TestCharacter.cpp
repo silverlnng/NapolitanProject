@@ -284,18 +284,18 @@ void ATestCharacter::SphereTraceFromCamera()
 
 	// 디버그용으로 트레이스 구체를 그립니다
 	FColor TraceColor = InteractHit ? FColor::Red : FColor::Green;
-	DrawDebugLine(GetWorld(), TraceStart, TraceEnd, TraceColor, false, 2.0f, 0, 2.0f);
+	//DrawDebugLine(GetWorld(), TraceStart, TraceEnd, TraceColor, false, 2.0f, 0, 2.0f);
 	//DrawDebugSphere(GetWorld(), TraceStart, SphereRadius, 12, TraceColor, false, 2.0f);
-	if (InteractHit)
+	if (InteractHit) //  이중조건 && interact 중이 아닐때로 만들기  
 	{
-		DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, SphereRadius, 12, TraceColor, false, 2.0f);
+		//DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, SphereRadius, 12, TraceColor, false, 2.0f);
 
 		Interact =HitResult.GetActor();
 		PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Visible);
 	}
 	else
 	{
-		DrawDebugSphere(GetWorld(), TraceEnd, SphereRadius, 12, TraceColor, false, 2.0f);
+		//DrawDebugSphere(GetWorld(), TraceEnd, SphereRadius, 12, TraceColor, false, 2.0f);
 		PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
@@ -311,7 +311,9 @@ void ATestCharacter::OnInteraction()
 		if (InteractNPC)
 		{
 			TestPC->curNPC =InteractNPC;
-		   // TestPC 에서 대화창 시작하는 함수 시작하기 
+		   // TestPC 에서 대화창 시작하는 함수 시작하기
+			TestPC->StartNPCDialougue(true);
+			TestPC->SetNPCDialougueText(0);
 		}
 		
 		// 그냥 아이템 이라면 아이템으로 캐스트해서 

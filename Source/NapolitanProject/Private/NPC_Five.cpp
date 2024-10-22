@@ -14,3 +14,13 @@ void ANPC_Five::Interact()
 	// 대화창 시작하기 
 	// 자신의 NPC_ID , State 으로 데이터 가져와서 알맞는 대사가  ui 에 출력되도록
 }
+
+int32 ANPC_Five::GetNPCID()
+{
+	return NPC_ID;
+}
+
+int32 ANPC_Five::GetState()
+{
+	return State;
+}
