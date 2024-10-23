@@ -30,5 +30,5 @@ public:
 
 	virtual int32 GetState() override;
 	
-	
+
 };

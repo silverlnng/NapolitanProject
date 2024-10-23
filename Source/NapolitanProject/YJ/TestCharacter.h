@@ -9,7 +9,8 @@
 /**
  * 
  */
-enum class PlayerState:uint8
+UENUM(BlueprintType)
+enum class EPlayerState:uint8
 {
 	Idle,
 	Talking,
@@ -73,6 +74,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class APlayerHUD* PlayerHUD;
+	
+	UPROPERTY(VisibleAnywhere)
+	EPlayerState curState=EPlayerState::Idle;
+
+	UFUNCTION()
+	void SetPlayerState(EPlayerState newState);
 
 /////////////////// 달리기 기능 ////////////////////////
 

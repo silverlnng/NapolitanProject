@@ -82,7 +82,7 @@ void ATestPlayerController::SetUIMode(bool value)
 	}
 	else
 	{
-		SetInputMode(FInputModeGameAndUI());
+		SetInputMode(FInputModeUIOnly());
 		SetShowMouseCursor(true);
 	}
 }
@@ -134,11 +134,12 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	
 }
 
-void ATestPlayerController::StartNPCDialougue(bool value)
+void ATestPlayerController::StartEndNPCDialougue(bool value)
 {
-	if (value)
+	if (value) // 대화 시작할때 
 	{
-		SetUIMode(true);
+		SetUIMode(true); // ui 모드로 
+		
 		PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
 		PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업 
 		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
@@ -150,7 +151,7 @@ void ATestPlayerController::StartNPCDialougue(bool value)
 		
 		SetNPCDialougueMaxSize();
 	}
-	else
+	else // 대화 끝날때 
 	{
 		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
 		PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업 
@@ -230,7 +231,9 @@ void ATestPlayerController::SetCurNPC(ANPCCharacter* curNPC_)
 
 void ATestPlayerController::CallCurNPCResultEvent(int32 value)
 {
-	UE_LOG(LogTemp,Warning,TEXT("%d"),value);
+	// 대화창 닫기 
+	PlayerHUD->NPCDialogueUI->SetSelectSlotVisible(false);
+	UE_LOG(LogTemp,Warning,TEXT("%s NPCResult :%d"),*CALLINFO,value);
 	if (curNPC)
 	{
 		curNPC->ResultEvent(value);

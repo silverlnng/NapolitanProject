@@ -13,5 +13,13 @@ UCLASS()
 class NAPOLITANPROJECT_API UInteractWidget : public UUserWidget
 {
 	GENERATED_BODY()
+public:
+	UPROPERTY(meta=(BindWidget))
+	class UImage* Image_CrossHair;
+	UPROPERTY(meta=(BindWidget))
+	class UHorizontalBox* HBox_Interact;
+
+	void SetVisibleCrossHair(bool value);
+	void SetVisibleHBox(bool value);
 	
 };

@@ -24,6 +24,8 @@ public:
 	class UButton* Btn_Selection;
 	UPROPERTY(meta=(BindWidget))
 	class UTextBlock* Text_Selection;
+	UPROPERTY(Transient,meta=(BindWidgetAnim))
+	class UWidgetAnimation* HoverAnim;
 
 	UPROPERTY()
 	int32 result=0;
@@ -32,6 +34,8 @@ public:
 	
 	UFUNCTION()
 	void OnClickedSelection();
+	UFUNCTION()
+	void OnHoverSelection();
 	UFUNCTION()
 	void SetTextSelection(FString str);
 	

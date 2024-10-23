@@ -38,5 +38,11 @@ public:
 
 	virtual void Interact();
 
+	// 전환용 카메라 부착해주기 
+	UPROPERTY(EditDefaultsOnly)
+	class USpringArmComponent* SpringArmComp;
+	
+	UPROPERTY(EditDefaultsOnly)
+	class UCameraComponent* CameraComp;
 };
 

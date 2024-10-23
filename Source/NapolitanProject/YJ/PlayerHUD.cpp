@@ -34,6 +34,8 @@ void APlayerHUD::BeginPlay()
 	if (InteractUI)
 	{
 		InteractUI->AddToViewport();
+		InteractUI->SetVisibleCrossHair(true);
+		InteractUI->SetVisibleHBox(false);
 	}
 
 	if (!NYSFactory)

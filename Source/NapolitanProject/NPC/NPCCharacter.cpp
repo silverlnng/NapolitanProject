@@ -3,7 +3,9 @@
 
 #include "NPCCharacter.h"
 
+#include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 // Sets default values
 ANPCCharacter::ANPCCharacter()
@@ -11,6 +13,16 @@ ANPCCharacter::ANPCCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("NPC"));
+	// 스프링암을 생성해서 루트에 붙이고싶다.
+	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
+	SpringArmComp->SetupAttachment(RootComponent);
+	SpringArmComp->SetRelativeLocation(FVector(0 , 40 , 80));
+	SpringArmComp->TargetArmLength = 200;
+
+	// 카메라를 생성해서 스프링암에 붙이고싶다.
+	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
+	CameraComp->SetupAttachment(SpringArmComp);
+	
 }
 
 // Called when the game starts or when spawned

@@ -130,6 +130,8 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	}
 }
 
+
+
 void ATestCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
@@ -232,6 +234,11 @@ void ATestCharacter::CrouchToggle(const FInputActionValue& Value)
 	}
 }
 
+void ATestCharacter::SetPlayerState(EPlayerState newState)
+{
+	curState=newState;
+}
+
 void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)
 {
 	if (PlayerHUD->NoteUI->IsVisible())
@@ -286,17 +293,26 @@ void ATestCharacter::SphereTraceFromCamera()
 	FColor TraceColor = InteractHit ? FColor::Red : FColor::Green;
 	//DrawDebugLine(GetWorld(), TraceStart, TraceEnd, TraceColor, false, 2.0f, 0, 2.0f);
 	//DrawDebugSphere(GetWorld(), TraceStart, SphereRadius, 12, TraceColor, false, 2.0f);
-	if (InteractHit) //  이중조건 && interact 중이 아닐때로 만들기  
+	
+	if (InteractHit && curState==EPlayerState::Idle) //  이중조건 && interact 중이 아닐때로 만들기  
 	{
 		//DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, SphereRadius, 12, TraceColor, false, 2.0f);
 
 		Interact =HitResult.GetActor();
-		PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Visible);
+		PlayerHUD->InteractUI->SetVisibleHBox(true);
+		//PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Visible);
 	}
-	else
+	else if (!InteractHit && curState==EPlayerState::Idle)
 	{
 		//DrawDebugSphere(GetWorld(), TraceEnd, SphereRadius, 12, TraceColor, false, 2.0f);
-		PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
+		PlayerHUD->InteractUI->SetVisibleHBox(false);
+		PlayerHUD->InteractUI->SetVisibleCrossHair(true);
+		//PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else if (curState==EPlayerState::Talking)
+	{
+		PlayerHUD->InteractUI->SetVisibleHBox(false);
+		PlayerHUD->InteractUI->SetVisibleCrossHair(false);
 	}
 }
 
@@ -305,15 +321,17 @@ void ATestCharacter::OnInteraction()
 	if (InteractHit && Interact)
 	{
 		// 상호작용 대상에게 만들어져있는 상호작용 함수 호출시키기
-		// 컨트롤러 의  curNPC에 담아주기 
 		 // Interact 을 npc로 캐스팅 가능하다면
 		ANPCCharacter* InteractNPC =Cast<ANPCCharacter>(Interact);
 		if (InteractNPC)
 		{
+		// 컨트롤러 의  curNPC에 담아주기 
 			TestPC->curNPC =InteractNPC;
 		   // TestPC 에서 대화창 시작하는 함수 시작하기
-			TestPC->StartNPCDialougue(true);
+			TestPC->StartEndNPCDialougue(true);
 			TestPC->SetNPCDialougueText(0);
+			// 나의 상태 변화
+			SetPlayerState(EPlayerState::Talking);
 		}
 		
 		// 그냥 아이템 이라면 아이템으로 캐스트해서 
