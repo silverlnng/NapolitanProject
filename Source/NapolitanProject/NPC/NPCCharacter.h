@@ -30,6 +30,9 @@ public:
 
 	int32 State =-1;
 
+	class ATestCharacter* MainCharacter;
+	class ATestPlayerController* TestPC;
+
 	virtual int32 GetNPCID();
 
 	virtual int32 GetState();

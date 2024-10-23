@@ -18,9 +18,9 @@ void UTestGameInstance::Init()
 	lang=0;
 
 	// 로드해서 저장해두기 
-	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("npcDialogue1022.csv"));
+	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("npc_Dialogue1023.csv"));
 	LoadResultFromCSV(FPaths::ProjectDir() / TEXT("npc_result2.csv"));
-	LoadSelectFromCSV(FPaths::ProjectDir() / TEXT("SelectionSlot.csv"));
+	LoadSelectFromCSV(FPaths::ProjectDir() / TEXT("NPC_Selection1023.csv"));
 		
 }
 

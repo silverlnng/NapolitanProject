@@ -3,6 +3,11 @@
 
 #include "NPC_Five.h"
 
+void ANPC_Five::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
 void ANPC_Five::ResultEvent(int32 result)
 {
 	// 여기서 result 에 따라서 다르게 정의하기 

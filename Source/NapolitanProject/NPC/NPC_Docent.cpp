@@ -3,6 +3,8 @@
 
 #include "NPC_Docent.h"
 
+#include "TestPlayerController.h"
+
 void ANPC_Docent::ResultEvent(int32 result)
 {
 	// State 와 선택지의  result 에 따라 이벤트 정의하기
@@ -14,8 +16,8 @@ void ANPC_Docent::ResultEvent(int32 result)
 			// -> 도슨트가 평범하게 다가오며 고개를 들어 당신을 올려다본다.==> 애니메이션
 			// -> “게임을 해요! 도슨트의 넌센스 퀴즈!” ==>State 2 바로 시작하기
 			State=2;
-			//TestPC->StartEndNPCDialougue(true);
-			//TestPC->SetNPCDialougueText(0);
+			TestPC->StartEndNPCDialougue(true);
+			TestPC->SetNPCDialougueText(0);
 		}
 		else if (1==result)
 		{

@@ -17,6 +17,8 @@ class NAPOLITANPROJECT_API ANPC_Five : public ANPCCharacter,public IIInteract
 	GENERATED_BODY()
 
 public:
+
+	virtual void BeginPlay() override;
 	
 	virtual void ResultEvent(int32 result) override;
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)

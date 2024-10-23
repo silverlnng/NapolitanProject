@@ -6,6 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "TestPlayerController.h"
+#include "NapolitanProject/YJ/TestCharacter.h"
 
 // Sets default values
 ANPCCharacter::ANPCCharacter()
@@ -30,6 +32,9 @@ void ANPCCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	 TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
+	 MainCharacter =TestPC->GetPawn<ATestCharacter>();
+	//TestPC
 }
 
 // Called every frame
