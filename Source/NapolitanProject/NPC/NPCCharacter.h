@@ -32,7 +32,8 @@ public:
 
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
-
+	class APlayerHUD* PlayerHUD;
+	
 	virtual int32 GetNPCID();
 
 	virtual int32 GetState();

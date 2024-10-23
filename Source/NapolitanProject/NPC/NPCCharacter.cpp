@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "TestPlayerController.h"
+#include "NapolitanProject/YJ/PlayerHUD.h"
 #include "NapolitanProject/YJ/TestCharacter.h"
 
 // Sets default values
@@ -34,7 +35,8 @@ void ANPCCharacter::BeginPlay()
 	
 	 TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	 MainCharacter =TestPC->GetPawn<ATestCharacter>();
-	//TestPC
+	 PlayerHUD =TestPC->GetHUD<APlayerHUD>();
+	//TestPC00
 }
 
 // Called every frame
