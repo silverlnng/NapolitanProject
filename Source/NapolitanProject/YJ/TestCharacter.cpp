@@ -7,7 +7,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "IInteract.h"
 #include "InteractWidget.h"
-#include "NPCCharacter.h"
+#include "NapolitanProject/NPC/NPCCharacter.h"
 #include "PlayerHUD.h"
 #include "TestPlayerController.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"

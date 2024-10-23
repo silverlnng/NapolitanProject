@@ -3,7 +3,7 @@
 
 #include "TestPlayerController.h"
 
-#include "NPCCharacter.h"
+#include "NapolitanProject/NPC/NPCCharacter.h"
 #include "TestGameInstance.h"
 #include "Components/Button.h"
 #include "Components/Image.h"

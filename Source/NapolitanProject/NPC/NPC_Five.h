@@ -19,9 +19,9 @@ class NAPOLITANPROJECT_API ANPC_Five : public ANPCCharacter,public IIInteract
 public:
 	
 	virtual void ResultEvent(int32 result) override;
-	
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	int32 NPC_ID =6;
-	
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	int32 State =1;
 	
 	virtual void Interact() override;
