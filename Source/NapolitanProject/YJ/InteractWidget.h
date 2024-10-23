@@ -21,5 +21,8 @@ public:
 
 	void SetVisibleCrossHair(bool value);
 	void SetVisibleHBox(bool value);
+
+	UPROPERTY(meta=(BindWidget))
+	class UHorizontalBox* HBox_GetSouvenir;
 	
 };

@@ -139,8 +139,8 @@ void ATestPlayerController::StartEndNPCDialougue(bool value)
 	if (value) // 대화 시작할때 
 	{
 		SetUIMode(true); // ui 모드로 
-		
-		PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
+		PlayerHUD->InteractUI->SetVisibleCrossHair(false);
+		PlayerHUD->InteractUI->SetVisibleHBox(false);
 		PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업 
 		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
 		
