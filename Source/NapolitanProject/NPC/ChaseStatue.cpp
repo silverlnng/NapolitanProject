@@ -31,9 +31,7 @@ AChaseStatue::AChaseStatue()
 void AChaseStatue::BeginPlay()
 {
 	Super::BeginPlay();
-
-	Target = CastChecked<ATestCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
-
+	
 	me = this;
 
 	ChaseAI = Cast<AAIController>(me->GetController());
@@ -71,7 +69,7 @@ void AChaseStatue::TickPatrol(const float& DeltaTime)
 void AChaseStatue::TickMove(const float& DeltaTime)
 {
 	//플레이어가 안에 들어왔고, 그 안에서 자신을 바라보지 않을 때 우선은 대기 상태로 있는다.
-	FVector targetLoc = Target->GetActorLocation();
+	FVector targetLoc = MainCharacter->GetActorLocation();
 	FVector myLoc = me->GetActorLocation();
 	FVector dirR = targetLoc - myLoc;
 	FRotator rot = dirR.Rotation();

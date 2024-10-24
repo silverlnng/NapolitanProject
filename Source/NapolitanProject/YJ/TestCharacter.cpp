@@ -66,6 +66,10 @@ void ATestCharacter::BeginPlay()
 	
 
 	GetWorldTimerManager().SetTimer(TimerHandle,this,&ATestCharacter::SphereTraceFromCamera,0.2f,true);
+
+	// 카메라의 초기 위치 및 회전 설정
+	TargetCameraLocation = FirstPersonCameraComponent->GetRelativeLocation();
+	TargetCameraRotation = FirstPersonCameraComponent->GetRelativeRotation();
 	
 }
 
@@ -81,6 +85,11 @@ void ATestCharacter::Tick(float DeltaSeconds)
 		UpdateNotRunAction(DeltaSeconds);
 	}
 	// GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Lerp());
+
+	if (bIsRedlighthouse == true)
+	{
+		UpdateThirdPersonCamera(DeltaSeconds);
+	}
 }
 
 
@@ -336,4 +345,10 @@ void ATestCharacter::OnInteraction()
 		
 		// 그냥 아이템 이라면 아이템으로 캐스트해서 
 	}
+}
+
+void ATestCharacter::UpdateThirdPersonCamera(float DeltaTime)
+{
+	//김영수 1-3 : 위대한 빨간 등대를 선택할 시 카메라 회전
+	
 }

@@ -35,11 +35,11 @@ public:
 
 	virtual int32 GetNPCID();
 
-	virtual int32 GetState();
+	virtual int32 GetState(); 
 	
-	virtual void ResultEvent(int32 result);
+	virtual void ResultEvent(int32 result); //결과 함수
 
-	virtual void Interact();
+	virtual void Interact(); 
 
 	// 전환용 카메라 부착해주기 
 	UPROPERTY(EditDefaultsOnly)

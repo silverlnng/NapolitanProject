@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "NPCCharacter.h"
 #include "GameFramework/Character.h"
 #include "ChaseStatue.generated.h"
 
@@ -14,7 +15,7 @@ enum class ChaseStatueState : uint8 {
 };
 
 UCLASS()
-class NAPOLITANPROJECT_API AChaseStatue : public ACharacter
+class NAPOLITANPROJECT_API AChaseStatue : public ANPCCharacter
 {
 	GENERATED_BODY()
 
@@ -69,6 +70,12 @@ public:
 	bool GetRandomPositionNavMesh(FVector CenterLocation, float radius, FVector& dest);
 
 	FVector PatrolPoint;
+
+public:	
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	int32 NPC_ID =6;
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	int32 State = 1;
 	
 };
 
