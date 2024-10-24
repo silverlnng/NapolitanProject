@@ -25,7 +25,7 @@ public:
 	class UButton* Btn_Next;
 	
 	UPROPERTY(meta=(BindWidget))
-	class UTextBlock* Text_Dialogue;
+	class URichTextBlock* Text_Dialogue;
 
 	UPROPERTY(VisibleAnywhere)
 	int32 curOrder=0;

@@ -6,6 +6,7 @@
 #include "SelectionSlotWidget.h"
 #include "TestPlayerController.h"
 #include "Components/Button.h"
+#include "Components/RichTextBlock.h"
 #include "Components/TextBlock.h"
 #include "Components/UniformGridPanel.h"
 #include "NapolitanProject/NapolitanProject.h"
