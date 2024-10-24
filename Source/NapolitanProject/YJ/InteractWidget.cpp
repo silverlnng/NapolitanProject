@@ -6,6 +6,12 @@
 #include "Components/HorizontalBox.h"
 #include "Components/Image.h"
 
+void UInteractWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	HBox_GetSouvenir->SetVisibility(ESlateVisibility::Hidden);
+}
+
 void UInteractWidget::SetVisibleCrossHair(bool value)
 {
 	if (value)

@@ -48,5 +48,7 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	class UCameraComponent* CameraComp;
+
+	
 };
 

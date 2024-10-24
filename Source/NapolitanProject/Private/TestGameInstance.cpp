@@ -98,10 +98,8 @@ bool UTestGameInstance::LoadDialogueFromCSV(const FString& FilePath)
 			
 		FNPCDialogue Dialogue;
 		Dialogue.Who = Col[4];
-		Dialogue.Font = Col[5];
-		Dialogue.Color = Col[6];
-		Dialogue.Dialogue_Kor = Col[7];
-		Dialogue.Dialogue_Eng = Col[8];
+		Dialogue.Dialogue_Kor = Col[5];
+		Dialogue.Dialogue_Eng = Col[6];
 		
 		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue.Dialogue_Kor);
 		// NPC 대사를 맵에 저장

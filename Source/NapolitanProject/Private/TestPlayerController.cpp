@@ -15,6 +15,7 @@
 #include "Components/Image.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/YJ/InteractWidget.h"
+#include "NapolitanProject/YJ/TestCharacter.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 void ATestPlayerController::PostInitializeComponents()
@@ -150,11 +151,19 @@ void ATestPlayerController::StartEndNPCDialougue(bool value)
 		SetCurNPCSelectUI(npcID,npcState,"kor");
 		
 		SetNPCDialougueMaxSize();
+		
+		CameraViewChangeNPC();
+		
 	}
 	else // 대화 끝날때 
 	{
+		SetUIMode(false);
 		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
-		PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업 
+		PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업
+		ATestCharacter* player = Cast<ATestCharacter>(this->GetCharacter());
+		player->SetPlayerState(EPlayerState::Idle);
+		// 플레이어 상태 idle으로
+		SetViewTargetWithBlend(this,1.5f);
 	}
 }
 
@@ -222,6 +231,19 @@ void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 	
 }
 
+void ATestPlayerController::CameraViewChangeNPC()
+{
+	// npc 의 카메라로 전환 부드럽게 전환
+	//
+	if (curNPC)
+	{
+		//curNPC->CameraComp
+		SetViewTargetWithBlend(curNPC,1.5f);
+	}
+	// 카메라의 이동을 lerp 하게 대화하는동안 움직이도록 하게
+	 // GetWorldTimerManager().SetTimer(DialogueTimerHandle,this,)
+}
+
 void ATestPlayerController::SetCurNPC(ANPCCharacter* curNPC_)
 {
 	curNPC = curNPC_;
@@ -233,11 +255,16 @@ void ATestPlayerController::CallCurNPCResultEvent(int32 value)
 {
 	// 대화창 닫기 
 	PlayerHUD->NPCDialogueUI->SetSelectSlotVisible(false);
+	PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
 	UE_LOG(LogTemp,Warning,TEXT("%s NPCResult :%d"),*CALLINFO,value);
 	if (curNPC)
 	{
 		curNPC->ResultEvent(value);
 	}
+
+	// ui  닫기
+	
+	
 }
 void ATestPlayerController::SetCurNPCSelectUI(const int32& NPC_ID, const int32& State, const FString& Lang)
 {
