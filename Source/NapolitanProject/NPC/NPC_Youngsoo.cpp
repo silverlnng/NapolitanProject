@@ -14,11 +14,6 @@ ANPC_Youngsoo::ANPC_Youngsoo()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	YSCol = CreateDefaultSubobject<UCapsuleComponent>(TEXT("YSCol"));
-	//YSCol->SetCollisionProfileName(FName("YSCol"));
-	GetCapsuleComponent()->SetCapsuleHalfHeight(110.f);
-	GetCapsuleComponent()->SetCapsuleRadius(60.f);
 }
 
 // Called when the game starts or when spawned
@@ -26,13 +21,6 @@ void ANPC_Youngsoo::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	YSCol->OnComponentBeginOverlap.AddDynamic(this, &ANPC_Youngsoo::ChoiceUIOverlap);
-
-	//플레이어 캐스팅
-	player = CastChecked<ATestCharacter>(GetWorld()->GetFirstPlayerController()->GetCharacter());
-
-	auto* pc = player->GetController<APlayerController>();
-	huds = pc->GetHUD<APlayerHUD>();
 
 }
 
@@ -50,79 +38,81 @@ void ANPC_Youngsoo::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 }
 
-//미술 작품을 보면서 울고 있는 경우
-void ANPC_Youngsoo::YSFirstState()
+void ANPC_Youngsoo::Interact()
 {
-	//대기 상태로 우는 애니메이션 재생
+	Super::Interact();
 }
 
-//스카프를 불태워야하는 경우
-void ANPC_Youngsoo::YSSecondState()
+int32 ANPC_Youngsoo::GetNPCID()
 {
-	//우선은 대기 상태로 있다가 플레이어가 다가오면 다음 함수를 오버랩으로 부른다. 
+	return NPC_ID;
 }
 
-//남자가 작품을 보며 웃을 때 -> 그 영역 안에 들어왓을 때 추적 후 무조건 사망
-void ANPC_Youngsoo::YSThirdState()
+int32 ANPC_Youngsoo::GetState()
 {
-	//우선은 대기 상태로 웃고있는 애니메이션을 작동
+	return State;
 }
 
-//랜덤으로 상태지정
-NYSState ANPC_Youngsoo::YSRandomState()
+void ANPC_Youngsoo::ResultEvent(int32 result)
 {
-	//랜덤으로 상태 지정
-	TArray<NYSState> RanStates = {
-		NYSState::YSFirst,
-		NYSState::YSSecond,
-		NYSState::YSThird,
-	};
+	// State 와 선택지의  result 에 따라 이벤트 정의하기
+	// 걸어가면서 사라짐 : 0 , 유품 획득 : 1, 에반스매듭 사망엔딩 : 2 
 
-	//랜덤으로 선택
-	int32 RandomIndex = FMath::RandRange(0, RanStates.Num() - 1);
-	NYSState NewState = RanStates[RandomIndex];
+	if (1==State)
+	{
+		if (0 == result)
+		{
+			//남자를 위로해주자. “괜찮으십니까”의 경우 => 남자는 소리를 지르다가 사라짐
+			UGameplayStatics::PlaySound2D(GetWorld(), YSScreamSound);
+			// 5초 후에 캐릭터를 숨기기 위한 타이머 설정
+			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				// 캐릭터의 Mesh를 보이지 않게 설정
+				GetMesh()->SetVisibility(false);
+			}, 5.0f, false);
+			
+			
+		}
+		else if (1 == result)
+		{
+			// “단 한명만이 닻을 풀어 익사했다." => 내 가족들은... 이라는 대사
+			
+			//남자는 눈물을 흘리며 유품을 남기고 사라짐
+			//애니메이션 실행
 
-	return NewState;
-}
+			//유품 스폰 뒤 사라짐
+			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				// 캐릭터의 Mesh를 보이지 않게 설정
+				GetMesh()->SetVisibility(false);
+			}, 5.0f, false);
+			
+		}
+		else if (2 == result)
+		{
+			//남자에게 말을 걸어선 안된다. 어서 도망치자.의 경우 => 도망칠 경우 5초뒤에 NPC 사라짐
 
-//조건 해금 후 움직인 다음 플레이어의 시야에서 사라짐
-void ANPC_Youngsoo::YSMoveState()
-{
-}
-
-//플레이어 추격 후 플레이어는 반드시 사망
-void ANPC_Youngsoo::YSChaseState()
-{
-}
-
-void ANPC_Youngsoo::SetState(NYSState newState)
-{
-	mState = newState; //상태 지정
-	// 나중에 애니메이션 상태도 변경하기
-}
-
-void ANPC_Youngsoo::ChoiceUIOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (OtherActor && (OtherActor != this) && OtherComp) {
-		//만약 영수와 부딪힌 것이 플레이어일 경우
-		auto* AttackTarget = Cast<ATestCharacter>(OtherActor);
-		if (AttackTarget) {
-			bIsChat = true;
-			//bIsChat이 true일 경우에만
-			if (bIsChat && mState == NYSState::YSFirst) { 
-				initNYSUI(); //딱 한번만 UI가 뜨도록 설정
-			}
-			else if (bIsChat && mState == NYSState::YSSecond) {
-				//스카프를 불태우는 함수 호출
-			}
+			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				// 캐릭터의 Mesh를 보이지 않게 설정
+				GetMesh()->SetVisibility(false);
+			}, 10.0f, false);
+		}
+		else
+		{
+			//위대한 빨간 등대를 부수자 -> 카메라 시점 변경 및 플레이어 얼굴을 클로즈 업
+			// 글자로 된 에반스 매듭이 나와서 플레이어 목 감싸고 피 터지는 연출과 함께 사망
 		}
 	}
+	else if (2 == State)
+	{
+		
+	}
+	else if (3 == State)
+	{
+		
+	}
+	
 }
 
-void ANPC_Youngsoo::initNYSUI()
-{
-	if (huds) {
-		huds->NYSUi->SetVisibility(ESlateVisibility::Visible);
-	}
-}
 
