@@ -159,6 +159,19 @@ public:
 	UPROPERTY()
 	class ATestPlayerController* TestPC;
 	
+	//====== 김영수 위대한 빨간 등대 선택시 1-3
+	//카메라와 메쉬 위치 조정에 필요한 변수들
+public:
+	FVector TargetCameraLocation;
+	FRotator TargetCameraRotation;
+	float CameraDistance = 500.f;
+	float CameraLerpSpeed = 5.0f;
+	bool bIsRedlighthouse = false;
+
+public:
+	//카메라 전환 함수
+	void UpdateThirdPersonCamera(float DeltaTime);
+	
 };
 
 
