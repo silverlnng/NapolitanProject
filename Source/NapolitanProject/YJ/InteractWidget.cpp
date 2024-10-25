@@ -11,6 +11,7 @@ void UInteractWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	HBox_GetSouvenir->SetVisibility(ESlateVisibility::Hidden);
+	Img_Note->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UInteractWidget::SetVisibleCrossHair(bool value)

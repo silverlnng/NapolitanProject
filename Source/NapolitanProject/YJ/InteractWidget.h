@@ -29,8 +29,8 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	class UTextBlock* Text_SouvenirName;
 
-	UPROPERTY(meta=(BindWidgetAnim))
-	class UWidgetAnimation* GetSouvenirAnim;
+	UPROPERTY(Transient,meta=(BindWidgetAnim))
+	class UWidgetAnimation* GetSouvenirAnim;  // 유물 얻었을때 실행할 이벤트 함수
 
 	UFUNCTION()
 	void GetSouvenirEvent(const FString& str); // 유물획득할때 획득한 유물이름 넣어주고 호출하는 함수
@@ -38,7 +38,7 @@ public:
 	//// 수첩 ui ////////
 	UPROPERTY(meta=(BindWidget))
 	class UImage* Img_Note;
-	UPROPERTY(meta=(BindWidgetAnim))
+	UPROPERTY(Transient,meta=(BindWidgetAnim))
 	class UWidgetAnimation* NoteImgAnim;
 	
 };

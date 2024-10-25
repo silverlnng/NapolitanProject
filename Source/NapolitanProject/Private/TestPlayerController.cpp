@@ -225,6 +225,8 @@ void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 		FNPCDialogue Dialogue_=GI->NPCDialogueMap[FindKey];
 
 		PlayerHUD->NPCDialogueUI->SetText_Dialogue(Dialogue_.Dialogue_Kor);
+
+		// 이벤트가 정의 되어있으면 이벤트를 발생시키기 
 		
 	}
 	
