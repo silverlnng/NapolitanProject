@@ -227,7 +227,12 @@ void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 		PlayerHUD->NPCDialogueUI->SetText_Dialogue(Dialogue_.Dialogue_Kor);
 
 		// 이벤트가 정의 되어있으면 이벤트를 발생시키기 
-		
+		// Dialogue_.CameraEffect 값에 따라서 이벤트를 실행시키기
+		FString str=Dialogue_.CameraEffect;
+		if (!str.IsEmpty())
+		{
+			PlayerHUD->NPCDialogueUI->UIEffect(str);
+		}
 	}
 	
 	

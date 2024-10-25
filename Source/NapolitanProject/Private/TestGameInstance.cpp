@@ -100,7 +100,7 @@ bool UTestGameInstance::LoadDialogueFromCSV(const FString& FilePath)
 		Dialogue.Who = Col[4];
 		Dialogue.Dialogue_Kor = Col[5];
 		Dialogue.Dialogue_Eng = Col[6];
-		
+		Dialogue.CameraEffect = Col[7];
 		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue.Dialogue_Kor);
 		// NPC 대사를 맵에 저장
 		NPCDialogueMap.Add(FindKey, Dialogue);

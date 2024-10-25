@@ -71,5 +71,8 @@ public:
 	
 	UFUNCTION()
 	void CreateSelectionChildren(int32 count,TArray<FString> str,TArray<int32> result);
+
+	UFUNCTION()
+	void UIEffect(FString &str);
 	
 };
