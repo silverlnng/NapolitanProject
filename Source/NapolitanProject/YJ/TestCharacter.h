@@ -162,15 +162,17 @@ public:
 	//====== 김영수 위대한 빨간 등대 선택시 1-3
 	//카메라와 메쉬 위치 조정에 필요한 변수들
 public:
-	FVector TargetCameraLocation;
-	FRotator TargetCameraRotation;
-	float CameraDistance = 500.f;
-	float CameraLerpSpeed = 5.0f;
-	bool bIsRedlighthouse = false;
+
+	// 전환용 카메라 부착해주기 
+	UPROPERTY(EditDefaultsOnly)
+	class USpringArmComponent* SpringArmComp;
+	
+	UPROPERTY(EditDefaultsOnly)
+	class UCameraComponent* ChageCameracomp;
 
 public:
 	//카메라 전환 함수
-	void UpdateThirdPersonCamera(float DeltaTime);
+	void AdjustCameraPosition();
 	
 };
 

@@ -14,6 +14,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "NoteUI/NoteWidget.h"
 
@@ -51,6 +52,20 @@ ATestCharacter::ATestCharacter()
 
 	// Ensure crouch isn't blocking movement
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
+
+	// 스프링암을 생성해서 루트에 붙이고싶다.
+	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
+	SpringArmComp->SetupAttachment(RootComponent);
+	SpringArmComp->SetRelativeLocation(FVector(0 , 40 , 80));
+	SpringArmComp->TargetArmLength = -200;
+
+	// 카메라를 생성해서 스프링암에 붙이고싶다.
+	ChageCameracomp = CreateDefaultSubobject<UCameraComponent>(TEXT("ChageCameracomp"));
+	ChageCameracomp->SetupAttachment(SpringArmComp);
+	ChageCameracomp->SetRelativeLocation(FVector(-210.f, -40.f, -20.f)); // Position the camera
+	
+	//ChageCameracomp->SetRelativeLocation(FVector(0 , -40 , -20));
+	//ChageCameracomp->SetRelativeRotation(FRotator(0, 180, 0));
 }
 
 void ATestCharacter::BeginPlay()
@@ -62,14 +77,9 @@ void ATestCharacter::BeginPlay()
 	PlayerHUD=PC->GetHUD<APlayerHUD>();
 
 	// 타이머로 trace 작동시키기
-	FTimerHandle TimerHandle;
-	
+	FTimerHandle TimerHandle;	
 
 	GetWorldTimerManager().SetTimer(TimerHandle,this,&ATestCharacter::SphereTraceFromCamera,0.2f,true);
-
-	// 카메라의 초기 위치 및 회전 설정
-	TargetCameraLocation = FirstPersonCameraComponent->GetRelativeLocation();
-	TargetCameraRotation = FirstPersonCameraComponent->GetRelativeRotation();
 	
 }
 
@@ -85,11 +95,7 @@ void ATestCharacter::Tick(float DeltaSeconds)
 		UpdateNotRunAction(DeltaSeconds);
 	}
 	// GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Lerp());
-
-	if (bIsRedlighthouse == true)
-	{
-		UpdateThirdPersonCamera(DeltaSeconds);
-	}
+	
 }
 
 
@@ -347,8 +353,22 @@ void ATestCharacter::OnInteraction()
 	}
 }
 
-void ATestCharacter::UpdateThirdPersonCamera(float DeltaTime)
+void ATestCharacter::AdjustCameraPosition()
 {
-	//김영수 1-3 : 위대한 빨간 등대를 선택할 시 카메라 회전
+	//영수 1-3 : 위대한 빨간 등대 선택 시 사망엔딩 -> 카메라 회전 후 UI 교수형
+	if (PC)
+	{
+		// 전환할 카메라 컴포넌트가 유효한지 확인
+		if (ChageCameracomp)
+		{
+		
+			// 플레이어의 뷰를 새 카메라 컴포넌트로 업데이트
+			FirstPersonCameraComponent->Deactivate();
+			ChageCameracomp->Activate();
+		}
+	}
+	
 	
 }
+
+
