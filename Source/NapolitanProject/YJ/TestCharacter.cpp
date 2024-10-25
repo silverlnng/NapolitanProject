@@ -38,7 +38,7 @@ ATestCharacter::ATestCharacter()
 	
 	// Create a CameraComponent	
 	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	FirstPersonCameraComponent->SetupAttachment(GetMesh(),"headSocket");
+	FirstPersonCameraComponent->SetupAttachment(GetMesh(),FName("headSocket"));
 	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
 	FirstPersonCameraComponent->bUsePawnControlRotation = true;
 	

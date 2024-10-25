@@ -20,6 +20,8 @@ void UNPCDialogueWidget::NativeConstruct()
 	Btn_Next->OnClicked.AddDynamic(this,&UNPCDialogueWidget::OnClickfrontButton);
 }
 
+
+
 void UNPCDialogueWidget::OnClickbackButton()
 {
 	if(curOrder<0){return;}
@@ -38,10 +40,43 @@ void UNPCDialogueWidget::OnClickfrontButton()
 
 void UNPCDialogueWidget::SetText_Dialogue(const FString& str)
 {
-	//Text_Dialogue->SetColorAndOpacity(FLinearColor(1,1,1,1));
-	//Text_Dialogue->SetFont()
-	Text_Dialogue->SetText(FText::FromString(str));
+	CurrentText="";
+	FullText=str;
+	
+	// 앞쪽 태그 찾아내기 >
+	int32 StartTagEnd = FullText.Find(TEXT(">"))+1;
+	// 앞쪽 태그 잘라낸 문장
+	RemoveTags=FullText.Mid(StartTagEnd,FullText.Len());
+	// 태그
+	StartTag = FullText.Mid(0,StartTagEnd);
+	
+	GetWorld()->GetTimerManager().SetTimer(TextUpdateTimerHandle, this, &UNPCDialogueWidget::UpdateText, TextUpdateInterval, true);
+	
+	//Text_Dialogue->SetText(FText::FromString(str));
 }
+
+void UNPCDialogueWidget::UpdateText()
+{
+	// 전체 텍스트의 끝까지 도달하면 타이머 중지
+	if (CurrentText.Len() >= RemoveTags.Len())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(TextUpdateTimerHandle);
+		return;
+	}
+	
+	// 한 글자씩 추가
+	
+	CurrentText += RemoveTags.Mid(CurrentText.Len(), 1);
+
+	//CurrentText.Append("</>");
+	
+	// TextBlock에 적용
+	if (Text_Dialogue)
+	{
+		Text_Dialogue->SetText(FText::FromString(StartTag+CurrentText+TEXT("</>")));
+	}
+}
+
 
 void UNPCDialogueWidget::SetSelectSlotVisible(bool value)
 {

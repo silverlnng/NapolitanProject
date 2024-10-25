@@ -27,6 +27,18 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	class URichTextBlock* Text_Dialogue;
 
+	
+	FString CurrentText;
+	FString FullText;
+	FString RemoveTags;
+	FString StartTag;
+	float  TextUpdateInterval = 0.1f;
+	FTimerHandle TextUpdateTimerHandle;
+
+	//// 한글자씩 업데이트 효과
+	void UpdateText();
+	
+
 	UPROPERTY(VisibleAnywhere)
 	int32 curOrder=0;
 
