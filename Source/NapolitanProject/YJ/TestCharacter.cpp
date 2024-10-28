@@ -39,11 +39,11 @@ ATestCharacter::ATestCharacter()
 	GetMesh()->CastShadow = false;
 	
 	// Create a CameraComponent	
-	FirstPersonCameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	FirstPersonCameraComponent->SetupAttachment(GetMesh(),FName("headSocket"));
-	FirstPersonCameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
-	FirstPersonCameraComponent->bUsePawnControlRotation = true;
-	
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
+	CameraComponent->SetupAttachment(GetMesh(),FName("head"));
+	CameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
+	CameraComponent->bUsePawnControlRotation = true;
+	CameraComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("HeadSocket"));
 
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -408,7 +408,7 @@ void ATestCharacter::AdjustCameraPosition()
 		if (ChageCameracomp)
 		{
 			// 플레이어의 뷰를 새 카메라 컴포넌트로 업데이트
-			FirstPersonCameraComponent->Deactivate();
+			CameraComponent->Deactivate();
 			ChageCameracomp->Activate();
 
 			//목표 위치와 각도를 설정
