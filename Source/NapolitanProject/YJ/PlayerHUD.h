@@ -31,11 +31,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UInteractWidget* InteractUI;
 
-	//===========�迵��
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TSubclassOf<class UUserWidget> NYSFactory;
-	UPROPERTY()
-	class UNYS_Choice* NYSUi; 
+	//===========
+	//사망 UI 생김
+	UPROPERTY(EditDefaultsOnly)
+	class UYSEvanceUI* YsEvanceUserWidget;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UYSEvanceUI> YSEvanceFactory;
+	
 	
 	
 };

@@ -14,8 +14,10 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "NoteUI/NoteWidget.h"
+#include "YSEvanceUI.h"
 
 ATestCharacter::ATestCharacter()
 {
@@ -57,6 +59,20 @@ ATestCharacter::ATestCharacter()
 
 	// Ensure crouch isn't blocking movement
 	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
+
+	// 스프링암을 생성해서 루트에 붙이고싶다.
+	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
+	SpringArmComp->SetupAttachment(RootComponent);
+	SpringArmComp->SetRelativeLocation(FVector(0 , 40 , 80));
+	SpringArmComp->TargetArmLength = -200;
+
+	// 카메라를 생성해서 스프링암에 붙이고싶다.
+	ChageCameracomp = CreateDefaultSubobject<UCameraComponent>(TEXT("ChageCameracomp"));
+	ChageCameracomp->SetupAttachment(SpringArmComp);
+	ChageCameracomp->SetRelativeLocation(FVector(-210.f, -40.f, -20.f)); // Position the camera
+	
+	//ChageCameracomp->SetRelativeLocation(FVector(0 , -40 , -20));
+	//ChageCameracomp->SetRelativeRotation(FRotator(0, 180, 0));
 }
 
 void ATestCharacter::BeginPlay()
@@ -68,15 +84,9 @@ void ATestCharacter::BeginPlay()
 	PlayerHUD=PC->GetHUD<APlayerHUD>();
 
 	// 타이머로 trace 작동시키기
-	FTimerHandle TimerHandle;
-	
+	FTimerHandle TimerHandle;	
 
 	GetWorldTimerManager().SetTimer(TimerHandle,this,&ATestCharacter::SphereTraceFromCamera,0.2f,true);
-
-	// 카메라의 초기 위치 및 회전 설정
-	TargetCameraLocation = FirstPersonCameraComponent->GetRelativeLocation();
-	TargetCameraRotation = FirstPersonCameraComponent->GetRelativeRotation();
-	
 }
 
 void ATestCharacter::Tick(float DeltaSeconds)
@@ -92,10 +102,46 @@ void ATestCharacter::Tick(float DeltaSeconds)
 	}
 	// GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Lerp());
 
-	if (bIsRedlighthouse == true)
+	
+	//1-3. 김영수 위대한 빨간 등대 이벤트
+	if (bIsCameraTransitioning && ChageCameracomp)
 	{
-		UpdateThirdPersonCamera(DeltaSeconds);
+		//카메라 위치와 각도를 부드럽게 보간
+		FVector CurrentLocation = ChageCameracomp->GetRelativeLocation();
+		FRotator CurrentRotation = ChageCameracomp->GetRelativeRotation();
+
+		FVector NewLocation = FMath::VInterpTo(CurrentLocation, TargetCameraLocation, DeltaSeconds, CameraTransitionSpeed);
+		FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetCameraRotation, DeltaSeconds, CameraTransitionSpeed);
+
+		ChageCameracomp->SetRelativeLocation(NewLocation);
+		ChageCameracomp->SetRelativeRotation(NewRotation);
+
+		// FieldOfView 값을 부드럽게 보간
+		CurrentFieldOfView = FMath::FInterpTo(CurrentFieldOfView, TargetFieldOfView, DeltaSeconds, CameraTransitionSpeed);
+		ChageCameracomp->SetFieldOfView(CurrentFieldOfView);
+
+		// 목표 위치와 각도에 도달하면 전환 종료
+		if (NewLocation.Equals(TargetCameraLocation, 0.1f) && NewRotation.Equals(TargetCameraRotation, 0.1f))
+		{
+			bIsCameraTransitioning = false;
+			bIsFieldOfViewTransitioning = true; // FieldOfView 전환 시작
+		}
 	}
+
+	//줌인지 확인
+	if (bIsFieldOfViewTransitioning && ChageCameracomp && bIsCameraTransitioning == false)
+	{
+		//보간
+		CurrentFieldOfView = FMath::FInterpTo(ChageCameracomp->FieldOfView, 45.0f, DeltaSeconds, CameraTransitionSpeed);
+		ChageCameracomp->SetFieldOfView(CurrentFieldOfView);
+
+		// 목표 FieldOfView에 도달하면 전환 종료
+		if (FMath::IsNearlyEqual(CurrentFieldOfView, 45.0f, 0.1f))
+		{
+			bIsFieldOfViewTransitioning = false;
+		}
+	}
+	
 }
 
 
@@ -353,8 +399,44 @@ void ATestCharacter::OnInteraction()
 	}
 }
 
-void ATestCharacter::UpdateThirdPersonCamera(float DeltaTime)
+void ATestCharacter::AdjustCameraPosition()
 {
-	//김영수 1-3 : 위대한 빨간 등대를 선택할 시 카메라 회전
+	//영수 1-3 : 위대한 빨간 등대 선택 시 사망엔딩 -> 카메라 회전 후 UI 교수형
+	if (PC)
+	{
+		// 전환할 카메라 컴포넌트가 유효한지 확인
+		if (ChageCameracomp)
+		{
+			// 플레이어의 뷰를 새 카메라 컴포넌트로 업데이트
+			FirstPersonCameraComponent->Deactivate();
+			ChageCameracomp->Activate();
+
+			//목표 위치와 각도를 설정
+			TargetCameraLocation = FVector(0.f, -40.f, -20.f);
+			TargetCameraRotation = FRotator(0.f, 180.f, 0.f);
+
+			//카메라 전환 플래그와 속도 설정
+			bIsCameraTransitioning = true;
+			CameraTransitionSpeed = 2.0f; //카메라 전환 속도 조절
+
+			// 목표 FieldOfView 설정
+			bIsFieldOfViewTransitioning = false;
+			TargetFieldOfView = 45.0f;
+			CurrentFieldOfView = ChageCameracomp->FieldOfView;
+			
+		}
+	}
+	
 	
 }
+
+void ATestCharacter::YSEvanceUIStart()
+{
+	if (PlayerHUD->YsEvanceUserWidget)
+	{
+		PlayerHUD->YsEvanceUserWidget->SetVisibility(ESlateVisibility::Visible);
+		PlayerHUD->YsEvanceUserWidget->UpdateText();
+	}
+}
+
+

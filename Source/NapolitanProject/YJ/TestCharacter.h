@@ -160,20 +160,30 @@ public:
 
 	UPROPERTY()
 	class ATestPlayerController* TestPC;
-	
-	//====== 김영수 위대한 빨간 등대 선택시 1-3
-	//카메라와 메쉬 위치 조정에 필요한 변수들
-public:
-	FVector TargetCameraLocation;
-	FRotator TargetCameraRotation;
-	float CameraDistance = 500.f;
-	float CameraLerpSpeed = 5.0f;
-	bool bIsRedlighthouse = false;
 
+	//////////// 김영수 위대한 빨간 등대 선택시 1-3
 public:
-	//카메라 전환 함수
-	void UpdateThirdPersonCamera(float DeltaTime);
+
+	// 전환용 카메라 부착해주기 
+	UPROPERTY(EditDefaultsOnly)
+	class USpringArmComponent* SpringArmComp;
 	
+	UPROPERTY(EditDefaultsOnly)
+	class UCameraComponent* ChageCameracomp;
+	
+	//카메라 전환 함수
+	void AdjustCameraPosition();
+
+	FVector TargetCameraLocation; //타겟 위치
+	FRotator TargetCameraRotation; //타겟 회전
+	bool bIsCameraTransitioning; //카메라 전환 플래그
+	float CameraTransitionSpeed; //속도
+
+	float TargetFieldOfView; //줌
+	float CurrentFieldOfView; //현재 줌 = 90도
+	bool bIsFieldOfViewTransitioning;
+
+	void YSEvanceUIStart();
 };
 
 
