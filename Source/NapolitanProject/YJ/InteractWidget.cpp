@@ -5,6 +5,14 @@
 
 #include "Components/HorizontalBox.h"
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
+
+void UInteractWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	HBox_GetSouvenir->SetVisibility(ESlateVisibility::Hidden);
+	Img_Note->SetVisibility(ESlateVisibility::Hidden);
+}
 
 void UInteractWidget::SetVisibleCrossHair(bool value)
 {
@@ -28,4 +36,10 @@ void UInteractWidget::SetVisibleHBox(bool value)
 	{
 		HBox_Interact->SetVisibility(ESlateVisibility::Hidden);
 	}
+}
+
+void UInteractWidget::GetSouvenirEvent(const FString& str)
+{
+	Text_SouvenirName->SetText(FText::FromString(str));
+	PlayAnimation(GetSouvenirAnim);
 }

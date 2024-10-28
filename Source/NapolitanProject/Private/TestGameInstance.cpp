@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "TestGameInstance.h"
@@ -18,9 +18,9 @@ void UTestGameInstance::Init()
 	lang=0;
 
 	// 로드해서 저장해두기 
-	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("npc_Dialogue1023.csv"));
-	LoadResultFromCSV(FPaths::ProjectDir() / TEXT("npc_result2.csv"));
-	LoadSelectFromCSV(FPaths::ProjectDir() / TEXT("NPC_Selection1023.csv"));
+	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("NPC_Dialogue.csv"));
+	LoadResultFromCSV(FPaths::ProjectDir() / TEXT("NPC_Result.csv"));
+	LoadSelectFromCSV(FPaths::ProjectDir() / TEXT("NPC_Selection.csv"));
 		
 }
 
@@ -98,11 +98,9 @@ bool UTestGameInstance::LoadDialogueFromCSV(const FString& FilePath)
 			
 		FNPCDialogue Dialogue;
 		Dialogue.Who = Col[4];
-		Dialogue.Font = Col[5];
-		Dialogue.Color = Col[6];
-		Dialogue.Dialogue_Kor = Col[7];
-		Dialogue.Dialogue_Eng = Col[8];
-		
+		Dialogue.Dialogue_Kor = Col[5];
+		Dialogue.Dialogue_Eng = Col[6];
+		Dialogue.CameraEffect = Col[7];
 		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue.Dialogue_Kor);
 		// NPC 대사를 맵에 저장
 		NPCDialogueMap.Add(FindKey, Dialogue);

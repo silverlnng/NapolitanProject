@@ -28,12 +28,12 @@ void ANPC_Docent::ResultEvent(int32 result)
 		
 		}
 	}
-	if (2==State) //
+	else if (2==State) //
 	{
 		if (0==result)
 		{
 			// 퀴즈에 대한 답 정의 
-			
+			TestPC->StartEndNPCDialougue(false);
 			//TestPC->StartEndNPCDialougue(true);
 			//TestPC->SetNPCDialougueText(0);
 		}
