@@ -3,6 +3,7 @@
 
 #include "TestPlayerController.h"
 
+#include "EventComponent.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "TestGameInstance.h"
 #include "Components/Button.h"
@@ -18,11 +19,17 @@
 #include "NapolitanProject/YJ/TestCharacter.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
+ATestPlayerController::ATestPlayerController()
+{
+	EventComponent = CreateDefaultSubobject<UEventComponent>(TEXT("EventComponent"));
+}
+
 void ATestPlayerController::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	PlayerHUD=GetHUD<APlayerHUD>();
 	GI = GetGameInstance<UTestGameInstance>();
+	
 }
 
 void ATestPlayerController::BeginPlay()
@@ -72,6 +79,8 @@ void ATestPlayerController::BeginPlay()
 	},1.0f,false);
 	
 }
+
+
 
 void ATestPlayerController::SetUIMode(bool value)
 {
@@ -232,6 +241,8 @@ void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 		if (!str.IsEmpty())
 		{
 			PlayerHUD->NPCDialogueUI->UIEffect(str);
+			// UEventComponent 에 이벤트발생시키도록 전달
+			EventComponent->StartEvent(str,Dialogue_.Dialogue_Kor);
 		}
 	}
 	

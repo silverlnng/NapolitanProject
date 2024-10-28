@@ -32,18 +32,27 @@ void ANPC_Docent::ResultEvent(int32 result)
 	{
 		if (0==result)
 		{
-			// 퀴즈에 대한 답 정의 
+			// 퀴즈에 대한 답 정의
+			// 불태워죽인다
 			TestPC->StartEndNPCDialougue(false);
-			//TestPC->StartEndNPCDialougue(true);
-			//TestPC->SetNPCDialougueText(0);
+			
 		}
 		else if (1==result)
 		{
-		
+			// 찔러죽인다
 		}
 		else if (2==result)
 		{
-		
+			// 삶아죽인다
+		}
+		else if (3==result)
+		{
+			// 튀겨죽인다
+		}
+		else if (4==result)
+		{
+			// 정답 . 만약 다른 선택을 하게 되면 선택한 것에 따라 죽는다. 살아줘를 택할 시, 소년은 사라지고 그 자리에 수첩이 남는다. 
+
 		}
 	}
 	

@@ -32,7 +32,7 @@ public:
 	FString FullText;
 	FString RemoveTags;
 	FString StartTag;
-	float  TextUpdateInterval = 0.1f;
+	float  TextUpdateInterval = 0.05f;
 	FTimerHandle TextUpdateTimerHandle;
 
 	//// 한글자씩 업데이트 효과

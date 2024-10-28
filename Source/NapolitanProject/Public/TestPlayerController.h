@@ -19,6 +19,7 @@ class NAPOLITANPROJECT_API ATestPlayerController : public APlayerController
 private:
 	virtual void PostInitializeComponents() override;
 	virtual void BeginPlay() override;
+	ATestPlayerController();
 public:
 	UPROPERTY(VisibleAnywhere)
 	class UTestGameInstance* GI;
@@ -61,6 +62,16 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCurNPCSelectUI(const int32& NPC_ID,const int32& State,const FString& Lang);
 
+
+///////////이벤트를 정의할 컴포넌트 /////////////////////	
+	UPROPERTY(EditDefaultsOnly)
+	class UEventComponent* EventComponent;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UEventWidget> EventWidgetFactory;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UEventWidget* EventUI;
 	
 };
 
