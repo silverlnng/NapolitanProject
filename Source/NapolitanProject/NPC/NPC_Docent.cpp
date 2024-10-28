@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/Image.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/YJ/InteractWidget.h"
 #include "NapolitanProject/YJ/PlayerHUD.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
@@ -113,7 +114,8 @@ void ANPC_Docent::UpdateLerp()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(LerpTimerHandle);
 
-		// 끝나는 엔딩 위젯 나오도록 하기 
+		// 끝나는 엔딩 위젯 나오도록 하기
+		PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
