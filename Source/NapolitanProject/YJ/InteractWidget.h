@@ -40,5 +40,7 @@ public:
 	class UImage* Img_Note;
 	UPROPERTY(Transient,meta=(BindWidgetAnim))
 	class UWidgetAnimation* NoteImgAnim;
+	UFUNCTION()
+	void PlayNoteUIEvent(bool val);
 	
 };

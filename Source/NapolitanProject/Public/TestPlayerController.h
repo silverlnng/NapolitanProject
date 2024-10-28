@@ -52,8 +52,10 @@ public:
 	void StartEndNPCDialougue(bool value);
 
 	UFUNCTION()
-	void SetNPCDialougueText(int32 curOrder); // NPC_ID ,State,curOrder 에 따라서 알맞는 대화를 출력하는 함수 
+	void SetNPCDialougueText(int32 curOrder); // NPC_ID ,State,curOrder 에 따라서 알맞는 대화를 출력하는 함수
 
+	
+/////////////////////////////////////////////////////////////////////////////
 	UFUNCTION()
 	void CameraViewChangeNPC();
 
@@ -68,6 +70,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetCurNPCSelectUI(const int32& NPC_ID,const int32& State,const FString& Lang);
 
+	UFUNCTION()
+	void SetCurNPCResultUI(int32 FindKey);
 
 ///////////이벤트를 정의할 컴포넌트 /////////////////////	
 	UPROPERTY(EditDefaultsOnly)

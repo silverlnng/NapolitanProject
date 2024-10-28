@@ -18,7 +18,7 @@ ANPCCharacter::ANPCCharacter()
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("NPC"));
 	// 스프링암을 생성해서 루트에 붙이고싶다.
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
-	SpringArmComp->SetupAttachment(RootComponent);
+	SpringArmComp->SetupAttachment(GetMesh(),"head");
 	SpringArmComp->SetRelativeLocation(FVector(35 , 40 , 65));
 	SpringArmComp->SetRelativeRotation(FRotator(-25,180,0));
 	SpringArmComp->TargetArmLength = 200;

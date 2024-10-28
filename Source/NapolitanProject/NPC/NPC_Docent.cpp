@@ -4,6 +4,12 @@
 #include "NPC_Docent.h"
 
 #include "TestPlayerController.h"
+#include "Camera/CameraComponent.h"
+#include "Components/Image.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "NapolitanProject/YJ/InteractWidget.h"
+#include "NapolitanProject/YJ/PlayerHUD.h"
+#include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 void ANPC_Docent::ResultEvent(int32 result)
 {
@@ -21,7 +27,36 @@ void ANPC_Docent::ResultEvent(int32 result)
 		}
 		else if (1==result)
 		{
+			int32 key=(NPC_ID*100)+(State*10)+result;
+			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
+			TestPC->SetCurNPCResultUI(key);
+			 // TestPC-> 키전달 c
+
+			// 타이머 람다 로 PlayerHUD->NPCDialogueUI 안보이게 하고
+	
+			// 뷰전환이라면 npc 자신의 카메라를 향해
+			
+			FTimerHandle Timer;
+			GetWorldTimerManager().SetTimer(Timer,[this]()
+			{
+				PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
+				SpringArmComp->TargetArmLength=200.f;
+				SpringArmComp->SetRelativeLocation(FVector(0,0,40));
+				SpringArmComp->SetRelativeRotation(FRotator(0,180,0));
+				CameraComp->SetFieldOfView(20);
+				PlayAnimMontage(attackAnimMontage);
+			},3.0f,false);
+			
+			FTimerHandle LerpTimerHandle;
+			GetWorld()->GetTimerManager().SetTimer(LerpTimerHandle, [this]()
+			{
+				
+			}, 0.01f, true);
+			
+			// 메인캐릭터에게 다가오고 애니메이션 몽타주 실행
 		
+			
+			
 		}
 		else if (2==result)
 		{
@@ -52,7 +87,8 @@ void ANPC_Docent::ResultEvent(int32 result)
 		else if (4==result)
 		{
 			// 정답 . 만약 다른 선 택을 하게 되면 선택한 것에 따라 죽는다. 살아줘를 택할 시, 소년은 사라지고 그 자리에 수첩이 남는다. 
-
+			TestPC->StartEndNPCDialougue(false);
+			PlayerHUD->InteractUI->PlayNoteUIEvent(true);
 		}
 	}
 	

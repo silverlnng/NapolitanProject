@@ -40,10 +40,10 @@ ATestCharacter::ATestCharacter()
 	
 	// Create a CameraComponent	
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	CameraComponent->SetupAttachment(GetMesh(),FName("head"));
+	CameraComponent->SetupAttachment(GetMesh(),"head");
 	CameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
 	CameraComponent->bUsePawnControlRotation = true;
-	CameraComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("HeadSocket"));
+	//CameraComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("HeadSocket"));
 
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -298,6 +298,16 @@ void ATestCharacter::CrouchToggle(const FInputActionValue& Value)
 void ATestCharacter::SetPlayerState(EPlayerState newState)
 {
 	curState=newState;
+
+	switch (curState)
+	{
+	case EPlayerState::UI:
+		// 노트  ui 볼때 
+		break;
+	default:
+		break;
+	}
+	
 }
 
 void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)
@@ -307,6 +317,7 @@ void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)
 		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Hidden);
 		PC->SetInputMode(FInputModeGameOnly());
 		PC->SetShowMouseCursor(false);
+		SetPlayerState(EPlayerState::Idle);
 	}
 	else
 	{
@@ -314,6 +325,7 @@ void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)
 		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
 		PC->SetInputMode(FInputModeGameAndUI());
 		PC->SetShowMouseCursor(true);
+		SetPlayerState(EPlayerState::UI);
 	}
 }
 
@@ -370,7 +382,7 @@ void ATestCharacter::SphereTraceFromCamera()
 		PlayerHUD->InteractUI->SetVisibleCrossHair(true);
 		//PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
 	}
-	else if (curState==EPlayerState::Talking)
+	else if (curState==EPlayerState::Talking||curState==EPlayerState::UI)
 	{
 		PlayerHUD->InteractUI->SetVisibleHBox(false);
 		PlayerHUD->InteractUI->SetVisibleCrossHair(false);

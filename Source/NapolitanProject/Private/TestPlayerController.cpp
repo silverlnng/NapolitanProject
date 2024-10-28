@@ -172,7 +172,8 @@ void ATestPlayerController::StartEndNPCDialougue(bool value)
 		ATestCharacter* player = Cast<ATestCharacter>(this->GetCharacter());
 		player->SetPlayerState(EPlayerState::Idle);
 		// 플레이어 상태 idle으로
-		SetViewTargetWithBlend(this,1.5f);
+		//SetViewTargetWithBlend(this,1.5f);
+		CameraViewChangePlayer();
 	}
 }
 
@@ -331,5 +332,34 @@ void ATestPlayerController::SetCurNPCSelectUI(const int32& NPC_ID, const int32& 
 
 	// 한번호출
 	PlayerHUD->NPCDialogueUI->CreateSelectionChildren(count,str,result);
+}
+
+void ATestPlayerController::SetCurNPCResultUI(int32 FindKey)
+{
+	if (GI->NPCResultMap.Contains(FindKey)) // 있는 경우
+	{
+		
+		UE_LOG(LogTemp,Warning,TEXT("%s,%d"),*CALLINFO,FindKey);
+		
+		const FNPCResult& Result = GI->NPCResultMap[FindKey];
+		if (GI->lang ==0)
+		{
+			// Select.Select_Kor;
+			const FString str=Result.result_Kor;
+			UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*str);
+			PlayerHUD->NPCDialogueUI->SetText_Dialogue(str);
+		}
+		else if(GI->lang ==1)
+		{
+			// Select.Select_Eng;
+			const FString str=Result.result_Eng;
+			UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*str);
+			PlayerHUD->NPCDialogueUI->SetText_Dialogue(str);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp,Warning,TEXT("%s,no result"),*CALLINFO);
+	}
 }
 

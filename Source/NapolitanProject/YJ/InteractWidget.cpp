@@ -43,3 +43,13 @@ void UInteractWidget::GetSouvenirEvent(const FString& str)
 	Text_SouvenirName->SetText(FText::FromString(str));
 	PlayAnimation(GetSouvenirAnim);
 }
+
+void UInteractWidget::PlayNoteUIEvent(bool val)
+{
+	if (val)
+	{
+		Img_Note->SetVisibility(ESlateVisibility::Visible);
+		PlayAnimation(NoteImgAnim);
+	}
+	
+}

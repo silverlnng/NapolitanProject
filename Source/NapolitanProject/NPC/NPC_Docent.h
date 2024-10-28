@@ -26,5 +26,8 @@ public:
 	virtual int32 GetNPCID() override;
 
 	virtual int32 GetState() override;
+
+	UPROPERTY(EditDefaultsOnly,Category=Anim)
+	class UAnimMontage* attackAnimMontage;
 	
 };
