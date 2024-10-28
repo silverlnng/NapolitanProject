@@ -29,7 +29,7 @@ public:
 
 	/** First person camera */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	UCameraComponent* FirstPersonCameraComponent;
+	UCameraComponent* CameraComponent;
 
 	/** Jump Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
@@ -43,7 +43,7 @@ public:
 	ATestCharacter();
 
 protected:
-	virtual void BeginPlay();
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 public:
 		
@@ -67,10 +67,8 @@ protected:
 
 public:
 	/** Returns Mesh1P subobject **/
-	//USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
-	/** Returns FirstPersonCameraComponent subobject **/
-	UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
-
+	//USkeletalMeshComponent* GetMesh1P() const { return Mesh1P;
+	
 	UPROPERTY(VisibleAnywhere)
 	class APlayerController* PC;
 

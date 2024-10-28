@@ -108,7 +108,7 @@ void UEventComponent::UpdateText()
 	//CurrentText.Append("</>");
 	
 	// TextBlock에 적용
-	if (TestPC->EventUI->RichText_Event)
+	if (TestPC&&TestPC->EventUI&&TestPC->EventUI->RichText_Event)
 	{
 		TestPC->EventUI->RichText_Event->SetText(FText::FromString(StartTag+CurrentText+TEXT("</>")));
 	}
