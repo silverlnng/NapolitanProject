@@ -30,4 +30,11 @@ public:
 	UPROPERTY(EditDefaultsOnly,Category=Anim)
 	class UAnimMontage* attackAnimMontage;
 	
+	UFUNCTION()
+	void UpdateLerp();
+	
+	FTimerHandle LerpTimerHandle;
+	float ElapsedTime = 0.0f;
+	float LerpDuration = 8.0f;
+	
 };

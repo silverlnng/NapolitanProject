@@ -19,9 +19,9 @@ ANPCCharacter::ANPCCharacter()
 	// 스프링암을 생성해서 루트에 붙이고싶다.
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->SetupAttachment(GetMesh(),"head");
-	SpringArmComp->SetRelativeLocation(FVector(35 , 40 , 65));
-	SpringArmComp->SetRelativeRotation(FRotator(-25,180,0));
-	SpringArmComp->TargetArmLength = 200;
+	SpringArmComp->SetRelativeLocation(FVector(0 , 0 , 30));
+	SpringArmComp->SetRelativeRotation(FRotator(0,180,0));
+	SpringArmComp->TargetArmLength = 300;
 
 	// 카메라를 생성해서 스프링암에 붙이고싶다.
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));

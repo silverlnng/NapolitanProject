@@ -38,7 +38,11 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UYSEvanceUI> YSEvanceFactory;
-	
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UDeadEndingWidget> DeadEndingWidgetFactory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
+	class UDeadEndingWidget* DeadEndingWidgetUI;
 	
 	
 };

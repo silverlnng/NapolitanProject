@@ -3,6 +3,7 @@
 
 #include "PlayerHUD.h"
 
+#include "DeadEndingWidget.h"
 #include "InteractWidget.h"
 #include "DialogueUI/NPCDialogueWidget.h"
 #include "Blueprint/UserWidget.h"
@@ -48,5 +49,13 @@ void APlayerHUD::BeginPlay()
 		YsEvanceUserWidget->AddToViewport();
 		YsEvanceUserWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
+	
+	DeadEndingWidgetUI=CreateWidget<UDeadEndingWidget>(GetWorld(),DeadEndingWidgetFactory);
+	if (DeadEndingWidgetUI)
+	{
+		DeadEndingWidgetUI->AddToViewport();
+		DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Hidden);
+	}
+
 	
 }
