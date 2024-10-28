@@ -40,6 +40,14 @@ void APlayerHUD::BeginPlay()
 		InteractUI->SetVisibleHBox(false);
 	}
 
+	DeadEndingWidgetUI=CreateWidget<UDeadEndingWidget>(GetWorld(),DeadEndingWidgetFactory);
+	if (DeadEndingWidgetUI)
+	{
+		DeadEndingWidgetUI->AddToViewport();
+		DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Hidden);
+	}
+	
+
 	if (!YSEvanceFactory)
 		return;
 
@@ -50,12 +58,7 @@ void APlayerHUD::BeginPlay()
 		YsEvanceUserWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 	
-	DeadEndingWidgetUI=CreateWidget<UDeadEndingWidget>(GetWorld(),DeadEndingWidgetFactory);
-	if (DeadEndingWidgetUI)
-	{
-		DeadEndingWidgetUI->AddToViewport();
-		DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Hidden);
-	}
+	
 
 	
 }

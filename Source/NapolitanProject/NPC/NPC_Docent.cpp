@@ -54,8 +54,22 @@ void ANPC_Docent::ResultEvent(int32 result)
 			GetWorldTimerManager().SetTimer(LerpTimerHandle,this,&ANPC_Docent::UpdateLerp,0.01f, true,3.0f);
 			
 			// 메인캐릭터에게 다가오고 애니메이션 몽타주 실행
-		
+
+			FTimerHandle EndingTimer;
+			GetWorldTimerManager().SetTimer(EndingTimer,[this]()
+			{
+				// 끝나는 엔딩 위젯 나오도록 하기
+				if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
+				{
+					PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+					name= FString(TEXT("<Red_Big>도슨트에게</>"));
+					PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
+					PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
+				}
 			
+			},8.0f,false);
+		
+		
 			
 		}
 		else if (2==result)
@@ -104,7 +118,7 @@ void ANPC_Docent::UpdateLerp()
 	
 	float Loc = FMath::Lerp(SpringArmComp->GetRelativeLocation().Z, 40, Alpha);
 	float TargetArm = FMath::Lerp(SpringArmComp->TargetArmLength, 150, Alpha);
-	float FieldOfView = FMath::Lerp(CameraComp->FieldOfView, 60, Alpha);
+	float FieldOfView = FMath::Lerp(CameraComp->FieldOfView, 80, Alpha);
 	
 	SpringArmComp->SetRelativeLocation(FVector(0,0,Loc));
 	SpringArmComp->TargetArmLength=TargetArm;
@@ -113,9 +127,6 @@ void ANPC_Docent::UpdateLerp()
 	if (Alpha >= 1.0f)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(LerpTimerHandle);
-
-		// 끝나는 엔딩 위젯 나오도록 하기
-		PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
