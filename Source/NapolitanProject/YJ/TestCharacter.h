@@ -180,8 +180,6 @@ public:
 	float TargetFieldOfView; //줌
 	float CurrentFieldOfView; //현재 줌 = 90도
 	bool bIsFieldOfViewTransitioning;
-
-	void YSEvanceUIStart();
 };
 
 

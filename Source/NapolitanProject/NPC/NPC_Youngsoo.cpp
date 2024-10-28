@@ -97,7 +97,7 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			{
 				// 캐릭터의 Mesh를 보이지 않게 설정
 				GetMesh()->SetVisibility(false);
-			}, 10.0f, false);
+			}, 5.0f, false);
 		}
 		else
 		{
@@ -105,7 +105,10 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			//위대한 빨간 등대를 부수자 -> 카메라 시점 변경 및 플레이어 얼굴을 클로즈 업
 			MainCharacter->AdjustCameraPosition(); //시점 변경
 			// 글자로 된 에반스 매듭이 나와서 플레이어 목 감싸고 피 터지는 연출과 함께 사망
-			MainCharacter->YSEvanceUIStart();
+			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				PlayerHUD->CreateYSEvance(); //=교수형 UI 출력
+			}, 7.0f, false);
 		}
 	}
 	else if (2 == State)

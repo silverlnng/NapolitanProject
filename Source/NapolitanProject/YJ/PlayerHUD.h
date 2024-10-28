@@ -33,11 +33,14 @@ public:
 
 	//===========
 	//사망 UI 생김
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UYSEvanceUI> YSEvanceFactory;
 	UPROPERTY(EditDefaultsOnly)
 	class UYSEvanceUI* YsEvanceUserWidget;
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UYSEvanceUI> YSEvanceFactory;
+	UFUNCTION()
+	void CreateYSEvance();
 	
 	
 	

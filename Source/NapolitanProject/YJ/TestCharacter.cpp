@@ -132,11 +132,11 @@ void ATestCharacter::Tick(float DeltaSeconds)
 	if (bIsFieldOfViewTransitioning && ChageCameracomp && bIsCameraTransitioning == false)
 	{
 		//보간
-		CurrentFieldOfView = FMath::FInterpTo(ChageCameracomp->FieldOfView, 45.0f, DeltaSeconds, CameraTransitionSpeed);
+		CurrentFieldOfView = FMath::FInterpTo(ChageCameracomp->FieldOfView, 37.0f, DeltaSeconds, CameraTransitionSpeed);
 		ChageCameracomp->SetFieldOfView(CurrentFieldOfView);
 
 		// 목표 FieldOfView에 도달하면 전환 종료
-		if (FMath::IsNearlyEqual(CurrentFieldOfView, 45.0f, 0.1f))
+		if (FMath::IsNearlyEqual(CurrentFieldOfView, 37.0f, 0.1f))
 		{
 			bIsFieldOfViewTransitioning = false;
 		}
@@ -412,7 +412,7 @@ void ATestCharacter::AdjustCameraPosition()
 			ChageCameracomp->Activate();
 
 			//목표 위치와 각도를 설정
-			TargetCameraLocation = FVector(-40.f, -40.f, 20.f);
+			TargetCameraLocation = FVector(-40.f, -40.f, 11.f);
 			TargetCameraRotation = FRotator(0.f, -180.f, 0.f);
 
 			//카메라 전환 플래그와 속도 설정
@@ -430,13 +430,5 @@ void ATestCharacter::AdjustCameraPosition()
 	
 }
 
-void ATestCharacter::YSEvanceUIStart()
-{
-	if (PlayerHUD->YsEvanceUserWidget)
-	{
-		PlayerHUD->YsEvanceUserWidget->SetVisibility(ESlateVisibility::Visible);
-		PlayerHUD->YsEvanceUserWidget->UpdateText();
-	}
-}
 
 

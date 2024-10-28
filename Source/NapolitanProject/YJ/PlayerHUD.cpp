@@ -38,15 +38,20 @@ void APlayerHUD::BeginPlay()
 		InteractUI->SetVisibleCrossHair(true);
 		InteractUI->SetVisibleHBox(false);
 	}
+	
+	
+}
 
+void APlayerHUD::CreateYSEvance()
+{
 	if (!YSEvanceFactory)
 		return;
-
-	YsEvanceUserWidget = CastChecked<UYSEvanceUI>(CreateWidget(GetWorld(), YSEvanceFactory));
-
+	
+	YsEvanceUserWidget = CreateWidget<UYSEvanceUI>(GetWorld(), YSEvanceFactory);
+	
 	if (YsEvanceUserWidget) {
 		YsEvanceUserWidget->AddToViewport();
-		YsEvanceUserWidget->SetVisibility(ESlateVisibility::Hidden);
+		YsEvanceUserWidget->SetVisibility(ESlateVisibility::Visible);
+		//YsEvanceUserWidget->UpdateText();
 	}
-	
 }
