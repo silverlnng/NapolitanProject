@@ -7,6 +7,7 @@
 #include "DialogueUI/NPCDialogueWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "NYS_Choice.h"
+#include "YSEvanceUI.h"
 #include "NoteUI/NoteWidget.h"
 
 void APlayerHUD::BeginPlay()
@@ -38,14 +39,14 @@ void APlayerHUD::BeginPlay()
 		InteractUI->SetVisibleHBox(false);
 	}
 
-	if (!NYSFactory)
+	if (!YSEvanceFactory)
 		return;
 
-	NYSUi = CastChecked<UNYS_Choice>(CreateWidget(GetWorld(), NYSFactory));
+	YsEvanceUserWidget = CastChecked<UYSEvanceUI>(CreateWidget(GetWorld(), YSEvanceFactory));
 
-	if (NYSUi) {
-		NYSUi->AddToViewport();
-		NYSUi->SetVisibility(ESlateVisibility::Hidden);
+	if (YsEvanceUserWidget) {
+		YsEvanceUserWidget->AddToViewport();
+		YsEvanceUserWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 	
 }

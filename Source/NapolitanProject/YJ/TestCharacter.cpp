@@ -17,6 +17,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "NoteUI/NoteWidget.h"
+#include "YSEvanceUI.h"
 
 ATestCharacter::ATestCharacter()
 {
@@ -80,7 +81,6 @@ void ATestCharacter::BeginPlay()
 	FTimerHandle TimerHandle;	
 
 	GetWorldTimerManager().SetTimer(TimerHandle,this,&ATestCharacter::SphereTraceFromCamera,0.2f,true);
-	
 }
 
 void ATestCharacter::Tick(float DeltaSeconds)
@@ -422,6 +422,15 @@ void ATestCharacter::AdjustCameraPosition()
 	}
 	
 	
+}
+
+void ATestCharacter::YSEvanceUIStart()
+{
+	if (PlayerHUD->YsEvanceUserWidget)
+	{
+		PlayerHUD->YsEvanceUserWidget->SetVisibility(ESlateVisibility::Visible);
+		PlayerHUD->YsEvanceUserWidget->UpdateText();
+	}
 }
 
 

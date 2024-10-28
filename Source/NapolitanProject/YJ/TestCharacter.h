@@ -158,9 +158,8 @@ public:
 
 	UPROPERTY()
 	class ATestPlayerController* TestPC;
-	
-	//====== 김영수 위대한 빨간 등대 선택시 1-3
-	//카메라와 메쉬 위치 조정에 필요한 변수들
+
+	//////////// 김영수 위대한 빨간 등대 선택시 1-3
 public:
 
 	// 전환용 카메라 부착해주기 
@@ -169,8 +168,7 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	class UCameraComponent* ChageCameracomp;
-
-public:
+	
 	//카메라 전환 함수
 	void AdjustCameraPosition();
 
@@ -182,6 +180,8 @@ public:
 	float TargetFieldOfView; //줌
 	float CurrentFieldOfView; //현재 줌 = 90도
 	bool bIsFieldOfViewTransitioning;
+
+	void YSEvanceUIStart();
 };
 
 
