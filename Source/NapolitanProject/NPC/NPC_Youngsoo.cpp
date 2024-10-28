@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "NYS_Choice.h"
+#include "TestPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "../YJ/TestCharacter.h"
 #include "../YJ/PlayerHUD.h"
@@ -100,6 +101,7 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 		}
 		else
 		{
+			TestPC->CameraViewChangePlayer();
 			//위대한 빨간 등대를 부수자 -> 카메라 시점 변경 및 플레이어 얼굴을 클로즈 업
 			MainCharacter->AdjustCameraPosition(); //시점 변경
 			// 글자로 된 에반스 매듭이 나와서 플레이어 목 감싸고 피 터지는 연출과 함께 사망

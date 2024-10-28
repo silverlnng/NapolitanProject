@@ -69,7 +69,7 @@ ATestCharacter::ATestCharacter()
 	// 카메라를 생성해서 스프링암에 붙이고싶다.
 	ChageCameracomp = CreateDefaultSubobject<UCameraComponent>(TEXT("ChageCameracomp"));
 	ChageCameracomp->SetupAttachment(SpringArmComp);
-	ChageCameracomp->SetRelativeLocation(FVector(-210.f, -40.f, -20.f)); // Position the camera
+	ChageCameracomp->SetRelativeLocation(FVector(-190.f, -40.f, 0.f)); // Position the camera
 	
 	//ChageCameracomp->SetRelativeLocation(FVector(0 , -40 , -20));
 	//ChageCameracomp->SetRelativeRotation(FRotator(0, 180, 0));
@@ -412,8 +412,8 @@ void ATestCharacter::AdjustCameraPosition()
 			ChageCameracomp->Activate();
 
 			//목표 위치와 각도를 설정
-			TargetCameraLocation = FVector(0.f, -40.f, -20.f);
-			TargetCameraRotation = FRotator(0.f, 180.f, 0.f);
+			TargetCameraLocation = FVector(-40.f, -40.f, 20.f);
+			TargetCameraRotation = FRotator(0.f, -180.f, 0.f);
 
 			//카메라 전환 플래그와 속도 설정
 			bIsCameraTransitioning = true;

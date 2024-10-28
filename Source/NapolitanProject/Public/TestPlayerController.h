@@ -28,6 +28,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class USouvenirWidget* SouvenirUI;
 
+	UPROPERTY(VisibleAnywhere)
+	class ATestCharacter* me;
+
 	UFUNCTION()
 	void SetUIMode(bool value);
 	
@@ -53,6 +56,9 @@ public:
 
 	UFUNCTION()
 	void CameraViewChangeNPC();
+
+	UFUNCTION()
+	void CameraViewChangePlayer();
 
 	FTimerHandle DialogueTimerHandle;
 	

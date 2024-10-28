@@ -29,7 +29,6 @@ void ATestPlayerController::PostInitializeComponents()
 	Super::PostInitializeComponents();
 	PlayerHUD=GetHUD<APlayerHUD>();
 	GI = GetGameInstance<UTestGameInstance>();
-	
 }
 
 void ATestPlayerController::BeginPlay()
@@ -38,6 +37,7 @@ void ATestPlayerController::BeginPlay()
 	
 	PlayerHUD=GetHUD<APlayerHUD>();
 	GI = GetGameInstance<UTestGameInstance>();
+	me = Cast<ATestCharacter>(GetPawn());
 	
 	FTimerHandle TimerHandle;
 	GetWorldTimerManager().SetTimer(TimerHandle,[this]()
@@ -260,6 +260,15 @@ void ATestPlayerController::CameraViewChangeNPC()
 	}
 	// 카메라의 이동을 lerp 하게 대화하는동안 움직이도록 하게
 	 // GetWorldTimerManager().SetTimer(DialogueTimerHandle,this,)
+}
+
+void ATestPlayerController::CameraViewChangePlayer()
+{
+	//다시 원래 플레이어의 카메라로 전환하는 함수
+	if (me)
+	{
+		SetViewTargetWithBlend(me, 1.5f);
+	}
 }
 
 void ATestPlayerController::SetCurNPC(ANPCCharacter* curNPC_)
