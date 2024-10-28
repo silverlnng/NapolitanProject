@@ -173,7 +173,15 @@ public:
 public:
 	//카메라 전환 함수
 	void AdjustCameraPosition();
-	
+
+	FVector TargetCameraLocation; //타겟 위치
+	FRotator TargetCameraRotation; //타겟 회전
+	bool bIsCameraTransitioning; //카메라 전환 플래그
+	float CameraTransitionSpeed; //속도
+
+	float TargetFieldOfView; //줌
+	float CurrentFieldOfView; //현재 줌 = 90도
+	bool bIsFieldOfViewTransitioning;
 };
 
 

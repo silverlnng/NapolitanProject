@@ -95,6 +95,46 @@ void ATestCharacter::Tick(float DeltaSeconds)
 		UpdateNotRunAction(DeltaSeconds);
 	}
 	// GetCapsuleComponent()->SetCapsuleHalfHeight(FMath::Lerp());
+
+	
+	//1-3. 김영수 위대한 빨간 등대 이벤트
+	if (bIsCameraTransitioning && ChageCameracomp)
+	{
+		//카메라 위치와 각도를 부드럽게 보간
+		FVector CurrentLocation = ChageCameracomp->GetRelativeLocation();
+		FRotator CurrentRotation = ChageCameracomp->GetRelativeRotation();
+
+		FVector NewLocation = FMath::VInterpTo(CurrentLocation, TargetCameraLocation, DeltaSeconds, CameraTransitionSpeed);
+		FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetCameraRotation, DeltaSeconds, CameraTransitionSpeed);
+
+		ChageCameracomp->SetRelativeLocation(NewLocation);
+		ChageCameracomp->SetRelativeRotation(NewRotation);
+
+		// FieldOfView 값을 부드럽게 보간
+		CurrentFieldOfView = FMath::FInterpTo(CurrentFieldOfView, TargetFieldOfView, DeltaSeconds, CameraTransitionSpeed);
+		ChageCameracomp->SetFieldOfView(CurrentFieldOfView);
+
+		// 목표 위치와 각도에 도달하면 전환 종료
+		if (NewLocation.Equals(TargetCameraLocation, 0.1f) && NewRotation.Equals(TargetCameraRotation, 0.1f))
+		{
+			bIsCameraTransitioning = false;
+			bIsFieldOfViewTransitioning = true; // FieldOfView 전환 시작
+		}
+	}
+
+	//줌인지 확인
+	if (bIsFieldOfViewTransitioning && ChageCameracomp && bIsCameraTransitioning == false)
+	{
+		//보간
+		CurrentFieldOfView = FMath::FInterpTo(ChageCameracomp->FieldOfView, 45.0f, DeltaSeconds, CameraTransitionSpeed);
+		ChageCameracomp->SetFieldOfView(CurrentFieldOfView);
+
+		// 목표 FieldOfView에 도달하면 전환 종료
+		if (FMath::IsNearlyEqual(CurrentFieldOfView, 45.0f, 0.1f))
+		{
+			bIsFieldOfViewTransitioning = false;
+		}
+	}
 	
 }
 
@@ -361,10 +401,23 @@ void ATestCharacter::AdjustCameraPosition()
 		// 전환할 카메라 컴포넌트가 유효한지 확인
 		if (ChageCameracomp)
 		{
-		
 			// 플레이어의 뷰를 새 카메라 컴포넌트로 업데이트
 			FirstPersonCameraComponent->Deactivate();
 			ChageCameracomp->Activate();
+
+			//목표 위치와 각도를 설정
+			TargetCameraLocation = FVector(0.f, -40.f, -20.f);
+			TargetCameraRotation = FRotator(0.f, 180.f, 0.f);
+
+			//카메라 전환 플래그와 속도 설정
+			bIsCameraTransitioning = true;
+			CameraTransitionSpeed = 2.0f; //카메라 전환 속도 조절
+
+			// 목표 FieldOfView 설정
+			bIsFieldOfViewTransitioning = false;
+			TargetFieldOfView = 45.0f;
+			CurrentFieldOfView = ChageCameracomp->FieldOfView;
+			
 		}
 	}
 	
