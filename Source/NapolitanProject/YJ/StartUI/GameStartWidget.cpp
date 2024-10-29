@@ -5,6 +5,7 @@
 
 #include "SettingWidget.h"
 #include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
 
 void UGameStartWidget::NativeConstruct()
 {
@@ -18,6 +19,8 @@ void UGameStartWidget::NativeConstruct()
 
 void UGameStartWidget::OnClickedNewGame()
 {
+	// 게임시작 로비로 레벨 로드하기
+	//UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld())
 }
 
 void UGameStartWidget::OnClickedLoad()

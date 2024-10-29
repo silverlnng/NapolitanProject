@@ -27,7 +27,7 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class USaveConfirmWidget> SaveConfirmWidgetFactory;
 	
-	UPROPERTY(meta=(BindWidget))
+	UPROPERTY()
 	class USaveConfirmWidget* SaveConfirmUI;
 	
 	UFUNCTION()
