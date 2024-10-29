@@ -116,6 +116,14 @@ void ANPC_Docent::ResultEvent(int32 result)
 	
 }
 
+void ANPC_Docent::playTalkAnimMontage()
+{
+	if (TalkAnimMontage)
+	{
+		PlayAnimMontage(TalkAnimMontage);
+	}
+}
+
 void ANPC_Docent::UpdateLerp()
 {
 	ElapsedTime += 0.01f; // 타이머 호출 간격만큼 시간 증가

@@ -401,6 +401,12 @@ void ATestCharacter::OnInteraction()
 		// 컨트롤러 의  curNPC에 담아주기 
 			TestPC->curNPC =InteractNPC;
 		   // TestPC 에서 대화창 시작하는 함수 시작하기
+
+			if (TestPC->curNPC->TalkAnimMontage)
+			{
+				TestPC->curNPC->playTalkAnimMontage();
+			}
+			
 			TestPC->StartEndNPCDialougue(true);
 			TestPC->SetNPCDialougueText(0);
 			// 나의 상태 변화

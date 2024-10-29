@@ -48,7 +48,9 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	class UCameraComponent* CameraComp;
-
 	
+	class UAnimMontage* TalkAnimMontage;
+	
+	virtual void playTalkAnimMontage(); 
 };
 

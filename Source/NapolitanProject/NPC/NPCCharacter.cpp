@@ -73,3 +73,8 @@ void ANPCCharacter::Interact()
 {
 }
 
+void ANPCCharacter::playTalkAnimMontage()
+{
+	
+}
+

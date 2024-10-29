@@ -29,6 +29,11 @@ public:
 
 	UPROPERTY(EditDefaultsOnly,Category=Anim)
 	class UAnimMontage* attackAnimMontage;
+
+	UPROPERTY(EditDefaultsOnly,Category=Anim)
+	class UAnimMontage* TalkAnimMontage;
+
+	virtual void playTalkAnimMontage() override; 
 	
 	UFUNCTION()
 	void UpdateLerp();
