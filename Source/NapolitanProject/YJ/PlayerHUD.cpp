@@ -10,6 +10,8 @@
 #include "NYS_Choice.h"
 #include "YSEvanceUI.h"
 #include "NoteUI/NoteWidget.h"
+#include "Animation/WidgetAnimation.h"
+#include "BehaviorTree/Tasks/BTTask_PlayAnimation.h"
 
 void APlayerHUD::BeginPlay()
 {
@@ -47,18 +49,20 @@ void APlayerHUD::BeginPlay()
 		DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 	
+	
+}
 
+void APlayerHUD::CreateYSEvance()
+{
 	if (!YSEvanceFactory)
 		return;
-
-	YsEvanceUserWidget = CastChecked<UYSEvanceUI>(CreateWidget(GetWorld(), YSEvanceFactory));
-
+	
+	YsEvanceUserWidget = CreateWidget<UYSEvanceUI>(GetWorld(), YSEvanceFactory);
+	
 	if (YsEvanceUserWidget) {
 		YsEvanceUserWidget->AddToViewport();
-		YsEvanceUserWidget->SetVisibility(ESlateVisibility::Hidden);
+		YsEvanceUserWidget->SetVisibility(ESlateVisibility::Visible);
+		//텍스트 애니메이션
+		YsEvanceUserWidget->PlayAnim();
 	}
-	
-	
-
-	
 }

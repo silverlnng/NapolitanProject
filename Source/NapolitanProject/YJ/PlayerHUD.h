@@ -33,16 +33,21 @@ public:
 
 	//===========
 	//사망 UI 생김
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UYSEvanceUI> YSEvanceFactory;
 	UPROPERTY(EditDefaultsOnly)
 	class UYSEvanceUI* YsEvanceUserWidget;
 
-	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UYSEvanceUI> YSEvanceFactory;
-
+	UFUNCTION()
+	void CreateYSEvance();
+	
+	//기본 DeadEndingUI
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
 	TSubclassOf<class UDeadEndingWidget> DeadEndingWidgetFactory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UDeadEndingWidget* DeadEndingWidgetUI;
+
 	
 	
 };
