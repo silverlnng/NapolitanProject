@@ -48,4 +48,16 @@ public:
 
 	FTimerHandle TimerHandle;  // 타이머 핸들 선언
 
+	//사라지는 효과
+	bool bisDissolve = false;
+	float dissolveAnimValue;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial1;  // 블루프린트에서 지정할 머터리얼, 1-2
+	
+	UMaterialInstanceDynamic* DynamicMaterial;  // 동적 머터리얼 인스턴스
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial2;  // 1-1
+
 };

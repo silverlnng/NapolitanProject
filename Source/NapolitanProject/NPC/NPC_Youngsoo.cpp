@@ -15,13 +15,13 @@ ANPC_Youngsoo::ANPC_Youngsoo()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	
 }
 
 // Called when the game starts or when spawned
 void ANPC_Youngsoo::BeginPlay()
 {
 	Super::BeginPlay();
-	
 
 }
 
@@ -29,6 +29,22 @@ void ANPC_Youngsoo::BeginPlay()
 void ANPC_Youngsoo::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	
+	if (bisDissolve && DynamicMaterial)
+	{
+		dissolveAnimValue += DeltaTime / 4;
+
+		// 원하는 범위 (0.5에서 -0.5)로 클램핑
+		float DissolveValue = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
+		DynamicMaterial->SetScalarParameterValue(TEXT("dissolve"), DissolveValue);
+
+		if (DissolveValue <= -0.5f)
+		{
+			bisDissolve = false;
+			GetMesh()->SetVisibility(false);
+		}
+	}
 
 }
 
@@ -65,28 +81,42 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 		{
 			//남자를 위로해주자. “괜찮으십니까”의 경우 => 남자는 소리를 지르다가 사라짐
 			UGameplayStatics::PlaySound2D(GetWorld(), YSScreamSound);
+			// DynamicMaterial 생성 및 적용
+			if (DissolveMaterial2)
+			{
+				DynamicMaterial = UMaterialInstanceDynamic::Create(DissolveMaterial2, this);
+				if (DynamicMaterial)
+				{
+					GetMesh()->SetMaterial(0, DynamicMaterial);
+				}
+			}
 			// 5초 후에 캐릭터를 숨기기 위한 타이머 설정
 			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 			{
-				// 캐릭터의 Mesh를 보이지 않게 설정
-				GetMesh()->SetVisibility(false);
+				bisDissolve = true;
 			}, 5.0f, false);
-			
 			
 		}
 		else if (1 == result)
 		{
 			// “단 한명만이 닻을 풀어 익사했다." => 내 가족들은... 이라는 대사
+			// DynamicMaterial 생성 및 적용
 			
-			//남자는 눈물을 흘리며 유품을 남기고 사라짐
-			//애니메이션 실행
-
-			//유품 스폰 뒤 사라짐
+			if (DissolveMaterial1)
+			{
+				DynamicMaterial = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);
+				if (DynamicMaterial)
+				{
+					GetMesh()->SetMaterial(0, DynamicMaterial);
+				}
+			}
+			//유품 스폰
+			
 			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 			{
-				// 캐릭터의 Mesh를 보이지 않게 설정
-				GetMesh()->SetVisibility(false);
-			}, 5.0f, false);
+				bisDissolve = true; //유품 스폰 뒤에 사라짐
+			}, 6.0f, false);
+			
 			
 		}
 		else if (2 == result)

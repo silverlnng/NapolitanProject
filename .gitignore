@@ -15,6 +15,7 @@ Saved
 
 # JetBrains Rider
 .idea/
+*.DotSettings.user
 
 #Asset
 Content/Scanned3DPeoplePack
