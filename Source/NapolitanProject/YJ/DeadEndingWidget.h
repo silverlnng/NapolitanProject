@@ -14,6 +14,9 @@ class NAPOLITANPROJECT_API UDeadEndingWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	virtual void NativeConstruct() override;
+	
+public:
 	UPROPERTY(meta=(BindWidget))
 	class URichTextBlock* RichText_Name;
 
@@ -27,4 +30,16 @@ public:
 	float LerpDuration = 12.0f;
 	void StartLerpTimer();
 	void UpdateLerp();
+
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UButton* RestartButton;
+
+	UPROPERTY(EditAnywhere, meta=(BindWidget))
+	class UButton* QuitButton;
+
+	UFUNCTION()
+	void OnRestart();
+	UFUNCTION()
+	void OnQuit();
+	
 };

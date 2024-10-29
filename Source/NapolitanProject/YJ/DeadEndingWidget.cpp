@@ -3,8 +3,19 @@
 
 #include "DeadEndingWidget.h"
 
+#include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/RichTextBlock.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetSystemLibrary.h"
+
+void UDeadEndingWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	RestartButton->OnClicked.AddDynamic(this, &UDeadEndingWidget::OnRestart);
+	QuitButton->OnClicked.AddDynamic(this, &UDeadEndingWidget::OnQuit);
+}
 
 void UDeadEndingWidget::SetRichText_Name(const FString& Str) const
 {
@@ -34,4 +45,19 @@ void UDeadEndingWidget::UpdateLerp()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(LerpTimerHandle);
 	}
+}
+
+void UDeadEndingWidget::OnRestart()
+{
+	//재시작 버튼을 누르면 현재 레벨을 다시 시작하고 싶다.
+	FString mapName = UGameplayStatics::GetCurrentLevelName(GetWorld());
+
+	UGameplayStatics::OpenLevel(GetWorld(), FName(*mapName));
+}
+
+void UDeadEndingWidget::OnQuit()
+{
+	//종료 버튼 누르면 게임 종료
+	auto* pc = GetWorld()->GetFirstPlayerController();
+	UKismetSystemLibrary::QuitGame(GetWorld(), pc, EQuitPreference::Quit, false);
 }
