@@ -33,6 +33,7 @@ public:
 	UFUNCTION()
 	void UpdateLerp();
 	FString name;
+	FString SouvenirName;
 	FTimerHandle LerpTimerHandle;
 	float ElapsedTime = 0.0f;
 	float LerpDuration = 10.0f;

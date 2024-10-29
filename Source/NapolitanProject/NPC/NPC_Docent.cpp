@@ -102,7 +102,15 @@ void ANPC_Docent::ResultEvent(int32 result)
 		{
 			// 정답 . 만약 다른 선 택을 하게 되면 선택한 것에 따라 죽는다. 살아줘를 택할 시, 소년은 사라지고 그 자리에 수첩이 남는다. 
 			TestPC->StartEndNPCDialougue(false);
-			PlayerHUD->InteractUI->PlayNoteUIEvent(true);
+
+			FTimerHandle Timer;
+			GetWorldTimerManager().SetTimer(Timer,[this]()
+			{
+				SouvenirName= FString(TEXT("수첩"));
+				PlayerHUD->InteractUI->GetSouvenirEvent(SouvenirName);
+				PlayerHUD->InteractUI->PlayNoteUIEvent(true);
+			},2.0f,false);
+			
 		}
 	}
 	
