@@ -18,9 +18,6 @@ Saved
 *.DotSettings.user
 
 #Asset
-Content/Showcase/
-Content/ArtFashionAutomotiveGal
-ArtFashionAutomotiveGal
 Content/Scanned3DPeoplePack
 Content/Zombie_Pack
 Content/CreepyAnimatronicAnims
@@ -28,4 +25,3 @@ Content/BSP_ZombieAnims
 Content/InteractiveBook
 Content/HorrorAnimPack
 Content/sA_Bloodymegapack
-Content/Dialogue_mocap
