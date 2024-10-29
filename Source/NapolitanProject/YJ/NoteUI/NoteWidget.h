@@ -20,6 +20,10 @@ public:
 	class UInventoryWidget* WBP_Inventory;
 	UPROPERTY(meta = (BindWidget))
 	class USouvenirWidget* WBP_Souvenir;
+	UPROPERTY(meta = (BindWidget))
+	class UUserWidget* WBP_Rule;
+	UPROPERTY(meta = (BindWidget))
+	class UUserWidget* WBP_SettingInNote;
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_Rule;
