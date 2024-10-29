@@ -424,7 +424,7 @@ void ATestCharacter::AdjustCameraPosition()
 			ChageCameracomp->Activate();
 
 			//목표 위치와 각도를 설정
-			TargetCameraLocation = FVector(-40.f, -40.f, 11.f);
+			TargetCameraLocation = FVector(-40.f, -40.f, -11.f);
 			TargetCameraRotation = FRotator(0.f, -180.f, 0.f);
 
 			//카메라 전환 플래그와 속도 설정
