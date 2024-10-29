@@ -9,6 +9,8 @@
 #include "NYS_Choice.h"
 #include "YSEvanceUI.h"
 #include "NoteUI/NoteWidget.h"
+#include "Animation/WidgetAnimation.h"
+#include "BehaviorTree/Tasks/BTTask_PlayAnimation.h"
 
 void APlayerHUD::BeginPlay()
 {
@@ -52,6 +54,7 @@ void APlayerHUD::CreateYSEvance()
 	if (YsEvanceUserWidget) {
 		YsEvanceUserWidget->AddToViewport();
 		YsEvanceUserWidget->SetVisibility(ESlateVisibility::Visible);
-		//YsEvanceUserWidget->UpdateText();
+		//텍스트 애니메이션
+		YsEvanceUserWidget->PlayAnim();
 	}
 }

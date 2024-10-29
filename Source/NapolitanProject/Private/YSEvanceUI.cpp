@@ -9,3 +9,8 @@ void UYSEvanceUI::NativeConstruct()
 	Super::NativeConstruct();
 	
 }
+
+void UYSEvanceUI::PlayAnim()
+{
+	PlayAnimationForward(TextAnim);
+}

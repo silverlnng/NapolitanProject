@@ -16,6 +16,12 @@ class NAPOLITANPROJECT_API UYSEvanceUI : public UUserWidget
 
 public:
 	virtual void NativeConstruct() override;
+	
+	//텍스트 애니메이션
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidgetAnim), Transient);
+	class UWidgetAnimation* TextAnim;
 
+	UFUNCTION()
+	void PlayAnim();
 
 };
