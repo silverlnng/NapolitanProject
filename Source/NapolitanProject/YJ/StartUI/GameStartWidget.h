@@ -27,6 +27,12 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class USettingWidget* SettingUI;
 
+	UPROPERTY(meta = (BindWidget))
+	class ULoadScreenWidget* WBP_LoadScreen;
+
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> MainLevel;
+
 	UFUNCTION()
 	void OnClickedNewGame();
 	UFUNCTION()
