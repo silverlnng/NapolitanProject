@@ -402,10 +402,8 @@ void ATestCharacter::OnInteraction()
 			TestPC->curNPC =InteractNPC;
 		   // TestPC 에서 대화창 시작하는 함수 시작하기
 
-			if (TestPC->curNPC->TalkAnimMontage)
-			{
-				TestPC->curNPC->playTalkAnimMontage();
-			}
+			
+			TestPC->curNPC->playTalkAnimMontage();
 			
 			TestPC->StartEndNPCDialougue(true);
 			TestPC->SetNPCDialougueText(0);
