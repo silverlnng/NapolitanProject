@@ -42,6 +42,12 @@ public:
 	UFUNCTION()
 	void CreateYSEvance();
 	
+	//기본 DeadEndingUI
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UDeadEndingWidget> DeadEndingWidgetFactory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
+	class UDeadEndingWidget* DeadEndingWidgetUI;
+
 	
 	
 };

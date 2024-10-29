@@ -26,5 +26,15 @@ public:
 	virtual int32 GetNPCID() override;
 
 	virtual int32 GetState() override;
+
+	UPROPERTY(EditDefaultsOnly,Category=Anim)
+	class UAnimMontage* attackAnimMontage;
+	
+	UFUNCTION()
+	void UpdateLerp();
+	FString name;
+	FTimerHandle LerpTimerHandle;
+	float ElapsedTime = 0.0f;
+	float LerpDuration = 10.0f;
 	
 };

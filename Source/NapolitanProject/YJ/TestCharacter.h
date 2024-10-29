@@ -14,7 +14,8 @@ enum class EPlayerState:uint8
 {
 	Idle,
 	Talking,
-	Die
+	Die,
+	UI
 };
 
 UCLASS()

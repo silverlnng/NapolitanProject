@@ -51,10 +51,8 @@ struct FNPCResult
 {
 	GENERATED_BODY()
 	FString State;
-	FString result_Good_Kor;
-	FString result_bad_Kor;
-	FString result_Good_Eng;
-	FString result_bad_Eng;
+	FString result_Kor;
+	FString result_Eng;
 };
 
 USTRUCT(BlueprintType)
@@ -98,7 +96,7 @@ public:
 
 	//////////// 언어 선택 ///////////////////////
 	UPROPERTY(VisibleAnywhere)
-	int32 lang;
+	int32 lang=0;
 
 	UFUNCTION()
 	void SetGameInstanceLang(int32 value);
@@ -120,7 +118,7 @@ public:
 	bool LoadSelectFromCSV(const FString& FilePath);
 	
 	//  어떤 npc , 어떤 상황에서 분기점에서 마지막 대사  
-	FString GetNPCResult(const FString& NPC_ID, const FString& State, const FString& Result ,const FString& Lang);
+	FString GetNPCResult(const int32& NPC_ID, const int32& State, const int32& SelectedAnswer ,const FString& Lang);
 	
 	FString GetNPCDialogue(const FString& NPC_ID, const FString& State, const int32 order ,const FString& Lang);
 

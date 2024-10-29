@@ -57,13 +57,12 @@ bool UTestGameInstance::LoadResultFromCSV(const FString& FilePath)
 		
 		// 1행의 0 ,1 ,2 ,3 ....열
 		
-		int32 FindKey=FCString::Atoi(col[2]);
+		int32 FindKey=FCString::Atoi(col[3]);
 		
 		FNPCResult Dialogue;
-		Dialogue.result_Good_Kor = col[3];
-		Dialogue.result_bad_Kor = col[4];
-		Dialogue.result_Good_Eng= col[5];
-		Dialogue.result_bad_Eng = col[6];
+		Dialogue.result_Kor = col[4];
+		Dialogue.result_Eng= col[5];
+
 		
 		// NPC 대사를 맵에 저장
 		NPCResultMap.Add(FindKey, Dialogue);
@@ -144,6 +143,36 @@ bool UTestGameInstance::LoadSelectFromCSV(const FString& FilePath)
 		NPCSelectMap.Add(FindKey, NPCSelect);
 	}
 	return true;
+}
+
+FString UTestGameInstance::GetNPCResult(const int32& NPC_ID, const int32& State, const int32& SelectedAnswer,
+	const FString& Lang)
+{
+	int32 npc_id=NPC_ID;
+	int32 npc_state=State;
+	int32 npc_Selected=SelectedAnswer;
+	
+	int32 FindKey =(npc_id*100)+(npc_state*10)+npc_Selected;
+	
+	if (NPCResultMap.Contains(FindKey)) // 있는 경우
+	{
+		// 위젯생성 하고 값 넣어주기 
+			
+		const FNPCResult& Result = NPCResultMap[FindKey];
+		if (Lang == TEXT("kor"))
+		{
+			// Select.Select_Kor;
+			const FString str=Result.result_Kor;
+			return Result.result_Kor;
+		}
+		else if(Lang == TEXT("eng"))
+		{
+			// Select.Select_Eng;
+			const FString str=Result.result_Eng;
+			return Result.result_Eng;
+		}
+	}
+	return "FindKey를 찾지 못함";
 }
 
 void UTestGameInstance::GetNPCSelect(const int32& NPC_ID, const int32& State, const FString& Lang)

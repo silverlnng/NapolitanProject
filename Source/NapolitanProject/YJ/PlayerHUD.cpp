@@ -3,6 +3,7 @@
 
 #include "PlayerHUD.h"
 
+#include "DeadEndingWidget.h"
 #include "InteractWidget.h"
 #include "DialogueUI/NPCDialogueWidget.h"
 #include "Blueprint/UserWidget.h"
@@ -39,6 +40,13 @@ void APlayerHUD::BeginPlay()
 		InteractUI->AddToViewport();
 		InteractUI->SetVisibleCrossHair(true);
 		InteractUI->SetVisibleHBox(false);
+	}
+
+	DeadEndingWidgetUI=CreateWidget<UDeadEndingWidget>(GetWorld(),DeadEndingWidgetFactory);
+	if (DeadEndingWidgetUI)
+	{
+		DeadEndingWidgetUI->AddToViewport();
+		DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 	
 	

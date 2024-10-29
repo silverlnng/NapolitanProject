@@ -4,6 +4,13 @@
 #include "NPC_Docent.h"
 
 #include "TestPlayerController.h"
+#include "Camera/CameraComponent.h"
+#include "Components/Image.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "NapolitanProject/YJ/DeadEndingWidget.h"
+#include "NapolitanProject/YJ/InteractWidget.h"
+#include "NapolitanProject/YJ/PlayerHUD.h"
+#include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 void ANPC_Docent::ResultEvent(int32 result)
 {
@@ -21,7 +28,49 @@ void ANPC_Docent::ResultEvent(int32 result)
 		}
 		else if (1==result)
 		{
+			int32 key=(NPC_ID*100)+(State*10)+result;
+			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
+			TestPC->SetCurNPCResultUI(key);
+			 // TestPC-> 키전달 c
+
+			// 타이머 람다 로 PlayerHUD->NPCDialogueUI 안보이게 하고
+	
+			// 뷰전환이라면 npc 자신의 카메라를 향해
+			
+			FTimerHandle Timer;
+			GetWorldTimerManager().SetTimer(Timer,[this]()
+			{
+				PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
+				//SpringArmComp->TargetArmLength=200.f;
+				//SpringArmComp->SetRelativeLocation(FVector(0,0,40));
+				//SpringArmComp->SetRelativeRotation(FRotator(0,180,0));
+				//CameraComp->SetFieldOfView(20);
+				PlayAnimMontage(attackAnimMontage);
+			},3.0f,false);
+
+			
+			ElapsedTime = 0.0f;
+			
+			GetWorldTimerManager().SetTimer(LerpTimerHandle,this,&ANPC_Docent::UpdateLerp,0.01f, true,3.0f);
+			
+			// 메인캐릭터에게 다가오고 애니메이션 몽타주 실행
+
+			FTimerHandle EndingTimer;
+			GetWorldTimerManager().SetTimer(EndingTimer,[this]()
+			{
+				// 끝나는 엔딩 위젯 나오도록 하기
+				if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
+				{
+					PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+					name= FString(TEXT("<Red_Big>도슨트에게</>"));
+					PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
+					PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
+				}
+			
+			},8.0f,false);
 		
+		
+			
 		}
 		else if (2==result)
 		{
@@ -52,11 +101,35 @@ void ANPC_Docent::ResultEvent(int32 result)
 		else if (4==result)
 		{
 			// 정답 . 만약 다른 선 택을 하게 되면 선택한 것에 따라 죽는다. 살아줘를 택할 시, 소년은 사라지고 그 자리에 수첩이 남는다. 
-
+			TestPC->StartEndNPCDialougue(false);
+			PlayerHUD->InteractUI->PlayNoteUIEvent(true);
 		}
 	}
 	
 }
+
+void ANPC_Docent::UpdateLerp()
+{
+	ElapsedTime += 0.01f; // 타이머 호출 간격만큼 시간 증가
+
+	// Lerp 비율 계산
+	float Alpha = FMath::Clamp(ElapsedTime / LerpDuration, 0.0f, 1.0f);
+
+	
+	float Loc = FMath::Lerp(SpringArmComp->GetRelativeLocation().Z, 40, Alpha);
+	float TargetArm = FMath::Lerp(SpringArmComp->TargetArmLength, 150, Alpha);
+	float FieldOfView = FMath::Lerp(CameraComp->FieldOfView, 80, Alpha);
+	
+	SpringArmComp->SetRelativeLocation(FVector(0,0,Loc));
+	SpringArmComp->TargetArmLength=TargetArm;
+	CameraComp->SetFieldOfView(FieldOfView);
+	
+	if (Alpha >= 1.0f)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(LerpTimerHandle);
+	}
+}
+
 
 void ANPC_Docent::Interact()
 {
@@ -72,3 +145,4 @@ int32 ANPC_Docent::GetState()
 {
 	return State;
 }
+
