@@ -41,10 +41,6 @@ void ANPC_Docent::ResultEvent(int32 result)
 			GetWorldTimerManager().SetTimer(Timer,[this]()
 			{
 				PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
-				//SpringArmComp->TargetArmLength=200.f;
-				//SpringArmComp->SetRelativeLocation(FVector(0,0,40));
-				//SpringArmComp->SetRelativeRotation(FRotator(0,180,0));
-				//CameraComp->SetFieldOfView(20);
 				PlayAnimMontage(attackAnimMontage);
 			},3.0f,false);
 
@@ -133,7 +129,7 @@ void ANPC_Docent::UpdateLerp()
 
 	
 	float Loc = FMath::Lerp(SpringArmComp->GetRelativeLocation().Z, 40, Alpha);
-	float TargetArm = FMath::Lerp(SpringArmComp->TargetArmLength, 150, Alpha);
+	float TargetArm = FMath::Lerp(SpringArmComp->TargetArmLength, 170, Alpha);
 	float FieldOfView = FMath::Lerp(CameraComp->FieldOfView, 80, Alpha);
 	
 	SpringArmComp->SetRelativeLocation(FVector(0,0,Loc));

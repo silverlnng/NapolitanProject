@@ -9,6 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "../YJ/TestCharacter.h"
 #include "../YJ/PlayerHUD.h"
+#include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 // Sets default values
 ANPC_Youngsoo::ANPC_Youngsoo()
@@ -81,6 +82,9 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 		{
 			//남자를 위로해주자. “괜찮으십니까”의 경우 => 남자는 소리를 지르다가 사라짐
 			UGameplayStatics::PlaySound2D(GetWorld(), YSScreamSound);
+			int32 key=(NPC_ID*100)+(State*10)+result;
+			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
+			TestPC->SetCurNPCResultUI(key);
 			// DynamicMaterial 생성 및 적용
 			if (DissolveMaterial2)
 			{
@@ -94,6 +98,7 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 			{
 				bisDissolve = true;
+				TestPC->StartEndNPCDialougue(false);
 			}, 5.0f, false);
 			
 		}
@@ -101,6 +106,9 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 		{
 			// “단 한명만이 닻을 풀어 익사했다." => 내 가족들은... 이라는 대사
 			// DynamicMaterial 생성 및 적용
+			int32 key=(NPC_ID*100)+(State*10)+result;
+			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
+			TestPC->SetCurNPCResultUI(key);
 			
 			if (DissolveMaterial1)
 			{
@@ -115,6 +123,7 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 			{
 				bisDissolve = true; //유품 스폰 뒤에 사라짐
+				TestPC->StartEndNPCDialougue(false);
 			}, 6.0f, false);
 			
 			

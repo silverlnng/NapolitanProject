@@ -27,6 +27,7 @@ public:
 
 	FTimerHandle LerpTimerHandle;
 	float ElapsedTime = 0.0f;
+	float ElapsedTime2 = 0.0f;
 	float LerpDuration = 12.0f;
 	void StartLerpTimer();
 	void UpdateLerp();
