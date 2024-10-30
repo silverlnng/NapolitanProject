@@ -6,6 +6,10 @@
 #include "NapolitanProject/YJ/TestCharacter.h"
 #include "Runtime/AIModule/Classes/AIController.h"
 #include <NavigationSystem.h>
+
+#include "YSEvanceUI.h"
+#include "NapolitanProject/YJ/DeadEndingWidget.h"
+#include "NapolitanProject/YJ/PlayerHUD.h"
 #include "Navigation/PathFollowingComponent.h"
 
 
@@ -35,6 +39,8 @@ void AChaseStatue::BeginPlay()
 	me = this;
 
 	ChaseAI = Cast<AAIController>(me->GetController());
+
+	CSCol->OnComponentBeginOverlap.AddDynamic(this, &AChaseStatue::CuratorOverlap);
 	
 }
 
@@ -109,14 +115,19 @@ void AChaseStatue::TickMove(const float& DeltaTime)
 		}
 		
 	}
-
 	
 	//너무 가까이 왔을 때 사망 이벤트 발생
-	if (dirR.Size() <= 100.0f)
+	if (dirR.Size() <= 300.0f)
 	{
-		//me->AddMovementInput(dirR.GetSafeNormal());
-		//ChaseAI->MoveToLocation(targetLoc);
-		//SetState(ChaseStatueState::Attack);
+		// 끝나는 엔딩 위젯 나오도록 하기
+		if (PlayerHUD && PlayerHUD->DeadEndingWidgetUI && PlayerHUD->YsEvanceUserWidget)
+		{
+			PlayerHUD->YsEvanceUserWidget->SetVisibility(ESlateVisibility::Hidden);
+			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			FString name= FString(TEXT("<Red_Big>큐레이터</>"));
+			PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
+			PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
+		}
 	}
 	
 }
@@ -141,6 +152,29 @@ bool AChaseStatue::GetRandomPositionNavMesh(FVector CenterLocation, float radius
 	bool result = ns->GetRandomReachablePointInRadius(CenterLocation, radius, loc);
 	dest = loc.Location;
 	return result;
+}
+
+//큐레이터와 부딪혔을때 이벤트 -> 현재는 간단하게 데드엔딩으로 보임
+void AChaseStatue::CuratorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor && (OtherActor != this) && OtherComp)
+	{
+		//플레이어일때
+		if (MainCharacter)
+		{
+			// 끝나는 엔딩 위젯 나오도록 하기
+			if (PlayerHUD && PlayerHUD->DeadEndingWidgetUI && PlayerHUD->YsEvanceUserWidget)
+			{
+				PlayerHUD->YsEvanceUserWidget->SetVisibility(ESlateVisibility::Hidden);
+				PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+				FString name= FString(TEXT("<Red_Big>큐레이터</>"));
+				PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
+				PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
+			}
+		}
+		
+	}
 }
 
 

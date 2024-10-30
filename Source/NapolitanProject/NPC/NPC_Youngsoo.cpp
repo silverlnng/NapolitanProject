@@ -7,6 +7,7 @@
 #include "NYS_Choice.h"
 #include "TestGameInstance.h"
 #include "TestPlayerController.h"
+#include "YoungsooAnim.h"
 #include "Kismet/GameplayStatics.h"
 #include "../YJ/TestCharacter.h"
 #include "../YJ/PlayerHUD.h"
@@ -18,7 +19,8 @@ ANPC_Youngsoo::ANPC_Youngsoo()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
+
+	anim = Cast<UYoungsooAnim>(GetMesh()->GetAnimInstance());
 }
 
 // Called when the game starts or when spawned
@@ -83,7 +85,6 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 		if (0 == result)
 		{
 			//남자를 위로해주자. “괜찮으십니까”의 경우 => 남자는 소리를 지르다가 사라짐
-			UGameplayStatics::PlaySound2D(GetWorld(), YSScreamSound);
 			int32 key=(NPC_ID*100)+(State*10)+result;
 			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
 			TestPC->SetCurNPCResultUI(key);
@@ -96,13 +97,17 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 					GetMesh()->SetMaterial(0, DynamicMaterial);
 				}
 			}
+			//애니메이션 블루프린트 실행
+			anim = Cast<UYoungsooAnim>(GetMesh()->GetAnimInstance());
+			anim->playYSSadMontage();
+			UGameplayStatics::PlaySound2D(GetWorld(), YSScreamSound);
 			// 5초 후에 캐릭터를 숨기기 위한 타이머 설정
 			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 			{
 				bisDissolve = true;
 				TestPC->StartEndNPCDialougue(false);
 				ChangeCleared();
-			}, 5.0f, false);
+			}, 3.0f, false);
 			
 		}
 		else if (1 == result)
@@ -127,7 +132,7 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			{
 				bisDissolve = true; //유품 스폰 뒤에 사라짐
 				TestPC->StartEndNPCDialougue(false);
-			}, 6.0f, false);
+			}, 4.0f, false);
 
 		
 
