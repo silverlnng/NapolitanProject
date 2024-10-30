@@ -129,7 +129,7 @@ void ANPC_Docent::UpdateLerp()
 
 	
 	float Loc = FMath::Lerp(SpringArmComp->GetRelativeLocation().Z, 40, Alpha);
-	float TargetArm = FMath::Lerp(SpringArmComp->TargetArmLength, 170, Alpha);
+	float TargetArm = FMath::Lerp(SpringArmComp->TargetArmLength, 160, Alpha);
 	float FieldOfView = FMath::Lerp(CameraComp->FieldOfView, 80, Alpha);
 	
 	SpringArmComp->SetRelativeLocation(FVector(0,0,Loc));

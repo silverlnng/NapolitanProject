@@ -302,8 +302,14 @@ void ATestCharacter::SetPlayerState(EPlayerState newState)
 	switch (curState)
 	{
 	case EPlayerState::UI:
-		// 노트  ui 볼때 
+		// 노트  ui 볼때
+		PC->SetInputMode(FInputModeGameAndUI());
+		PC->SetShowMouseCursor(true);	
 		break;
+	case EPlayerState::Idle:
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->SetShowMouseCursor(false);
+			break;	
 	default:
 		break;
 	}

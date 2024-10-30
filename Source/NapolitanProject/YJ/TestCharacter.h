@@ -79,7 +79,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	EPlayerState curState=EPlayerState::Idle;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SetPlayerState(EPlayerState newState);
 
 /////////////////// 달리기 기능 ////////////////////////
