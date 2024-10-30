@@ -21,6 +21,16 @@ void UTestGameInstance::Init()
 	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("NPC_Dialogue.csv"));
 	LoadResultFromCSV(FPaths::ProjectDir() / TEXT("NPC_Result.csv"));
 	LoadSelectFromCSV(FPaths::ProjectDir() / TEXT("NPC_Selection.csv"));
+
+	for (int i = 0; i < SouvenirDataRowNames.Num(); i++)
+	{
+		FSouvenirData* SouvenirData = DT_SouvenirData->FindRow<FSouvenirData>(SouvenirDataRowNames[i] , TEXT(""));
+		if (SouvenirData)
+		{
+			//유물획득 초기화 => 게임로드안했을때 
+			SouvenirDataHadMap.Add(i,SouvenirData->IsHad);
+		}
+	}
 		
 }
 

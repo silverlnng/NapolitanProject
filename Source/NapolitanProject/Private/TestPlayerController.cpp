@@ -114,7 +114,7 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	if (!SouvenirData){return;} // 방어코드
 
 	// SouvenirData->IsHad 값에 따라서 
-	if(!SouvenirData->IsHad)
+	if(!GI->SouvenirDataHadMap[curNum])
 	{
 		SouvenirUI->Img_Souvenir_left->SetColorAndOpacity(FLinearColor(0.01,0.01,0.01,1));
 	}

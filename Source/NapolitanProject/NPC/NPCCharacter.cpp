@@ -3,6 +3,7 @@
 
 #include "NPCCharacter.h"
 
+#include "TestGameInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -38,6 +39,8 @@ void ANPCCharacter::BeginPlay()
 	 TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	 MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	 PlayerHUD =TestPC->GetHUD<APlayerHUD>();
+	 GI = GetGameInstance<UTestGameInstance>();
+
 	//TestPC00
 }
 
@@ -76,6 +79,14 @@ void ANPCCharacter::Interact()
 
 void ANPCCharacter::playTalkAnimMontage()
 {
+	
+}
+
+void ANPCCharacter::ChangeCleared()
+{
+	 // 콜리전 프로필을 다른거로 변경
+	IsCleared=true;
+	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
 	
 }
 

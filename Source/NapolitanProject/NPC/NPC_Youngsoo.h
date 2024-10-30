@@ -41,6 +41,7 @@ public:
 
 	virtual void ResultEvent(int32 result); //결과 함수
 
+	virtual void ChangeCleared() override;
 public:
 	//0-1. 비명 소리
 	UPROPERTY(EditAnywhere)

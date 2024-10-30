@@ -49,5 +49,8 @@ public:
 	void OnClicked_Souvenir_Back();
 	UFUNCTION()
 	void OnClicked_Souvenir_front();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* BookSoundWave;
 	
 };

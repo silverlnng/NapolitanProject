@@ -18,6 +18,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "NoteUI/NoteWidget.h"
 #include "YSEvanceUI.h"
+#include "Kismet/GameplayStatics.h"
 
 ATestCharacter::ATestCharacter()
 {
@@ -324,6 +325,10 @@ void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)
 		PC->SetInputMode(FInputModeGameOnly());
 		PC->SetShowMouseCursor(false);
 		SetPlayerState(EPlayerState::Idle);
+		if (NoteUICloseSound)
+		{
+			UGameplayStatics::PlaySound2D(this, NoteUICloseSound);
+		}
 	}
 	else
 	{
@@ -332,6 +337,11 @@ void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)
 		PC->SetInputMode(FInputModeGameAndUI());
 		PC->SetShowMouseCursor(true);
 		SetPlayerState(EPlayerState::UI);
+		//
+		if (NoteUIOpenSound)
+		{
+			UGameplayStatics::PlaySound2D(this, NoteUIOpenSound);
+		}
 	}
 }
 

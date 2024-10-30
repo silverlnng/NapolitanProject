@@ -40,8 +40,11 @@ public:
 	
 	virtual void ResultEvent(int32 result); //결과 함수
 
-	virtual void Interact(); 
+	virtual void Interact();
 
+	UPROPERTY(VisibleAnywhere)
+	class UTestGameInstance* GI;
+	
 	// 전환용 카메라 부착해주기 
 	UPROPERTY(EditDefaultsOnly)
 	class USpringArmComponent* SpringArmComp;
@@ -51,6 +54,9 @@ public:
 	
 	class UAnimMontage* TalkAnimMontage;
 	
-	virtual void playTalkAnimMontage(); 
+	virtual void playTalkAnimMontage();
+
+	bool IsCleared=false;
+	virtual void ChangeCleared();
 };
 

@@ -31,6 +31,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class ATestCharacter* me;
 
+
 	UFUNCTION()
 	void SetUIMode(bool value);
 	

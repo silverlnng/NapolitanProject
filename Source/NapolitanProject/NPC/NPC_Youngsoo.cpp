@@ -5,10 +5,12 @@
 #include "Components/CapsuleComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "NYS_Choice.h"
+#include "TestGameInstance.h"
 #include "TestPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "../YJ/TestCharacter.h"
 #include "../YJ/PlayerHUD.h"
+#include "NapolitanProject/YJ/InteractWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 // Sets default values
@@ -99,6 +101,7 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			{
 				bisDissolve = true;
 				TestPC->StartEndNPCDialougue(false);
+				ChangeCleared();
 			}, 5.0f, false);
 			
 		}
@@ -125,8 +128,22 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 				bisDissolve = true; //유품 스폰 뒤에 사라짐
 				TestPC->StartEndNPCDialougue(false);
 			}, 6.0f, false);
+
+		
+
+			FTimerHandle SouvenirTimer;
+			GetWorldTimerManager().SetTimer(SouvenirTimer, [this]()
+			{
+				FString SouvenirName= FString(TEXT("파란 스카프를"));
+				PlayerHUD->InteractUI->GetSouvenirEvent(SouvenirName);
+				ChangeCleared();
+			}, 8.0f, false);
 			
-			
+			if (GI->SouvenirDataHadMap.Contains(NPC_ID-1))
+			{
+				GI->SouvenirDataHadMap[NPC_ID-1]=true;
+			}
+			TestPC->SetSouvenirUICurNumber(NPC_ID-1);
 		}
 		else if (2 == result)
 		{
@@ -136,6 +153,7 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			{
 				// 캐릭터의 Mesh를 보이지 않게 설정
 				GetMesh()->SetVisibility(false);
+				ChangeCleared();
 			}, 5.0f, false);
 		}
 		else
@@ -159,6 +177,11 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 		
 	}
 	
+}
+
+void ANPC_Youngsoo::ChangeCleared()
+{
+	Super::ChangeCleared();
 }
 
 

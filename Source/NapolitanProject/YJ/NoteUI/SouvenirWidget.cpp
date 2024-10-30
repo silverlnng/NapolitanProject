@@ -4,6 +4,7 @@
 #include "SouvenirWidget.h"
 
 #include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
 
 // curPage =0 일때는 Back 버튼 안보이도록 하기 
 
@@ -23,6 +24,11 @@ void USouvenirWidget::OnClicked_Souvenir_Back()
 	curPage-=2;
 	SouvenirBtn_BackDele.Broadcast(curPage);
 	// 델리게이트 함수 실행 + 매개변수로 curPage 전달
+
+	if (BookSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, BookSoundWave);
+	}
 }
 
 void USouvenirWidget::OnClicked_Souvenir_front()
@@ -33,4 +39,8 @@ void USouvenirWidget::OnClicked_Souvenir_front()
 	curPage+=2;
 	// 델리게이트 함수 실행 + 매개변수로 curPage 전달
 	SouvenirBtn_BackDele.Broadcast(curPage);
+	if (BookSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, BookSoundWave);
+	}
 }

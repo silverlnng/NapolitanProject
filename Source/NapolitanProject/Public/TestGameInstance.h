@@ -93,7 +93,10 @@ public:
 	UDataTable* DT_SouvenirData;
 	UPROPERTY(VisibleAnywhere)
 	TArray<FName> SouvenirDataRowNames;
-
+	
+	UPROPERTY(VisibleAnywhere)
+	TMap<int32,bool> SouvenirDataHadMap;
+	
 	//////////// 언어 선택 ///////////////////////
 	UPROPERTY(VisibleAnywhere)
 	int32 lang=0;

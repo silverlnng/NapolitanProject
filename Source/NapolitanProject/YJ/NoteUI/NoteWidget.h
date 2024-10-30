@@ -21,7 +21,7 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class USouvenirWidget* WBP_Souvenir;
 	UPROPERTY(meta = (BindWidget))
-	class UUserWidget* WBP_Rule;
+	class UUserWidget* WBP_NPCInfo;
 	UPROPERTY(meta = (BindWidget))
 	class UUserWidget* WBP_SettingInNote;
 
@@ -35,12 +35,17 @@ public:
 	class UButton* Btn_Setting;
 
 	UFUNCTION()
-	void OnClickBtn_Rule();
+	void OnClickBtn_NPNInfo();
 
 	UFUNCTION()
 	void OnClickBtn_Souvenir();
 
 	UFUNCTION()
 	void OnClickBtn_Setting();
+
+//////////////////소리///////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* ClickSoundWave;
+	
 	
 };

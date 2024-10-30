@@ -181,6 +181,14 @@ public:
 	float TargetFieldOfView; //줌
 	float CurrentFieldOfView; //현재 줌 = 90도
 	bool bIsFieldOfViewTransitioning;
+
+////////////////// 소리 /////////////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* NoteUIOpenSound;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* NoteUICloseSound;
+	
 };
 
 
