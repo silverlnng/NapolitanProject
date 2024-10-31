@@ -8,6 +8,7 @@
 #include <NavigationSystem.h>
 
 #include "YSEvanceUI.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/YJ/PlayerHUD.h"
 #include "Navigation/PathFollowingComponent.h"
@@ -26,6 +27,7 @@ AChaseStatue::AChaseStatue()
 	}
 
 	CSCol = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CSCol"));
+	CSCol->SetupAttachment(GetMesh());
 	CSCol->SetCapsuleHalfHeight(90.f);
 	CSCol->SetCapsuleRadius(90.f);
 
@@ -115,20 +117,22 @@ void AChaseStatue::TickMove(const float& DeltaTime)
 		}
 		
 	}
-	
+	/*UE_LOG(LogTemp,Warning,TEXT("%s,거리 :%f"),*CALLINFO,dirR.Size());
 	//너무 가까이 왔을 때 사망 이벤트 발생
 	if (dirR.Size() <= 300.0f)
 	{
+		UE_LOG(LogTemp,Warning,TEXT("%s 거리안"),*CALLINFO);
 		// 끝나는 엔딩 위젯 나오도록 하기
 		if (PlayerHUD && PlayerHUD->DeadEndingWidgetUI && PlayerHUD->YsEvanceUserWidget)
 		{
+			UE_LOG(LogTemp,Warning,TEXT("%s 조건문안"),*CALLINFO);
 			PlayerHUD->YsEvanceUserWidget->SetVisibility(ESlateVisibility::Hidden);
 			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
 			FString name= FString(TEXT("<Red_Big>큐레이터</>"));
 			PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
 			PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
 		}
-	}
+	}*/
 	
 }
 
@@ -160,13 +164,13 @@ void AChaseStatue::CuratorOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 {
 	if (OtherActor && (OtherActor != this) && OtherComp)
 	{
+		auto*  cha=Cast<ATestCharacter>(OtherActor);
 		//플레이어일때
-		if (MainCharacter)
+		if (cha)
 		{
 			// 끝나는 엔딩 위젯 나오도록 하기
-			if (PlayerHUD && PlayerHUD->DeadEndingWidgetUI && PlayerHUD->YsEvanceUserWidget)
+			if (PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
 			{
-				PlayerHUD->YsEvanceUserWidget->SetVisibility(ESlateVisibility::Hidden);
 				PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
 				FString name= FString(TEXT("<Red_Big>큐레이터</>"));
 				PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
