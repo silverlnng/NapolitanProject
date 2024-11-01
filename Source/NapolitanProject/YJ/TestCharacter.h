@@ -141,16 +141,19 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	int32 traceLength=500;
 
-	//////// 지금 대화하고 있는 npc 가 누구인지 기억하기
+	/////////// 지금 대화하고 있는 npc 가 누구인지 기억하기
 	UPROPERTY(VisibleAnywhere)
 	class ANPCCharacter* curNPC=nullptr;
 
 	UPROPERTY(VisibleAnywhere)
 	bool InteractHit =false;
 
-	// 지금 상호작용 대상을 알고있기
+///////////// 지금 상호작용 대상을 알고있기
 	UPROPERTY(VisibleAnywhere)
 	AActor* Interact =nullptr;
+
+	UPROPERTY(VisibleAnywhere)
+	class AControllableLightActor* curControllableLight=nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* IA_Interact;
@@ -159,6 +162,9 @@ public:
 
 	UPROPERTY()
 	class ATestPlayerController* TestPC;
+
+	UPROPERTY(VisibleAnywhere)
+	bool IsLightRangeIn=false;
 
 	//////////// 김영수 위대한 빨간 등대 선택시 1-3
 public:
@@ -188,6 +194,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* NoteUICloseSound;
+
+	UFUNCTION()
+	void OnCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult); // // 라이트 스위치 액터 등 가까이 있는 액터와 반응 할때 만든 함수
+
+	UFUNCTION()
+	void EndCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	
 };
 

@@ -3,6 +3,7 @@
 
 #include "TestCharacter.h"
 
+#include "ControllableLightActor.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "IInteract.h"
@@ -88,6 +89,10 @@ void ATestCharacter::BeginPlay()
 	FTimerHandle TimerHandle;	
 
 	GetWorldTimerManager().SetTimer(TimerHandle,this,&ATestCharacter::SphereTraceFromCamera,0.2f,true);
+
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this,&ATestCharacter::OnCapsuleOverlap);
+
+	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this,&ATestCharacter::EndCapsuleOverlap);
 }
 
 void ATestCharacter::Tick(float DeltaSeconds)
@@ -405,6 +410,7 @@ void ATestCharacter::SphereTraceFromCamera()
 	}
 }
 
+//E키 누르면 실행되는 함수
 void ATestCharacter::OnInteraction()
 {
 	if (InteractHit && Interact)
@@ -426,6 +432,19 @@ void ATestCharacter::OnInteraction()
 			// 나의 상태 변화
 			SetPlayerState(EPlayerState::Talking);
 		}
+
+		AControllableLightActor* ControllableLight =Cast<AControllableLightActor>(Interact);
+		
+		//현재 조작할 라이트가 있고 그 라이트의 범위 안일떄만 작동
+		if (ControllableLight)
+		{
+			curControllableLight=ControllableLight;
+			//IsLightRangeIn=true;
+			// curControllableLight 의 불키는 함수 작동시키기
+			curControllableLight->TurnOnLight(true);
+		}
+
+		// 라이트라면 라이트로 캐스트해서 
 		
 		// 그냥 아이템 이라면 아이템으로 캐스트해서 
 	}
@@ -460,6 +479,29 @@ void ATestCharacter::AdjustCameraPosition()
 	}
 	
 	
+}
+
+void ATestCharacter::OnCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	// 라이트 스위치 액터 등 가까이 있는 액터와 반응 할때 만든 함수
+	/*AControllableLightActor* ControllableLight = Cast<AControllableLightActor>(OtherActor);
+	if (ControllableLight)
+	{
+		curControllableLight=ControllableLight;
+		IsLightRangeIn=true;
+	}*/
+	
+}
+
+void ATestCharacter::EndCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (curControllableLight)
+	{
+		curControllableLight=nullptr;
+		IsLightRangeIn=false;
+	}
 }
 
 
