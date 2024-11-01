@@ -9,28 +9,55 @@ void UTestGameInstance::Init()
 {
 	Super::Init();
 	DT_itemData = LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/Item/DT_Item.DT_Item'"));
-	itemDataRowNames = DT_itemData->GetRowNames();
+	//DT_itemData = LoadObject<UDataTable>(nullptr , TEXT("/Script/Engine.DataTable'/Game/YJ/Item/DT_Item.DT_Item'"));
+	// C:/UnrealProjects/NapolitanProject/Content/YJ/Item/DT_Item.uasset
+	// /Script/Engine.DataTable'/Game/YJ/Item/DT_Item.DT_Item'
+	if (DT_itemData)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s DT_Item 로드성공"),*CALLINFO);
+		itemDataRowNames = DT_itemData->GetRowNames();
+	}
+	else
+	{
+		//  LoadObject<UDataTable>을 못한경우 출력할 것
+		UE_LOG(LogTemp, Error, TEXT("%s DT_Item 로드하지 못함"),*CALLINFO);
+	}
 	
 	DT_SouvenirData=LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/Item/DT_Souvenir.DT_Souvenir'"));
-	SouvenirDataRowNames=DT_SouvenirData->GetRowNames();
+
+	if (DT_SouvenirData)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s DT_Souvenir 로드성공"),*CALLINFO);
+		SouvenirDataRowNames=DT_SouvenirData->GetRowNames();
+
+		for (int i = 0; i < SouvenirDataRowNames.Num(); i++)
+		{
+			FSouvenirData* SouvenirData = DT_SouvenirData->FindRow<FSouvenirData>(SouvenirDataRowNames[i] , TEXT(""));
+			if (SouvenirData)
+			{
+				//유물획득 초기화 => 게임로드안했을때 
+				SouvenirDataHadMap.Add(i,SouvenirData->IsHad);
+			}
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s DT_Souvenir 로드하지 못함"),*CALLINFO);
+	}
+	
 
 	// 언어선택 기본값 한글 :0 ,영어:1
 	lang=0;
 
 	// 로드해서 저장해두기 
-	LoadDialogueFromCSV(FPaths::ProjectDir() / TEXT("NPC_Dialogue.csv"));
-	LoadResultFromCSV(FPaths::ProjectDir() / TEXT("NPC_Result.csv"));
-	LoadSelectFromCSV(FPaths::ProjectDir() / TEXT("NPC_Selection.csv"));
-
-	for (int i = 0; i < SouvenirDataRowNames.Num(); i++)
-	{
-		FSouvenirData* SouvenirData = DT_SouvenirData->FindRow<FSouvenirData>(SouvenirDataRowNames[i] , TEXT(""));
-		if (SouvenirData)
-		{
-			//유물획득 초기화 => 게임로드안했을때 
-			SouvenirDataHadMap.Add(i,SouvenirData->IsHad);
-		}
-	}
+	LoadDialogueFromCSV(FPaths::ProjectContentDir()/ TEXT("CSVFile")/TEXT("NPC_Dialogue.csv"));
+	LoadResultFromCSV(FPaths::ProjectContentDir()/ TEXT("CSVFile")/ TEXT("NPC_Result.csv"));
+	LoadSelectFromCSV(FPaths::ProjectContentDir()/ TEXT("CSVFile") / TEXT("NPC_Selection.csv"));
+	
+	// "C:\UnrealProjects\NapolitanProject\NPC_Dialogue.csv"
+	// "C:\UnrealProjects\NapolitanProject\NPC_Result.csv"
+	// "C:\UnrealProjects\NapolitanProject\NPC_Selection.csv"
+	
 		
 }
 
@@ -82,6 +109,9 @@ bool UTestGameInstance::LoadResultFromCSV(const FString& FilePath)
 
 bool UTestGameInstance::LoadDialogueFromCSV(const FString& FilePath)
 {
+
+	UE_LOG(LogTemp, Error, TEXT("%s Dialogue CSV file: %s"),*CALLINFO,*FilePath);
+	
 	FString CSVContent; // csv 내용을 저장할 변수
     
 	// CSV 파일 읽기

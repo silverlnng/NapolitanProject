@@ -16,16 +16,16 @@ struct FItemData : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	bool IsHad;
+	bool IsHad=false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	int32 ItemInt;
+	int32 ItemInt=-1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	UTexture2D* thumnail;
+	UTexture2D* thumnail=nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	UStaticMesh* ItemMesh;
+	UStaticMesh* ItemMesh=nullptr;
 };
 
 USTRUCT(BlueprintType)
@@ -34,13 +34,13 @@ struct FSouvenirData : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	bool IsHad;
+	bool IsHad=false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	int32 SouvenirInt;
+	int32 SouvenirInt=-1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	UTexture2D* thumnail;
+	UTexture2D* thumnail=nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	FString SouvenirInfo;

@@ -110,6 +110,7 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	//////////
 	
 	FName curNum_ = FName(FString::FromInt(curNum));
+	if (!(GI->DT_SouvenirData)){return;}
 	FSouvenirData* SouvenirData = GI->DT_SouvenirData->FindRow<FSouvenirData>(curNum_,TEXT(""));
 	if (!SouvenirData){return;} // 방어코드
 
