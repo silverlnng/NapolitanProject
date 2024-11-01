@@ -402,6 +402,8 @@ void ATestCharacter::SphereTraceFromCamera()
 		PlayerHUD->InteractUI->SetVisibleHBox(false);
 		PlayerHUD->InteractUI->SetVisibleCrossHair(true);
 		//PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
+		TestPC->curNPC=nullptr;
+		curControllableLight=nullptr;
 	}
 	else if (curState==EPlayerState::Talking||curState==EPlayerState::UI)
 	{

@@ -56,11 +56,13 @@ void AControllableLightActor::TurnOnLight(bool value)
 	{
 		// 라이트를 켜주기
 		RectLightComp0->SetIntensity(RectLightIntensity);
+		IsTurnOn=true;
 	}
 	else
 	{
 		// 라이트를 꺼주기 => 경비가 실행시키는 부분
 		RectLightComp0->SetIntensity(0);
+		IsTurnOn=false;
 	}
 }
 

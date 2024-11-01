@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "NPCCharacter.h"
+#include "Perception/PawnSensingComponent.h"
 #include "NPC_Security.generated.h"
 
 /**
@@ -22,9 +23,11 @@ UCLASS()
 class NAPOLITANPROJECT_API ANPC_Security : public ANPCCharacter
 {
 	GENERATED_BODY()
-
+	ANPC_Security();
 public:
 	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaSeconds) override;
 	
 	UPROPERTY(VisibleAnywhere)
 	ESecurityState SecurityState= ESecurityState::Patrol;
@@ -42,15 +45,30 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	float MaxDistance = 1000.0f;
+	// 돌아다닐때 거리에따라 소리
 
 	// 라이트가 꺼져있다 : 랜덤한 위치으로 돌아다니기
 	// 라이트가 꺼지고 랜덤으로 돌아다니 던 중 , 캐릭터 마주치면 캐릭터를 chase
 
 	// 월드에있는 라이트가 켜져있는지 꺼져있는지 여부를 어떻게 확인 ??
-	
 	// 라이트가 켜져있으면 라이트를 향해 이동
 	// 켜져있는 상태에서 캐릭터 마주치면 캐릭터를 우선순위로 삼아 chase
+		// 캐릭터가 일정범위안.. 또는 시야각 안에있을때 우선순위를 가지게 됨
 
-	// 돌아다닐때 거리에따라 소리
+	UPROPERTY(VisibleAnywhere)
+	class UPawnSensingComponent* PawnSensingComp;
 	
+	UPROPERTY(VisibleAnywhere)
+	TArray<class AControllableLightActor*> ControllableLightArray;
+	UPROPERTY(VisibleAnywhere)
+	float MinimumLightDist =0;
+	UPROPERTY(VisibleAnywhere)
+	AControllableLightActor* NearLight;
+	UPROPERTY(VisibleAnywhere)
+	AActor* Target;
+	UPROPERTY(VisibleAnywhere)
+	ATestCharacter* MainCha;
+
+	UFUNCTION()
+	void OnSeePawn(APawn *OtherPawn);
 };
