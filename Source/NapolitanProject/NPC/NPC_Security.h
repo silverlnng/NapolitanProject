@@ -13,7 +13,7 @@
 UENUM(BlueprintType)
 enum class ESecurityState:uint8
 {
-	Chase,
+	ChasePlayer,
 	Patrol,
 	TurnOff,
 };
@@ -61,14 +61,35 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	TArray<class AControllableLightActor*> ControllableLightArray;
 	UPROPERTY(VisibleAnywhere)
-	float MinimumLightDist =0;
+	float MinimumLightDist =100000;
 	UPROPERTY(VisibleAnywhere)
 	AControllableLightActor* NearLight;
 	UPROPERTY(VisibleAnywhere)
-	AActor* Target;
+	bool AllLightTurnOff;
+	UPROPERTY(VisibleAnywhere)
+	APawn* Target;
 	UPROPERTY(VisibleAnywhere)
 	ATestCharacter* MainCha;
 
 	UFUNCTION()
 	void OnSeePawn(APawn *OtherPawn);
+
+
+	
+	void TickChasePlayer(const float& DeltaTime);
+	void TickPatrol(const float& DeltaTime);
+	void TickTurnOff(const float& DeltaTime);
+	
+
+	// 네비게이션을 이용해서 길찾기를 하고싶다.
+	UPROPERTY(VisibleAnywhere)
+	class AAIController* EnemyAI;
+
+	FVector PatrolPoint;
+	float PatrolPointRadius = 500;
+
+	// 내위치에서 반경 5미터
+	bool SetPatrolPoint(FVector origin, float radius, FVector& dest);
+	
 };
+

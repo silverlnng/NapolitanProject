@@ -3,9 +3,12 @@
 
 #include "NPC_Security.h"
 
+#include "AIController.h"
 #include "ControllableLightActor.h"
 #include "EngineUtils.h"
+#include "NavigationSystem.h"
 #include "NapolitanProject/YJ/TestCharacter.h"
+#include "Navigation/PathFollowingComponent.h"
 
 ANPC_Security::ANPC_Security()
 {
@@ -26,7 +29,9 @@ void ANPC_Security::BeginPlay()
 		// 캐릭터 -> 켜져있는 라이트중 제일 가까운것
 		// 자신과 라이트 거리계산
 
-	
+	EnemyAI = Cast<AAIController>(this->GetController());
+
+	SetPatrolPoint(GetActorLocation() , PatrolPointRadius , PatrolPoint);
 	
 	for (TActorIterator<AControllableLightActor> It(GetWorld(), AControllableLightActor::StaticClass()); It; ++It)
 	{
@@ -34,24 +39,22 @@ void ANPC_Security::BeginPlay()
 		ControllableLightArray.Add(*It);
 		
 	}
-	//ControllableLightArray.Add()
-	// 켜져있고 나와의 거리를 계산
-	
-	// 돌아다닐때 거리에따라 소리
-
 	PawnSensingComp->OnSeePawn.AddDynamic(this,&ANPC_Security::OnSeePawn);
+
+
+
+	// 돌아다닐때 거리에따라 소리내기
 	
-	// AddDynamic  하고 실행은 어디서 ???
 }
 
 void ANPC_Security::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	// ControllableLightArray 을 순회하면서 IsTurnOn =true 인걸 검색
+	
 
 	// Target을 항상 탐색
 	//ATestCharacter 를 탐색 근데 
-	PawnSensingComp->OnSeePawn.Broadcast(MainCha);
+	//PawnSensingComp->OnSeePawn.Broadcast(MainCha);
 	// ANPC_Security::OnSeePawn 는 계속 작동 
 
 	/*if (MainCha)
@@ -62,28 +65,62 @@ void ANPC_Security::Tick(float DeltaSeconds)
 
 	
 	// 캐릭터와의 거리도 계산  ==> 일정거리 이상 멀어지면 다시 가까운 라이트를 켜야함
-	//float DistToCharacter =GetDistanceTo(MainCharacter);
-	//float DistToLight
+	if (!(PawnSensingComp->CouldSeePawn(Target,true)))
+	{
+		Target=nullptr;
+	}
+
+	// 지금 자기상태 출력하도록 만들기
+	FString myState = UEnum::GetValueAsString(SecurityState);
+	DrawDebugString(GetWorld() , GetOwner()->GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
 
 	
+	AllLightTurnOff=true;
+	// ControllableLightArray 을 순회하면서 IsTurnOn =true 인걸 검색
 	for (auto light : ControllableLightArray)
 	{
-		if (!light->IsTurnOn)
+		// 모든 불이 꺼져있으면 NearLight=nullptr
+	
+		if(light->IsTurnOn) // 불이켜져있는게 하나라도 있으면 
 		{
-			// 꺼져있는걸로 거리 계산
+			
+			AllLightTurnOff=false;
 			float DistToLight =GetDistanceTo(light);
 
-			if (MinimumLightDist<=DistToLight)
+			if (MinimumLightDist>=DistToLight)
 			{
 				MinimumLightDist=DistToLight;
 				NearLight=light;
 			}
-			
 		}
+		// 모든 light->IsTurnOn true 이면 NearLight 을 null값으로 만들기
 	}
-	
-	
 
+	if (AllLightTurnOff)
+	{
+		NearLight=nullptr;
+		MinimumLightDist=100000;
+	}
+
+	if (Target)
+	{
+		SetState(ESecurityState::ChasePlayer);
+	}
+	else if (NearLight&&!Target)
+	{
+		SetState(ESecurityState::TurnOff);
+	}
+	else if (!NearLight&&!Target)
+	{
+		SetState(ESecurityState::Patrol);
+	}
+
+	switch ( SecurityState )
+	{
+	case ESecurityState::ChasePlayer:		TickChasePlayer(DeltaSeconds);		break;
+	case ESecurityState::Patrol:		TickPatrol(DeltaSeconds);		break;
+	case ESecurityState::TurnOff:	TickTurnOff(DeltaSeconds);		break;
+	}
 	
 }
 
@@ -103,11 +140,90 @@ void ANPC_Security::OnSeePawn(APawn *OtherPawn)
 	auto* testCha =Cast<ATestCharacter>(OtherPawn);
 	if (testCha)
 	{
+		Target=testCha;
 		FString message = TEXT("Saw Actor =ATestCharacter ") + OtherPawn->GetName();
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
-	}
-	
-	
 
-	// TODO: game-specific logic
+		// 이때만 chase를 작동시키기
+		SetState(ESecurityState::ChasePlayer);
+	}
+}
+
+void ANPC_Security::TickChasePlayer(const float& DeltaTime)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "TickChasePlayer");
+	if (EnemyAI&&Target)
+	{
+		EnemyAI->MoveToLocation(Target->GetActorLocation());
+	}
+}
+
+void ANPC_Security::TickPatrol(const float& DeltaTime)
+{
+	// 목적지를 향해서 이동하고싶다.
+	//FVector dir = Target->GetActorLocation() - GetActorLocation();
+	//float dist = dir.Size();
+	//Me->AddMovementInput(dir.GetSafeNormal());
+
+	FVector destinataion = PatrolPoint;
+
+	auto* ns = UNavigationSystemV1::GetNavigationSystem(GetWorld());
+
+	FAIMoveRequest MoveRequest;
+	MoveRequest.SetGoalLocation(destinataion);
+	MoveRequest.SetAcceptanceRadius(50);
+
+	FPathFindingQuery Query;
+	EnemyAI->BuildPathfindingQuery(MoveRequest , Query);
+	FPathFindingResult r = ns->FindPathSync(Query);
+	// 만약 목적지가 길 위에있다면
+	if (r.Result == ENavigationQueryResult::Success)
+	{
+		// 목적지를 향해서 이동하고싶다.
+		EnemyAI->MoveToLocation(destinataion);
+		// 만약 목적지와의 거리가 공격 가능거리라면
+		EPathFollowingRequestResult::Type result = EnemyAI->MoveToLocation(PatrolPoint);
+		// 만약 도착했다면 다시 랜덤한 위치를 정하고싶다.
+		if ( result == EPathFollowingRequestResult::AlreadyAtGoal ||
+			result == EPathFollowingRequestResult::Failed )
+		{
+			SetPatrolPoint(GetActorLocation() , PatrolPointRadius , PatrolPoint);
+		}
+	}
+	/*else
+	{
+		EPathFollowingRequestResult::Type result = EnemyAI->MoveToLocation(PatrolPoint);
+		// 만약 도착했다면 다시 랜덤한 위치를 정하고싶다.
+		if ( result == EPathFollowingRequestResult::AlreadyAtGoal ||
+			result == EPathFollowingRequestResult::Failed )
+		{
+			SetPatrolPoint(GetActorLocation() , PatrolPointRadius , PatrolPoint);
+		}
+	}*/
+}
+
+void ANPC_Security::TickTurnOff(const float& DeltaTime)
+{
+
+	if (EnemyAI&&NearLight)
+	{
+		EnemyAI->MoveToLocation(NearLight->GetActorLocation(),0);
+		UE_LOG(LogTemp, Warning, TEXT("NearLight: %s"), *NearLight->GetActorLocation().ToString());
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "TickTurnOff");
+	}
+}
+
+bool ANPC_Security::SetPatrolPoint(FVector origin, float radius, FVector& dest)
+{
+	// 길위의 랜덤한 위치를 정하고싶다.
+	auto* ns = UNavigationSystemV1::GetNavigationSystem(GetWorld());
+	FNavLocation loc;
+	bool isSuccess = ns->GetRandomReachablePointInRadius(origin, radius, loc);
+	// 만약 성공했다면
+	if ( isSuccess )
+	{
+		// 그 위치를 dest에 적용하고싶다.
+		dest = loc.Location;
+	}
+	return isSuccess;
 }
