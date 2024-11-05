@@ -7,6 +7,7 @@
 #include "ControllableLightActor.h"
 #include "EngineUtils.h"
 #include "NavigationSystem.h"
+#include "NPC_Security_AnimInstance.h"
 #include "NapolitanProject/YJ/TestCharacter.h"
 #include "Navigation/PathFollowingComponent.h"
 
@@ -19,6 +20,8 @@ void ANPC_Security::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Anim=Cast<UNPC_Security_AnimInstance>(GetMesh()->GetAnimInstance());
+	
 	// 라이트가 꺼져있다 : 랜덤한 위치으로 돌아다니기
 		// 라이트가 꺼지고 랜덤으로 돌아다니 던 중 , 캐릭터 마주치면 캐릭터를 chase
 
@@ -28,7 +31,7 @@ void ANPC_Security::BeginPlay()
 		// 켜져있는 상태에서 캐릭터 마주치면 캐릭터를 우선순위로 삼아 chase
 		// 캐릭터 -> 켜져있는 라이트중 제일 가까운것
 		// 자신과 라이트 거리계산
-
+	
 	EnemyAI = Cast<AAIController>(this->GetController());
 
 	SetPatrolPoint(GetActorLocation() , PatrolPointRadius , PatrolPoint);
@@ -65,10 +68,7 @@ void ANPC_Security::Tick(float DeltaSeconds)
 
 	
 	// 캐릭터와의 거리도 계산  ==> 일정거리 이상 멀어지면 다시 가까운 라이트를 켜야함
-	if (!(PawnSensingComp->CouldSeePawn(Target,true)))
-	{
-		Target=nullptr;
-	}
+	
 
 	// 지금 자기상태 출력하도록 만들기
 	FString myState = UEnum::GetValueAsString(SecurityState);
@@ -115,6 +115,12 @@ void ANPC_Security::Tick(float DeltaSeconds)
 		SetState(ESecurityState::Patrol);
 	}
 
+	if (Target&&!(PawnSensingComp->CouldSeePawn(Target,false)))
+	{
+		// 보일 가능성이 없으면 
+		Target=nullptr;
+	}
+
 	switch ( SecurityState )
 	{
 	case ESecurityState::ChasePlayer:		TickChasePlayer(DeltaSeconds);		break;
@@ -127,7 +133,7 @@ void ANPC_Security::Tick(float DeltaSeconds)
 void ANPC_Security::SetState(ESecurityState curState)
 {
 	SecurityState=curState;
-	
+	Anim->State=curState;
 }
 
 void ANPC_Security::OnSeePawn(APawn *OtherPawn)

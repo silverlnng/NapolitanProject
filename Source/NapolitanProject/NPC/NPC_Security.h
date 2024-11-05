@@ -90,6 +90,8 @@ public:
 
 	// 내위치에서 반경 5미터
 	bool SetPatrolPoint(FVector origin, float radius, FVector& dest);
-	
+
+	UPROPERTY()
+	class UNPC_Security_AnimInstance* Anim;
 };
 
