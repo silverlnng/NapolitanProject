@@ -38,7 +38,7 @@ public:
 	UAudioComponent* FootstepAudioComponent;
 
 	UPROPERTY(EditAnywhere, Category = "Sound")
-	USoundCue* FootstepSoundCue;
+	class USoundCue* FootstepSoundCue;
 
 	UPROPERTY(EditAnywhere, Category = "Sound")
 	float MaxFootstepVolume = 1.0f;

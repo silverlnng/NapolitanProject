@@ -202,15 +202,15 @@ void ATestPlayerController::SetNPCDialougueMaxSize()
 void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 {
 	//curOrder 을 받아서 상황처리 하기 
-	UE_LOG(LogTemp,Warning,TEXT("%s,curOrder :%d"),*CALLINFO,curOrder);
+	//UE_LOG(LogTemp,Warning,TEXT("%s,curOrder :%d"),*CALLINFO,curOrder);
 	int32 npcID =curNPC->GetNPCID();
-	UE_LOG(LogTemp,Warning,TEXT("%s,npcID : %d"),*CALLINFO,npcID);
+	//UE_LOG(LogTemp,Warning,TEXT("%s,npcID : %d"),*CALLINFO,npcID);
 	int32 npcState =curNPC->GetState();
-	UE_LOG(LogTemp,Warning,TEXT("%s,npcState : %d"),*CALLINFO,npcState);
+	//UE_LOG(LogTemp,Warning,TEXT("%s,npcState : %d"),*CALLINFO,npcState);
 	int32 FindKey =(npcID*1000)+(npcState*100)+curOrder; // 시작하는 키값
-	UE_LOG(LogTemp,Warning,TEXT("%s,%d"),*CALLINFO,FindKey);
+	//UE_LOG(LogTemp,Warning,TEXT("%s,%d"),*CALLINFO,FindKey);
 	
-	UE_LOG(LogTemp,Warning,TEXT("%s,MaxOrder : %d"),*CALLINFO,PlayerHUD->NPCDialogueUI->MaxOrder);
+	//UE_LOG(LogTemp,Warning,TEXT("%s,MaxOrder : %d"),*CALLINFO,PlayerHUD->NPCDialogueUI->MaxOrder);
 	
 	////////// 버튼 보이게,안보이게 처리
 	if (0==curOrder){PlayerHUD->NPCDialogueUI->Btn_Back->SetVisibility(ESlateVisibility::Hidden);}
