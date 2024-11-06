@@ -3,6 +3,7 @@
 
 #include "ControllableLightActor.h"
 
+#include "AsyncTreeDifferences.h"
 #include "Components/RectLightComponent.h"
 #include "Components/SphereComponent.h"
 #include "NapolitanProject/NPC/NPC_Security.h"
@@ -21,11 +22,23 @@ AControllableLightActor::AControllableLightActor()
 	BtnMeshComp=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	BtnMeshComp->SetupAttachment(SphereComp);
 
-	RectLightComp0=CreateDefaultSubobject<URectLightComponent>(TEXT("RectLightComponent"));
+	RectLightComp0=CreateDefaultSubobject<URectLightComponent>(TEXT("RectLightComponent0"));
 	RectLightComp0->SetupAttachment(RootComponent);
 
+	RectLightComp1=CreateDefaultSubobject<URectLightComponent>(TEXT("RectLightComponent1"));
+	RectLightComp1->SetupAttachment(RootComponent);
 
+	RectLightComp2=CreateDefaultSubobject<URectLightComponent>(TEXT("RectLightComponent2"));
+	RectLightComp2->SetupAttachment(RootComponent);
 
+	RectLightComp3=CreateDefaultSubobject<URectLightComponent>(TEXT("RectLightComponent3"));
+	RectLightComp3->SetupAttachment(RootComponent);
+
+	//BP_Drop_Ceiling_01=CreateDefaultSubobject<UChildActorComponent>(TEXT("Drop_Ceiling_01"));
+	//BP_Drop_Ceiling_01->SetupAttachment(RootComponent);
+	
+	//BP_Drop_Ceiling_02=CreateDefaultSubobject<UChildActorComponent>(TEXT("Drop_Ceiling_02"));
+	//BP_Drop_Ceiling_02->SetupAttachment(RootComponent);
 	
 }
 
@@ -33,6 +46,7 @@ AControllableLightActor::AControllableLightActor()
 void AControllableLightActor::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this,&AControllableLightActor::BtnMeshOverlap);
 }
 
@@ -63,12 +77,19 @@ void AControllableLightActor::TurnOnLight(bool value)
 	{
 		// 라이트를 켜주기
 		RectLightComp0->SetIntensity(RectLightIntensity);
+		RectLightComp1->SetIntensity(RectLightIntensity);
+		RectLightComp2->SetIntensity(RectLightIntensity);
+		RectLightComp3->SetIntensity(RectLightIntensity);
 		IsTurnOn=true;
 	}
 	else
 	{
 		// 라이트를 꺼주기 => 경비가 실행시키는 부분
 		RectLightComp0->SetIntensity(0);
+		RectLightComp1->SetIntensity(0);
+		RectLightComp2->SetIntensity(0);
+		RectLightComp3->SetIntensity(0);
+		
 		IsTurnOn=false;
 	}
 }
