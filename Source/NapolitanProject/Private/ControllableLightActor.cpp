@@ -5,6 +5,7 @@
 
 #include "Components/RectLightComponent.h"
 #include "Components/SphereComponent.h"
+#include "NapolitanProject/NPC/NPC_Security.h"
 
 // Sets default values
 AControllableLightActor::AControllableLightActor()
@@ -46,7 +47,13 @@ void AControllableLightActor::BtnMeshOverlap(UPrimitiveComponent* OverlappedComp
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	// OtherActor->
-	// OtherActor 가 플레이어이고 플레이어가 interact 버튼 누를때 라이트가 켜지도록 작동 
+	// OtherActor 가 플레이어이고 플레이어가 interact 버튼 누를때 라이트가 켜지도록 작동
+	ANPC_Security* NPC_Security= Cast<ANPC_Security>(OtherActor);
+	if (IsTurnOn&&NPC_Security)
+	{
+		TurnOnLight(false);
+		NPC_Security->MinimumLightDist=100000;
+	}
 }
 
 
