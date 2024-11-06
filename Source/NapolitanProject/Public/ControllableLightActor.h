@@ -43,12 +43,23 @@ public:
 	UPROPERTY(EditDefaultsOnly,Category=Light)
 	class URectLightComponent* RectLightComp3;
 
+	UPROPERTY(EditDefaultsOnly,Category=Light)
+	UChildActorComponent* BP_Drop_Ceiling_01;
+
+	UPROPERTY(EditDefaultsOnly,Category=Light)
+	UChildActorComponent* BP_Drop_Ceiling_02;
+	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category=Light)
 	float RectLightIntensity = 6000.f;
 	
 	UPROPERTY(VisibleAnywhere)
 	TArray<URectLightComponent*> RectLightArray;
 	
+	UPROPERTY(VisibleAnywhere)
+	TArray<USceneComponent*> AllChildren;
+	
+	UPROPERTY(VisibleAnywhere)
+	TArray<URectLightComponent*> Drop_CeilingRectLightArray;
 	
 	UPROPERTY(VisibleAnywhere)
 	bool IsTurnOn=false;
