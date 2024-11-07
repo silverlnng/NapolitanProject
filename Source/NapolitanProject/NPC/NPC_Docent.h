@@ -51,12 +51,6 @@ public:
 
 	UMaterialInstanceDynamic* DynamicMaterial;  // 동적 머터리얼 인스턴스
 	
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
-	//UMaterialInterface* DissolveMaterial_Yellow;  // 블루프린트에서 지정할 머터리얼, 1-2
-	
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
-	//UMaterialInterface* DissolveMaterial_Black; 
-
 	virtual void DissolveEvent(FString& str) override;
 	virtual void ChangeCleared() override;
 	

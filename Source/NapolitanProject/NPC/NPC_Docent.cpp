@@ -114,8 +114,6 @@ void ANPC_Docent::ResultEvent(int32 result)
 				FString color ="Yellow";
 				DissolveEvent(color);
 			},2.0f,false);
-
-			
 			
 		}
 	}
