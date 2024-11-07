@@ -42,6 +42,10 @@ public:
 	class URectLightComponent* RectLightComp2;
 	UPROPERTY(EditDefaultsOnly,Category=Light)
 	class URectLightComponent* RectLightComp3;
+	UPROPERTY(EditDefaultsOnly,Category=Light)
+	class URectLightComponent* RectLightComp4;
+	UPROPERTY(EditDefaultsOnly,Category=Light)
+	class URectLightComponent* RectLightComp5;
 
 	UPROPERTY(EditDefaultsOnly,Category=Light)
 	UChildActorComponent* BP_Drop_Ceiling_01;

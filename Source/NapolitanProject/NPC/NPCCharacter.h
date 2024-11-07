@@ -56,6 +56,21 @@ public:
 	
 	virtual void playTalkAnimMontage();
 
+//////////////////////////// 디졸브 효과
+	bool bisDissolve = false;
+	float dissolveAnimValue;
+
+	UMaterialInstanceDynamic* DynamicMaterial;  // 동적 머터리얼 인스턴스
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial_Yellow;  // 블루프린트에서 지정할 머터리얼, 1-2
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial_Black; 
+
+	virtual void DissolveEvent(FString& str);
+
+	// 클리어하고 난뒤 상호작용 못하도록 
 	bool IsCleared=false;
 	virtual void ChangeCleared();
 };

@@ -14,6 +14,8 @@ class NAPOLITANPROJECT_API ANPC_Docent : public ANPCCharacter
 {
 	GENERATED_BODY()
 public:
+	virtual void Tick(float DeltaSeconds) override;
+	
 	virtual void ResultEvent(int32 result) override;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
@@ -42,5 +44,16 @@ public:
 	FTimerHandle LerpTimerHandle;
 	float ElapsedTime = 0.0f;
 	float LerpDuration = 10.0f;
+
+///////////////// 디졸브 효과 ///////////////////	
+	bool bisDissolve = false;
+	float dissolveAnimValue;
+
+	UMaterialInstanceDynamic* DynamicMaterial;  // 동적 머터리얼 인스턴스
+	
+	virtual void DissolveEvent(FString& str) override;
+	virtual void ChangeCleared() override;
 	
 };
+
+

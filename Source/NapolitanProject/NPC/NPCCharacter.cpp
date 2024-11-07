@@ -49,6 +49,21 @@ void ANPCCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (bisDissolve && DynamicMaterial)
+	{
+		dissolveAnimValue += DeltaTime / 4;
+
+		// 원하는 범위 (0.5에서 -0.5)로 클램핑
+		float DissolveValue = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
+		DynamicMaterial->SetScalarParameterValue(TEXT("dissolve"), DissolveValue);
+
+		if (DissolveValue <= -0.5f)
+		{
+			bisDissolve = false;
+			GetMesh()->SetVisibility(false);
+		}
+	}
+
 }
 
 // Called to bind functionality to input
@@ -80,6 +95,37 @@ void ANPCCharacter::Interact()
 void ANPCCharacter::playTalkAnimMontage()
 {
 	
+}
+
+void ANPCCharacter::DissolveEvent(FString& str)
+{
+	if (str=="Yellow")
+	{
+		if (DissolveMaterial_Yellow)
+		{
+			DynamicMaterial = UMaterialInstanceDynamic::Create(DissolveMaterial_Yellow, this);
+			if (DynamicMaterial)
+			{
+				GetMesh()->SetMaterial(0, DynamicMaterial);
+			}
+		}
+	}
+	else if (str=="Black")
+	{
+		if (DissolveMaterial_Black)
+		{
+			DynamicMaterial = UMaterialInstanceDynamic::Create(DissolveMaterial_Black, this);
+			if (DynamicMaterial)
+			{
+				GetMesh()->SetMaterial(0, DynamicMaterial);
+			}
+		}
+	}
+
+	bisDissolve = true; // tick 작동하도록
+	IsCleared=true;
+	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+	//ChangeCleared(); // 상호작용 e키 안나오도록 
 }
 
 void ANPCCharacter::ChangeCleared()
