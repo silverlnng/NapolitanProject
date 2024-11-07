@@ -34,6 +34,12 @@ AControllableLightActor::AControllableLightActor()
 	RectLightComp3=CreateDefaultSubobject<URectLightComponent>(TEXT("RectLightComponent3"));
 	RectLightComp3->SetupAttachment(RootComponent);
 
+	RectLightComp4=CreateDefaultSubobject<URectLightComponent>(TEXT("RectLightComponent4"));
+	RectLightComp4->SetupAttachment(RootComponent);
+
+	RectLightComp5=CreateDefaultSubobject<URectLightComponent>(TEXT("RectLightComponent5"));
+	RectLightComp5->SetupAttachment(RootComponent);
+
 	//BP_Drop_Ceiling_01=CreateDefaultSubobject<UChildActorComponent>(TEXT("Drop_Ceiling_01"));
 	//BP_Drop_Ceiling_01->SetupAttachment(RootComponent);
 	
@@ -46,6 +52,8 @@ AControllableLightActor::AControllableLightActor()
 void AControllableLightActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetComponents<URectLightComponent>(RectLightArray);
 	
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this,&AControllableLightActor::BtnMeshOverlap);
 }
@@ -76,19 +84,27 @@ void AControllableLightActor::TurnOnLight(bool value)
 	if (value)
 	{
 		// 라이트를 켜주기
-		RectLightComp0->SetIntensity(RectLightIntensity);
+		for (URectLightComponent* RectLight :RectLightArray)
+		{
+			RectLight->SetIntensity(RectLightIntensity);
+		}
+		/*RectLightComp0->SetIntensity(RectLightIntensity);
 		RectLightComp1->SetIntensity(RectLightIntensity);
 		RectLightComp2->SetIntensity(RectLightIntensity);
-		RectLightComp3->SetIntensity(RectLightIntensity);
+		RectLightComp3->SetIntensity(RectLightIntensity);*/
 		IsTurnOn=true;
 	}
 	else
 	{
 		// 라이트를 꺼주기 => 경비가 실행시키는 부분
-		RectLightComp0->SetIntensity(0);
+		for (URectLightComponent* RectLight :RectLightArray)
+		{
+			RectLight->SetIntensity(0);
+		}
+		/*RectLightComp0->SetIntensity(0);
 		RectLightComp1->SetIntensity(0);
 		RectLightComp2->SetIntensity(0);
-		RectLightComp3->SetIntensity(0);
+		RectLightComp3->SetIntensity(0);*/
 		
 		IsTurnOn=false;
 	}

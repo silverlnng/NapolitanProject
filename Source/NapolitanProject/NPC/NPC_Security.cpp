@@ -8,6 +8,7 @@
 #include "EngineUtils.h"
 #include "NavigationSystem.h"
 #include "NPC_Security_AnimInstance.h"
+#include "Components/SphereComponent.h"
 #include "NapolitanProject/YJ/TestCharacter.h"
 #include "Navigation/PathFollowingComponent.h"
 
@@ -196,6 +197,10 @@ void ANPC_Security::TickPatrol(const float& DeltaTime)
 			SetPatrolPoint(GetActorLocation() , PatrolPointRadius , PatrolPoint);
 		}
 	}
+	else
+	{
+		SetPatrolPoint(GetActorLocation() , PatrolPointRadius , PatrolPoint);
+	}
 	/*else
 	{
 		EPathFollowingRequestResult::Type result = EnemyAI->MoveToLocation(PatrolPoint);
@@ -213,9 +218,40 @@ void ANPC_Security::TickTurnOff(const float& DeltaTime)
 
 	if (EnemyAI&&NearLight)
 	{
-		EnemyAI->MoveToLocation(NearLight->GetActorLocation(),0);
+		// 여기서 알아서 장애물 회피해서 이동해야함 
+		EnemyAI->MoveToLocation(NearLight->SphereComp->GetComponentLocation(),0);
 		UE_LOG(LogTemp, Warning, TEXT("NearLight: %s"), *NearLight->GetActorLocation().ToString());
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "TickTurnOff");
+
+		/*FVector destinataion = NearLight->GetActorLocation();
+
+		auto* ns = UNavigationSystemV1::GetNavigationSystem(GetWorld());
+	
+		FAIMoveRequest MoveRequest;
+		MoveRequest.SetGoalLocation(destinataion);
+		MoveRequest.SetAcceptanceRadius(50);
+
+		FPathFindingQuery Query;
+		EnemyAI->BuildPathfindingQuery(MoveRequest , Query);
+		FPathFindingResult r = ns->FindPathSync(Query);
+		// 만약 목적지가 길 위에있다면
+		if (r.Result == ENavigationQueryResult::Success)
+		{
+			// 목적지를 향해서 이동하고싶다.
+			EnemyAI->MoveToLocation(destinataion);
+		}
+		else
+		{
+			// 랜덤한 위치를 정해서 
+			// 그곳으로 이동하고
+			EPathFollowingRequestResult::Type result = EnemyAI->MoveToLocation(PatrolPoint);
+			// 만약 도착했다면 다시 랜덤한 위치를 정하고싶다.
+			if ( result == EPathFollowingRequestResult::AlreadyAtGoal ||
+				result == EPathFollowingRequestResult::Failed )
+			{
+				SetPatrolPoint(destinataion , PatrolPointRadius , PatrolPoint);
+			}
+		}*/
 	}
 }
 
