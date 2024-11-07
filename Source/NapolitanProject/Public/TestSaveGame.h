@@ -1,0 +1,27 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/SaveGame.h"
+#include "TestSaveGame.generated.h"
+
+/**
+ * 
+ */
+UCLASS()
+class NAPOLITANPROJECT_API UTestSaveGame : public USaveGame
+{
+	GENERATED_BODY()
+public:
+	UPROPERTY(BlueprintReadWrite)
+	FVector PlayerPosition;
+
+	// 아이템 획득,단서 획득 , npc 들간의 관계성 ,클리어 여부
+	
+	// npc id 와 state를 저장
+	UPROPERTY(BlueprintReadWrite)
+	TMap<int32,int32> NPCStates;
+	
+	
+};

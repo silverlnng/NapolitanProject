@@ -438,6 +438,7 @@ void ATestCharacter::OnInteraction()
 
 		AControllableLightActor* ControllableLight =Cast<AControllableLightActor>(Interact);
 		
+		// 라이트라면 라이트로 캐스트해서 
 		//현재 조작할 라이트가 있고 그 라이트의 범위 안일떄만 작동
 		if (ControllableLight)
 		{
@@ -446,10 +447,11 @@ void ATestCharacter::OnInteraction()
 			// curControllableLight 의 불키는 함수 작동시키기
 			curControllableLight->TurnOnLight(true);
 		}
-
-		// 라이트라면 라이트로 캐스트해서 
-		
 		// 그냥 아이템 이라면 아이템으로 캐스트해서 
+
+		// 단서라면 단서로 캐스트
+		// 단서를 카메라 가까이 나오고 시간 지연 주고 스크린 ui 으로 각자의 내용이 나오도록 하기
+		
 	}
 }
 
