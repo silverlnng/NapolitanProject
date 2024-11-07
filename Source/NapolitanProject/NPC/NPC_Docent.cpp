@@ -12,6 +12,12 @@
 #include "NapolitanProject/YJ/PlayerHUD.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
+void ANPC_Docent::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	
+}
+
 void ANPC_Docent::ResultEvent(int32 result)
 {
 	// State 와 선택지의  result 에 따라 이벤트 정의하기
@@ -105,7 +111,11 @@ void ANPC_Docent::ResultEvent(int32 result)
 				SouvenirName= FString(TEXT("수첩"));
 				PlayerHUD->InteractUI->GetSouvenirEvent(SouvenirName);
 				PlayerHUD->InteractUI->PlayNoteUIEvent(true);
+				FString color ="Yellow";
+				DissolveEvent(color);
 			},2.0f,false);
+
+			
 			
 		}
 	}
@@ -142,6 +152,15 @@ void ANPC_Docent::UpdateLerp()
 	}
 }
 
+void ANPC_Docent::DissolveEvent(FString& str)
+{
+	Super::DissolveEvent(str);
+}
+
+void ANPC_Docent::ChangeCleared()
+{
+	Super::ChangeCleared();
+}
 
 void ANPC_Docent::Interact()
 {
@@ -157,4 +176,5 @@ int32 ANPC_Docent::GetState()
 {
 	return State;
 }
+
 

@@ -365,6 +365,7 @@ void ATestCharacter::SphereTraceFromCamera()
 	// 트레이스 채널 설정 (여기서는 ECC_Visibility 사용)
 	// Interact : ECC_GameTraceChannel3
 	ECollisionChannel TraceChannel = ECC_GameTraceChannel3;
+	
 	// 트레이스 파라미터 설정
 	FHitResult HitResult;
 	
