@@ -21,6 +21,15 @@ public:
 	UPROPERTY()
 	class ANPC_Security* NPCSecurity;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
+	bool bAttack;
+
+	UFUNCTION()
+	void AnimNotify_AttackStart();
+	
+	UFUNCTION()
+	void AnimNotify_AttackEnd();
+
 	// NPC_Security 의 state 와 일치시켜주기
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	ESecurityState State;

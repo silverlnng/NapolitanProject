@@ -85,7 +85,7 @@ public:
 	void TickChasePlayer(const float& DeltaTime);
 	void TickPatrol(const float& DeltaTime);
 	void TickTurnOff(const float& DeltaTime);
-	
+	void TickAttack(const float& DeltaTime);
 
 	// 네비게이션을 이용해서 길찾기를 하고싶다.
 	UPROPERTY(VisibleAnywhere)
@@ -94,10 +94,17 @@ public:
 	FVector PatrolPoint;
 	float PatrolPointRadius = 500;
 
+	// 공격 가능거리
+	float AttackDistance = 300;
+
 	// 내위치에서 반경 5미터
 	bool SetPatrolPoint(FVector origin, float radius, FVector& dest);
 
 	UPROPERTY()
 	class UNPC_Security_AnimInstance* Anim;
+
+	// 애니메이션에서 발생한 알림을 받고싶다.
+	void OnMyAttackStart();
+	void OnMyAttackEnd();
 };
 

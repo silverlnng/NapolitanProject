@@ -209,7 +209,7 @@ void ATestCharacter::Move(const FInputActionValue& Value)
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
-	if (Controller != nullptr)
+	if (!bIsBeingAttacked && Controller != nullptr)
 	{
 		// add movement 
 		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
@@ -516,6 +516,21 @@ void ATestCharacter::EndCapsuleOverlap(UPrimitiveComponent* OverlappedComponent,
 	{
 		curControllableLight=nullptr;
 		IsLightRangeIn=false;
+	}
+}
+
+void ATestCharacter::PlayDamagedAnimMontage()
+{
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->StopMovementImmediately();
+	}
+	
+	// 이동 입력 을 못하게하고
+	bIsBeingAttacked=true;
+	if (DamagedSecurityAnim)
+	{
+		PlayAnimMontage(DamagedSecurityAnim);
 	}
 }
 

@@ -103,7 +103,7 @@ void ANPC_Security::Tick(float DeltaSeconds)
 		MinimumLightDist=100000;
 	}
 
-	if (Target)
+	if (Target&& SecurityState!=ESecurityState::Attack)
 	{
 		SetState(ESecurityState::ChasePlayer);
 	}
@@ -127,6 +127,7 @@ void ANPC_Security::Tick(float DeltaSeconds)
 	case ESecurityState::ChasePlayer:		TickChasePlayer(DeltaSeconds);		break;
 	case ESecurityState::Patrol:		TickPatrol(DeltaSeconds);		break;
 	case ESecurityState::TurnOff:	TickTurnOff(DeltaSeconds);		break;
+	case ESecurityState::Attack:	TickAttack(DeltaSeconds);		break;
 	}
 	
 }
@@ -135,6 +136,14 @@ void ANPC_Security::SetState(ESecurityState curState)
 {
 	SecurityState=curState;
 	Anim->State=curState;
+
+	// 공격상태일 때 이동을 멈추기
+	if (curState==ESecurityState::Attack)
+	{
+		EnemyAI->StopMovement();
+	}
+	// 
+	
 }
 
 void ANPC_Security::OnSeePawn(APawn *OtherPawn)
@@ -162,6 +171,17 @@ void ANPC_Security::TickChasePlayer(const float& DeltaTime)
 	if (EnemyAI&&Target)
 	{
 		EnemyAI->MoveToLocation(Target->GetActorLocation());
+
+		// 타겟과 나(경비원) 의 거리 계산
+		FVector dir = Target->GetActorLocation() - this->GetActorLocation();
+		float dist = dir.Size();
+
+		if ( dist < AttackDistance )
+		{
+			// 공격상태로 전이하고싶다.
+			SetState(ESecurityState::Attack);
+		}
+		
 	}
 }
 
@@ -255,6 +275,11 @@ void ANPC_Security::TickTurnOff(const float& DeltaTime)
 	}
 }
 
+void ANPC_Security::TickAttack(const float& DeltaTime)
+{
+	
+}
+
 bool ANPC_Security::SetPatrolPoint(FVector origin, float radius, FVector& dest)
 {
 	// 길위의 랜덤한 위치를 정하고싶다.
@@ -268,4 +293,27 @@ bool ANPC_Security::SetPatrolPoint(FVector origin, float radius, FVector& dest)
 		dest = loc.Location;
 	}
 	return isSuccess;
+}
+
+void ANPC_Security::OnMyAttackStart()
+{
+	Anim->bAttack = false;
+	// 주인공캐릭터 멈추게 (이동못하게하고) 피격당하는 애니 실행되도록
+	MainCharacter->PlayDamagedAnimMontage();
+}
+
+void ANPC_Security::OnMyAttackEnd()
+{
+	// 거리체크
+	float dist = GetDistanceTo(Target);
+	if ( dist < AttackDistance ) {
+		// 플레이어에게 데미지를 입히고싶다.
+		Anim->bAttack = true;
+		UE_LOG(LogTemp , Warning , TEXT("Enemy -> Player에게 Damage"));
+	}
+	// 그렇지 않다면 
+	else {
+		// 이동상태로 전이하고싶다.
+		SetState(ESecurityState::ChasePlayer);
+	}
 }

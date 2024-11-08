@@ -10,3 +10,19 @@ void UNPC_Security_AnimInstance::NativeInitializeAnimation()
 	Super::NativeInitializeAnimation();
 	NPCSecurity=Cast<ANPC_Security>(TryGetPawnOwner());
 }
+
+void UNPC_Security_AnimInstance::AnimNotify_AttackStart()
+{
+	if (NPCSecurity)
+	{
+		NPCSecurity->OnMyAttackStart();
+	}
+}
+
+void UNPC_Security_AnimInstance::AnimNotify_AttackEnd()
+{
+	if (NPCSecurity)
+	{
+		NPCSecurity->OnMyAttackEnd();
+	}
+}

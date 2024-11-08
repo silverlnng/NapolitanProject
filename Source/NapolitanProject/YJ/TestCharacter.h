@@ -204,6 +204,11 @@ public:
 /////////////////////////////////////////
 	UPROPERTY(EditDefaultsOnly)
 	class UArrowComponent* myArrowComp;
+	bool bIsBeingAttacked=false;
+	UFUNCTION()
+	void PlayDamagedAnimMontage();
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* DamagedSecurityAnim;
 	
 };
 
