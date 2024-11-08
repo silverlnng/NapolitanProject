@@ -1,11 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TestGameInstance.h"
+#include "MyTestGameInstance.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "Serialization/Csv/CsvParser.h"
 
-void UTestGameInstance::Init()
+void UMyTestGameInstance::Init()
 {
 	Super::Init();
 	DT_itemData = LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/Item/DT_Item.DT_Item'"));
@@ -61,17 +61,17 @@ void UTestGameInstance::Init()
 		
 }
 
-void UTestGameInstance::SetGameInstanceLang(int32 value)
+void UMyTestGameInstance::SetGameInstanceLang(int32 value)
 {
 	lang=value;
 }
 
-int32 UTestGameInstance::GetGameInstanceLang()
+int32 UMyTestGameInstance::GetGameInstanceLang()
 {
 	return lang;
 }
 
-bool UTestGameInstance::LoadResultFromCSV(const FString& FilePath)
+bool UMyTestGameInstance::LoadResultFromCSV(const FString& FilePath)
 {
 	// FString CSVPath = FPaths::ProjectDir() / TEXT("NPCData.csv");
 	FString CSVContent; // csv 내용을 저장할 변수
@@ -107,7 +107,7 @@ bool UTestGameInstance::LoadResultFromCSV(const FString& FilePath)
 	return true;
 }
 
-bool UTestGameInstance::LoadDialogueFromCSV(const FString& FilePath)
+bool UMyTestGameInstance::LoadDialogueFromCSV(const FString& FilePath)
 {
 
 	UE_LOG(LogTemp, Error, TEXT("%s Dialogue CSV file: %s"),*CALLINFO,*FilePath);
@@ -147,7 +147,7 @@ bool UTestGameInstance::LoadDialogueFromCSV(const FString& FilePath)
 	return true;
 }
 
-bool UTestGameInstance::LoadSelectFromCSV(const FString& FilePath)
+bool UMyTestGameInstance::LoadSelectFromCSV(const FString& FilePath)
 {
 	FString CSVContent; // csv 내용을 저장할 변수
     
@@ -185,7 +185,7 @@ bool UTestGameInstance::LoadSelectFromCSV(const FString& FilePath)
 	return true;
 }
 
-FString UTestGameInstance::GetNPCResult(const int32& NPC_ID, const int32& State, const int32& SelectedAnswer,
+FString UMyTestGameInstance::GetNPCResult(const int32& NPC_ID, const int32& State, const int32& SelectedAnswer,
 	const FString& Lang)
 {
 	int32 npc_id=NPC_ID;
@@ -215,7 +215,7 @@ FString UTestGameInstance::GetNPCResult(const int32& NPC_ID, const int32& State,
 	return "FindKey를 찾지 못함";
 }
 
-void UTestGameInstance::GetNPCSelect(const int32& NPC_ID, const int32& State, const FString& Lang)
+void UMyTestGameInstance::GetNPCSelect(const int32& NPC_ID, const int32& State, const FString& Lang)
 {
 	int32 npc_id=NPC_ID;
 	int32 npc_state=State;

@@ -3,9 +3,9 @@
 
 #include "ClueActor.h"
 
-#include "../YJ/PlayerHUD.h"
-#include "../YJ/TestCharacter.h"
-#include "TestPlayerController.h"
+#include "../GameFrameWork/PlayerHUD.h"
+#include "../GameFrameWork/TestCharacter.h"
+#include "../GameFrameWork/TestPlayerController.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/TextRenderComponent.h"

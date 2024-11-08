@@ -4,7 +4,7 @@
 #include "NPCDialogueWidget.h"
 
 #include "SelectionSlotWidget.h"
-#include "TestPlayerController.h"
+#include "../GameFrameWork/TestPlayerController.h"
 #include "Components/Button.h"
 #include "Components/RichTextBlock.h"
 #include "Components/TextBlock.h"

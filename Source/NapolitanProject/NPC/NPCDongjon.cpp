@@ -3,9 +3,9 @@
 
 #include "NPCDongjon.h"
 
-#include "TestPlayerController.h"
+#include "../GameFrameWork/TestPlayerController.h"
 #include "Components/SlateWrapperTypes.h"
-#include "NapolitanProject/YJ/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 // Sets default values

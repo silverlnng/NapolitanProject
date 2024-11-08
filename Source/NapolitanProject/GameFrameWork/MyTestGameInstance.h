@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
-#include "TestGameInstance.generated.h"
+#include "MyTestGameInstance.generated.h"
 
 /**
  * 
@@ -76,7 +76,7 @@ struct FNPCSelect
 
 
 UCLASS()
-class NAPOLITANPROJECT_API UTestGameInstance : public UGameInstance
+class NAPOLITANPROJECT_API UMyTestGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
 public:

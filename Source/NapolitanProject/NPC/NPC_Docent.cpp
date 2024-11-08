@@ -3,13 +3,13 @@
 
 #include "NPC_Docent.h"
 
-#include "TestPlayerController.h"
+#include "../GameFrameWork/TestPlayerController.h"
 #include "Camera/CameraComponent.h"
 #include "Components/Image.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
-#include "NapolitanProject/YJ/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 void ANPC_Docent::Tick(float DeltaSeconds)

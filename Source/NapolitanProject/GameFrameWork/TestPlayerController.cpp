@@ -4,19 +4,20 @@
 #include "TestPlayerController.h"
 
 #include "EventComponent.h"
+#include "MyTestGameInstance.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "TestGameInstance.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
-#include "NapolitanProject/YJ/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 #include "NapolitanProject/YJ/NoteUI/SouvenirWidget.h"
 #include "Components/Image.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
-#include "NapolitanProject/YJ/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 ATestPlayerController::ATestPlayerController()
@@ -27,8 +28,6 @@ ATestPlayerController::ATestPlayerController()
 void ATestPlayerController::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	PlayerHUD=GetHUD<APlayerHUD>();
-	GI = GetGameInstance<UTestGameInstance>();
 }
 
 void ATestPlayerController::BeginPlay()
@@ -36,7 +35,7 @@ void ATestPlayerController::BeginPlay()
 	Super::BeginPlay();
 	
 	PlayerHUD=GetHUD<APlayerHUD>();
-	GI = GetGameInstance<UTestGameInstance>();
+	GI = GetGameInstance<UMyTestGameInstance>();
 	me = Cast<ATestCharacter>(GetPawn());
 	
 	FTimerHandle TimerHandle;

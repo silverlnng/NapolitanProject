@@ -4,7 +4,7 @@
 #include "TestCharacter.h"
 
 #include "../Interact/ClueActor.h"
-#include "ControllableLightActor.h"
+#include "../Interact/ControllableLightActor.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "IInteract.h"
@@ -18,7 +18,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "NoteUI/NoteWidget.h"
+#include "../YJ/NoteUI/NoteWidget.h"
 #include "YSEvanceUI.h"
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"

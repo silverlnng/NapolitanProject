@@ -4,7 +4,7 @@
 #include "NPC_Security.h"
 
 #include "AIController.h"
-#include "ControllableLightActor.h"
+#include "../Interact/ControllableLightActor.h"
 #include "EngineUtils.h"
 #include "NavigationSystem.h"
 #include "NPC_Security_AnimInstance.h"
@@ -12,7 +12,7 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "NapolitanProject/YJ/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "Navigation/PathFollowingComponent.h"
 
 ANPC_Security::ANPC_Security()

@@ -5,7 +5,7 @@
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
-#include "NapolitanProject/YJ/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 
 void UYSEvanceUI::NativeOnInitialized()
 {

@@ -3,14 +3,14 @@
 
 #include "ChaseStatue.h"
 #include "Components/CapsuleComponent.h"
-#include "NapolitanProject/YJ/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "Runtime/AIModule/Classes/AIController.h"
 #include <NavigationSystem.h>
 
 #include "YSEvanceUI.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
-#include "NapolitanProject/YJ/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "Navigation/PathFollowingComponent.h"
 
 

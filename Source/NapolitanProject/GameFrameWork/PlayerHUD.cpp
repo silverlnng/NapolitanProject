@@ -3,13 +3,13 @@
 
 #include "PlayerHUD.h"
 
-#include "DeadEndingWidget.h"
+#include "../YJ/DeadEndingWidget.h"
 #include "../Interact/InteractWidget.h"
-#include "DialogueUI/NPCDialogueWidget.h"
+#include "../YJ/DialogueUI/NPCDialogueWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "NYS_Choice.h"
 #include "YSEvanceUI.h"
-#include "NoteUI/NoteWidget.h"
+#include "../YJ/NoteUI/NoteWidget.h"
 #include "Animation/WidgetAnimation.h"
 #include "BehaviorTree/Tasks/BTTask_PlayAnimation.h"
 

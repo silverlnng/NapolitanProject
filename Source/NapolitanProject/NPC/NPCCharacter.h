@@ -43,7 +43,7 @@ public:
 	virtual void Interact();
 
 	UPROPERTY(VisibleAnywhere)
-	class UTestGameInstance* GI;
+	class UMyTestGameInstance* GI;
 	
 	// 전환용 카메라 부착해주기 
 	UPROPERTY(EditDefaultsOnly)

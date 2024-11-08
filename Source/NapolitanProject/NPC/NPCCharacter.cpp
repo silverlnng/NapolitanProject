@@ -3,13 +3,13 @@
 
 #include "NPCCharacter.h"
 
-#include "TestGameInstance.h"
+#include "../GameFrameWork/MyTestGameInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "TestPlayerController.h"
-#include "NapolitanProject/YJ/PlayerHUD.h"
-#include "NapolitanProject/YJ/TestCharacter.h"
+#include "../GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
 
 // Sets default values
 ANPCCharacter::ANPCCharacter()
@@ -39,7 +39,7 @@ void ANPCCharacter::BeginPlay()
 	 TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	 MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	 PlayerHUD =TestPC->GetHUD<APlayerHUD>();
-	 GI = GetGameInstance<UTestGameInstance>();
+	 GI = GetGameInstance<UMyTestGameInstance>();
 
 	//TestPC00
 }

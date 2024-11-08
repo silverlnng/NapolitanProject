@@ -22,7 +22,7 @@ private:
 	ATestPlayerController();
 public:
 	UPROPERTY(VisibleAnywhere)
-	class UTestGameInstance* GI;
+	class UMyTestGameInstance* GI;
 	UPROPERTY(VisibleAnywhere)
 	class APlayerHUD* PlayerHUD;
 	UPROPERTY(VisibleAnywhere)

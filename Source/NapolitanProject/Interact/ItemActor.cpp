@@ -4,7 +4,7 @@
 #include "ItemActor.h"
 #include "../YJ/NoteUI/InventoryWidget.h"
 #include "../YJ/NoteUI/InvenSlotWidget.h"
-#include "../YJ/PlayerHUD.h"
+#include "../GameFrameWork/PlayerHUD.h"
 #include "Components/Image.h"
 #include "../YJ/NoteUI/NoteWidget.h"
 
