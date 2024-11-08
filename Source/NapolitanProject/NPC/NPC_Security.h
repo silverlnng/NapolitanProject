@@ -16,6 +16,7 @@ enum class ESecurityState:uint8
 	ChasePlayer,
 	Patrol,
 	TurnOff,
+	Attack,
 };
 
 
@@ -71,6 +72,11 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	ATestCharacter* MainCha;
 
+	UPROPERTY(EditAnywhere,Category=Speed)
+	float PatrolSpeed;
+	UPROPERTY(EditAnywhere,Category=Speed)
+	float ChaseSpeed;
+	
 	UFUNCTION()
 	void OnSeePawn(APawn *OtherPawn);
 

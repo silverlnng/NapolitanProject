@@ -3,11 +3,12 @@
 
 #include "TestCharacter.h"
 
+#include "../Interact/ClueActor.h"
 #include "ControllableLightActor.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "IInteract.h"
-#include "InteractWidget.h"
+#include "../Interact/InteractWidget.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "PlayerHUD.h"
 #include "TestPlayerController.h"
@@ -19,6 +20,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "NoteUI/NoteWidget.h"
 #include "YSEvanceUI.h"
+#include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 ATestCharacter::ATestCharacter()
@@ -75,6 +77,9 @@ ATestCharacter::ATestCharacter()
 	
 	//ChageCameracomp->SetRelativeLocation(FVector(0 , -40 , -20));
 	//ChageCameracomp->SetRelativeRotation(FRotator(0, 180, 0));
+
+	myArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("myArrowComp"));
+	myArrowComp->SetupAttachment(CameraComponent);
 }
 
 void ATestCharacter::BeginPlay()
@@ -451,6 +456,11 @@ void ATestCharacter::OnInteraction()
 
 		// 단서라면 단서로 캐스트
 		// 단서를 카메라 가까이 나오고 시간 지연 주고 스크린 ui 으로 각자의 내용이 나오도록 하기
+		AClueActor* Clue =Cast<AClueActor>(Interact);
+		if (Clue)
+		{
+			Clue->LookAt();
+		}
 		
 	}
 }

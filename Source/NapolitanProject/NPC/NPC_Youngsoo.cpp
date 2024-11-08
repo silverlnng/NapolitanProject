@@ -11,7 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "../YJ/TestCharacter.h"
 #include "../YJ/PlayerHUD.h"
-#include "NapolitanProject/YJ/InteractWidget.h"
+#include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 // Sets default values

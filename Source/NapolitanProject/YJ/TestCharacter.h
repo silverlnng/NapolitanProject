@@ -200,6 +200,10 @@ public:
 
 	UFUNCTION()
 	void EndCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+/////////////////////////////////////////
+	UPROPERTY(EditDefaultsOnly)
+	class UArrowComponent* myArrowComp;
 	
 };
 

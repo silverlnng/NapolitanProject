@@ -4,7 +4,7 @@
 #include "PlayerHUD.h"
 
 #include "DeadEndingWidget.h"
-#include "InteractWidget.h"
+#include "../Interact/InteractWidget.h"
 #include "DialogueUI/NPCDialogueWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "NYS_Choice.h"

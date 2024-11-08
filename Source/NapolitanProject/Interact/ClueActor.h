@@ -23,6 +23,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	class ATestCharacter* MainCharacter;
+	class ATestPlayerController* TestPC;
+	class APlayerHUD* PlayerHUD;
+
 	UPROPERTY(EditDefaultsOnly)
 	class USceneComponent* SceneComp;
 	
@@ -39,5 +43,8 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	class UTextRenderComponent* TextRenderComp;
-
+    // 캐릭터가 상호작용 눌렀을때 실행시킬 함수
+	void LookAt();
 };
+
+

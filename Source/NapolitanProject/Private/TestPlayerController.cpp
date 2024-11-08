@@ -15,7 +15,7 @@
 #include "NapolitanProject/YJ/NoteUI/SouvenirWidget.h"
 #include "Components/Image.h"
 #include "NapolitanProject/NapolitanProject.h"
-#include "NapolitanProject/YJ/InteractWidget.h"
+#include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/YJ/TestCharacter.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 

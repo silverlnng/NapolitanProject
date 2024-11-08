@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "IInteract.h"
 #include "NPCCharacter.h"
-#include "NapolitanProject/YJ/InteractWidget.h"
+#include "NapolitanProject/Interact/InteractWidget.h"
 #include "NPC_Five.generated.h"
 
 /**

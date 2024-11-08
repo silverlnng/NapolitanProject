@@ -2,11 +2,11 @@
 
 
 #include "ItemActor.h"
-#include "NoteUI/InventoryWidget.h"
-#include "NoteUI/InvenSlotWidget.h"
-#include "PlayerHUD.h"
+#include "../YJ/NoteUI/InventoryWidget.h"
+#include "../YJ/NoteUI/InvenSlotWidget.h"
+#include "../YJ/PlayerHUD.h"
 #include "Components/Image.h"
-#include "NoteUI/NoteWidget.h"
+#include "../YJ/NoteUI/NoteWidget.h"
 
 // Sets default values
 AItemActor::AItemActor()

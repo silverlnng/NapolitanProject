@@ -3,6 +3,10 @@
 
 #include "ClueActor.h"
 
+#include "../YJ/PlayerHUD.h"
+#include "../YJ/TestCharacter.h"
+#include "TestPlayerController.h"
+#include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/TextRenderComponent.h"
 
@@ -17,6 +21,7 @@ AClueActor::AClueActor()
 
 	BoxComp=CreateDefaultSubobject<UBoxComponent>(TEXT("SphereComponent"));
 	BoxComp->SetupAttachment(RootComponent);
+	BoxComp->SetCollisionProfileName(FName("Clue"));
 
 	StaticMeshComp=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComp->SetupAttachment(BoxComp);
@@ -29,7 +34,9 @@ AClueActor::AClueActor()
 void AClueActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
+	MainCharacter =TestPC->GetPawn<ATestCharacter>();
+	PlayerHUD =TestPC->GetHUD<APlayerHUD>();
 }
 
 // Called every frame
@@ -39,3 +46,25 @@ void AClueActor::Tick(float DeltaTime)
 
 }
 
+void AClueActor::LookAt()
+{
+	// 캐릭터의 카메라 시점으로 이동 시켰다가 제자리로
+	FVector OriginLoc = GetActorLocation();
+	FRotator OriginRot=GetActorRotation();
+	FVector CameraLoc =MainCharacter->myArrowComp->GetComponentLocation();
+	FRotator CameraRot =MainCharacter->myArrowComp->GetComponentRotation();
+	FTimerHandle UITimer;
+	GetWorldTimerManager().SetTimer(UITimer,[this, CameraLoc, CameraRot]()
+	{
+		SetActorLocationAndRotation(CameraLoc,CameraRot);
+	},0.5f,false);
+
+	FTimerHandle OriginPoseTimer;
+	GetWorldTimerManager().SetTimer(OriginPoseTimer,[this,OriginLoc, OriginRot]()
+	{
+		SetActorLocationAndRotation(OriginLoc,OriginRot);
+	},5.f,false);
+
+	
+	
+}
