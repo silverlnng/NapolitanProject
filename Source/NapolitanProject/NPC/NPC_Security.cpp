@@ -10,6 +10,7 @@
 #include "NPC_Security_AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/SphereComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "NapolitanProject/YJ/TestCharacter.h"
 #include "Navigation/PathFollowingComponent.h"
@@ -180,7 +181,7 @@ void ANPC_Security::TickChasePlayer(const float& DeltaTime)
 	if (EnemyAI&&Target)
 	{
 		EnemyAI->MoveToLocation(Target->GetActorLocation());
-
+		GetCharacterMovement()->MaxWalkSpeed=800.f;
 		// 타겟과 나(경비원) 의 거리 계산
 		FVector dir = Target->GetActorLocation() - this->GetActorLocation();
 		float dist = dir.Size();
@@ -200,7 +201,7 @@ void ANPC_Security::TickPatrol(const float& DeltaTime)
 	//FVector dir = Target->GetActorLocation() - GetActorLocation();
 	//float dist = dir.Size();
 	//Me->AddMovementInput(dir.GetSafeNormal());
-
+	GetCharacterMovement()->MaxWalkSpeed=300.f;
 	FVector destinataion = PatrolPoint;
 
 	auto* ns = UNavigationSystemV1::GetNavigationSystem(GetWorld());
@@ -247,6 +248,7 @@ void ANPC_Security::TickTurnOff(const float& DeltaTime)
 
 	if (EnemyAI&&NearLight)
 	{
+		GetCharacterMovement()->MaxWalkSpeed=300.f;
 		// 여기서 알아서 장애물 회피해서 이동해야함 
 		EnemyAI->MoveToLocation(NearLight->SphereComp->GetComponentLocation(),0);
 		UE_LOG(LogTemp, Warning, TEXT("NearLight: %s"), *NearLight->GetActorLocation().ToString());

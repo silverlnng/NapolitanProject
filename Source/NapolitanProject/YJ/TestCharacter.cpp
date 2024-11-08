@@ -80,6 +80,10 @@ ATestCharacter::ATestCharacter()
 
 	myArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("myArrowComp"));
 	myArrowComp->SetupAttachment(CameraComponent);
+
+	// 아이템 부착할 위치 잡는 용도 
+	ItemArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("ItemArrowComp"));
+	ItemArrowComp->SetupAttachment(CameraComponent);
 }
 
 void ATestCharacter::BeginPlay()
@@ -527,7 +531,7 @@ void ATestCharacter::PlayDamagedAnimMontage()
 	}
 	
 	// 이동 입력 을 못하게하고
-	bIsBeingAttacked=true;
+	//bIsBeingAttacked=true;
 	if (DamagedSecurityAnim)
 	{
 		PlayAnimMontage(DamagedSecurityAnim);
