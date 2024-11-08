@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Interact/SouvenirActor.h"
+#include "SouvenirActor.h"
 
 // Sets default values
 ASouvenirActor::ASouvenirActor()
