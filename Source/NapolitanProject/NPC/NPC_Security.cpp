@@ -8,13 +8,22 @@
 #include "EngineUtils.h"
 #include "NavigationSystem.h"
 #include "NPC_Security_AnimInstance.h"
+#include "Camera/CameraComponent.h"
 #include "Components/SphereComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "NapolitanProject/YJ/TestCharacter.h"
 #include "Navigation/PathFollowingComponent.h"
 
 ANPC_Security::ANPC_Security()
 {
 	PawnSensingComp=CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
+	
+	SpringArmComp2 = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp2"));
+	SpringArmComp2->SetupAttachment(GetMesh(),"head");
+
+	// 카메라를 생성해서 스프링암에 붙이고싶다.
+	CameraComp2 = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp2"));
+	CameraComp2->SetupAttachment(SpringArmComp2);
 }
 
 void ANPC_Security::BeginPlay()
