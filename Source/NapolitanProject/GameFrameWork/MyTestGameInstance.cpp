@@ -36,7 +36,7 @@ void UMyTestGameInstance::Init()
 			if (SouvenirData)
 			{
 				//유물획득 초기화 => 게임로드안했을때 
-				SouvenirDataHadMap.Add(i,SouvenirData->IsHad);
+				SouvenirDataHadMap.Add(i,SouvenirData->Had);
 			}
 		}
 	}

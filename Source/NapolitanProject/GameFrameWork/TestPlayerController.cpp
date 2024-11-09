@@ -129,7 +129,7 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	FSouvenirData* SouvenirDataNext = GI->DT_SouvenirData->FindRow<FSouvenirData>(nextNum_,TEXT(""));
 	if (!SouvenirDataNext){return;} // 방어코드
 
-	if(!SouvenirDataNext->IsHad)
+	if(!SouvenirDataNext->Had)
 	{
 		SouvenirUI->Img_Souvenir_right->SetColorAndOpacity(FLinearColor(0.01,0.01,0.01,1));
 	}

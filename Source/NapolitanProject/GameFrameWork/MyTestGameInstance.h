@@ -16,7 +16,7 @@ struct FItemData : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	bool IsHad=false;
+	bool Had=false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	int32 ItemInt=-1;
@@ -34,7 +34,7 @@ struct FSouvenirData : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	bool IsHad=false;
+	bool Had=false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	int32 SouvenirInt=-1;
