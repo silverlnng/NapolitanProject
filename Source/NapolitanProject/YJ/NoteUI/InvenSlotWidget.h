@@ -31,4 +31,6 @@ public:
 	void OnClickedInvenSlot();
 	UFUNCTION()
 	void OnHoverInvenSlot();
+	UFUNCTION()
+	void OnItemAcquired();
 };

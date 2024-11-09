@@ -25,6 +25,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	int32 ItemID=0;
 	
 	
 //////언리얼 데이터 테이블 읽어오기 	//////////////////////////////////////////////////////////
@@ -34,6 +36,10 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class APlayerHUD* PlayerHUD;
+
+	
+	UFUNCTION()
+	void OnPickup(); // 아이템을 상호작용e키 눌렀을때 부를 함수
 
 	
 	
