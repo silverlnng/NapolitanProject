@@ -6,7 +6,6 @@
 #include "EventComponent.h"
 #include "MyTestGameInstance.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
-#include "TestGameInstance.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -62,6 +61,7 @@ void ATestPlayerController::BeginPlay()
 		
 		for (int i = 0; i < GI->itemDataRowNames.Num(); i++)
 		{
+			// DT_itemData 에서 행 찾아서 
 			FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(GI->itemDataRowNames[i] , TEXT(""));
 			if (ItemData)
 			{

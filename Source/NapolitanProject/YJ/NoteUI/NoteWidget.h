@@ -26,6 +26,9 @@ public:
 	class UUserWidget* WBP_SettingInNote;
 
 	UPROPERTY(meta = (BindWidget))
+	class UUserWidget* WBP_ClueInfo;
+	
+	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_Rule;
 
 	UPROPERTY(meta = (BindWidget))
@@ -33,6 +36,9 @@ public:
 	
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_Setting;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_ClueInfo;
 
 	UFUNCTION()
 	void OnClickBtn_NPNInfo();
@@ -42,6 +48,9 @@ public:
 
 	UFUNCTION()
 	void OnClickBtn_Setting();
+
+	UFUNCTION()
+	void OnClickBtn_ClueInfo();
 
 //////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")

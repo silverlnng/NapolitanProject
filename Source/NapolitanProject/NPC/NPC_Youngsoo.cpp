@@ -5,7 +5,6 @@
 #include "Components/CapsuleComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "NYS_Choice.h"
-#include "TestGameInstance.h"
 #include "../GameFrameWork/TestPlayerController.h"
 #include "YoungsooAnim.h"
 #include "Kismet/GameplayStatics.h"

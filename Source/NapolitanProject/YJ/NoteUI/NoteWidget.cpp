@@ -17,10 +17,12 @@ void UNoteWidget::NativeConstruct()
 	WBP_Souvenir->SetVisibility(ESlateVisibility::Hidden);
 	WBP_NPCInfo->SetVisibility(ESlateVisibility::Hidden);
 	WBP_SettingInNote->SetVisibility(ESlateVisibility::Hidden);
+	WBP_ClueInfo->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UNoteWidget::OnClickBtn_NPNInfo()
 {
+	WBP_ClueInfo->SetVisibility(ESlateVisibility::Hidden);
 	WBP_Souvenir->SetVisibility(ESlateVisibility::Hidden);
 	WBP_NPCInfo->SetVisibility(ESlateVisibility::Visible);
 	WBP_SettingInNote->SetVisibility(ESlateVisibility::Hidden);
@@ -32,6 +34,7 @@ void UNoteWidget::OnClickBtn_NPNInfo()
 
 void UNoteWidget::OnClickBtn_Souvenir()
 {
+	WBP_ClueInfo->SetVisibility(ESlateVisibility::Hidden);
 	WBP_Souvenir->SetVisibility(ESlateVisibility::Visible);
 	WBP_NPCInfo->SetVisibility(ESlateVisibility::Hidden);
 	WBP_SettingInNote->SetVisibility(ESlateVisibility::Hidden);
@@ -43,9 +46,22 @@ void UNoteWidget::OnClickBtn_Souvenir()
 
 void UNoteWidget::OnClickBtn_Setting()
 {
+	WBP_ClueInfo->SetVisibility(ESlateVisibility::Hidden);
 	WBP_Souvenir->SetVisibility(ESlateVisibility::Hidden);
 	WBP_NPCInfo->SetVisibility(ESlateVisibility::Hidden);
 	WBP_SettingInNote->SetVisibility(ESlateVisibility::Visible);
+	if (ClickSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, ClickSoundWave);
+	}
+}
+
+void UNoteWidget::OnClickBtn_ClueInfo()
+{
+	WBP_ClueInfo->SetVisibility(ESlateVisibility::Visible);
+	WBP_Souvenir->SetVisibility(ESlateVisibility::Hidden);
+	WBP_NPCInfo->SetVisibility(ESlateVisibility::Hidden);
+	WBP_SettingInNote->SetVisibility(ESlateVisibility::Hidden);
 	if (ClickSoundWave)
 	{
 		UGameplayStatics::PlaySound2D(this, ClickSoundWave);

@@ -14,6 +14,9 @@ void UInvenSlotWidget::NativeConstruct()
 
 void UInvenSlotWidget::OnClickedInvenSlot()
 {
+	// 자신의 ItemIndex 으로 
+	// 해당 메쉬를 카메라앞에 스폰되도록 하기
+	//GI->DT_itemData->FindRow<FItemData>
 }
 
 void UInvenSlotWidget::OnHoverInvenSlot()

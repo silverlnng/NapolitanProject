@@ -14,6 +14,8 @@ USTRUCT(BlueprintType)
 struct FItemData : public FTableRowBase
 {
 	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString Name="";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	bool Had=false;

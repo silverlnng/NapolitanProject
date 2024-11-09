@@ -19,9 +19,14 @@ public:
 	
 	UPROPERTY(meta = (BindWidget))
 	class UImage* Img_Thumnail;
+	
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_InvenSlot;
 
+	UPROPERTY()
+	int32 ItemIndex;
+	
+	
 	UFUNCTION()
 	void OnClickedInvenSlot();
 	UFUNCTION()

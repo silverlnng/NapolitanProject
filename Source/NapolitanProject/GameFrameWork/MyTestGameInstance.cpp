@@ -16,6 +16,13 @@ void UMyTestGameInstance::Init()
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s DT_Item 로드성공"),*CALLINFO);
 		itemDataRowNames = DT_itemData->GetRowNames();
+
+		
+		for (int i = 0; i < itemDataRowNames.Num(); i++)
+		{
+			UE_LOG(LogTemp, Error, TEXT("%s,%s"),*CALLINFO,*itemDataRowNames[i].ToString());
+		}
+		
 	}
 	else
 	{
