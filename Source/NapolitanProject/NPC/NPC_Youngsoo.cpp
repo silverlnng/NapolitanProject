@@ -36,22 +36,6 @@ void ANPC_Youngsoo::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	
-	if (bisDissolve && DynamicMaterial)
-	{
-		dissolveAnimValue += DeltaTime / 4;
-
-		// 원하는 범위 (0.5에서 -0.5)로 클램핑
-		float DissolveValue = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
-		DynamicMaterial->SetScalarParameterValue(TEXT("dissolve"), DissolveValue);
-
-		if (DissolveValue <= -0.5f)
-		{
-			bisDissolve = false;
-			GetMesh()->SetVisibility(false);
-		}
-	}
-
 }
 
 // Called to bind functionality to input
@@ -85,30 +69,25 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 	{
 		if (0 == result)
 		{
-			//남자를 위로해주자. “괜찮으십니까”의 경우 => 남자는 소리를 지르다가 사라짐
+			//남자를 위로해주자. “괜찮으십니까”의 경우 => 남자는 소리를 지르다가 사라지고, 물 나이아가라 발생
 			int32 key=(NPC_ID*100)+(State*10)+result;
 			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
 			TestPC->SetCurNPCResultUI(key);
-			// DynamicMaterial 생성 및 적용
-			if (DissolveMaterial2)
-			{
-				DynamicMaterial = UMaterialInstanceDynamic::Create(DissolveMaterial2, this);
-				if (DynamicMaterial)
-				{
-					GetMesh()->SetMaterial(0, DynamicMaterial);
-				}
-			}
+			
 			//애니메이션 블루프린트 실행
 			anim = Cast<UYoungsooAnim>(GetMesh()->GetAnimInstance());
-			anim->playYSSadMontage();
+			anim->playYSSadMontage(); //슬퍼하는 애니메이션 작동
 			UGameplayStatics::PlaySound2D(GetWorld(), YSScreamSound);
+
+			TestPC->StartEndNPCDialougue(false);
+			
 			// 5초 후에 캐릭터를 숨기기 위한 타이머 설정
 			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 			{
-				bisDissolve = true;
-				TestPC->StartEndNPCDialougue(false);
+				FString dissolve = "Black";
+				DissolveEvent(dissolve);
 				ChangeCleared();
-			}, 3.0f, false);
+			}, 4.0f, false);
 			
 		}
 		else if (1 == result)
@@ -119,24 +98,19 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
 			TestPC->SetCurNPCResultUI(key);
 			
-			if (DissolveMaterial1)
-			{
-				DynamicMaterial = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);
-				if (DynamicMaterial)
-				{
-					GetMesh()->SetMaterial(0, DynamicMaterial);
-				}
-			}
 			//유품 스폰
-			
+
+			//캐릭터 사라짐
 			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 			{
-				bisDissolve = true; //유품 스폰 뒤에 사라짐
-				TestPC->StartEndNPCDialougue(false);
+				FString dissolve = "Yellow";
+				DissolveEvent(dissolve); //디졸브 이벤트 발생
+				TestPC->StartEndNPCDialougue(false); //결과 대화창 출력
+				ChangeCleared();
 			}, 4.0f, false);
 
 		
-
+			//아이템 획득
 			FTimerHandle SouvenirTimer;
 			GetWorldTimerManager().SetTimer(SouvenirTimer, [this]()
 			{
@@ -188,6 +162,11 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 void ANPC_Youngsoo::ChangeCleared()
 {
 	Super::ChangeCleared();
+}
+
+void ANPC_Youngsoo::DissolveEvent(FString& str)
+{
+	Super::DissolveEvent(str);
 }
 
 

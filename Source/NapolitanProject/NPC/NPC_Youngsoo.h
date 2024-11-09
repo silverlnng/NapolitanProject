@@ -41,7 +41,9 @@ public:
 
 	virtual void ResultEvent(int32 result); //결과 함수
 
-	virtual void ChangeCleared() override;
+	virtual void ChangeCleared() override; //사라지고 난 뒤 클리어
+
+	virtual void DissolveEvent(FString& str) override; //디졸브 효과 발생
 
 public:
 	UPROPERTY(EditDefaultsOnly, Category = Anim)
@@ -53,17 +55,5 @@ public:
 	class USoundBase* YSScreamSound;
 
 	FTimerHandle TimerHandle;  // 타이머 핸들 선언
-
-	//사라지는 효과
-	bool bisDissolve = false;
-	float dissolveAnimValue;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
-	UMaterialInterface* DissolveMaterial1;  // 블루프린트에서 지정할 머터리얼, 1-2
-	
-	UMaterialInstanceDynamic* DynamicMaterial;  // 동적 머터리얼 인스턴스
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
-	UMaterialInterface* DissolveMaterial2;  // 1-1
 
 };

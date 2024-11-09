@@ -42,4 +42,28 @@ public:
 
 	virtual int32 GetState() override;
 
+	//사라지는 효과
+	bool bisDissolve = false;
+	float dissolveAnimValue;
+
+	
+	UMaterialInstanceDynamic* DynamicMaterial1;  // 동적 머터리얼 인스턴스
+	UMaterialInstanceDynamic* DynamicMaterial2;  // 동적 머터리얼 인스턴스
+	UMaterialInstanceDynamic* DynamicMaterial3;  // 동적 머터리얼 인스턴스
+	UMaterialInstanceDynamic* DynamicMaterial4;  // 동적 머터리얼 인스턴스
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial1;  // 블루프린트에서 지정할 머터리얼, 1-0
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial2;  // 1-1
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial4; 
+	
+	FTimerHandle TimerHandle;  // 타이머 핸들 선언
+
+	//디졸브 끝났을 경우 유품, 아이템, 유품 드랍 변수
+	int bItemDropped = false; //true일 경우 드랍, false일 경우 드랍 안함
+
 };
