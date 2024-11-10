@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SlateWrapperTypes.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/Interact/Souvenir_Dongjun.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 // Sets default values
@@ -44,16 +45,17 @@ void ANPCDongjon::Tick(float DeltaTime)
 		DynamicMaterial3->SetScalarParameterValue(TEXT("dissolve"), DissolveValue3);
 		DynamicMaterial4->SetScalarParameterValue(TEXT("dissolve"), DissolveValue4);
 
-		UE_LOG(LogTemp, Error, TEXT("DissolveValue1: %f, DissolveValue2: %f"), DissolveValue1, DissolveValue2);
+		//UE_LOG(LogTemp, Error, TEXT("DissolveValue1: %f, DissolveValue2: %f"), DissolveValue1, DissolveValue2);
 
 		IsCleared=true;
 		GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
 
-		if (DissolveValue1 <= -0.5f && DissolveValue2 <= -0.5f && DissolveValue3 <= -0.5f && DissolveValue4 <= -0.5f)
+		if (DissolveValue1 <= 0.49f )
 		{
+			UE_LOG(LogTemp, Error, TEXT("bitemdprrod"));
+			bItemDropped = true;
 			bisDissolve = false;
 			GetMesh()->SetVisibility(false);
-			bItemDropped = true;
 		}
 	}
 
@@ -86,14 +88,16 @@ void ANPCDongjon::SpawnItems()
 {
 	// 스폰 위치 설정
 	FTransform SpawnTransform(GetActorLocation());
+	UE_LOG(LogTemp, Error, TEXT("Spawning Items"));
 
 	// 블루프린트에서 설정된 ItemClass와 SouvenirClass로 스폰
 	//AActor* ItemActor = GetWorld()->SpawnActor<AActor>(ItemClass, SpawnTransform);
-	AActor* SouvenirActor = GetWorld()->SpawnActor<AActor>(SouvenirClass, SpawnTransform);
+	AActor* SouvenirActor = GetWorld()->SpawnActor<ASouvenir_Dongjun>(SouvenirClass, SpawnTransform);
 	if (SouvenirActor)
 	{
 		//ItemActor->Tags.Add(FName("Item"));
 		SouvenirActor->Tags.Add(FName("Souvenir"));
+		//SouvenirActor->FinishSpawning(GetActorTransform());
 	}
 }
 
@@ -133,7 +137,7 @@ void ANPCDongjon::ResultEvent(int32 result)
 				if(bItemDropped)
 				{
 					//아이템, 유품 드랍
-					
+					SpawnItems();
 				}
 			}, 4.0f, false);
 
