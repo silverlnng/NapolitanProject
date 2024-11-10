@@ -81,6 +81,22 @@ int32 ANPCDongjon::GetState()
 	return State;
 }
 
+//노인의 경우 아이템과 유품을 스폰
+void ANPCDongjon::SpawnItems()
+{
+	// 스폰 위치 설정
+	FTransform SpawnTransform(GetActorLocation());
+
+	// 블루프린트에서 설정된 ItemClass와 SouvenirClass로 스폰
+	//AActor* ItemActor = GetWorld()->SpawnActor<AActor>(ItemClass, SpawnTransform);
+	AActor* SouvenirActor = GetWorld()->SpawnActor<AActor>(SouvenirClass, SpawnTransform);
+	if (SouvenirActor)
+	{
+		//ItemActor->Tags.Add(FName("Item"));
+		SouvenirActor->Tags.Add(FName("Souvenir"));
+	}
+}
+
 void ANPCDongjon::ResultEvent(int32 result)
 {
 	// State 와 선택지의  result 에 따라 이벤트 정의하기
@@ -116,7 +132,8 @@ void ANPCDongjon::ResultEvent(int32 result)
 				TestPC->StartEndNPCDialougue(false); //결과 출력
 				if(bItemDropped)
 				{
-					//아이템 드랍
+					//아이템, 유품 드랍
+					
 				}
 			}, 4.0f, false);
 
