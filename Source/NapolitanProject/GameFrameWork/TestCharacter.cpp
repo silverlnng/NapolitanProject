@@ -98,6 +98,7 @@ void ATestCharacter::BeginPlay()
 	FTimerHandle TimerHandle;	
 
 	GetWorldTimerManager().SetTimer(TimerHandle,this,&ATestCharacter::SphereTraceFromCamera,0.2f,true);
+	
 
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this,&ATestCharacter::OnCapsuleOverlap);
 
@@ -537,6 +538,5 @@ void ATestCharacter::PlayDamagedAnimMontage()
 		PlayAnimMontage(DamagedSecurityAnim);
 	}
 }
-
 
 

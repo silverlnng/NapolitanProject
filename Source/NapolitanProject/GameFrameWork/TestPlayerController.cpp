@@ -6,7 +6,6 @@
 #include "EventComponent.h"
 #include "MyTestGameInstance.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
-#include "TestGameInstance.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
@@ -62,6 +61,7 @@ void ATestPlayerController::BeginPlay()
 		
 		for (int i = 0; i < GI->itemDataRowNames.Num(); i++)
 		{
+			// DT_itemData 에서 행 찾아서 
 			FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(GI->itemDataRowNames[i] , TEXT(""));
 			if (ItemData)
 			{
@@ -129,7 +129,7 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	FSouvenirData* SouvenirDataNext = GI->DT_SouvenirData->FindRow<FSouvenirData>(nextNum_,TEXT(""));
 	if (!SouvenirDataNext){return;} // 방어코드
 
-	if(!SouvenirDataNext->IsHad)
+	if(!SouvenirDataNext->Had)
 	{
 		SouvenirUI->Img_Souvenir_right->SetColorAndOpacity(FLinearColor(0.01,0.01,0.01,1));
 	}

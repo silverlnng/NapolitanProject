@@ -92,7 +92,7 @@ public:
 	class AAIController* EnemyAI;
 
 	FVector PatrolPoint;
-	float PatrolPointRadius = 500;
+	float PatrolPointRadius = 700;
 
 	// 공격 가능거리
 	float AttackDistance = 300;

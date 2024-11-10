@@ -16,6 +16,20 @@ void UMyTestGameInstance::Init()
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s DT_Item 로드성공"),*CALLINFO);
 		itemDataRowNames = DT_itemData->GetRowNames();
+
+		
+		for (int i = 0; i < itemDataRowNames.Num(); i++)
+		{
+			UE_LOG(LogTemp, Error, TEXT("%s,%s"),*CALLINFO,*itemDataRowNames[i].ToString());
+			
+			FItemData* ItemData = DT_itemData->FindRow<FItemData>(itemDataRowNames[i] , TEXT(""));
+			if (ItemData)
+			{
+				//유물획득 초기화 => 게임로드안했을때 . 게임저장시스템만들면 초기화 안해야함 
+				ItemData->Had=false;
+			}
+		}
+		
 	}
 	else
 	{
@@ -36,7 +50,7 @@ void UMyTestGameInstance::Init()
 			if (SouvenirData)
 			{
 				//유물획득 초기화 => 게임로드안했을때 
-				SouvenirDataHadMap.Add(i,SouvenirData->IsHad);
+				SouvenirDataHadMap.Add(i,SouvenirData->Had);
 			}
 		}
 	}

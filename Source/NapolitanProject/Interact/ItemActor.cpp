@@ -5,7 +5,6 @@
 #include "../YJ/NoteUI/InventoryWidget.h"
 #include "../YJ/NoteUI/InvenSlotWidget.h"
 #include "../GameFrameWork/PlayerHUD.h"
-#include "Components/Image.h"
 #include "../YJ/NoteUI/NoteWidget.h"
 
 // Sets default values
@@ -25,61 +24,6 @@ void AItemActor::BeginPlay()
 	{
 		PlayerHUD=PC->GetHUD<APlayerHUD>();
 	}
-
-	if (!PlayerHUD){return;}
-
-	/*FTimerHandle TimerHandle;
-	GetWorldTimerManager().SetTimer(TimerHandle,[this]()
-	{
-		//////// 아이템 채우기 
-		auto InvenSlotMap = PlayerHUD->NoteUI->WBP_Inventory->InvenSlots;
-		
-		DT_itemData = LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/Item/DT_Item.DT_Item'"));
-
-		//먼저 모든 행단위로 가져오기  
-		TArray<FName> RowNames = DT_itemData->GetRowNames();
-
-		for (int i = 0; i < RowNames.Num(); i++)
-		{
-			FItemData* ItemData = DT_itemData->FindRow<FItemData>(RowNames[i] , TEXT(""));
-			if (ItemData)
-			{
-				// 로그에 행 이름과 ItemName 출력
-				//UE_LOG(LogTemp, Warning, TEXT("Row: %s, Item Name: %s"), *RowNames[i].ToString(), *ItemData->ItemInt);
-
-				// 인벤토리 슬롯에 썸네일 이미지 할당
-
-				InvenSlotMap[i]->Img_Thumnail->SetBrushFromTexture(ItemData->thumnail);
-			}
-			UE_LOG(LogTemp , Warning , TEXT("%s") , *RowNames[i].ToString());
-			
-		}
-		 ///Script/Engine.DataTable'/Game/YJ/Item/DT_Souvenir.DT_Souvenir'
-		//// 유물에 대한 데이터 SouvenirMap 채우기 
-		DT_SouvenirData=LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/Item/DT_Souvenir.DT_Souvenir'"));
-
-		//먼저 모든 행단위로 가져오기  
-		TArray<FName> RowNames_ = DT_SouvenirData->GetRowNames();
-
-		for (int i = 0; i < RowNames.Num(); i++)
-		{
-			FSouvenirData* SouvenirData = DT_SouvenirData->FindRow<FSouvenirData>(RowNames[i] , TEXT(""));
-			if (SouvenirData)
-			{
-				// 로그에 행 이름과 ItemName 출력
-				//UE_LOG(LogTemp, Warning, TEXT("Row: %s, Item Name: %s"), *RowNames[i].ToString(), *ItemData->ItemInt);
-
-				// 인벤토리 슬롯에 썸네일 이미지 할당
-
-				//InvenSlotMap[i]->Img_Thumnail->SetBrushFromTexture(ItemData->thumnail);
-			}
-			UE_LOG(LogTemp , Warning , TEXT("%s") , *RowNames[i].ToString());
-			
-		}
-		
-	},0.5f,false);*/
-	
-	
 }
 
 // Called every frame
@@ -87,5 +31,12 @@ void AItemActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AItemActor::OnPickup()
+{
+	// 본인 아이템 ItemID 으로 슬롯 찾아서 활성화 되도록 만들기
+	PlayerHUD->NoteUI->WBP_Inventory->InvenSlots[ItemID]->OnItemAcquired();
+	// 게임인스턴스의 데이터 테이블도 had로 변경시키면 기록될것
 }
 

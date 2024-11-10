@@ -17,7 +17,7 @@ void UInventoryWidget::NativeConstruct()
 		int row = i/2;
 		int colume=i%2;
 		GridPanel_Slot->AddChildToUniformGrid(newSlot,row,colume);
-
+		newSlot->ItemIndex=i+1;
 		InvenSlots.Add(i,newSlot);
 	}
 }

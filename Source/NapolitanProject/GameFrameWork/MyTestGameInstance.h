@@ -14,9 +14,11 @@ USTRUCT(BlueprintType)
 struct FItemData : public FTableRowBase
 {
 	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString Name="";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	bool IsHad=false;
+	bool Had=false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	int32 ItemInt=-1;
@@ -34,7 +36,7 @@ struct FSouvenirData : public FTableRowBase
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	bool IsHad=false;
+	bool Had=false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	int32 SouvenirInt=-1;
@@ -87,6 +89,9 @@ public:
 	UDataTable* DT_itemData;
 	UPROPERTY(VisibleAnywhere)
 	TArray<FName> itemDataRowNames;
+
+	UPROPERTY(VisibleAnywhere)
+	TMap<int32,bool> itemDataHadMap;
 	
 	//////////// 유물 데이터 ///////////////////////	
 	UPROPERTY(VisibleAnywhere)

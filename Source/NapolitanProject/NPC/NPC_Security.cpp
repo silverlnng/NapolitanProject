@@ -9,6 +9,7 @@
 #include "NavigationSystem.h"
 #include "NPC_Security_AnimInstance.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -25,6 +26,8 @@ ANPC_Security::ANPC_Security()
 	// 카메라를 생성해서 스프링암에 붙이고싶다.
 	CameraComp2 = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp2"));
 	CameraComp2->SetupAttachment(SpringArmComp2);
+	
+	GetComponentByClass<UCapsuleComponent>()->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 }
 
 void ANPC_Security::BeginPlay()
@@ -181,7 +184,7 @@ void ANPC_Security::TickChasePlayer(const float& DeltaTime)
 	if (EnemyAI&&Target)
 	{
 		EnemyAI->MoveToLocation(Target->GetActorLocation());
-		GetCharacterMovement()->MaxWalkSpeed=800.f;
+		GetCharacterMovement()->MaxWalkSpeed=600.f;
 		// 타겟과 나(경비원) 의 거리 계산
 		FVector dir = Target->GetActorLocation() - this->GetActorLocation();
 		float dist = dir.Size();
