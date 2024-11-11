@@ -49,8 +49,9 @@ void UMyTestGameInstance::Init()
 			FSouvenirData* SouvenirData = DT_SouvenirData->FindRow<FSouvenirData>(SouvenirDataRowNames[i] , TEXT(""));
 			if (SouvenirData)
 			{
-				//유물획득 초기화 => 게임로드안했을때 
-				SouvenirDataHadMap.Add(i,SouvenirData->Had);
+				//유물획득 초기화 => 게임로드안했을때
+				SouvenirData->Had=false;
+				
 			}
 		}
 	}

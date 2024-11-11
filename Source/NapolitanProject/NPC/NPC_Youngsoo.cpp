@@ -117,12 +117,17 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 				PlayerHUD->InteractUI->GetSouvenirEvent(SouvenirName);
 				ChangeCleared();
 			}, 8.0f, false);
+
 			
-			if (GI->SouvenirDataHadMap.Contains(NPC_ID-1))
+			FName NPC_IDName = FName(*FString::FromInt(NPC_ID));
+			
+			FSouvenirData* SouvenirData= GI->DT_SouvenirData->FindRow<FSouvenirData>(NPC_IDName , TEXT(""));
+			if (SouvenirData)
 			{
-				GI->SouvenirDataHadMap[NPC_ID-1]=true;
+				SouvenirData->Had=true;
 			}
-			TestPC->SetSouvenirUICurNumber(NPC_ID-1);
+			
+			TestPC->SetSouvenirUICurNumber(NPC_ID);
 		}
 		else if (2 == result)
 		{
