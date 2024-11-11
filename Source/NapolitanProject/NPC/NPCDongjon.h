@@ -64,11 +64,10 @@ public:
 	
 	FTimerHandle TimerHandle;  // 타이머 핸들 선언
 
-	//디졸브 끝났을 경우 유품, 아이템, 유품 드랍 변수
-	bool bItemDropped = false; //true일 경우 드랍, false일 경우 드랍 안함
-
 	//아이템, 유품을 스폰하는 함수
 	void SpawnItems();
+
+	bool bItemSpawned = false;
 
 	// Item and Souvenir classes for Blueprint assignment
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")

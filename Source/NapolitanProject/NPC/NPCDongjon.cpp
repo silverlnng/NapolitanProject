@@ -16,6 +16,20 @@ ANPCDongjon::ANPCDongjon()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// 머티리얼 경로를 설정 (경로는 프로젝트에 맞게 수정)
+	ConstructorHelpers::FObjectFinder<UMaterialInterface> MaterialFinder1(TEXT("/Script/Engine.Material'/Game/Bada/Effect/Dongjun/Dissolve_Dongjun_skin.Dissolve_Dongjun_skin'"));
+	if (MaterialFinder1.Succeeded())
+	{
+		DissolveMaterial1 = MaterialFinder1.Object;
+		DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);
+	}
+	
+	ConstructorHelpers::FObjectFinder<UMaterialInterface> MaterialFinder2(TEXT("/Script/Engine.Material'/Game/Bada/Effect/Dongjun/Dissolve_Dongjun_clothes1.Dissolve_Dongjun_clothes1'"));
+	if (MaterialFinder2.Succeeded())
+	{
+		DissolveMaterial2 = MaterialFinder2.Object;
+		DynamicMaterial2 = UMaterialInstanceDynamic::Create(DissolveMaterial2, this);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -45,17 +59,16 @@ void ANPCDongjon::Tick(float DeltaTime)
 		DynamicMaterial3->SetScalarParameterValue(TEXT("dissolve"), DissolveValue3);
 		DynamicMaterial4->SetScalarParameterValue(TEXT("dissolve"), DissolveValue4);
 
-		//UE_LOG(LogTemp, Error, TEXT("DissolveValue1: %f, DissolveValue2: %f"), DissolveValue1, DissolveValue2);
+		UE_LOG(LogTemp, Error, TEXT("DissolveValue1: %f, DissolveValue2: %f"), DissolveValue1, DissolveValue2);
 
 		IsCleared=true;
 		GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
-
-		if (DissolveValue1 <= 0.49f )
+		if (DissolveValue1 <= -0.5f && DissolveValue2 <= -0.5f && DissolveValue3 <= -0.5f && DissolveValue4 <= -0.5f)
 		{
-			UE_LOG(LogTemp, Error, TEXT("bitemdprrod"));
-			bItemDropped = true;
-			bisDissolve = false;
+			bItemSpawned = true;
 			GetMesh()->SetVisibility(false);
+			SpawnItems();
+			bisDissolve = false;
 		}
 	}
 
@@ -86,19 +99,23 @@ int32 ANPCDongjon::GetState()
 //노인의 경우 아이템과 유품을 스폰
 void ANPCDongjon::SpawnItems()
 {
-	// 스폰 위치 설정
-	FTransform SpawnTransform(GetActorLocation());
-	UE_LOG(LogTemp, Error, TEXT("Spawning Items"));
-
-	// 블루프린트에서 설정된 ItemClass와 SouvenirClass로 스폰
-	//AActor* ItemActor = GetWorld()->SpawnActor<AActor>(ItemClass, SpawnTransform);
-	AActor* SouvenirActor = GetWorld()->SpawnActor<ASouvenir_Dongjun>(SouvenirClass, SpawnTransform);
-	if (SouvenirActor)
+	if(bItemSpawned)
 	{
-		//ItemActor->Tags.Add(FName("Item"));
-		SouvenirActor->Tags.Add(FName("Souvenir"));
-		//SouvenirActor->FinishSpawning(GetActorTransform());
+		// 발끝 위치를 기준으로 스폰 위치 설정
+		FVector FootLocation = GetMesh()->GetSocketLocation(FName("ItemSpawn"));
+		FTransform SpawnTransform(FootLocation);
+
+		// 블루프린트에서 설정된 ItemClass와 SouvenirClass로 스폰
+		//AActor* ItemActor = GetWorld()->SpawnActor<AActor>(ItemClass, SpawnTransform);
+		AActor* SouvenirActor = GetWorld()->SpawnActor<ASouvenir_Dongjun>(SouvenirClass, SpawnTransform );
+		if (SouvenirActor)
+		{
+			//ItemActor->Tags.Add(FName("Item"));
+			SouvenirActor->Tags.Add(FName("Souvenir"));
+		}	
 	}
+
+	bItemSpawned = false; //한번만 스폰되도록
 }
 
 void ANPCDongjon::ResultEvent(int32 result)
@@ -134,11 +151,8 @@ void ANPCDongjon::ResultEvent(int32 result)
 			{
 				bisDissolve = true; //유품 스폰 뒤에 사라짐
 				TestPC->StartEndNPCDialougue(false); //결과 출력
-				if(bItemDropped)
-				{
-					//아이템, 유품 드랍
-					SpawnItems();
-				}
+				//아이템, 유품 드랍
+				SpawnItems();
 			}, 4.0f, false);
 
 			
