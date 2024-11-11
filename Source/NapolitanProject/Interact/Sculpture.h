@@ -54,5 +54,8 @@ public:
 
 	// 아이템 3개가 모두 모였는지 확인하는 함수
 	void MissionCheck();
+
+	UPROPERTY(VisibleAnywhere)
+	class ANPC_Security* NPC_Security;
 	
 };

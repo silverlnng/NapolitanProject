@@ -3,9 +3,11 @@
 
 #include "Sculpture.h"
 
+#include "EngineUtils.h"
 #include "ItemActor.h"
 #include "PieceActor.h"
 #include "Components/BoxComponent.h"
+#include "NapolitanProject/NPC/NPC_Security.h"
 
 // Sets default values
 ASculpture::ASculpture()
@@ -42,6 +44,10 @@ ASculpture::ASculpture()
 void ASculpture::BeginPlay()
 {
 	Super::BeginPlay();
+	for (TActorIterator<ANPC_Security> It(GetWorld(), ANPC_Security::StaticClass()); It; ++It)
+	{
+		NPC_Security = *It;
+	}
 	
 }
 
@@ -89,6 +95,11 @@ void ASculpture::MissionCheck()
 	UE_LOG(LogTemp,Warning,TEXT("경비원 미션 달성"));
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 
+	// 경비원으로 카메라 전환한뒤 사라지고 머리 남기는걸 보여 주기
+	if (NPC_Security)
+	{
+		NPC_Security->EndEvent();
+	}
 	// 월드에 있는 경비원 CLEAR으로 변경
 }
 

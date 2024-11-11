@@ -14,6 +14,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "Navigation/PathFollowingComponent.h"
 
 ANPC_Security::ANPC_Security()
@@ -82,12 +83,15 @@ void ANPC_Security::Tick(float DeltaSeconds)
 
 	
 	// 캐릭터와의 거리도 계산  ==> 일정거리 이상 멀어지면 다시 가까운 라이트를 켜야함
-	
+	if (SecurityState==ESecurityState::Stop)
+	{
+		TickAllStop(DeltaSeconds);
+		return;
+	}
 
 	// 지금 자기상태 출력하도록 만들기
 	FString myState = UEnum::GetValueAsString(SecurityState);
-	DrawDebugString(GetWorld() , GetOwner()->GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
-
+	DrawDebugString(GetWorld() ,GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
 	
 	AllLightTurnOff=true;
 	// ControllableLightArray 을 순회하면서 IsTurnOn =true 인걸 검색
@@ -141,6 +145,7 @@ void ANPC_Security::Tick(float DeltaSeconds)
 	case ESecurityState::Patrol:		TickPatrol(DeltaSeconds);		break;
 	case ESecurityState::TurnOff:	TickTurnOff(DeltaSeconds);		break;
 	case ESecurityState::Attack:	TickAttack(DeltaSeconds);		break;
+	case ESecurityState::Stop:	TickAttack(DeltaSeconds);		break;
 	}
 	
 }
@@ -294,6 +299,11 @@ void ANPC_Security::TickAttack(const float& DeltaTime)
 	
 }
 
+void ANPC_Security::TickAllStop(const float& DeltaTime)
+{
+	EnemyAI->StopMovement();
+}
+
 bool ANPC_Security::SetPatrolPoint(FVector origin, float radius, FVector& dest)
 {
 	// 길위의 랜덤한 위치를 정하고싶다.
@@ -330,4 +340,38 @@ void ANPC_Security::OnMyAttackEnd()
 		// 이동상태로 전이하고싶다.
 		SetState(ESecurityState::ChasePlayer);
 	}
+}
+
+void ANPC_Security::ChangeCleared()
+{
+	Super::ChangeCleared();
+}
+
+void ANPC_Security::EndEvent()
+{
+	
+	TestPC->curNPC=this;
+	
+	EnemyAI->StopMovement();
+	SetState(ESecurityState::Stop);
+	
+	TestPC->CameraViewChangeNPC();
+
+	// 사라지는 효과
+
+	FTimerHandle dissolveTimer;
+	GetWorldTimerManager().SetTimer(dissolveTimer,[this]()
+	{
+		// 사라지는 효과
+		FString color = "Yellow";
+		DissolveEvent(color);
+	},2.0f,false);
+	ChangeCleared();
+	FTimerHandle CameraViewChangePlayerTimer;
+	GetWorldTimerManager().SetTimer(CameraViewChangePlayerTimer,[this]()
+	{
+		TestPC->CameraViewChangePlayer();
+	},8.0f,false);
+
+	
 }

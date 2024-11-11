@@ -17,6 +17,7 @@ enum class ESecurityState:uint8
 	Patrol,
 	TurnOff,
 	Attack,
+	Stop
 };
 
 
@@ -86,6 +87,7 @@ public:
 	void TickPatrol(const float& DeltaTime);
 	void TickTurnOff(const float& DeltaTime);
 	void TickAttack(const float& DeltaTime);
+	void TickAllStop(const float& DeltaTime);
 
 	// 네비게이션을 이용해서 길찾기를 하고싶다.
 	UPROPERTY(VisibleAnywhere)
@@ -113,5 +115,8 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	class UCameraComponent* CameraComp2;
+
+	virtual void ChangeCleared() override;
+	void EndEvent();
 };
 
