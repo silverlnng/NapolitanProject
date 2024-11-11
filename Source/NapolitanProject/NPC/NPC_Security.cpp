@@ -373,5 +373,5 @@ void ANPC_Security::EndEvent()
 		TestPC->CameraViewChangePlayer();
 	},8.0f,false);
 
-	
+	// 그 자리에 아이템 머리 스폰하기 
 }

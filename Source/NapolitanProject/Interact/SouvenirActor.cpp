@@ -9,6 +9,8 @@
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
+#include "NapolitanProject/YJ/NoteUI/SouvenirWidget.h"
 
 // Sets default values
 ASouvenirActor::ASouvenirActor()
@@ -65,7 +67,7 @@ void ASouvenirActor::OnPickup()
 	{
 		SouvenirData->Had=true;
 	}
-			
+	PlayerHUD->NoteUI->WBP_Souvenir->curPage=GetSouvenirID();		
 	TestPC->SetSouvenirUICurNumber(GetSouvenirID());
 
 	FTimerHandle SouvenirTimer;
