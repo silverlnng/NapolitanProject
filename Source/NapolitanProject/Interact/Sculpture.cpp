@@ -21,8 +21,11 @@ ASculpture::ASculpture()
 
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Block);
 
-	StaticMeshComp=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	StaticMeshComp->SetupAttachment(BoxComp);
+	SkeletalMeshComp=CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
+	SkeletalMeshComp->SetupAttachment(BoxComp);
+	
+	//StaticMeshComp=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	//StaticMeshComp->SetupAttachment(BoxComp);
 
 	SceneComp1 =CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp1"));
 	SceneComp1->SetupAttachment(StaticMeshComp);
@@ -59,15 +62,15 @@ void ASculpture::PutDownPiece(APieceActor* Piece)
 	{
 	case 1:
 		// 케릭터가 가진 현재조각을
-			Piece->SetActorLocation(SceneComp1->GetComponentLocation());
+			Piece->AttachToComponent(SkeletalMeshComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale,"headSocket");
 			PieceArray.Add(Piece);
 		break;
 	case 2:
-		Piece->SetActorLocation(SceneComp2->GetComponentLocation());
+		Piece->AttachToComponent(SkeletalMeshComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale,"spine_03Socket_0");
 		PieceArray.Add(Piece);
 		break;
 	case 3:
-		Piece->SetActorLocation(SceneComp3->GetComponentLocation());
+		Piece->AttachToComponent(SkeletalMeshComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale,"spine_03Socket_1");
 		PieceArray.Add(Piece);
 		break;	
 	}

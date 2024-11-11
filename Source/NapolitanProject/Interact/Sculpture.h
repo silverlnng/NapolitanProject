@@ -33,7 +33,9 @@ public:
 	//  메쉬 와 콜리전
 	UPROPERTY(EditDefaultsOnly)
 	class UStaticMeshComponent* StaticMeshComp;
-
+	UPROPERTY(EditDefaultsOnly)
+	class USkeletalMeshComponent* SkeletalMeshComp;
+	
 	UPROPERTY(EditDefaultsOnly)
 	class UBoxComponent* BoxComp;
 
