@@ -46,7 +46,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class APlayerHUD* PlayerHUD;
 	
-	UFUNCTION()
-	void OnPickup(); // 아이템을 상호작용e키 눌렀을때 부를 함수
+	
+	virtual void OnPickup(); // 아이템을 상호작용e키 눌렀을때 부를 함수
+
+	virtual void OnInventorySlot();
 	
 };

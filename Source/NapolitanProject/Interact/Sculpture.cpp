@@ -4,6 +4,7 @@
 #include "Sculpture.h"
 
 #include "ItemActor.h"
+#include "PieceActor.h"
 #include "Components/BoxComponent.h"
 
 // Sets default values
@@ -48,11 +49,12 @@ void ASculpture::Tick(float DeltaTime)
 
 }
 
-void ASculpture::PutDownPiece(AItemActor* Piece)
+void ASculpture::PutDownPiece(APieceActor* Piece)
 {
 	// 지금 현재 가진게 첫번째 조각이면 첫번째 위치에 두기
 		// piece Num =1이라면
-	int32 PieceNum=Piece->ItemID;
+	Piece->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+	int32 PieceNum=Piece->PieceNum;
 	switch (PieceNum)
 	{
 	case 1:
@@ -81,6 +83,9 @@ void ASculpture::PutDownPiece(AItemActor* Piece)
 void ASculpture::MissionCheck()
 {
 	// 미션수행할때 부르는 함수
-	// 
+	UE_LOG(LogTemp,Warning,TEXT("경비원 미션 달성"));
+	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
+
+	// 월드에 있는 경비원 CLEAR으로 변경
 }
 

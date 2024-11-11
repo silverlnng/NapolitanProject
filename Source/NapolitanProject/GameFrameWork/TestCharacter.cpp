@@ -20,6 +20,7 @@
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/Interact/PieceActor.h"
 #include "NapolitanProject/Interact/Sculpture.h"
 #include "NapolitanProject/Interact/SouvenirActor.h"
 
@@ -477,18 +478,19 @@ void ATestCharacter::OnInteraction()
 
 		AItemActor* ItemActor =Cast<AItemActor>(Interact);
 		
-		if (ItemActor)
+		if (!curItem && ItemActor)
 		{
-			curPiece=ItemActor;
+			curItem=ItemActor;
 			ItemActor->OnPickup();
 		}
 		
 		ASculpture* Sculpture =Cast<ASculpture>(Interact);
-		if (curPiece&&Sculpture)
+		APieceActor* CurPiece =Cast<APieceActor>(curItem);
+		if (CurPiece&&Sculpture)
 		{
 			// Sculpture 에서 내려두기 UI 출력
-			Sculpture->PutDownPiece(curPiece);
-			curPiece=nullptr;
+			Sculpture->PutDownPiece(CurPiece);
+			curItem=nullptr;
 		}
 		
 	}

@@ -208,7 +208,7 @@ public:
 	class UArrowComponent* ItemArrowComp;
 
 	UPROPERTY(VisibleAnywhere)
-	class AItemActor* curPiece =nullptr;
+	class AItemActor* curItem =nullptr;
 	
 	bool bIsBeingAttacked=false;
 	

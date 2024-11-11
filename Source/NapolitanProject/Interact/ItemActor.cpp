@@ -49,6 +49,15 @@ void AItemActor::Tick(float DeltaTime)
 
 void AItemActor::OnPickup()
 {
+	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
+	OnInventorySlot();
+	
+	//AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+}
+
+void AItemActor::OnInventorySlot()
+{
+	// 게임인스턴스의 데이터 테이블도 had로 변경시키면 기록될것
 	// 본인 아이템 ItemID 으로 슬롯 찾아서 활성화 되도록 만들기
 	if (PlayerHUD->NoteUI->WBP_Inventory)
 	{
@@ -57,16 +66,5 @@ void AItemActor::OnPickup()
 			PlayerHUD->NoteUI->WBP_Inventory->InvenSlots[ItemID]->OnItemAcquired();
 		}
 	}
-	
-	// 게임인스턴스의 데이터 테이블도 had로 변경시키면 기록될것
-	
-	//FVector CameraLoc =MainCharacter->ItemArrowComp->GetComponentLocation();
-	//FRotator CameraRot =MainCharacter->ItemArrowComp->GetComponentRotation();
-	
-	//SetActorLocationAndRotation(CameraLoc,CameraRot);
-	AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	
-	//SetActorRelativeLocation(FVector(0,0,0));
-	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 }
 

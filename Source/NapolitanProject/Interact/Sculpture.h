@@ -45,10 +45,10 @@ public:
 	class USceneComponent* SceneComp3;
 
 	// 아이템을 가진상태에서 아이템을 내려놓을수있도록 
-	void PutDownPiece(class AItemActor* Piece);
+	void PutDownPiece(class APieceActor* Piece);
 
 	UPROPERTY(VisibleAnywhere)
-	TArray<AItemActor*> PieceArray;
+	TArray<APieceActor*> PieceArray;
 
 	// 아이템 3개가 모두 모였는지 확인하는 함수
 	void MissionCheck();
