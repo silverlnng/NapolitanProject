@@ -24,5 +24,13 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
+	int32 SouvenirID=3;
+	
+	FString SouvenirName= FString(TEXT("꽃 한송이 를"));
 
+	virtual int32 GetSouvenirID() override;
+
+	virtual FString GetSouvenirName() override;
+	
+	virtual void OnPickup() override;
 };

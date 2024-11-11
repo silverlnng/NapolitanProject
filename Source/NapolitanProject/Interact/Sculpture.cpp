@@ -18,6 +18,8 @@ ASculpture::ASculpture()
 	BoxComp=CreateDefaultSubobject<UBoxComponent>(TEXT("SphereComponent"));
 	BoxComp->SetupAttachment(RootComponent);
 
+	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Block);
+
 	StaticMeshComp=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComp->SetupAttachment(BoxComp);
 

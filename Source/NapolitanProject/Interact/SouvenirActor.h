@@ -23,4 +23,33 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	int32 SouvenirID=0;
+
+	UPROPERTY(VisibleAnywhere)
+	class UMyTestGameInstance* GI;
+	
+	class ATestCharacter* MainCharacter;
+	class ATestPlayerController* TestPC;
+	class APlayerHUD* PlayerHUD;
+
+	UPROPERTY(EditDefaultsOnly)
+	class USceneComponent* SceneComp;
+	
+	//  메쉬 와 콜리전
+	UPROPERTY(EditDefaultsOnly)
+	class UStaticMeshComponent* StaticMeshComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UBoxComponent* BoxComp;
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	FString SouvenirName= FString(TEXT(""));
+
+	virtual int32 GetSouvenirID();
+
+	virtual FString GetSouvenirName();
+	
+	virtual void OnPickup();
 };
+

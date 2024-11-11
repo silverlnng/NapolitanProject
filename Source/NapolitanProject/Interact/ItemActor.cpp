@@ -67,5 +67,6 @@ void AItemActor::OnPickup()
 	AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	
 	//SetActorRelativeLocation(FVector(0,0,0));
+	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 }
 

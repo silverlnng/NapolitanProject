@@ -73,7 +73,7 @@ void ATestPlayerController::BeginPlay()
 		SouvenirUI = PlayerHUD->NoteUI->WBP_Souvenir;
 		SouvenirUI->SouvenirBtn_BackDele.AddDynamic(this , &ATestPlayerController::SetSouvenirUICurNumber);
 		//초기값
-		SetSouvenirUICurNumber(0);
+		SetSouvenirUICurNumber(1);
 		
 	},1.0f,false);
 	
@@ -102,8 +102,8 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	 // curNum 을 fname으로 바꾸기
 
 	////////// 버튼 보이게,안보이게 처리
-	if (0==curNum){SouvenirUI->Btn_Souvenir_Back->SetVisibility(ESlateVisibility::Hidden);}
-	if (0!=curNum){SouvenirUI->Btn_Souvenir_Back->SetVisibility(ESlateVisibility::Visible);}
+	if (1==curNum){SouvenirUI->Btn_Souvenir_Back->SetVisibility(ESlateVisibility::Hidden);}
+	if (1!=curNum){SouvenirUI->Btn_Souvenir_Back->SetVisibility(ESlateVisibility::Visible);}
 	if (SouvenirUI->MaxPage==curNum){SouvenirUI->Btn_Souvenir_front->SetVisibility(ESlateVisibility::Hidden);}
 	if (SouvenirUI->MaxPage!=curNum){SouvenirUI->Btn_Souvenir_front->SetVisibility(ESlateVisibility::Visible);}
 	//////////

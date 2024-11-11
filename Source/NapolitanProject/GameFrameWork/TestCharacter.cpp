@@ -21,6 +21,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/ItemActor.h"
 #include "NapolitanProject/Interact/Sculpture.h"
+#include "NapolitanProject/Interact/SouvenirActor.h"
 
 ATestCharacter::ATestCharacter()
 {
@@ -465,6 +466,13 @@ void ATestCharacter::OnInteraction()
 		if (Clue)
 		{
 			Clue->LookAt();
+		}
+
+		ASouvenirActor* Souvenir=Cast<ASouvenirActor>(Interact);
+
+		if (Souvenir)
+		{
+			Souvenir->OnPickup();
 		}
 
 		AItemActor* ItemActor =Cast<AItemActor>(Interact);
