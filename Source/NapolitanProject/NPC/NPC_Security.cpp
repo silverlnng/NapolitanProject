@@ -85,7 +85,8 @@ void ANPC_Security::Tick(float DeltaSeconds)
 	// 캐릭터와의 거리도 계산  ==> 일정거리 이상 멀어지면 다시 가까운 라이트를 켜야함
 	if (SecurityState==ESecurityState::Stop)
 	{
-		TickAllStop(DeltaSeconds);
+		EnemyAI->StopMovement();
+		//TickAllStop(DeltaSeconds);
 		return;
 	}
 
@@ -145,7 +146,7 @@ void ANPC_Security::Tick(float DeltaSeconds)
 	case ESecurityState::Patrol:		TickPatrol(DeltaSeconds);		break;
 	case ESecurityState::TurnOff:	TickTurnOff(DeltaSeconds);		break;
 	case ESecurityState::Attack:	TickAttack(DeltaSeconds);		break;
-	case ESecurityState::Stop:	TickAttack(DeltaSeconds);		break;
+	case ESecurityState::Stop:	TickAllStop(DeltaSeconds);		break;
 	}
 	
 }
