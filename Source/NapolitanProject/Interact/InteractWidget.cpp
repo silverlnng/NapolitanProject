@@ -3,8 +3,10 @@
 
 #include "InteractWidget.h"
 
+#include "Components/CanvasPanel.h"
 #include "Components/HorizontalBox.h"
 #include "Components/Image.h"
+#include "Components/RichTextBlock.h"
 #include "Components/TextBlock.h"
 
 void UInteractWidget::NativeConstruct()
@@ -12,6 +14,7 @@ void UInteractWidget::NativeConstruct()
 	Super::NativeConstruct();
 	HBox_GetSouvenir->SetVisibility(ESlateVisibility::Hidden);
 	Img_Note->SetVisibility(ESlateVisibility::Hidden);
+	CanvasPanel_Clue->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UInteractWidget::SetVisibleCrossHair(bool value)
@@ -53,4 +56,21 @@ void UInteractWidget::PlayNoteUIEvent(bool val)
 		PlayAnimation(NoteImgAnim);
 	}
 	
+}
+
+void UInteractWidget::SetRichText_Clue(FString str)
+{
+	RichTextBlock_Clue->SetText(FText::FromString(*str));
+}
+
+void UInteractWidget::SetVisibleCanvasPanel_Clue(bool val)
+{
+	if (val)
+	{
+		CanvasPanel_Clue->SetVisibility(ESlateVisibility::Visible);
+	}
+	else
+	{
+		CanvasPanel_Clue->SetVisibility(ESlateVisibility::Hidden);
+	}
 }

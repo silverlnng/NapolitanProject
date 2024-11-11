@@ -3,6 +3,8 @@
 
 #include "NoteWidget.h"
 
+#include "ClueInfoWidget.h"
+#include "NPCInfoWidget.h"
 #include "SouvenirWidget.h"
 #include "../GameFrameWork/TestPlayerController.h"
 #include "Components/Button.h"

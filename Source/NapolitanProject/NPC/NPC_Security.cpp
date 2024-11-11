@@ -70,23 +70,11 @@ void ANPC_Security::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	
 
-	// Target을 항상 탐색
-	//ATestCharacter 를 탐색 근데 
-	//PawnSensingComp->OnSeePawn.Broadcast(MainCha);
-	// ANPC_Security::OnSeePawn 는 계속 작동 
-
-	/*if (MainCha)
-	{
-		FString message = TEXT("Saw Actor ") + MainCha->GetName();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
-	}*/
-
 	
-	// 캐릭터와의 거리도 계산  ==> 일정거리 이상 멀어지면 다시 가까운 라이트를 켜야함
 	if (SecurityState==ESecurityState::Stop)
 	{
 		EnemyAI->StopMovement();
-		//TickAllStop(DeltaSeconds);
+		TickAllStop(DeltaSeconds);
 		return;
 	}
 
@@ -94,6 +82,7 @@ void ANPC_Security::Tick(float DeltaSeconds)
 	FString myState = UEnum::GetValueAsString(SecurityState);
 	DrawDebugString(GetWorld() ,GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
 	
+	// 캐릭터와의 거리도 계산  ==> 일정거리 이상 멀어지면 다시 가까운 라이트를 켜야함
 	AllLightTurnOff=true;
 	// ControllableLightArray 을 순회하면서 IsTurnOn =true 인걸 검색
 	for (auto light : ControllableLightArray)
@@ -121,6 +110,13 @@ void ANPC_Security::Tick(float DeltaSeconds)
 		MinimumLightDist=100000;
 	}
 
+	if (SecurityState==ESecurityState::Stop)
+	{
+		EnemyAI->StopMovement();
+		//TickAllStop(DeltaSeconds);
+		return;
+	}
+	
 	if (Target&& SecurityState!=ESecurityState::Attack)
 	{
 		SetState(ESecurityState::ChasePlayer);
@@ -142,11 +138,11 @@ void ANPC_Security::Tick(float DeltaSeconds)
 
 	switch ( SecurityState )
 	{
+	case ESecurityState::Stop:	TickAllStop(DeltaSeconds);		break;
 	case ESecurityState::ChasePlayer:		TickChasePlayer(DeltaSeconds);		break;
 	case ESecurityState::Patrol:		TickPatrol(DeltaSeconds);		break;
 	case ESecurityState::TurnOff:	TickTurnOff(DeltaSeconds);		break;
 	case ESecurityState::Attack:	TickAttack(DeltaSeconds);		break;
-	case ESecurityState::Stop:	TickAllStop(DeltaSeconds);		break;
 	}
 	
 }
@@ -159,6 +155,11 @@ void ANPC_Security::SetState(ESecurityState curState)
 	// 공격상태일 때 이동을 멈추기
 	if (curState==ESecurityState::Attack)
 	{
+		EnemyAI->StopMovement();
+	}
+	else if (curState==ESecurityState::Stop)
+	{
+
 		EnemyAI->StopMovement();
 	}
 	// 
@@ -330,6 +331,7 @@ void ANPC_Security::OnMyAttackStart()
 void ANPC_Security::OnMyAttackEnd()
 {
 	// 거리체크
+	if (!Target){return;}
 	float dist = GetDistanceTo(Target);
 	if ( dist < AttackDistance ) {
 		// 플레이어에게 데미지를 입히고싶다.
@@ -352,7 +354,9 @@ void ANPC_Security::EndEvent()
 {
 	
 	TestPC->curNPC=this;
-	
+	PawnSensingComp->bEnableSensingUpdates=false;
+	Target=nullptr;
+	GetCharacterMovement()->DisableMovement();
 	EnemyAI->StopMovement();
 	SetState(ESecurityState::Stop);
 	

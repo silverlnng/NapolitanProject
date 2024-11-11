@@ -21,12 +21,12 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class USouvenirWidget* WBP_Souvenir;
 	UPROPERTY(meta = (BindWidget))
-	class UUserWidget* WBP_NPCInfo;
+	class UNPCInfoWidget* WBP_NPCInfo;
 	UPROPERTY(meta = (BindWidget))
 	class UUserWidget* WBP_SettingInNote;
 
 	UPROPERTY(meta = (BindWidget))
-	class UUserWidget* WBP_ClueInfo;
+	class UClueInfoWidget* WBP_ClueInfo;
 	
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_Rule;

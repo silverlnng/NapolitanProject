@@ -42,5 +42,14 @@ public:
 	class UWidgetAnimation* NoteImgAnim;
 	UFUNCTION()
 	void PlayNoteUIEvent(bool val);
-	
+
+	/////// 단서 ui ///////////
+	UPROPERTY(meta=(BindWidget))
+	class UCanvasPanel* CanvasPanel_Clue;
+	UPROPERTY(meta=(BindWidget))
+	class URichTextBlock* RichTextBlock_Clue;
+
+	void SetRichText_Clue(FString str);
+
+	void SetVisibleCanvasPanel_Clue(bool val);
 };
