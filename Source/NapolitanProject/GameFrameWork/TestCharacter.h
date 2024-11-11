@@ -201,12 +201,17 @@ public:
 	UFUNCTION()
 	void EndCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-/////////////////////////////////////////
+/////////////////////////2층 미션 수행 //////////////
 	UPROPERTY(EditDefaultsOnly)
 	class UArrowComponent* myArrowComp;
 	UPROPERTY(EditDefaultsOnly)
 	class UArrowComponent* ItemArrowComp;
+
+	UPROPERTY(VisibleAnywhere)
+	class AItemActor* curPiece =nullptr;
+	
 	bool bIsBeingAttacked=false;
+	
 	UFUNCTION()
 	void PlayDamagedAnimMontage();
 	UPROPERTY(EditAnywhere)

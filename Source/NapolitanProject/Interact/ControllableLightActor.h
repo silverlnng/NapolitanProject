@@ -54,7 +54,7 @@ public:
 	UChildActorComponent* BP_Drop_Ceiling_02;
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Category=Light)
-	float RectLightIntensity = 6000.f;
+	float RectLightIntensity = 2000.f;
 	
 	UPROPERTY(VisibleAnywhere)
 	TArray<URectLightComponent*> RectLightArray;
