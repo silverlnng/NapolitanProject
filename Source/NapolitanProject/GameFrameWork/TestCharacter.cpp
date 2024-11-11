@@ -7,7 +7,6 @@
 #include "../Interact/ControllableLightActor.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "IInteract.h"
 #include "../Interact/InteractWidget.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "PlayerHUD.h"
@@ -17,11 +16,11 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Kismet/KismetSystemLibrary.h"
 #include "../YJ/NoteUI/NoteWidget.h"
-#include "YSEvanceUI.h"
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/Interact/Sculpture.h"
 
 ATestCharacter::ATestCharacter()
 {
@@ -84,6 +83,7 @@ ATestCharacter::ATestCharacter()
 	// 아이템 부착할 위치 잡는 용도 
 	ItemArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("ItemArrowComp"));
 	ItemArrowComp->SetupAttachment(CameraComponent);
+
 }
 
 void ATestCharacter::BeginPlay()
@@ -466,6 +466,22 @@ void ATestCharacter::OnInteraction()
 		{
 			Clue->LookAt();
 		}
+
+		AItemActor* ItemActor =Cast<AItemActor>(Interact);
+		
+		if (ItemActor)
+		{
+			curPiece=ItemActor;
+			ItemActor->OnPickup();
+		}
+		
+		ASculpture* Sculpture =Cast<ASculpture>(Interact);
+		if (curPiece&&Sculpture)
+		{
+			// Sculpture 에서 내려두기 UI 출력
+			Sculpture->PutDownPiece(curPiece);
+			curPiece=nullptr;
+		}
 		
 	}
 }
@@ -533,6 +549,7 @@ void ATestCharacter::PlayDamagedAnimMontage()
 	
 	// 이동 입력 을 못하게하고
 	//bIsBeingAttacked=true;
+	
 	if (DamagedSecurityAnim)
 	{
 		PlayAnimMontage(DamagedSecurityAnim);

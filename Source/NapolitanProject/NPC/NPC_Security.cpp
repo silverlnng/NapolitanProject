@@ -313,7 +313,7 @@ void ANPC_Security::OnMyAttackStart()
 {
 	Anim->bAttack = false;
 	// 주인공캐릭터 멈추게 (이동못하게하고) 피격당하는 애니 실행되도록
-	MainCharacter->PlayDamagedAnimMontage();
+	// MainCharacter->PlayDamagedAnimMontage();
 }
 
 void ANPC_Security::OnMyAttackEnd()

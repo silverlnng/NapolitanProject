@@ -25,22 +25,28 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int32 ItemID=0;
+
+	UPROPERTY(EditDefaultsOnly)
+	class USceneComponent* SceneComp;
 	
+	UPROPERTY(EditDefaultsOnly)
+	class UStaticMeshComponent* StaticMeshComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UBoxComponent* BoxComp;
 	
 //////언리얼 데이터 테이블 읽어오기 	//////////////////////////////////////////////////////////
 	
-	UPROPERTY(VisibleAnywhere)
-	class APlayerController* PC;
-
+	class ATestCharacter* MainCharacter;
+	
+	class ATestPlayerController* TestPC;
+	
 	UPROPERTY(VisibleAnywhere)
 	class APlayerHUD* PlayerHUD;
-
 	
 	UFUNCTION()
 	void OnPickup(); // 아이템을 상호작용e키 눌렀을때 부를 함수
-
-	
 	
 };
