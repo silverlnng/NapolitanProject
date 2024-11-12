@@ -360,7 +360,7 @@ void ANPC_Security::EndEvent()
 	EnemyAI->StopMovement();
 	SetState(ESecurityState::Stop);
 	
-	TestPC->CameraViewChangeNPC();
+	TestPC->SetViewTargetWithBlend(this,0.f);
 
 	// 사라지는 효과
 
