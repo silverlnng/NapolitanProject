@@ -133,6 +133,6 @@ void ANPCCharacter::ChangeCleared()
 	 // 콜리전 프로필을 다른거로 변경
 	IsCleared=true;
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
-	
+	GI->ClearedNPC.Add(GetNPCID());
 }
 
