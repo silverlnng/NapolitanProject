@@ -67,13 +67,25 @@ void ASouvenirActor::OnPickup()
 	{
 		SouvenirData->Had=true;
 	}
-	PlayerHUD->NoteUI->WBP_Souvenir->curPage=GetSouvenirID();		
-	TestPC->SetSouvenirUICurNumber(GetSouvenirID());
+
+	if (GetSouvenirID()%2==0) // 짝수라면 
+	{
+		PlayerHUD->NoteUI->WBP_Souvenir->curPage=GetSouvenirID()-1;
+	
+		TestPC->SetSouvenirUICurNumber(GetSouvenirID()-1);
+	}
+	else
+	{
+		PlayerHUD->NoteUI->WBP_Souvenir->curPage=GetSouvenirID();
+	
+		TestPC->SetSouvenirUICurNumber(GetSouvenirID());
+	}
+	
+	
 
 	FTimerHandle SouvenirTimer;
 	GetWorldTimerManager().SetTimer(SouvenirTimer, [this]()
 	{
-		
 		PlayerHUD->InteractUI->GetSouvenirEvent(GetSouvenirName());
 	}, 0.5f, false);
 
