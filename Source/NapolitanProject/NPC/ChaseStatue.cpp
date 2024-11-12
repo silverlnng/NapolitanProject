@@ -82,8 +82,10 @@ void AChaseStatue::TickMove(const float& DeltaTime)
 	FVector dirR = targetLoc - myLoc;
 	FRotator rot = dirR.Rotation();
 
+	AddMovementInput(dirR);
+
 	//NavigationSystem 객체 얻어오기
-	auto ns = UNavigationSystemV1::GetNavigationSystem(GetWorld());
+	/*auto ns = UNavigationSystemV1::GetNavigationSystem(GetWorld());
 
 	//목적지 길 찾기 경로 데이터 검색
 	FPathFindingQuery query;
@@ -116,7 +118,7 @@ void AChaseStatue::TickMove(const float& DeltaTime)
 			GetRandomPositionNavMesh(me->GetActorLocation(), 500, randomPos);
 		}
 		
-	}
+	}*/
 	/*UE_LOG(LogTemp,Warning,TEXT("%s,거리 :%f"),*CALLINFO,dirR.Size());
 	//너무 가까이 왔을 때 사망 이벤트 발생
 	if (dirR.Size() <= 300.0f)
