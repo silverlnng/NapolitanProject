@@ -7,6 +7,7 @@
 #include "../Interact/ControllableLightActor.h"
 #include "EngineUtils.h"
 #include "NavigationSystem.h"
+#include "NPC_Cleaner.h"
 #include "NPC_Security_AnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -34,6 +35,11 @@ ANPC_Security::ANPC_Security()
 void ANPC_Security::BeginPlay()
 {
 	Super::BeginPlay();
+
+	for (TActorIterator<ANPC_Cleaner> It(GetWorld(), ANPC_Cleaner::StaticClass()); It; ++It)
+	{
+		NPC_Cleaner = *It;
+	}
 
 	Anim=Cast<UNPC_Security_AnimInstance>(GetMesh()->GetAnimInstance());
 	
@@ -147,6 +153,11 @@ void ANPC_Security::Tick(float DeltaSeconds)
 	
 }
 
+int32 ANPC_Security::GetNPCID()
+{
+	return NPC_ID;
+}
+
 void ANPC_Security::SetState(ESecurityState curState)
 {
 	SecurityState=curState;
@@ -171,14 +182,14 @@ void ANPC_Security::OnSeePawn(APawn *OtherPawn)
 	if (OtherPawn)
 	{
 		FString message = TEXT("Saw Actor ") + OtherPawn->GetName();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
 	}
 	auto* testCha =Cast<ATestCharacter>(OtherPawn);
 	if (testCha)
 	{
 		Target=testCha;
 		FString message = TEXT("Saw Actor =ATestCharacter ") + OtherPawn->GetName();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
 
 		// 이때만 chase를 작동시키기
 		SetState(ESecurityState::ChasePlayer);
@@ -187,7 +198,7 @@ void ANPC_Security::OnSeePawn(APawn *OtherPawn)
 
 void ANPC_Security::TickChasePlayer(const float& DeltaTime)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "TickChasePlayer");
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "TickChasePlayer");
 	if (EnemyAI&&Target)
 	{
 		EnemyAI->MoveToLocation(Target->GetActorLocation());
@@ -261,8 +272,8 @@ void ANPC_Security::TickTurnOff(const float& DeltaTime)
 		GetCharacterMovement()->MaxWalkSpeed=300.f;
 		// 여기서 알아서 장애물 회피해서 이동해야함 
 		EnemyAI->MoveToLocation(NearLight->SphereComp->GetComponentLocation(),0);
-		UE_LOG(LogTemp, Warning, TEXT("NearLight: %s"), *NearLight->GetActorLocation().ToString());
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "TickTurnOff");
+		//UE_LOG(LogTemp, Warning, TEXT("NearLight: %s"), *NearLight->GetActorLocation().ToString());
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "TickTurnOff");
 
 		/*FVector destinataion = NearLight->GetActorLocation();
 
@@ -370,8 +381,18 @@ void ANPC_Security::EndEvent()
 		// 사라지는 효과
 		FString color = "Yellow";
 		DissolveEvent(color);
-	},2.0f,false);
-	ChangeCleared();
+	},1.0f,false);
+
+	ChangeCleared(); // 더이상 상호작용 안하도록 막고
+	
+	if (NPC_Cleaner)
+	{
+		NPC_Cleaner->State=2;
+	// 클리너가 다음 state으로 가도록 숫자 증가시키기
+	}
+	
+	
+	
 	FTimerHandle CameraViewChangePlayerTimer;
 	GetWorldTimerManager().SetTimer(CameraViewChangePlayerTimer,[this]()
 	{

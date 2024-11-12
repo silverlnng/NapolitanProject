@@ -41,7 +41,7 @@ public:
 	virtual void ResultEvent(int32 result) override;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-	int32 NPC_ID =6; //청소부의 번호
+	int32 NPC_ID =5; //청소부의 번호
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	int32 State =1;

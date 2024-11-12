@@ -4,6 +4,7 @@
 #include "NPC_Cleaner.h"
 
 #include "AIController.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
@@ -59,6 +60,15 @@ int32 ANPC_Cleaner::GetNPCID()
 
 int32 ANPC_Cleaner::GetState()
 {
+	// gi 의 ClearedNPC에서 경비원을 클리어했나 확인하기 
+	if (!(GI->ClearedNPC.Contains(4)))
+	{
+		//클리어 못함
+		State =1;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "State =1");
+	}
+	
+	// 버튼눌렀으면 3으로 변경해야함 
 	return State;
 }
 
@@ -140,7 +150,21 @@ void ANPC_Cleaner::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void ANPC_Cleaner::ResultEvent(int32 result)
 {
-	if(1==result)
+
+	if (2==State)
+	{
+		if (0==result)
+		{
+			// -> 도슨트가 평범하게 다가오며 고개를 들어 당신을 올려다본다.==> 애니메이션
+			// -> “게임을 해요! 도슨트의 넌센스 퀴즈!” ==>State 2 바로 시작하기
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");
+			State=3;
+			TestPC->StartEndNPCDialougue(true);
+			TestPC->SetNPCDialougueText(0);
+		}
+	}
+	
+	/*if(1==result)
 	{
 		if(0 == result)
 		{
@@ -161,6 +185,6 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 
 			//유품 스폰 및 디졸브
 		}
-	}
+	}*/
 }
 

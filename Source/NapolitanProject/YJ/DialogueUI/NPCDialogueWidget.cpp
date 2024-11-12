@@ -18,6 +18,7 @@ void UNPCDialogueWidget::NativeConstruct()
 	TestPC=GetOwningPlayer<ATestPlayerController>();
 	Btn_Back->OnClicked.AddDynamic(this,&UNPCDialogueWidget::OnClickbackButton);
 	Btn_Next->OnClicked.AddDynamic(this,&UNPCDialogueWidget::OnClickfrontButton);
+	Btn_Exit->OnClicked.AddDynamic(this,&UNPCDialogueWidget::OnClickExitButton);
 }
 
 
@@ -36,6 +37,11 @@ void UNPCDialogueWidget::OnClickfrontButton()
 	curOrder+=1;
 	UE_LOG(LogTemp,Warning,TEXT("%s,curOrder : %d"),*CALLINFO,curOrder);
 	TestPC->SetNPCDialougueText(curOrder);
+}
+
+void UNPCDialogueWidget::OnClickExitButton()
+{
+	TestPC->StartEndNPCDialougue(false);
 }
 
 void UNPCDialogueWidget::SetText_Dialogue(const FString& str)

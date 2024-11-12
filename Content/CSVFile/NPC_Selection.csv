@@ -19,4 +19,5 @@ NPC_ID,State,order,key,AnswerCheck,Dialogue_Kor,Dialogue_Eng
 2,2,4,224,4,살아줘,
 3,1,0,310,0,물품을 받는다.,
 3,1,1,311,1,대화를 시도한다.,
+5,2,0,520,0,머리를 주기,
 6,1,0,610,0,물품을 주기,

@@ -134,5 +134,7 @@ void ANPCCharacter::ChangeCleared()
 	IsCleared=true;
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
 	GI->ClearedNPC.Add(GetNPCID());
+	FString id =FString::FromInt(GetNPCID());
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, *id);
 }
 

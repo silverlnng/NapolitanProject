@@ -27,6 +27,9 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	class URichTextBlock* Text_Dialogue;
 
+	UPROPERTY(meta=(BindWidget))
+	class UButton* Btn_Exit;
+
 	
 	FString CurrentText;
 	FString FullText;
@@ -51,6 +54,8 @@ public:
 	void OnClickbackButton();
 	UFUNCTION()
 	void OnClickfrontButton();
+	UFUNCTION()
+	void OnClickExitButton();
 	
 	UFUNCTION()
 	void SetText_Dialogue(const FString& str);

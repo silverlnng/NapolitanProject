@@ -30,6 +30,10 @@ public:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
+
+	virtual int32 GetNPCID() override;
+
+	int32 NPC_ID =4;
 	
 	UPROPERTY(VisibleAnywhere)
 	ESecurityState SecurityState= ESecurityState::Patrol;
@@ -118,5 +122,8 @@ public:
 
 	virtual void ChangeCleared() override;
 	void EndEvent();
+
+	UPROPERTY(VisibleAnywhere)
+	class ANPC_Cleaner* NPC_Cleaner;
 };
 
