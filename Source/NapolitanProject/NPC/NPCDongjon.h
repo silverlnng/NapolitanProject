@@ -43,6 +43,7 @@ public:
 
 	virtual int32 GetState() override;
 
+public:
 	//사라지는 효과
 	bool bisDissolve = false;
 	float dissolveAnimValue;
