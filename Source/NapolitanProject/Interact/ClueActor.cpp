@@ -59,12 +59,12 @@ void AClueActor::LookAt()
 		SetActorLocationAndRotation(CameraLoc,CameraRot);
 	},0.5f,false);
 
-	FTimerHandle OriginPoseTimer;
+	/*FTimerHandle OriginPoseTimer;
 	GetWorldTimerManager().SetTimer(OriginPoseTimer,[this,OriginLoc, OriginRot]()
 	{
 		SetActorLocationAndRotation(OriginLoc,OriginRot);
-	},5.f,false);
+	},5.f,false);*/
 
-	
+	// 쪽지 ui 가 나오도록 하기 
 	
 }
