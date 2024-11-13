@@ -21,6 +21,8 @@ ANPC_Cleaner::ANPC_Cleaner()
 void ANPC_Cleaner::BeginPlay()
 {
 	Super::BeginPlay();
+
+	AI = Cast<AAIController>(GetController());
 	
 }
 
@@ -33,7 +35,7 @@ void ANPC_Cleaner::Tick(float DeltaTime)
 	FString myState = UEnum::GetValueAsString(mState);
 	DrawDebugString(GetWorld() , GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
 	
-	switch (mState)
+	switch ( mState )
 	{
 	case CleanerState::Idle:
 		TickIdle(DeltaTime);
@@ -44,6 +46,8 @@ void ANPC_Cleaner::Tick(float DeltaTime)
 	case CleanerState::Cleaning:
 		TickCleaning(DeltaTime);
 		break;
+	case CleanerState::Stop:
+		TickStop(DeltaTime);
 	}
 
 }
@@ -74,8 +78,9 @@ int32 ANPC_Cleaner::GetState()
 
 void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 {
+	//UE_LOG(LogTemp, Display, TEXT("Tick Idle"));
 	//우선은 대기 상태 시간이 지나면 Move -> 특정 위치 도달시 청소
-	CurrentTime += GetWorld()->DeltaTimeSeconds;
+	CurrentTime += DeltaTime;
 	if(CurrentTime > IdleDelayTime)
 	{
 		//이동 상태 전환
@@ -107,14 +112,16 @@ void ANPC_Cleaner::TickMove(const float& DeltaTime)
 	int32 randomIndex = FMath::RandRange(0, points.Num() - 1);
 	FVector targetPoint = points[randomIndex];
 
+	// 새로운 타겟 포인트 로그 출력
+	UE_LOG(LogTemp, Display, TEXT("New target point selected: X=%f, Y=%f, Z=%f"), targetPoint.X, targetPoint.Y, targetPoint.Z);
+
 	//4. 선택된 위치로 이동 로직 추가
-	AAIController* AIController = Cast<AAIController>(GetController());
-	if (AIController)
+	if (AI)
 	{
-		AIController->MoveToLocation(targetPoint);
+		AI->MoveToLocation(targetPoint);
 		LastVisitedPoint = targetPoint; // 방문한 위치 업데이트
 		//5. 만약 선택된 위치 근처에 왔다면
-		if(dir.Size() <= 200.f)
+		if(FVector::Dist(GetActorLocation(), targetPoint) <= 300.f)
 		{
 			SetState(CleanerState::Cleaning); //청소 상태 변경
 		}
@@ -127,16 +134,17 @@ void ANPC_Cleaner::TickCleaning(const float& DeltaTime)
 	//멈춰서 청소 애니메이션 진행 -> 그다음 움직임 상태로 진행
 	UE_LOG(LogTemp, Error, TEXT("TickCleaning"));
 }
- 
+
 void ANPC_Cleaner::TickStop(const float& DeltaTime)
 {
-	//플레이어와 대화시 완전 정지 -> 대화가 끝났을 경우(1-0일 경우) 다시 Move로 변경
-	
+	//멈춤 상태로 변경
 }
+
 
 void ANPC_Cleaner::SetState(CleanerState newState)
 {
 	mState = newState;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("State changed to: %s"), *UEnum::GetValueAsString(mState)));
 	//애니메이션 상태 지정
 }
 
@@ -150,7 +158,8 @@ void ANPC_Cleaner::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void ANPC_Cleaner::ResultEvent(int32 result)
 {
-
+	//이거 자체가 일단 호출되면 캐릭터의 움직임을 멈춤 상태로
+	
 	if (2==State)
 	{
 		if (0==result)

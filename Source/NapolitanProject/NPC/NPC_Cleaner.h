@@ -70,11 +70,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = State)
 	void TickStop(const float& DeltaTime); //플레이어와 대화시 완전 멈춤
 
-	int32 CurrentTime = 0; //현재 시간
-	int32 IdleDelayTime = 3.f; //대기 시간
+	float CurrentTime = 0; //현재 시간
+	float IdleDelayTime = 3.f; //대기 시간
 
 	FVector LastVisitedPoint; //마지막으로 방문한 점 위치 저장
 
 	void SetState(CleanerState newState);
+
+	UPROPERTY()
+	class AAIController* AI;
 
 };
