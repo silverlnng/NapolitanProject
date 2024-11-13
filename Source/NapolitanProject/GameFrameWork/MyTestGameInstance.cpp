@@ -59,6 +59,30 @@ void UMyTestGameInstance::Init()
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s DT_Souvenir 로드하지 못함"),*CALLINFO);
 	}
+
+
+	// 클루데이터
+	// /Script/Engine.DataTable'/Game/YJ/Item/DT_Clue.DT_Clue'
+
+	DT_Clue=LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/Item/DT_Clue.DT_Clue'"));
+
+	if (DT_Clue)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s DT_Souvenir 로드성공"),*CALLINFO);
+		ClueDataRowNames=DT_Clue->GetRowNames();
+
+		for (int i = 0; i < ClueDataRowNames.Num(); i++)
+		{
+			FClueData* ClueData = DT_Clue->FindRow<FClueData>(ClueDataRowNames[i] , TEXT(""));
+			if (ClueData)
+			{
+				//단서 획득 초기화 => 게임로드안했을때
+				ClueData->Had=false;
+				
+			}
+		}
+	}
+	
 	
 
 	// 언어선택 기본값 한글 :0 ,영어:1
