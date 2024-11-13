@@ -188,7 +188,7 @@ void ANPC_Cleaner::SetState(CleanerState newState)
 	mState = newState;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("State changed to: %s"), *UEnum::GetValueAsString(mState)));
 	//애니메이션 상태 지정
-	CleanerAnim->animState = mState;
+	//CleanerAnim->animState = mState;
 }
 
 void ANPC_Cleaner::SpawnItems()
@@ -234,7 +234,7 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 				MainCharacter->curItem->PutDown();
 			}
 			
-			HeadStaticMesh->SetHiddenInGame(false);
+			HeadStaticMesh->SetHiddenInGame(false); //머리를 보이게 함
 			
 			// 스크립트 출력
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");
@@ -258,7 +258,7 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 			{
 				bisDissolve = true; //유품 스폰 뒤에 사라짐
 				ChangeCleared(); //NPC 클리어
-			}, 3.0f, false);
+			}, 5.0f, false);
 		}
 	}
 }
