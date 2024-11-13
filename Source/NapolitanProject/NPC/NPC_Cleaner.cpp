@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "NPCCleanerAnim.h"
 #include "Components/CapsuleComponent.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
@@ -156,30 +157,20 @@ void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 		bIsMoving = true;
 	}
 
-	if (MainCharacter->curState==EPlayerState::UI)
+	if (MainCharacter->curState==EPlayerState::Talking)
 	{
 		SetState(CleanerState::Stop); // Stop 상태로 변경
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("ddd"));
+		
+		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickIdle->stop"));
 	}
 }
 
 void ANPC_Cleaner::TickMove(const float& DeltaTime)
 {
-	if (MainCharacter->curState==EPlayerState::UI)
-	{
-		SetState(CleanerState::Stop); // Stop 상태로 변경
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("ddd"));
-	}
 	if (AI && bIsMoving)
 	{
 		// 목표 지점으로 이동
-		AI->MoveToLocation(TargetPoint, 170.f);
+		AI->MoveToLocation(TargetPoint, 260.f);
 	}
 
 	// 목표 지점 근처에 도달하면 Cleaning 상태로 전환
@@ -187,17 +178,20 @@ void ANPC_Cleaner::TickMove(const float& DeltaTime)
 	{
 		SetState(CleanerState::Cleaning);
 	}
+	UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickMove"));
+	if (MainCharacter->curState==EPlayerState::Talking)
+	{
+		SetState(CleanerState::Stop); // Stop 상태로 변경
+		UE_LOG(LogTemp,Error,TEXT("%s,%s"),*CALLINFO,TEXT("TickMove->stop"));
+	}
 }
 
 void ANPC_Cleaner::TickCleaning(const float& DeltaTime)
 {
-	if (MainCharacter->curState==EPlayerState::UI)
+	if (MainCharacter->curState==EPlayerState::Talking)
 	{
 		SetState(CleanerState::Stop); // Stop 상태로 변경
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("ddd"));
+		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickCleaning->stop"));
 	}
 	
 	if (AI) 
@@ -215,7 +209,8 @@ void ANPC_Cleaner::TickStop(const float& DeltaTime)
 {
 	//멈춤 상태로 변경, 만약 플레이어가 대화창 UI를 종료했을 시 Idle로 변경
 	// 플레이어가 대화창 UI를 종료했는지 확인
-	if (MainCharacter->curState!=EPlayerState::UI)
+	AI->StopMovement();
+	if (MainCharacter->curState!=EPlayerState::Talking)
 	{
 		SetState(CleanerState::Idle); // Idle 상태로 변경
 	}
