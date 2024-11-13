@@ -52,7 +52,14 @@ void AItemActor::OnPickup()
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 	OnInventorySlot();
 	
-	//AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+	AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+}
+
+void AItemActor::PutDown()
+{
+	DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+	SetActorHiddenInGame(true);
+	Destroy();
 }
 
 void AItemActor::OnInventorySlot()

@@ -122,9 +122,7 @@ public:
 
 	virtual void ChangeCleared() override;
 	void EndEvent();
-
-	UPROPERTY(VisibleAnywhere)
-	class ANPC_Cleaner* NPC_Cleaner;
+	
 
 	UPROPERTY(EditDefaultsOnly,Category=Item)
 	class UStaticMeshComponent* HeadStaticMesh;

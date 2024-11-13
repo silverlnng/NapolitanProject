@@ -39,12 +39,7 @@ ANPC_Security::ANPC_Security()
 void ANPC_Security::BeginPlay()
 {
 	Super::BeginPlay();
-
-	for (TActorIterator<ANPC_Cleaner> It(GetWorld(), ANPC_Cleaner::StaticClass()); It; ++It)
-	{
-		NPC_Cleaner = *It;
-	}
-
+	
 	Anim=Cast<UNPC_Security_AnimInstance>(GetMesh()->GetAnimInstance());
 	
 	// 라이트가 꺼져있다 : 랜덤한 위치으로 돌아다니기
@@ -406,14 +401,6 @@ void ANPC_Security::EndEvent()
 	
 
 	ChangeCleared(); // 더이상 상호작용 안하도록 막고
-	
-	if (NPC_Cleaner)
-	{
-		NPC_Cleaner->State=2;
-	// 클리너가 다음 state으로 가도록 숫자 증가시키기
-	}
-	
-	
 	
 	FTimerHandle CameraViewChangePlayerTimer;
 	GetWorldTimerManager().SetTimer(CameraViewChangePlayerTimer,[this]()

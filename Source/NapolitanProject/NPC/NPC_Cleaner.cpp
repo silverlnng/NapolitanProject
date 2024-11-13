@@ -7,6 +7,7 @@
 #include "Components/CapsuleComponent.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
@@ -221,7 +222,13 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 	{
 		if (0==result)
 		{
+			if (MainCharacter->curItem)
+			{
+				MainCharacter->curItem->PutDown();
+			}
+			
 			HeadStaticMesh->SetHiddenInGame(false);
+			
 			// 스크립트 출력
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");
 			State=3;
