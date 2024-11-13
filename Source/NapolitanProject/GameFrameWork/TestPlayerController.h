@@ -54,7 +54,6 @@ public:
 
 	UFUNCTION()
 	void SetNPCDialougueText(int32 curOrder); // NPC_ID ,State,curOrder 에 따라서 알맞는 대화를 출력하는 함수
-
 	
 /////////////////////////////////////////////////////////////////////////////
 	UFUNCTION()

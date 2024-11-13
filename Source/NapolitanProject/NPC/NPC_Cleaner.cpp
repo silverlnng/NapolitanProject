@@ -21,6 +21,8 @@ ANPC_Cleaner::ANPC_Cleaner()
 	HeadStaticMesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HeadStaticMeshComp"));
 	HeadStaticMesh->SetupAttachment(GetMesh(),"HeadSocket");
 
+	
+
 }
 
 // Called when the game starts or when spawned
@@ -31,8 +33,9 @@ void ANPC_Cleaner::BeginPlay()
 	AI = Cast<AAIController>(GetController());
 	CleanerAnim = Cast<UNPCCleanerAnim>(GetMesh()->GetAnimInstance());
 	
-
 	HeadStaticMesh->SetHiddenInGame(true);
+
+	bIsMoving = false;
 
 }
 
@@ -58,6 +61,7 @@ void ANPC_Cleaner::Tick(float DeltaTime)
 		break;
 	case CleanerState::Stop:
 		TickStop(DeltaTime);
+		break;
 	}
 
 	//디졸브 이벤트
@@ -70,16 +74,23 @@ void ANPC_Cleaner::Tick(float DeltaTime)
 		float DissolveValue2 = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
 		float DissolveValue3 = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
 
+		float DissolveValue4 = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
+		float DissolveValue5 = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
+
 		DynamicMaterial1->SetScalarParameterValue(TEXT("dissolve"), DissolveValue1);
 		DynamicMaterial2->SetScalarParameterValue(TEXT("dissolve"), DissolveValue2);
 		DynamicMaterial3->SetScalarParameterValue(TEXT("dissolve"), DissolveValue3);
+		
+		DynamicMaterial4->SetScalarParameterValue(TEXT("dissolve"), DissolveValue4);
+		DynamicMaterial5->SetScalarParameterValue(TEXT("dissolve"), DissolveValue5);
 
 		//UE_LOG(LogTemp, Error, TEXT("DissolveValue1: %f, DissolveValue2: %f"), DissolveValue1, DissolveValue2);
 		
-		if (DissolveValue1 <= -0.5f && DissolveValue2 <= -0.5f && DissolveValue3 <= -0.5f)
+		if (DissolveValue1 <= -0.5f && DissolveValue2 <= -0.5f && DissolveValue3 <= -0.5f && DissolveValue4 <= -0.5f && DissolveValue5 <= -0.5f)
 		{
 			bItemSpawned = true;
 			GetMesh()->SetVisibility(false);
+			HeadStaticMesh->SetVisibility(false);
 			SpawnItems(); //아이템 스폰
 			bisDissolve = false;
 		}
@@ -118,68 +129,96 @@ void ANPC_Cleaner::ChangeCleared()
 
 void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 {
-	//UE_LOG(LogTemp, Display, TEXT("Tick Idle"));
-	//우선은 대기 상태 시간이 지나면 Move -> 특정 위치 도달시 청소
+	// 대기 시간 계산
 	CurrentTime += DeltaTime;
-	if(CurrentTime > IdleDelayTime)
+	if (CurrentTime > IdleDelayTime)
 	{
-		//이동 상태 전환
-		//mState = CleanerState::Move;
+		// Idle 상태에서 목표 지점 설정
+		TArray<FVector> points = {
+			FVector(-470.0f, -1550.0f, 100.0f), // point1
+			FVector(-470.0f, -4460.0f, 100.0f), // point2
+			FVector(-2410.0f, -4460.0f, 100.0f), // point3
+			FVector(-1950.0f, -1700.0f, 100.0f), // point4
+			FVector(-1260.0f, -2890.0f, 100.0f)  // point5
+		};
+
+		// 마지막 방문한 위치 제외하고 랜덤으로 선택
+		points.Remove(LastVisitedPoint);
+		int32 randomIndex = FMath::RandRange(0, points.Num() - 1);
+		TargetPoint = points[randomIndex];
+		LastVisitedPoint = TargetPoint;
+
+		UE_LOG(LogTemp, Error, TEXT("New target point set: X=%f, Y=%f, Z=%f"), TargetPoint.X, TargetPoint.Y, TargetPoint.Z);
+
+		// Move 상태로 전환
 		SetState(CleanerState::Move);
-		CurrentTime = 0; //시간 초기화
-		
+		CurrentTime = 0; // 시간 초기화
+		bIsMoving = true;
 	}
-	
+
+	if (MainCharacter->curState==EPlayerState::UI)
+	{
+		SetState(CleanerState::Stop); // Stop 상태로 변경
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ddd"));
+	}
 }
 
 void ANPC_Cleaner::TickMove(const float& DeltaTime)
 {
-	//로직 : 우선 1~4 데이터 값 설정
-	FVector dir = GetActorLocation();
-	
-	//1. 점들의 좌표를 배열에 추가
-	TArray<FVector>points = {
-		FVector(-470.0f, -1550.0f, 100.0f), //point1
-		FVector(-470.0f, -4460.0f, 100.0f), //point2
-		FVector(-2410.0f, -4460.0f, 100.0f), //point3
-		FVector(-1950.0f, -1700.0f, 100.0f), //point4
-		FVector(-1260.0f, -2890.0f, 100.0f) //point5
-	};
-
-	//2. 마지막 방문한 위치 제외하고 선택
-	points.Remove(LastVisitedPoint);
-
-	//3. 랜덤으로 하나의 점 선택
-	int32 randomIndex = FMath::RandRange(0, points.Num() - 1);
-	FVector targetPoint = points[randomIndex];
-
-	// 새로운 타겟 포인트 로그 출력
-	UE_LOG(LogTemp, Display, TEXT("New target point selected: X=%f, Y=%f, Z=%f"), targetPoint.X, targetPoint.Y, targetPoint.Z);
-
-	//4. 선택된 위치로 이동 로직 추가
-	if (AI)
+	if (MainCharacter->curState==EPlayerState::UI)
 	{
-		AI->MoveToLocation(targetPoint);
-		LastVisitedPoint = targetPoint; // 방문한 위치 업데이트
-		//5. 만약 선택된 위치 근처에 왔다면
-		if(FVector::Dist(GetActorLocation(), targetPoint) <= 300.f)
-		{
-			SetState(CleanerState::Cleaning); //청소 상태 변경
-		}
+		SetState(CleanerState::Stop); // Stop 상태로 변경
 	}
-	
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ddd"));
+	}
+	if (AI && bIsMoving)
+	{
+		// 목표 지점으로 이동
+		AI->MoveToLocation(TargetPoint, 170.f);
+	}
+
+	// 목표 지점 근처에 도달하면 Cleaning 상태로 전환
+	if (FVector::Dist(GetActorLocation(), TargetPoint) <= 200.f)
+	{
+		SetState(CleanerState::Cleaning);
+	}
 }
 
 void ANPC_Cleaner::TickCleaning(const float& DeltaTime)
 {
+	if (MainCharacter->curState==EPlayerState::UI)
+	{
+		SetState(CleanerState::Stop); // Stop 상태로 변경
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ddd"));
+	}
+	
+	if (AI) 
+	{
+		AI->StopMovement();
+	}
 	//멈춰서 청소 애니메이션 진행 -> 그다음 움직임 상태로 진행
-	UE_LOG(LogTemp, Error, TEXT("TickCleaning"));
+	if (!CleanerAnim->Montage_IsPlaying(CleanerAnim->CleaningMontage)) {
+		CleanerAnim->playCleaningMontage();
+	}
+	
 }
 
 void ANPC_Cleaner::TickStop(const float& DeltaTime)
 {
-	//멈춤 상태로 변경
-	
+	//멈춤 상태로 변경, 만약 플레이어가 대화창 UI를 종료했을 시 Idle로 변경
+	// 플레이어가 대화창 UI를 종료했는지 확인
+	if (MainCharacter->curState!=EPlayerState::UI)
+	{
+		SetState(CleanerState::Idle); // Idle 상태로 변경
+	}
 }
 
 
@@ -189,6 +228,15 @@ void ANPC_Cleaner::SetState(CleanerState newState)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("State changed to: %s"), *UEnum::GetValueAsString(mState)));
 	//애니메이션 상태 지정
 	//CleanerAnim->animState = mState;
+
+	if (CleanerAnim)
+	{
+		CleanerAnim->animState = mState;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("CleanerAnim이 null입니다."));
+	}
 }
 
 void ANPC_Cleaner::SpawnItems()
@@ -242,15 +290,24 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 			TestPC->StartEndNPCDialougue(true);
 			TestPC->SetNPCDialougueText(0);
 
-			//머터리얼 수정
+			//몸 머터리얼 수정
 			DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);
 			DynamicMaterial2 = UMaterialInstanceDynamic::Create(DissolveMaterial2, this);
 			DynamicMaterial3 = UMaterialInstanceDynamic::Create(DissolveMaterial3, this);
-			if (DynamicMaterial1 && DynamicMaterial2 && DynamicMaterial3)
+
+			//스테틱 메시 머리 수정
+			DynamicMaterial4 = UMaterialInstanceDynamic::Create(DissolveMaterial4, HeadStaticMesh);
+			DynamicMaterial5 = UMaterialInstanceDynamic::Create(DissolveMaterial4, HeadStaticMesh);
+			
+
+			if (DynamicMaterial1 && DynamicMaterial2 && DynamicMaterial3 && DynamicMaterial4 && DynamicMaterial5)
 			{
 				GetMesh()->SetMaterial(0, DynamicMaterial1);
 				GetMesh()->SetMaterial(1, DynamicMaterial2);
 				GetMesh()->SetMaterial(2, DynamicMaterial3);
+
+				HeadStaticMesh->SetMaterial(0, DynamicMaterial4);
+				HeadStaticMesh->SetMaterial(1, DynamicMaterial5);
 			}
 			
 			//디졸브
