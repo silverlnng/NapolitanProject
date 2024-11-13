@@ -60,9 +60,7 @@ void ANPCDongjon::Tick(float DeltaTime)
 		DynamicMaterial4->SetScalarParameterValue(TEXT("dissolve"), DissolveValue4);
 
 		UE_LOG(LogTemp, Error, TEXT("DissolveValue1: %f, DissolveValue2: %f"), DissolveValue1, DissolveValue2);
-
-		IsCleared=true;
-		GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+		
 		if (DissolveValue1 <= -0.5f && DissolveValue2 <= -0.5f && DissolveValue3 <= -0.5f && DissolveValue4 <= -0.5f)
 		{
 			bItemSpawned = true;
@@ -96,6 +94,11 @@ int32 ANPCDongjon::GetState()
 	return State;
 }
 
+void ANPCDongjon::ChangeCleared()
+{
+	Super::ChangeCleared();
+}
+
 //노인의 경우 아이템과 유품을 스폰
 void ANPCDongjon::SpawnItems()
 {
@@ -106,11 +109,11 @@ void ANPCDongjon::SpawnItems()
 		FTransform SpawnTransform(FootLocation);
 
 		// 블루프린트에서 설정된 ItemClass와 SouvenirClass로 스폰
-		//AActor* ItemActor = GetWorld()->SpawnActor<AActor>(ItemClass, SpawnTransform);
+		AActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(ItemClass, SpawnTransform);
 		AActor* SouvenirActor = GetWorld()->SpawnActor<ASouvenir_Dongjun>(SouvenirClass, SpawnTransform );
 		if (SouvenirActor)
 		{
-			//ItemActor->Tags.Add(FName("Item"));
+			ItemActor->Tags.Add(FName("Item"));
 			SouvenirActor->Tags.Add(FName("Souvenir"));
 		}	
 	}
@@ -151,8 +154,7 @@ void ANPCDongjon::ResultEvent(int32 result)
 			{
 				bisDissolve = true; //유품 스폰 뒤에 사라짐
 				TestPC->StartEndNPCDialougue(false); //결과 출력
-				//아이템, 유품 드랍
-				SpawnItems();
+				ChangeCleared(); //NPC 클리어
 			}, 4.0f, false);
 
 			

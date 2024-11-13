@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "NPCCharacter.h"
 #include "GameFramework/Character.h"
+#include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/Interact/SouvenirActor.h"
 #include "NPC_Cleaner.generated.h"
 
 UENUM(BlueprintType)
@@ -52,6 +54,8 @@ public:
 
 	virtual int32 GetState() override;
 
+	virtual void ChangeCleared() override; //사라지고 난 뒤 클리어
+
 public:
 	//상태 변수
 	UPROPERTY()
@@ -79,5 +83,30 @@ public:
 
 	UPROPERTY()
 	class AAIController* AI;
+
+	FTimerHandle TimerHandle;
+
+	//디졸브
+	//사라지는 효과
+	bool bisDissolve = false;
+	float dissolveAnimValue;
+	
+	UMaterialInstanceDynamic* DynamicMaterial1;  // 몸 머터리얼
+	UMaterialInstanceDynamic* DynamicMaterial2;  // 목 머터리얼
+	UMaterialInstanceDynamic* DynamicMaterial3;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial1;  // 블루프린트에서 지정할 머터리얼, 1-0
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial2;  // 1-1
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial3;
+
+	//아이템, 유품을 스폰하는 함수
+	void SpawnItems();
+	bool bItemSpawned = false;
+
+	UPROPERTY(EditAnywhere, Category = "Spawn Items")
+	TSubclassOf<ASouvenirActor> SouvenirClass;
 
 };

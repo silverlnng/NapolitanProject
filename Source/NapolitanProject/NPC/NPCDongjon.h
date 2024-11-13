@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "NPCCharacter.h"
 #include "GameFramework/Character.h"
+#include "NapolitanProject/Interact/ItemActor.h"
 #include "NapolitanProject/Interact/Souvenir_Dongjun.h"
 #include "NPCDongjon.generated.h"
 
@@ -43,11 +44,12 @@ public:
 
 	virtual int32 GetState() override;
 
+	virtual void ChangeCleared() override; //사라지고 난 뒤 클리어
+
 public:
 	//사라지는 효과
 	bool bisDissolve = false;
 	float dissolveAnimValue;
-
 	
 	UMaterialInstanceDynamic* DynamicMaterial1;  // 동적 머터리얼 인스턴스
 	UMaterialInstanceDynamic* DynamicMaterial2;  // 동적 머터리얼 인스턴스
@@ -72,7 +74,7 @@ public:
 
 	// Item and Souvenir classes for Blueprint assignment
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
-	TSubclassOf<AActor> ItemClass;
+	TSubclassOf<AItemActor> ItemClass;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<ASouvenir_Dongjun> SouvenirClass;

@@ -4,6 +4,7 @@
 #include "NPC_Cleaner.h"
 
 #include "AIController.h"
+#include "Components/CapsuleComponent.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
@@ -50,6 +51,31 @@ void ANPC_Cleaner::Tick(float DeltaTime)
 		TickStop(DeltaTime);
 	}
 
+	//디졸브 이벤트
+	if (bisDissolve)
+	{
+		dissolveAnimValue += DeltaTime / 4;
+
+		// 원하는 범위 (0.5에서 -0.5)로 클램핑
+		float DissolveValue1 = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
+		float DissolveValue2 = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
+		float DissolveValue3 = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
+
+		DynamicMaterial1->SetScalarParameterValue(TEXT("dissolve"), DissolveValue1);
+		DynamicMaterial2->SetScalarParameterValue(TEXT("dissolve"), DissolveValue2);
+		DynamicMaterial3->SetScalarParameterValue(TEXT("dissolve"), DissolveValue3);
+
+		UE_LOG(LogTemp, Error, TEXT("DissolveValue1: %f, DissolveValue2: %f"), DissolveValue1, DissolveValue2);
+		
+		if (DissolveValue1 <= -0.5f && DissolveValue2 <= -0.5f && DissolveValue3 <= -0.5f)
+		{
+			bItemSpawned = true;
+			GetMesh()->SetVisibility(false);
+			SpawnItems(); //아이템 스폰
+			bisDissolve = false;
+		}
+	}
+
 }
 
 void ANPC_Cleaner::Interact()
@@ -74,6 +100,11 @@ int32 ANPC_Cleaner::GetState()
 	
 	// 버튼눌렀으면 3으로 변경해야함 
 	return State;
+}
+
+void ANPC_Cleaner::ChangeCleared()
+{
+	Super::ChangeCleared();
 }
 
 void ANPC_Cleaner::TickIdle(const float& DeltaTime)
@@ -138,6 +169,7 @@ void ANPC_Cleaner::TickCleaning(const float& DeltaTime)
 void ANPC_Cleaner::TickStop(const float& DeltaTime)
 {
 	//멈춤 상태로 변경
+	
 }
 
 
@@ -146,6 +178,27 @@ void ANPC_Cleaner::SetState(CleanerState newState)
 	mState = newState;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("State changed to: %s"), *UEnum::GetValueAsString(mState)));
 	//애니메이션 상태 지정
+}
+
+void ANPC_Cleaner::SpawnItems()
+{
+	//아이템 스폰
+	if(bItemSpawned)
+	{
+		// 발끝 위치를 기준으로 스폰 위치 설정
+		FVector FootLocation = GetMesh()->GetSocketLocation(FName("ItemSpawn"));
+		FTransform SpawnTransform(FootLocation);
+
+		// 블루프린트에서 설정된 SouvenirClass로 스폰, 청소부는 출력하는 아이템이 없음
+		AActor* SouvenirActor = GetWorld()->SpawnActor<ASouvenirActor>(SouvenirClass, SpawnTransform );
+		if (SouvenirActor)
+		{
+			//ItemActor->Tags.Add(FName("Item"));
+			SouvenirActor->Tags.Add(FName("Souvenir"));
+		}
+	}
+
+	bItemSpawned = false; //한번만 스폰되도록
 }
 
 // Called to bind functionality to input
@@ -159,41 +212,36 @@ void ANPC_Cleaner::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 void ANPC_Cleaner::ResultEvent(int32 result)
 {
 	//이거 자체가 일단 호출되면 캐릭터의 움직임을 멈춤 상태로
+	SetState(CleanerState::Stop);
 	
 	if (2==State)
 	{
 		if (0==result)
 		{
-			// -> 도슨트가 평범하게 다가오며 고개를 들어 당신을 올려다본다.==> 애니메이션
-			// -> “게임을 해요! 도슨트의 넌센스 퀴즈!” ==>State 2 바로 시작하기
+			// 스크립트 출력
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");
 			State=3;
 			TestPC->StartEndNPCDialougue(true);
 			TestPC->SetNPCDialougueText(0);
+
+			//머터리얼 수정
+			DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);
+			DynamicMaterial2 = UMaterialInstanceDynamic::Create(DissolveMaterial2, this);
+			DynamicMaterial3 = UMaterialInstanceDynamic::Create(DissolveMaterial3, this);
+			if (DynamicMaterial1 && DynamicMaterial2 && DynamicMaterial3)
+			{
+				GetMesh()->SetMaterial(0, DynamicMaterial1);
+				GetMesh()->SetMaterial(1, DynamicMaterial2);
+				GetMesh()->SetMaterial(2, DynamicMaterial3);
+			}
+			
+			//디졸브
+			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				bisDissolve = true; //유품 스폰 뒤에 사라짐
+				ChangeCleared(); //NPC 클리어
+			}, 3.0f, false);
 		}
 	}
-	
-	/*if(1==result)
-	{
-		if(0 == result)
-		{
-			//1-0. 그에게 이 미술관에 대해 묻는다.
-			int32 key=(NPC_ID*100)+(State*10)+result;
-			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
-			TestPC->SetCurNPCResultUI(key);
-			
-			
-		}
-		//플레이어가 청소부의 머리를 얻었을 경우 생기는 선택지 (버튼 visible로 처리해줘야힘)
-		else if(1==result)
-		{
-			//1-0. 그에게 이 미술관에 대해 묻는다.
-			int32 key=(NPC_ID*100)+(State*10)+result;
-			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
-			TestPC->SetCurNPCResultUI(key);
-
-			//유품 스폰 및 디졸브
-		}
-	}*/
 }
 
