@@ -78,7 +78,9 @@ void UMyTestGameInstance::Init()
 			{
 				//단서 획득 초기화 => 게임로드안했을때
 				ClueData->Had=false;
-				UE_LOG(LogTemp,Warning,TEXT("%s,%d"),*CALLINFO,ClueData->ClueID);
+				FString cluerowname=ClueDataRowNames[i].ToString();
+				UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*cluerowname);
+				//UE_LOG(LogTemp,Warning,TEXT("%s,%d"),*CALLINFO,ClueData->ClueID);
 				
 			}
 		}

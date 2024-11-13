@@ -178,7 +178,7 @@ void ANPC_Cleaner::TickMove(const float& DeltaTime)
 	{
 		SetState(CleanerState::Cleaning);
 	}
-	UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickMove"));
+	//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickMove"));
 	if (MainCharacter->curState==EPlayerState::Talking)
 	{
 		SetState(CleanerState::Stop); // Stop 상태로 변경
@@ -292,7 +292,7 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 
 			//스테틱 메시 머리 수정
 			DynamicMaterial4 = UMaterialInstanceDynamic::Create(DissolveMaterial4, HeadStaticMesh);
-			DynamicMaterial5 = UMaterialInstanceDynamic::Create(DissolveMaterial4, HeadStaticMesh);
+			DynamicMaterial5 = UMaterialInstanceDynamic::Create(DissolveMaterial5, HeadStaticMesh);
 			
 
 			if (DynamicMaterial1 && DynamicMaterial2 && DynamicMaterial3 && DynamicMaterial4 && DynamicMaterial5)

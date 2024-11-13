@@ -18,6 +18,7 @@ void UClueSlotWidget::NativeConstruct()
 	PlayerHUD=TestPlayerController->GetHUD<APlayerHUD>();
 	Btn_ClueSlot->OnHovered.AddDynamic(this,&UClueSlotWidget::OnClickBtn_ClueSlot);
 	Btn_ClueSlot->OnClicked.AddDynamic(this,&UClueSlotWidget::OnClickBtn_ClueSlot);
+	Btn_ClueSlot->SetIsEnabled(false);
 }
 
 void UClueSlotWidget::OnClickBtn_ClueSlot()
@@ -27,6 +28,8 @@ void UClueSlotWidget::OnClickBtn_ClueSlot()
 
 void UClueSlotWidget::SetWidgetSwitcher(int32 val)
 {
+	//버튼 활성화
+	Btn_ClueSlot->SetIsEnabled(true);
 	WidgetSwitcher->SetActiveWidgetIndex(val);
 }
 

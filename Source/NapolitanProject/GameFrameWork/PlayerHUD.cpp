@@ -14,6 +14,7 @@
 #include "Animation/WidgetAnimation.h"
 #include "BehaviorTree/Tasks/BTTask_PlayAnimation.h"
 #include "Components/ScrollBox.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueSlotWidget.h"
 void APlayerHUD::BeginPlay()
@@ -66,7 +67,9 @@ void APlayerHUD::BeginPlay()
 			 NoteUI->WBP_ClueInfo->ClueSlots.Add(i,newSlot);
 			
 			 newSlot->SetTextClueName(ClueData->Name);
-			 newSlot->Clue_ID=i;
+			 newSlot->Clue_ID=ClueData->ClueID;
+			
+			UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*ClueData->Name);
 			 if (ClueData->Had)
 			 {
 				 // 있으면

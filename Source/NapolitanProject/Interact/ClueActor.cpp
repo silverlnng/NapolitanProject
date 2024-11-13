@@ -62,7 +62,9 @@ void AClueActor::LookAt()
 	FName Clue_FName = FName(*FString::FromInt(Clue_ID));
 	FClueData* ClueData= GI->DT_Clue->FindRow<FClueData>(Clue_FName , TEXT(""));
 	if (!ClueData){ UE_LOG(LogTemp,Warning,TEXT("ClueData null")) return;}
-	
+
+
+	//데이터 테이블에 had으로 표시
 	ClueData->Had=true;
 
 
@@ -72,6 +74,8 @@ void AClueActor::LookAt()
 		// ClueData->Content 를 전달
 	MainCharacter->SetPlayerState(EPlayerState::UI);
 	PlayerHUD->InteractUI->SetRichText_Clue(*ClueContent);
+
+	//
 	
 	FTimerHandle UITimer;
 	GetWorldTimerManager().SetTimer(UITimer,[this, CameraLoc, CameraRot]()
@@ -79,6 +83,13 @@ void AClueActor::LookAt()
 		SetActorLocationAndRotation(CameraLoc,CameraRot);
 		PlayerHUD->InteractUI->SetVisibleCanvasPanel_Clue(true);
 	},0.5f,false);
+
+	FTimerHandle UITimer2;
+	GetWorldTimerManager().SetTimer(UITimer2,[this, OriginLoc, OriginRot]()
+	{
+		SetActorLocationAndRotation(OriginLoc,OriginRot);
+		
+	},2.0f,false);
 	
 	// 쪽지 ui 가 나오도록 하기
 	 // 자기아이디로 데이터 테이블 읽어와서
