@@ -160,6 +160,11 @@ int32 ANPC_Security::GetNPCID()
 
 void ANPC_Security::SetState(ESecurityState curState)
 {
+	if (SecurityState==ESecurityState::Stop)
+	{
+		return;
+	}
+	
 	SecurityState=curState;
 	Anim->State=curState;
 
