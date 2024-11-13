@@ -59,7 +59,7 @@ void ANPCDongjon::Tick(float DeltaTime)
 		DynamicMaterial3->SetScalarParameterValue(TEXT("dissolve"), DissolveValue3);
 		DynamicMaterial4->SetScalarParameterValue(TEXT("dissolve"), DissolveValue4);
 
-		UE_LOG(LogTemp, Error, TEXT("DissolveValue1: %f, DissolveValue2: %f"), DissolveValue1, DissolveValue2);
+		//UE_LOG(LogTemp, Error, TEXT("DissolveValue1: %f, DissolveValue2: %f"), DissolveValue1, DissolveValue2);
 		
 		if (DissolveValue1 <= -0.5f && DissolveValue2 <= -0.5f && DissolveValue3 <= -0.5f && DissolveValue4 <= -0.5f)
 		{

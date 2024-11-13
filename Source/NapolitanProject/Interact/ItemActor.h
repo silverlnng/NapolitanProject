@@ -31,7 +31,7 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class USceneComponent* SceneComp;
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class UStaticMeshComponent* StaticMeshComp;
 
 	UPROPERTY(EditDefaultsOnly)

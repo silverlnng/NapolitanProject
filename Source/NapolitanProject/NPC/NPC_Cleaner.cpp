@@ -68,7 +68,7 @@ void ANPC_Cleaner::Tick(float DeltaTime)
 		DynamicMaterial2->SetScalarParameterValue(TEXT("dissolve"), DissolveValue2);
 		DynamicMaterial3->SetScalarParameterValue(TEXT("dissolve"), DissolveValue3);
 
-		UE_LOG(LogTemp, Error, TEXT("DissolveValue1: %f, DissolveValue2: %f"), DissolveValue1, DissolveValue2);
+		//UE_LOG(LogTemp, Error, TEXT("DissolveValue1: %f, DissolveValue2: %f"), DissolveValue1, DissolveValue2);
 		
 		if (DissolveValue1 <= -0.5f && DissolveValue2 <= -0.5f && DissolveValue3 <= -0.5f)
 		{
