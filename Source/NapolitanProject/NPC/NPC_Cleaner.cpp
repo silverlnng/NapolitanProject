@@ -188,7 +188,7 @@ void ANPC_Cleaner::SetState(CleanerState newState)
 	mState = newState;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("State changed to: %s"), *UEnum::GetValueAsString(mState)));
 	//애니메이션 상태 지정
-	CleanerAnim->animState = mState;
+	//CleanerAnim->animState = mState;
 }
 
 void ANPC_Cleaner::SpawnItems()

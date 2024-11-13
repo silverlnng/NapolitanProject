@@ -281,10 +281,15 @@ void ATestPlayerController::SetCurNPC(ANPCCharacter* curNPC_)
 
 void ATestPlayerController::CallCurNPCResultEvent(int32 value)
 {
-	// 대화창 닫기 
+	// 기존의 대화창 닫기 
 	PlayerHUD->NPCDialogueUI->SetSelectSlotVisible(false);
 	PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
 	UE_LOG(LogTemp,Warning,TEXT("%s NPCResult :%d"),*CALLINFO,value);
+
+	// 결과대화가 있으면 나오도록 출력하기
+	// 결과창 열고
+	
+	
 	if (curNPC)
 	{
 		curNPC->ResultEvent(value);
