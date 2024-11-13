@@ -419,10 +419,22 @@ void ANPC_Security::EndEvent()
 	GetWorldTimerManager().SetTimer(CameraViewChangePlayerTimer,[this]()
 	{
 		TestPC->CameraViewChangePlayer();
-		ItemHead->SetActorHiddenInGame(false);
-		ItemHead->SetActorLocation(HeadStaticMesh->GetComponentLocation());
-		ItemHead->SetActorRotation(HeadStaticMesh->GetComponentRotation());
+		
 	},8.0f,false);
+
+	FTimerHandle headChangeTimer;
+	GetWorldTimerManager().SetTimer(headChangeTimer , [this]()
+	{
+		HeadStaticMesh->SetHiddenInGame(true);
+		ItemHead->SetActorHiddenInGame(false);
+
+		float LOCZ=HeadStaticMesh->GetComponentLocation().Z+5;
+		FVector newLOC=FVector(HeadStaticMesh->GetComponentLocation().X,HeadStaticMesh->GetComponentLocation().Y,LOCZ);
+		
+		ItemHead->SetActorLocation(newLOC);
+		
+		ItemHead->SetActorRotation(HeadStaticMesh->GetComponentRotation());
+	} , 9.5f , false);
 
 	// 그 자리에 아이템 머리 스폰하기 
 }
