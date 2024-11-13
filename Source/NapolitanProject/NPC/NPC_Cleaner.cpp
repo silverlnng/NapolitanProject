@@ -4,6 +4,7 @@
 #include "NPC_Cleaner.h"
 
 #include "AIController.h"
+#include "NPCCleanerAnim.h"
 #include "Components/CapsuleComponent.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
@@ -24,6 +25,8 @@ void ANPC_Cleaner::BeginPlay()
 	Super::BeginPlay();
 
 	AI = Cast<AAIController>(GetController());
+
+	CleanerAnim = Cast<UNPCCleanerAnim>(GetMesh()->GetAnimInstance());
 	
 }
 
@@ -118,6 +121,7 @@ void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 		//mState = CleanerState::Move;
 		SetState(CleanerState::Move);
 		CurrentTime = 0; //시간 초기화
+		
 	}
 	
 }
@@ -178,6 +182,7 @@ void ANPC_Cleaner::SetState(CleanerState newState)
 	mState = newState;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("State changed to: %s"), *UEnum::GetValueAsString(mState)));
 	//애니메이션 상태 지정
+	CleanerAnim->animState = mState;
 }
 
 void ANPC_Cleaner::SpawnItems()
