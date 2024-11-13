@@ -112,4 +112,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<ASouvenirActor> SouvenirClass;
 
+	////머리
+	UPROPERTY(EditDefaultsOnly,Category=Item)
+	class UStaticMeshComponent* HeadStaticMesh;
+
+	
+
 };
