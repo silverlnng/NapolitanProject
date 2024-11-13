@@ -19,11 +19,12 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = FSM)
-	CleanerState animState;
 
 	UPROPERTY(EditDefaultsOnly)
 	class ANPC_Cleaner* Cleaner;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = FSM)
+	CleanerState animState;
 
 	
 };
