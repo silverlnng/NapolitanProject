@@ -73,13 +73,7 @@ void AClueActor::LookAt()
 		SetActorLocationAndRotation(CameraLoc,CameraRot);
 		PlayerHUD->InteractUI->SetVisibleCanvasPanel_Clue(true);
 	},0.5f,false);
-
-	/*FTimerHandle OriginPoseTimer;
-	GetWorldTimerManager().SetTimer(OriginPoseTimer,[this,OriginLoc, OriginRot]()
-	{
-		SetActorLocationAndRotation(OriginLoc,OriginRot);
-	},5.f,false);*/
-
+	
 	// 쪽지 ui 가 나오도록 하기
 	 // 자기아이디로 데이터 테이블 읽어와서
 	

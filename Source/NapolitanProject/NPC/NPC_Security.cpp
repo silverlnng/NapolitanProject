@@ -16,6 +16,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/Interact/ItemActor.h"
 #include "Navigation/PathFollowingComponent.h"
 
 ANPC_Security::ANPC_Security()
@@ -30,6 +31,9 @@ ANPC_Security::ANPC_Security()
 	CameraComp2->SetupAttachment(SpringArmComp2);
 	
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
+
+	HeadStaticMesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HeadStaticMeshComp"));
+	HeadStaticMesh->SetupAttachment(GetMesh(),"RightHandMiddle3Socket");
 }
 
 void ANPC_Security::BeginPlay()
@@ -65,10 +69,18 @@ void ANPC_Security::BeginPlay()
 	}
 	PawnSensingComp->OnSeePawn.AddDynamic(this,&ANPC_Security::OnSeePawn);
 
-
-
 	// 돌아다닐때 거리에따라 소리내기
+
+	if (ItemHeadBP)
+	{
+		// AItemActor 인스턴스 생성
+		ItemHead = GetWorld()->SpawnActor<AItemActor>(ItemHeadBP);
+	}
 	
+	if (!ItemHead){return;}
+	
+	ItemHead->SetActorHiddenInGame(true);
+	//ItemHead->AttachToComponent(GetMesh(),FAttachmentTransformRules::SnapToTargetNotIncludingScale,"RightHandMiddle3Socket");
 }
 
 void ANPC_Security::Tick(float DeltaSeconds)
@@ -160,10 +172,6 @@ int32 ANPC_Security::GetNPCID()
 
 void ANPC_Security::SetState(ESecurityState curState)
 {
-	if (SecurityState==ESecurityState::Stop)
-	{
-		return;
-	}
 	
 	SecurityState=curState;
 	Anim->State=curState;
@@ -386,7 +394,16 @@ void ANPC_Security::EndEvent()
 		// 사라지는 효과
 		FString color = "Yellow";
 		DissolveEvent(color);
+		HeadStaticMesh->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		HeadStaticMesh->SetEnableGravity(true);
+		HeadStaticMesh->SetSimulatePhysics(true);
+		//HeadStaticMesh->SetVisibility(false);
+		
+		//ItemHead->SetActorLocation(HeadStaticMesh->GetComponentLocation());
+		//ItemHead->SetActorRotation(HeadStaticMesh->GetComponentRotation());
 	},1.0f,false);
+
+	
 
 	ChangeCleared(); // 더이상 상호작용 안하도록 막고
 	
@@ -402,6 +419,9 @@ void ANPC_Security::EndEvent()
 	GetWorldTimerManager().SetTimer(CameraViewChangePlayerTimer,[this]()
 	{
 		TestPC->CameraViewChangePlayer();
+		ItemHead->SetActorHiddenInGame(false);
+		ItemHead->SetActorLocation(HeadStaticMesh->GetComponentLocation());
+		ItemHead->SetActorRotation(HeadStaticMesh->GetComponentRotation());
 	},8.0f,false);
 
 	// 그 자리에 아이템 머리 스폰하기 

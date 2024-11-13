@@ -125,5 +125,15 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class ANPC_Cleaner* NPC_Cleaner;
+
+	UPROPERTY(EditDefaultsOnly,Category=Item)
+	class UStaticMeshComponent* HeadStaticMesh;
+	
+
+	UPROPERTY(EditDefaultsOnly,Category=Item)
+	TSubclassOf<class AItemActor> ItemHeadBP;
+	
+	UPROPERTY(EditDefaultsOnly,Category=Item)
+	class AItemActor* ItemHead;
 };
 
