@@ -16,6 +16,9 @@ class NAPOLITANPROJECT_API APlayerHUD : public AHUD
 public:
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere)
+	class UMyTestGameInstance* GI;
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
 	TSubclassOf<class UNoteWidget> NoteWidgetFactory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
@@ -48,6 +51,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UDeadEndingWidget* DeadEndingWidgetUI;
 
+
+	//단서
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UClueSlotWidget> ClueSlotWidgetFactory;
 	
 	
 };

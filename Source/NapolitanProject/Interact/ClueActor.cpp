@@ -11,6 +11,8 @@
 #include "Components/BoxComponent.h"
 #include "Components/TextRenderComponent.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
+#include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
+#include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 
 // Sets default values
 AClueActor::AClueActor()
@@ -62,6 +64,10 @@ void AClueActor::LookAt()
 	if (!ClueData){ UE_LOG(LogTemp,Warning,TEXT("ClueData null")) return;}
 	
 	ClueData->Had=true;
+
+
+	PlayerHUD->NoteUI->WBP_ClueInfo->ClueSlots[Clue_ID]->SetWidgetSwitcher(1);
+	
 	FString ClueContent =ClueData->Content;
 		// ClueData->Content 를 전달
 	MainCharacter->SetPlayerState(EPlayerState::UI);

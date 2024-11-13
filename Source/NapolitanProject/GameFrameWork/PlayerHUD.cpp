@@ -3,6 +3,7 @@
 
 #include "PlayerHUD.h"
 
+#include "MyTestGameInstance.h"
 #include "../YJ/DeadEndingWidget.h"
 #include "../Interact/InteractWidget.h"
 #include "../YJ/DialogueUI/NPCDialogueWidget.h"
@@ -12,10 +13,14 @@
 #include "../YJ/NoteUI/NoteWidget.h"
 #include "Animation/WidgetAnimation.h"
 #include "BehaviorTree/Tasks/BTTask_PlayAnimation.h"
-
+#include "Components/ScrollBox.h"
+#include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
+#include "NapolitanProject/YJ/NoteUI/ClueSlotWidget.h"
 void APlayerHUD::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	GI =GetGameInstance<UMyTestGameInstance>();
 	
 	NoteUI =CreateWidget<UNoteWidget>(GetWorld(),NoteWidgetFactory);
 	if (NoteUI)
@@ -47,6 +52,34 @@ void APlayerHUD::BeginPlay()
 	{
 		DeadEndingWidgetUI->AddToViewport();
 		DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	if (GI)
+	{
+		for (int i = 0; i < GI->ClueDataRowNames.Num(); i++)
+		{
+			// 겟수만큼 생성
+			FClueData* ClueData =GI-> DT_Clue->FindRow<FClueData>(GI->ClueDataRowNames[i],TEXT(""));
+			
+			UClueSlotWidget* newSlot=CreateWidget<UClueSlotWidget>(GetWorld(),NoteUI->WBP_ClueInfo->ClueSlotWidgetFactory);
+
+			 NoteUI->WBP_ClueInfo->ClueSlots.Add(i,newSlot);
+			
+			 newSlot->SetTextClueName(ClueData->Name);
+			 newSlot->Clue_ID=i;
+			 if (ClueData->Had)
+			 {
+				 // 있으면
+			 	newSlot->SetWidgetSwitcher(1);
+			 }
+			 else
+			 {
+			 	// 없으면
+			 	newSlot->SetWidgetSwitcher(0);
+			 }
+			 NoteUI->WBP_ClueInfo->ScrollBox_List->AddChild(newSlot);
+			
+		}
 	}
 	
 	

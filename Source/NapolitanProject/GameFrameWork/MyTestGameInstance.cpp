@@ -68,7 +68,7 @@ void UMyTestGameInstance::Init()
 
 	if (DT_Clue)
 	{
-		UE_LOG(LogTemp, Error, TEXT("%s DT_Souvenir 로드성공"),*CALLINFO);
+		UE_LOG(LogTemp, Error, TEXT("%s DT_Clue 로드성공"),*CALLINFO);
 		ClueDataRowNames=DT_Clue->GetRowNames();
 
 		for (int i = 0; i < ClueDataRowNames.Num(); i++)
@@ -78,6 +78,7 @@ void UMyTestGameInstance::Init()
 			{
 				//단서 획득 초기화 => 게임로드안했을때
 				ClueData->Had=false;
+				UE_LOG(LogTemp,Warning,TEXT("%s,%d"),*CALLINFO,ClueData->ClueID);
 				
 			}
 		}

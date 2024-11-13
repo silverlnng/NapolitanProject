@@ -16,6 +16,8 @@ void UNoteWidget::NativeConstruct()
 	Btn_Rule->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_NPNInfo);
 	Btn_Souvenir->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Souvenir);
 	Btn_Setting->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Setting);
+	Btn_ClueInfo->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_ClueInfo);
+	
 	WBP_Souvenir->SetVisibility(ESlateVisibility::Hidden);
 	WBP_NPCInfo->SetVisibility(ESlateVisibility::Hidden);
 	WBP_SettingInNote->SetVisibility(ESlateVisibility::Hidden);

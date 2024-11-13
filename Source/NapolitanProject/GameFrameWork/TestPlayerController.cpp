@@ -18,6 +18,7 @@
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
+#include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
 
 ATestPlayerController::ATestPlayerController()
 {
@@ -69,6 +70,13 @@ void ATestPlayerController::BeginPlay()
 				InvenSlotMap[i]->Img_Thumnail->SetBrushFromTexture(ItemData->thumnail);
 			}
 		}
+
+		 // auto ClueSlotMap = PlayerHUD->NoteUI->WBP_ClueInfo->ClueSlots; 
+		
+		
+
+
+		// 유품
 		
 		SouvenirUI = PlayerHUD->NoteUI->WBP_Souvenir;
 		SouvenirUI->SouvenirBtn_BackDele.AddDynamic(this , &ATestPlayerController::SetSouvenirUICurNumber);
