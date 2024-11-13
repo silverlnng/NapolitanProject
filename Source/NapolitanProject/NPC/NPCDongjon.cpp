@@ -134,7 +134,9 @@ void ANPCDongjon::ResultEvent(int32 result)
 			//결과 대사 출력 부분
 			int32 key=(NPC_ID*100)+(State*10)+result;
 			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
-			TestPC->SetCurNPCResultUI(key);
+			TestPC->SetCurNPCResultUI(key); // 대사한줄용 
+
+		
 
 			//머터리얼 수정
 			DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);
@@ -163,9 +165,14 @@ void ANPCDongjon::ResultEvent(int32 result)
 		else if(1 == result)
 		{
 			//노인과 대화 선택지
-			int32 key=(NPC_ID*100)+(State*10)+result;
+			/*int32 key=(NPC_ID*100)+(State*10)+result;
 			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
-			TestPC->SetCurNPCResultUI(key);
+			TestPC->SetCurNPCResultUI(key);*/
+
+			// 대사가 많아서 state 2으로 해결 
+			State=2;
+			TestPC->StartEndNPCDialougue(true);
+			TestPC->SetNPCDialougueText(0);
 			
 		}
 	}

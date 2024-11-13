@@ -339,7 +339,7 @@ void ATestPlayerController::SetCurNPCSelectUI(const int32& NPC_ID, const int32& 
 	PlayerHUD->NPCDialogueUI->CreateSelectionChildren(count,str,result);
 }
 
-void ATestPlayerController::SetCurNPCResultUI(int32 FindKey)
+void ATestPlayerController::SetCurNPCResultUI(int32 FindKey) // 한줄 출력용 
 {
 	if (GI->NPCResultMap.Contains(FindKey)) // 있는 경우
 	{
