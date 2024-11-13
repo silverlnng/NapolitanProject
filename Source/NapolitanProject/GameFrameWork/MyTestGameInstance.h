@@ -75,7 +75,26 @@ struct FNPCSelect
 	FString Select_Kor;
 	FString Select_Eng;
 };
+USTRUCT(BlueprintType)
+struct FClueData : public FTableRowBase
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString Name="";
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	bool Had=false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	int32 ClueID=-1;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString Content="";
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	UTexture2D* ClueImage=nullptr;
+	
+};
 
 UCLASS()
 class NAPOLITANPROJECT_API UMyTestGameInstance : public UGameInstance
@@ -134,5 +153,13 @@ public:
 	TArray<int32> ClearedNPC;
 
 	TArray<int32> AcquireSouvenir;
+
+	UPROPERTY(VisibleAnywhere)
+	UDataTable* DT_Clue;
+
+	UPROPERTY(VisibleAnywhere)
+	TArray<FName> ClueDataRowNames;
+
+	TMap<int32,FClueData> ClueMap;
 };
 

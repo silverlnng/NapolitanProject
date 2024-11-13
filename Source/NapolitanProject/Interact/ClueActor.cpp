@@ -3,12 +3,14 @@
 
 #include "ClueActor.h"
 
+#include "InteractWidget.h"
 #include "../GameFrameWork/PlayerHUD.h"
 #include "../GameFrameWork/TestCharacter.h"
 #include "../GameFrameWork/TestPlayerController.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/TextRenderComponent.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 
 // Sets default values
 AClueActor::AClueActor()
@@ -37,6 +39,7 @@ void AClueActor::BeginPlay()
 	TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	PlayerHUD =TestPC->GetHUD<APlayerHUD>();
+	GI = GetGameInstance<UMyTestGameInstance>();
 }
 
 // Called every frame
@@ -53,18 +56,26 @@ void AClueActor::LookAt()
 	FRotator OriginRot=GetActorRotation();
 	FVector CameraLoc =MainCharacter->myArrowComp->GetComponentLocation();
 	FRotator CameraRot =MainCharacter->myArrowComp->GetComponentRotation();
+	
+	FName Clue_FName = FName(*FString::FromInt(Clue_ID));
+	FClueData* ClueData= GI->DT_Clue->FindRow<FClueData>(Clue_FName , TEXT(""));
+	if (!ClueData){ UE_LOG(LogTemp,Warning,TEXT("ClueData null")) return;}
+	
+	ClueData->Had=true;
+	FString ClueContent =ClueData->Content;
+		// ClueData->Content 를 전달
+	MainCharacter->SetPlayerState(EPlayerState::UI);
+	PlayerHUD->InteractUI->SetRichText_Clue(*ClueContent);
+	
 	FTimerHandle UITimer;
 	GetWorldTimerManager().SetTimer(UITimer,[this, CameraLoc, CameraRot]()
 	{
 		SetActorLocationAndRotation(CameraLoc,CameraRot);
+		PlayerHUD->InteractUI->SetVisibleCanvasPanel_Clue(true);
 	},0.5f,false);
-
-	/*FTimerHandle OriginPoseTimer;
-	GetWorldTimerManager().SetTimer(OriginPoseTimer,[this,OriginLoc, OriginRot]()
-	{
-		SetActorLocationAndRotation(OriginLoc,OriginRot);
-	},5.f,false);*/
-
-	// 쪽지 ui 가 나오도록 하기 
+	
+	// 쪽지 ui 가 나오도록 하기
+	 // 자기아이디로 데이터 테이블 읽어와서
+	
 	
 }
