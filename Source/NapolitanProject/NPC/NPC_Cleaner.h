@@ -57,6 +57,21 @@ public:
 	virtual void ChangeCleared() override; //사라지고 난 뒤 클리어
 
 public:
+
+	//머리
+	UPROPERTY(EditDefaultsOnly,Category=Item)
+	class UStaticMeshComponent* HeadStaticMesh;
+
+	UMaterialInstanceDynamic* DynamicMaterial4;  // 동적 머터리얼 인스턴스
+	UMaterialInstanceDynamic* DynamicMaterial5;  // 동적 머터리얼 인스턴스
+
+	//스테틱 메시에 사용할 디졸브 이펙트
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial4; 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial5;  
+	
+public:
 	//상태 변수
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = State)
 	CleanerState mState = CleanerState::Idle; //우선 기본은 대기 상태
@@ -78,6 +93,7 @@ public:
 	float IdleDelayTime = 3.f; //대기 시간
 
 	FVector LastVisitedPoint; //마지막으로 방문한 점 위치 저장
+	FVector TargetPoint; //타겟 포인트 지점
 
 	void SetState(CleanerState newState);
 
@@ -112,10 +128,5 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<ASouvenirActor> SouvenirClass;
 
-	////머리
-	UPROPERTY(EditDefaultsOnly,Category=Item)
-	class UStaticMeshComponent* HeadStaticMesh;
-
-	
-
+	bool bIsMoving = false;
 };
