@@ -16,6 +16,9 @@ ANPC_Cleaner::ANPC_Cleaner()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	HeadStaticMesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HeadStaticMeshComp"));
+	HeadStaticMesh->SetupAttachment(GetMesh(),"HeadSocket");
+
 }
 
 // Called when the game starts or when spawned
@@ -24,7 +27,7 @@ void ANPC_Cleaner::BeginPlay()
 	Super::BeginPlay();
 
 	AI = Cast<AAIController>(GetController());
-	
+	HeadStaticMesh->SetHiddenInGame(true);
 }
 
 // Called every frame
@@ -218,6 +221,7 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 	{
 		if (0==result)
 		{
+			HeadStaticMesh->SetHiddenInGame(false);
 			// 스크립트 출력
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");
 			State=3;
