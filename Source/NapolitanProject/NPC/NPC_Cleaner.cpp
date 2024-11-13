@@ -234,7 +234,7 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 				MainCharacter->curItem->PutDown();
 			}
 			
-			HeadStaticMesh->SetHiddenInGame(false);
+			HeadStaticMesh->SetHiddenInGame(false); //머리를 보이게 함
 			
 			// 스크립트 출력
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");
@@ -258,7 +258,7 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 			{
 				bisDissolve = true; //유품 스폰 뒤에 사라짐
 				ChangeCleared(); //NPC 클리어
-			}, 3.0f, false);
+			}, 5.0f, false);
 		}
 	}
 }
