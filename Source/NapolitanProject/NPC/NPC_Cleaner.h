@@ -58,7 +58,7 @@ public:
 
 public:
 	//상태 변수
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = State)
 	CleanerState mState = CleanerState::Idle; //우선 기본은 대기 상태
 
 	//상태함수
@@ -80,6 +80,9 @@ public:
 	FVector LastVisitedPoint; //마지막으로 방문한 점 위치 저장
 
 	void SetState(CleanerState newState);
+
+	UPROPERTY()
+	class UNPCCleanerAnim* CleanerAnim;
 
 	UPROPERTY()
 	class AAIController* AI;
