@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "NPCCleanerAnim.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
@@ -38,6 +39,9 @@ void ANPC_Cleaner::BeginPlay()
 
 	bIsMoving = false;
 
+	// 맵에 있는 모든 BP_Points 액터 찾기
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), PointClass, BP_PointsArray);
+	
 }
 
 // Called every frame
@@ -116,7 +120,7 @@ int32 ANPC_Cleaner::GetState()
 	{
 		//클리어 못함
 		State =1;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "State =1");
+		//GEngine->AddOnScreenDebugMessage(-1, -1, FColor::Red, "State =1");
 	}
 	
 	// 버튼눌렀으면 3으로 변경해야함 
@@ -130,51 +134,61 @@ void ANPC_Cleaner::ChangeCleared()
 
 void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 {
-	// 대기 시간 계산
+	// 대기 시간이 지나면 BP_Points 중 하나를 랜덤으로 선택
 	CurrentTime += DeltaTime;
-	if (CurrentTime > IdleDelayTime)
+	if (CurrentTime > IdleDelayTime && BP_PointsArray.Num() > 0)
 	{
-		// Idle 상태에서 목표 지점 설정
-		TArray<FVector> points = {
-			FVector(-470.0f, -1550.0f, 100.0f), // point1
-			FVector(-470.0f, -4460.0f, 100.0f), // point2
-			FVector(-2410.0f, -4460.0f, 100.0f), // point3
-			FVector(-1950.0f, -1700.0f, 100.0f), // point4
-			FVector(-1260.0f, -2890.0f, 100.0f)  // point5
-		};
+		/*do {
+			randomIndex = FMath::RandRange(0, BP_PointsArray.Num() - 1);
+		} while (BP_PointsArray[randomIndex]->GetActorLocation() == LastVisitedPoint);*/
 
-		// 마지막 방문한 위치 제외하고 랜덤으로 선택
-		points.Remove(LastVisitedPoint);
-		int32 randomIndex = FMath::RandRange(0, points.Num() - 1);
-		TargetPoint = points[randomIndex];
+		randomIndex = FMath::RandRange(0, BP_PointsArray.Num() - 1);
+		TargetPoint = BP_PointsArray[randomIndex]->GetActorLocation();
+
+		
 		LastVisitedPoint = TargetPoint;
-
-		UE_LOG(LogTemp, Error, TEXT("New target point set: X=%f, Y=%f, Z=%f"), TargetPoint.X, TargetPoint.Y, TargetPoint.Z);
-
-		// Move 상태로 전환
+		UE_LOG(LogTemp, Warning, TEXT("%d"), randomIndex);
+		UE_LOG(LogTemp, Warning, TEXT("TargetPoint Location: X=%f, Y=%f, Z=%f"), 
+		TargetPoint.X, TargetPoint.Y, TargetPoint.Z);
+		
 		SetState(CleanerState::Move);
-		CurrentTime = 0; // 시간 초기화
-		bIsMoving = true;
+		CurrentTime = 0;
+		bIsMoving = false;
 	}
 
 	if (MainCharacter->curState==EPlayerState::Talking)
 	{
 		SetState(CleanerState::Stop); // Stop 상태로 변경
 		
-		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickIdle->stop"));
+		//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickIdle->stop"));
 	}
 }
 
 void ANPC_Cleaner::TickMove(const float& DeltaTime)
 {
-	if (AI && bIsMoving)
+	//AI->MoveToLocation(TargetPoint);
+	//TargetPoint = BP_PointsArray[randomIndex]->GetActorLocation();
+	//AI->MoveToLocation(TargetPoint);
+
+	if (bIsMoving == false)
 	{
-		// 목표 지점으로 이동
-		AI->MoveToLocation(TargetPoint, 260.f);
+		AI->MoveToActor(BP_PointsArray[randomIndex]);
+		bIsMoving = true;
 	}
 
+	float DistanceToTarget = FVector::Dist(GetActorLocation(),TargetPoint);
+
+	// 거리를 화면에 출력
+	if (GEngine)
+	{
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Distance to Target: %f"), DistanceToTarget));
+	}
+
+	//UE_LOG(LogTemp, Warning, TEXT("TargetPoint Location: X=%f, Y=%f, Z=%f"), 
+		TargetPoint.X, TargetPoint.Y, TargetPoint.Z);
+	
 	// 목표 지점 근처에 도달하면 Cleaning 상태로 전환
-	if (FVector::Dist(GetActorLocation(), TargetPoint) <= 200.f)
+	if (DistanceToTarget <= 170.f)
 	{
 		SetState(CleanerState::Cleaning);
 	}
@@ -256,11 +270,11 @@ void ANPC_Cleaner::SpawnItems()
 }
 
 // Called to bind functionality to input
-void ANPC_Cleaner::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
+// void ANPC_Cleaner::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+// {
+// 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+//
+// }
 
 
 void ANPC_Cleaner::ResultEvent(int32 result)
@@ -280,7 +294,7 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 			HeadStaticMesh->SetHiddenInGame(false); //머리를 보이게 함
 			
 			// 스크립트 출력
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");
 			State=3;
 			TestPC->StartEndNPCDialougue(true);
 			TestPC->SetNPCDialougueText(0);
