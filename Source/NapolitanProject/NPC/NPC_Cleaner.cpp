@@ -60,7 +60,7 @@ void ANPC_Cleaner::Tick(float DeltaTime)
 
 	//현재 상태 뜨게 하기
 	FString myState = UEnum::GetValueAsString(mState);
-	DrawDebugString(GetWorld() , GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
+	//DrawDebugString(GetWorld() , GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
 	
 	switch ( mState )
 	{
@@ -129,7 +129,7 @@ int32 ANPC_Cleaner::GetState()
 	{
 		//클리어 못함
 		State =1;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "State =1");
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "State =1");
 	}
 	
 	// 버튼눌렀으면 3으로 변경해야함 
@@ -238,7 +238,7 @@ void ANPC_Cleaner::TickStop(const float& DeltaTime)
 void ANPC_Cleaner::SetState(CleanerState newState)
 {
 	mState = newState;
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("State changed to: %s"), *UEnum::GetValueAsString(mState)));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("State changed to: %s"), *UEnum::GetValueAsString(mState)));
 	//애니메이션 상태 지정
 	//CleanerAnim->animState = mState;
 
@@ -291,7 +291,7 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 			HeadStaticMesh->SetHiddenInGame(false); //머리를 보이게 함
 			
 			// 스크립트 출력
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");
 			State=3;
 			TestPC->StartEndNPCDialougue(true);
 			TestPC->SetNPCDialougueText(0);

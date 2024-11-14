@@ -460,7 +460,15 @@ void ATestCharacter::OnInteraction()
 			curControllableLight=ControllableLight;
 			//IsLightRangeIn=true;
 			// curControllableLight 의 불키는 함수 작동시키기
-			curControllableLight->TurnOnLight(true);
+			if (!curControllableLight->IsTurnOn)
+			{
+				curControllableLight->TurnOnLight(true);
+			}
+			else
+			{
+				curControllableLight->TurnOnLight(false);
+
+			}
 		}
 		// 그냥 아이템 이라면 아이템으로 캐스트해서 
 

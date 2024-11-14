@@ -51,6 +51,8 @@ void AControllableLightActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	RectLightIntensity = 30.f;
+
 	GetComponents<URectLightComponent>(RectLightArray);
 	
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this,&AControllableLightActor::BtnMeshOverlap);
