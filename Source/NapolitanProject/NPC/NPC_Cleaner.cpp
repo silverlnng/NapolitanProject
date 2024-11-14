@@ -185,7 +185,7 @@ void ANPC_Cleaner::TickMove(const float& DeltaTime)
 	}
 
 	//UE_LOG(LogTemp, Warning, TEXT("TargetPoint Location: X=%f, Y=%f, Z=%f"), 
-		TargetPoint.X, TargetPoint.Y, TargetPoint.Z);
+	//TargetPoint.X, TargetPoint.Y, TargetPoint.Z);
 	
 	// 목표 지점 근처에 도달하면 Cleaning 상태로 전환
 	if (DistanceToTarget <= 170.f)
