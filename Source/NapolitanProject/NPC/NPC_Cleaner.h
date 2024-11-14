@@ -28,6 +28,7 @@ public:
 	// Sets default values for this character's properties
 	ANPC_Cleaner();
 
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -37,7 +38,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 public:
 	virtual void ResultEvent(int32 result) override;
@@ -129,4 +130,12 @@ public:
 	TSubclassOf<ASouvenirActor> SouvenirClass;
 
 	bool bIsMoving = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Point")
+	TSubclassOf<AActor> PointClass;
+
+	UPROPERTY()
+	TArray<AActor*> BP_PointsArray;
+
+	int32 randomIndex;
 };
