@@ -24,4 +24,5 @@ void UNPCCleanerAnim::playCleaningMontage()
 void UNPCCleanerAnim::AnimNotify_FinishClean()
 {
 	Cleaner->SetState(CleanerState::Idle); //움직이는 걸로 변경 
+	//Cleaner->MobPointActor->SetActorHiddenInGame(true); //대걸레 안보이게 함
 }

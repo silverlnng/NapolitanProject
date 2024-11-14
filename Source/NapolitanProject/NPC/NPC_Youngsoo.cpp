@@ -28,6 +28,7 @@ void ANPC_Youngsoo::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//GetMesh()->SetVisibility(false);
 }
 
 // Called every frame

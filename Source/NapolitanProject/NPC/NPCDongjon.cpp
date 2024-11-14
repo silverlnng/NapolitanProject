@@ -63,9 +63,12 @@ void ANPCDongjon::Tick(float DeltaTime)
 		
 		if (DissolveValue1 <= -0.5f && DissolveValue2 <= -0.5f && DissolveValue3 <= -0.5f && DissolveValue4 <= -0.5f)
 		{
-			bItemSpawned = true;
+			if(bIsSpawn)
+			{
+				bItemSpawned = true;
+				SpawnItems();
+			}
 			GetMesh()->SetVisibility(false);
-			SpawnItems();
 			bisDissolve = false;
 		}
 	}
@@ -109,8 +112,9 @@ void ANPCDongjon::SpawnItems()
 		FTransform SpawnTransform(FootLocation);
 
 		// 블루프린트에서 설정된 ItemClass와 SouvenirClass로 스폰
-		AActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(ItemClass, SpawnTransform);
 		AActor* SouvenirActor = GetWorld()->SpawnActor<ASouvenir_Dongjun>(SouvenirClass, SpawnTransform );
+		AActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(ItemClass, SpawnTransform);
+
 		if (SouvenirActor)
 		{
 			ItemActor->Tags.Add(FName("Item"));
@@ -136,8 +140,7 @@ void ANPCDongjon::ResultEvent(int32 result)
 			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
 			TestPC->SetCurNPCResultUI(key); // 대사한줄용 
 
-		
-
+			
 			//머터리얼 수정
 			DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);
 			DynamicMaterial2 = UMaterialInstanceDynamic::Create(DissolveMaterial2, this);
@@ -155,6 +158,7 @@ void ANPCDongjon::ResultEvent(int32 result)
 			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 			{
 				bisDissolve = true; //유품 스폰 뒤에 사라짐
+				bIsSpawn = true;
 				TestPC->StartEndNPCDialougue(false); //결과 출력
 				ChangeCleared(); //NPC 클리어
 			}, 4.0f, false);
@@ -173,6 +177,28 @@ void ANPCDongjon::ResultEvent(int32 result)
 			State=2;
 			TestPC->StartEndNPCDialougue(true);
 			TestPC->SetNPCDialougueText(0);
+
+			//머터리얼 수정
+			DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);
+			DynamicMaterial2 = UMaterialInstanceDynamic::Create(DissolveMaterial2, this);
+			DynamicMaterial3 = UMaterialInstanceDynamic::Create(DissolveMaterial3, this);
+			DynamicMaterial4 = UMaterialInstanceDynamic::Create(DissolveMaterial4, this);
+			if (DynamicMaterial1 && DynamicMaterial2 && DynamicMaterial3 && DynamicMaterial4)
+			{
+				GetMesh()->SetMaterial(0, DynamicMaterial1);
+				GetMesh()->SetMaterial(1, DynamicMaterial2);
+				GetMesh()->SetMaterial(2, DynamicMaterial3);
+				GetMesh()->SetMaterial(3, DynamicMaterial4);
+			}
+			
+			//디졸브
+			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				bisDissolve = true; //유품 스폰 뒤에 사라짐
+				//TestPC->StartEndNPCDialougue(false); //결과 출력
+				ChangeCleared(); //NPC 클리어
+				
+			}, 4.0f, false);
 			
 		}
 	}

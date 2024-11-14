@@ -51,6 +51,18 @@ void ANPC_Cleaner::BeginPlay()
 
 	bIsMoving = false;
 
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	/*MobPointActor = GetWorld()->SpawnActor<AActor>(MobPointClass, GetMesh()->GetSocketTransform(TEXT("MobPoint")), SpawnParams);
+	if (MobPointActor)
+	{
+		MobPointActor->K2_AttachToComponent(GetMesh(), TEXT("MobPoint"), EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, true);
+		MobPointActor->SetActorHiddenInGame(true);
+		UE_LOG(LogTemp, Display, TEXT("MobPointActor Attached to MobPoint"));
+	}*/
+
+
 }
 
 // Called every frame
@@ -151,7 +163,7 @@ void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 		// Idle 상태에서 목표 지점 설정
 		TArray<FVector> points = {
 			FVector(-470.0f, -1550.0f, 100.0f), // point1
-			FVector(-470.0f, -4460.0f, 100.0f), // point2
+			FVector(-800.0f, -4460.0f, 100.0f), // point2
 			FVector(-2410.0f, -4460.0f, 100.0f), // point3
 			FVector(-1950.0f, -1700.0f, 100.0f), // point4
 			FVector(-1260.0f, -2890.0f, 100.0f)  // point5
@@ -211,7 +223,7 @@ void ANPC_Cleaner::TickCleaning(const float& DeltaTime)
 		SetState(CleanerState::Stop); // Stop 상태로 변경
 		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickCleaning->stop"));
 	}
-	
+	//MobPointActor->SetActorHiddenInGame(false);
 	if (AI) 
 	{
 		AI->StopMovement();
@@ -241,7 +253,6 @@ void ANPC_Cleaner::SetState(CleanerState newState)
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("State changed to: %s"), *UEnum::GetValueAsString(mState)));
 	//애니메이션 상태 지정
 	//CleanerAnim->animState = mState;
-
 	if (CleanerAnim)
 	{
 		CleanerAnim->animState = mState;
