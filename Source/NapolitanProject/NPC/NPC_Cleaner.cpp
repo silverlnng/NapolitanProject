@@ -22,7 +22,20 @@ ANPC_Cleaner::ANPC_Cleaner()
 	HeadStaticMesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HeadStaticMeshComp"));
 	HeadStaticMesh->SetupAttachment(GetMesh(),"HeadSocket");
 
-	
+	// 머티리얼 경로를 설정 (경로는 프로젝트에 맞게 수정)
+	ConstructorHelpers::FObjectFinder<UMaterialInterface> MaterialFinder1(TEXT("/Script/Engine.Material'/Game/Bada/Effect/Cleaner/Dissolve_Cleaner_Body.Dissolve_Cleaner_Body'"));
+	if (MaterialFinder1.Succeeded())
+	{
+		DissolveMaterial1 = MaterialFinder1.Object;
+		DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);
+	}
+   
+	ConstructorHelpers::FObjectFinder<UMaterialInterface> MaterialFinder2(TEXT("/Script/Engine.Material'/Game/Bada/Effect/Cleaner/Dissolve_Cleaner_Head.Dissolve_Cleaner_Head'"));
+	if (MaterialFinder2.Succeeded())
+	{
+		DissolveMaterial2 = MaterialFinder2.Object;
+		DynamicMaterial2 = UMaterialInstanceDynamic::Create(DissolveMaterial2, this);
+	}
 
 }
 
@@ -149,7 +162,7 @@ void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 		{
 			points.Remove(LastVisitedPoint);
 		}
-		int32 randomIndex = FMath::RandRange(0, points.Num() - 1);
+		randomIndex = FMath::RandRange(0, points.Num() - 1);
 		TargetPoint = points[randomIndex];
 		LastVisitedPoint = TargetPoint;
 
@@ -258,13 +271,6 @@ void ANPC_Cleaner::SpawnItems()
 	}
 
 	bItemSpawned = false; //한번만 스폰되도록
-}
-
-// Called to bind functionality to input
-void ANPC_Cleaner::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 
