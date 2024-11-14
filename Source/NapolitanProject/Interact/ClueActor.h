@@ -39,14 +39,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	class UBoxComponent* BoxComp;
-
-	// 단서마다 각자의 고유한 내용이 있음
-	UPROPERTY(EditDefaultsOnly)
-	FString ClueContents;
-
-	UPROPERTY(EditDefaultsOnly)
-	class UTextRenderComponent* TextRenderComp;
-
+	
 	UPROPERTY(EditDefaultsOnly)
 	int32 Clue_ID;
 	

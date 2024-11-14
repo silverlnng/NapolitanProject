@@ -29,9 +29,7 @@ AClueActor::AClueActor()
 
 	StaticMeshComp=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComp->SetupAttachment(BoxComp);
-
-	TextRenderComp=CreateDefaultSubobject<UTextRenderComponent>(TEXT("TextRenderComp"));
-	TextRenderComp->SetupAttachment(StaticMeshComp);
+	
 }
 
 // Called when the game starts or when spawned
