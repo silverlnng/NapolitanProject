@@ -75,7 +75,7 @@ public:
 public:
 	//상태 변수
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = State)
-	CleanerState mState = CleanerState::Idle; //우선 기본은 대기 상태
+	CleanerState mState = CleanerState::Cleaning; //우선 기본은 대기 상태
 
 	//상태함수
 	UFUNCTION(BlueprintCallable, Category = State)
@@ -91,7 +91,7 @@ public:
 	void TickStop(const float& DeltaTime); //플레이어와 대화시 완전 멈춤
 
 	float CurrentTime = 0; //현재 시간
-	float IdleDelayTime = 3.f; //대기 시간
+	float IdleDelayTime = 1.f; //대기 시간
 
 	FVector LastVisitedPoint; //마지막으로 방문한 점 위치 저장
 	FVector TargetPoint; //타겟 포인트 지점
@@ -138,4 +138,11 @@ public:
 	TArray<AActor*> BP_PointsArray;
 
 	int32 randomIndex;
+
+public:
+	UPROPERTY(EditAnywhere, Category = "MobPoint")
+	TSubclassOf<AActor> MobPointClass; //아이템 손에 달기
+
+	UPROPERTY()
+	class AActor* MobPointActor;
 };

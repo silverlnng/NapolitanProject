@@ -71,6 +71,7 @@ public:
 	void SpawnItems();
 
 	bool bItemSpawned = false;
+	bool bIsSpawn = false;
 
 	// Item and Souvenir classes for Blueprint assignment
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
