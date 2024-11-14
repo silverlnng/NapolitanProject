@@ -72,11 +72,11 @@ void ASculpture::PutDownPiece(APieceActor* Piece)
 			PieceArray.Add(Piece);
 		break;
 	case 2:
-		Piece->AttachToComponent(SkeletalMeshComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale,"spine_03Socket_0");
+		Piece->AttachToComponent(SkeletalMeshComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale,"EyeSocket_1");
 		PieceArray.Add(Piece);
 		break;
 	case 3:
-		Piece->AttachToComponent(SkeletalMeshComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale,"spine_03Socket_1");
+		Piece->AttachToComponent(SkeletalMeshComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale,"EyeSocket_2");
 		PieceArray.Add(Piece);
 		break;	
 	}
