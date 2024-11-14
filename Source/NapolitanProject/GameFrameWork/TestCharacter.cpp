@@ -18,6 +18,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "../YJ/NoteUI/NoteWidget.h"
 #include "Components/ArrowComponent.h"
+#include "Components/AudioComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/ItemActor.h"
 #include "NapolitanProject/Interact/PieceActor.h"
@@ -86,6 +87,8 @@ ATestCharacter::ATestCharacter()
 	ItemArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("ItemArrowComp"));
 	ItemArrowComp->SetupAttachment(CameraComponent);
 
+	AudioComp =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	AudioComp->SetupAttachment(GetCapsuleComponent());
 }
 
 void ATestCharacter::BeginPlay()
@@ -563,6 +566,23 @@ void ATestCharacter::PlayDamagedAnimMontage()
 	if (DamagedSecurityAnim)
 	{
 		PlayAnimMontage(DamagedSecurityAnim);
+	}
+}
+
+void ATestCharacter::PlaySound(USoundWave* Sound)
+{
+	if (Sound)
+	{
+		AudioComp->SetSound(Sound);
+		AudioComp->Play();
+	}
+}
+
+void ATestCharacter::StopSound(USoundWave* Sound)
+{
+	if (AudioComp->IsPlaying())
+	{
+		AudioComp->Stop();
 	}
 }
 

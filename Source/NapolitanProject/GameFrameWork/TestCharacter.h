@@ -216,7 +216,16 @@ public:
 	void PlayDamagedAnimMontage();
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* DamagedSecurityAnim;
-	
+
+	UPROPERTY(EditDefaultsOnly)
+	class UAudioComponent* AudioComp;
+
+	void PlaySound(USoundWave* Sound);
+
+	void StopSound(USoundWave* Sound);
+
+	UPROPERTY(EditDefaultsOnly,Category=Sound)
+	class USoundWave* HeartSound;
 };
 
 
