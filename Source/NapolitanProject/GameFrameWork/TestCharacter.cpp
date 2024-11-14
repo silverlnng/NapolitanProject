@@ -569,8 +569,25 @@ void ATestCharacter::PlayDamagedAnimMontage()
 	}
 }
 
+void ATestCharacter::PlayHeartSound()
+{
+	if (AudioComp->IsPlaying())
+	{
+		return;
+	}
+	if (HeartSound)
+	{
+		AudioComp->SetSound(HeartSound);
+		AudioComp->Play();
+	}
+}
+
 void ATestCharacter::PlaySound(USoundWave* Sound)
 {
+	if (AudioComp->IsPlaying())
+	{
+		return;
+	}
 	if (Sound)
 	{
 		AudioComp->SetSound(Sound);
@@ -578,7 +595,7 @@ void ATestCharacter::PlaySound(USoundWave* Sound)
 	}
 }
 
-void ATestCharacter::StopSound(USoundWave* Sound)
+void ATestCharacter::StopSound()
 {
 	if (AudioComp->IsPlaying())
 	{

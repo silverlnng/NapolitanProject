@@ -132,10 +132,13 @@ void ANPC_Security::Tick(float DeltaSeconds)
 	
 	if (Target&& SecurityState!=ESecurityState::Attack)
 	{
+		// 타겟은 심장소리 나오도록
+		MainCharacter->PlayHeartSound();
 		SetState(ESecurityState::ChasePlayer);
 	}
 	else if (NearLight&&!Target)
 	{
+		MainCharacter->StopSound();
 		SetState(ESecurityState::TurnOff);
 	}
 	else if (!NearLight&&!Target)

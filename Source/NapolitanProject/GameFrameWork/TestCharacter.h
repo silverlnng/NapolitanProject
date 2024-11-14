@@ -220,9 +220,11 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class UAudioComponent* AudioComp;
 
+	void PlayHeartSound();
+	
 	void PlaySound(USoundWave* Sound);
 
-	void StopSound(USoundWave* Sound);
+	void StopSound();
 
 	UPROPERTY(EditDefaultsOnly,Category=Sound)
 	class USoundWave* HeartSound;
