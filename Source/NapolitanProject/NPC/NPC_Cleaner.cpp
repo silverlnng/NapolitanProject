@@ -134,6 +134,7 @@ void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 	CurrentTime += DeltaTime;
 	if (CurrentTime > IdleDelayTime)
 	{
+	
 		// Idle 상태에서 목표 지점 설정
 		TArray<FVector> points = {
 			FVector(-470.0f, -1550.0f, 100.0f), // point1
@@ -144,7 +145,10 @@ void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 		};
 
 		// 마지막 방문한 위치 제외하고 랜덤으로 선택
-		points.Remove(LastVisitedPoint);
+		if (points.Contains(LastVisitedPoint))
+		{
+			points.Remove(LastVisitedPoint);
+		}
 		int32 randomIndex = FMath::RandRange(0, points.Num() - 1);
 		TargetPoint = points[randomIndex];
 		LastVisitedPoint = TargetPoint;
@@ -170,14 +174,15 @@ void ANPC_Cleaner::TickMove(const float& DeltaTime)
 	if (AI && bIsMoving)
 	{
 		// 목표 지점으로 이동
-		AI->MoveToLocation(TargetPoint, 260.f);
+		AI->MoveToLocation(TargetPoint);
+		// 목표 지점 근처에 도달하면 Cleaning 상태로 전환
+		if (FVector::Dist(GetActorLocation(), TargetPoint) <= 100.f)
+		{
+			AI->StopMovement();
+			SetState(CleanerState::Cleaning);
+		}
 	}
 
-	// 목표 지점 근처에 도달하면 Cleaning 상태로 전환
-	if (FVector::Dist(GetActorLocation(), TargetPoint) <= 200.f)
-	{
-		SetState(CleanerState::Cleaning);
-	}
 	//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickMove"));
 	if (MainCharacter->curState==EPlayerState::Talking)
 	{
