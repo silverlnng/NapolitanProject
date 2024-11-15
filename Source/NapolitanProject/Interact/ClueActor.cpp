@@ -65,8 +65,8 @@ void AClueActor::LookAt()
 	//데이터 테이블에 had으로 표시
 	ClueData->Had=true;
 
-
-	PlayerHUD->NoteUI->WBP_ClueInfo->ClueSlots[Clue_ID]->SetWidgetSwitcher(1);
+	// tarray는 0부터 시작
+	PlayerHUD->NoteUI->WBP_ClueInfo->ClueSlots[Clue_ID-1]->SetWidgetSwitcher(1);
 	
 	FString ClueContent =ClueData->Content;
 		// ClueData->Content 를 전달
