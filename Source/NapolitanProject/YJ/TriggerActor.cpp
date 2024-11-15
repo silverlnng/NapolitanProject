@@ -76,6 +76,7 @@ void ATriggerActor::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	if (OtherActor->IsA(ATestCharacter::StaticClass()))
 	{
 		NPC_Security->AudioComp->Play();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "BoxCompBeginOverlap");
 		//CheckSide();
 	}
 }
@@ -85,6 +86,7 @@ void ATriggerActor::BoxCompEndOverlap( UPrimitiveComponent* OverlappedComponent,
 	if (OtherActor->IsA(ATestCharacter::StaticClass()))
 	{
 		NPC_Security->AudioComp->Stop();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "BoxCompEndOverlap");
 		//CheckSide();
 	}
 }

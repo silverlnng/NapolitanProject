@@ -44,7 +44,7 @@ void ANPC_Security::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//AudioComp->Play();
+	AudioComp->Stop();
 	
 	Anim=Cast<UNPC_Security_AnimInstance>(GetMesh()->GetAnimInstance());
 	
@@ -290,7 +290,7 @@ void ANPC_Security::TickTurnOff(const float& DeltaTime)
 
 	if (EnemyAI&&NearLight)
 	{
-		GetCharacterMovement()->MaxWalkSpeed=300.f;
+		GetCharacterMovement()->MaxWalkSpeed=500.f;
 		// 여기서 알아서 장애물 회피해서 이동해야함 
 		EnemyAI->MoveToLocation(NearLight->SphereComp->GetComponentLocation(),0);
 		//UE_LOG(LogTemp, Warning, TEXT("NearLight: %s"), *NearLight->GetActorLocation().ToString());
