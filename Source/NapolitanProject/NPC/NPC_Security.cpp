@@ -43,7 +43,9 @@ ANPC_Security::ANPC_Security()
 void ANPC_Security::BeginPlay()
 {
 	Super::BeginPlay();
-	AudioComp->Play();
+	
+	//AudioComp->Play();
+	
 	Anim=Cast<UNPC_Security_AnimInstance>(GetMesh()->GetAnimInstance());
 	
 	// 라이트가 꺼져있다 : 랜덤한 위치으로 돌아다니기
