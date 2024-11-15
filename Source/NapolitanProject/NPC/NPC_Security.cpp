@@ -205,11 +205,15 @@ void ANPC_Security::OnSeePawn(APawn *OtherPawn)
 	if (testCha)
 	{
 		Target=testCha;
-		FString message = TEXT("Saw Actor =ATestCharacter ") + OtherPawn->GetName();
+		//FString message = TEXT("Saw Actor =ATestCharacter ") + OtherPawn->GetName();
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
 
 		// 이때만 chase를 작동시키기
-		SetState(ESecurityState::ChasePlayer);
+		// 공격이 아닐때
+		if (SecurityState!=ESecurityState::Attack)
+		{
+			SetState(ESecurityState::ChasePlayer);
+		}
 	}
 }
 
@@ -361,10 +365,10 @@ void ANPC_Security::OnMyAttackEnd()
 	// 거리체크
 	if (!Target){return;}
 	float dist = GetDistanceTo(Target);
-	if ( dist < AttackDistance ) {
+	if ( dist <= AttackDistance) {
 		// 플레이어에게 데미지를 입히고싶다.
 		Anim->bAttack = true;
-		UE_LOG(LogTemp , Warning , TEXT("Enemy -> Player에게 Damage"));
+		//UE_LOG(LogTemp , Warning , TEXT("Enemy -> Player에게 Damage"));
 	}
 	// 그렇지 않다면 
 	else {

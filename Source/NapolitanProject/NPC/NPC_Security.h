@@ -101,7 +101,7 @@ public:
 	float PatrolPointRadius = 700;
 
 	// 공격 가능거리
-	float AttackDistance = 300;
+	float AttackDistance = 150;
 
 	// 내위치에서 반경 5미터
 	bool SetPatrolPoint(FVector origin, float radius, FVector& dest);

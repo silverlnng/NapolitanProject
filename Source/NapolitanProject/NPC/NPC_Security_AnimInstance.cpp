@@ -16,7 +16,9 @@ void UNPC_Security_AnimInstance::AnimNotify_AttackStart()
 	if (NPCSecurity)
 	{
 		NPCSecurity->OnMyAttackStart();
+		//UE_LOG(LogTemp , Warning , TEXT("AnimNotify_AttackStart"));
 	}
+	
 }
 
 void UNPC_Security_AnimInstance::AnimNotify_AttackEnd()
