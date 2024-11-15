@@ -18,6 +18,7 @@ void UInteractWidget::NativeConstruct()
 	HBox_GetSouvenir->SetVisibility(ESlateVisibility::Hidden);
 	Img_Note->SetVisibility(ESlateVisibility::Hidden);
 	CanvasPanel_Clue->SetVisibility(ESlateVisibility::Hidden);
+	CanvasPanel_Hit->SetVisibility(ESlateVisibility::Hidden);
 	Btn_ClueClose->OnClicked.AddDynamic(this,&UInteractWidget::OnClickBtn_ClueClose);
 }
 

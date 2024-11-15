@@ -133,5 +133,8 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly,Category=Item)
 	class AItemActor* ItemHead;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UAudioComponent* AudioComp;
 };
 

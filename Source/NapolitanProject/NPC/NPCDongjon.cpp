@@ -113,11 +113,11 @@ void ANPCDongjon::SpawnItems()
 
 		// 블루프린트에서 설정된 ItemClass와 SouvenirClass로 스폰
 		AActor* SouvenirActor = GetWorld()->SpawnActor<ASouvenir_Dongjun>(SouvenirClass, SpawnTransform );
-		AActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(ItemClass, SpawnTransform);
+		//AActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(ItemClass, SpawnTransform);
 
 		if (SouvenirActor)
 		{
-			ItemActor->Tags.Add(FName("Item"));
+			//ItemActor->Tags.Add(FName("Item"));
 			SouvenirActor->Tags.Add(FName("Souvenir"));
 		}	
 	}

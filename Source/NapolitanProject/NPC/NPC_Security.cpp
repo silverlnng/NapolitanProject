@@ -10,6 +10,7 @@
 #include "NPC_Cleaner.h"
 #include "NPC_Security_AnimInstance.h"
 #include "Camera/CameraComponent.h"
+#include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -34,12 +35,15 @@ ANPC_Security::ANPC_Security()
 
 	HeadStaticMesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HeadStaticMeshComp"));
 	HeadStaticMesh->SetupAttachment(GetMesh(),"RightHandMiddle3Socket");
+
+	AudioComp =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	AudioComp->SetupAttachment(GetCapsuleComponent());
 }
 
 void ANPC_Security::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	AudioComp->Play();
 	Anim=Cast<UNPC_Security_AnimInstance>(GetMesh()->GetAnimInstance());
 	
 	// 라이트가 꺼져있다 : 랜덤한 위치으로 돌아다니기
@@ -374,7 +378,7 @@ void ANPC_Security::ChangeCleared()
 
 void ANPC_Security::EndEvent()
 {
-	
+	AudioComp->Stop();
 	TestPC->curNPC=this;
 	PawnSensingComp->bEnableSensingUpdates=false;
 	Target=nullptr;
