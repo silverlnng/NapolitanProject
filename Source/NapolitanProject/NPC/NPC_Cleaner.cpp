@@ -46,7 +46,6 @@ void ANPC_Cleaner::BeginPlay()
 
 	AI = Cast<AAIController>(GetController());
 	CleanerAnim = Cast<UNPCCleanerAnim>(GetMesh()->GetAnimInstance());
-	
 	HeadStaticMesh->SetHiddenInGame(true);
 
 	bIsMoving = false;
