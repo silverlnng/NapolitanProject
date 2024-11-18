@@ -230,7 +230,7 @@ void ATestCharacter::Move(const FInputActionValue& Value)
 void ATestCharacter::Look(const FInputActionValue& Value)
 {
 	// input is a Vector2D
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
+	FVector2D LookAxisVector = Value.Get<FVector2D>()*LookSpeed;
 
 	if (Controller != nullptr)
 	{
