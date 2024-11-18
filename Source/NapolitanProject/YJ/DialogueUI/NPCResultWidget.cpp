@@ -56,6 +56,7 @@ void UNPCResultWidget::UpdateText()
 
 void UNPCResultWidget::OnClickbackButton()
 {
+	
 }
 
 void UNPCResultWidget::OnClickfrontButton()
