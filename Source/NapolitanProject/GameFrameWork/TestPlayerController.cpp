@@ -18,6 +18,7 @@
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
+#include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
 
 ATestPlayerController::ATestPlayerController()
@@ -177,8 +178,7 @@ void ATestPlayerController::StartEndNPCDialougue(bool value)
 		SetUIMode(false);
 		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
 		PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업
-		ATestCharacter* player = Cast<ATestCharacter>(this->GetCharacter());
-		player->SetPlayerState(EPlayerState::Idle);
+		me->SetPlayerState(EPlayerState::Idle);
 		// 플레이어 상태 idle으로
 		//SetViewTargetWithBlend(this,1.5f);
 		CameraViewChangePlayer();
@@ -286,6 +286,75 @@ void ATestPlayerController::SetCurNPC(ANPCCharacter* curNPC_)
 }
 
 
+void ATestPlayerController::SetNPCResultMaxSize(int32 selectedAnswer)
+{
+	PlayerHUD->NPCResultUI->MaxOrder=0; // 초기화 작업
+	
+	int32 npcID =curNPC->GetNPCID();
+	int32 npcState =curNPC->GetState();
+
+		
+	int32 FindKey =(npcID*1000)+(npcState*100)+selectedAnswer*10;
+	
+	for (int i=FindKey ; i<(FindKey+10); i++)
+	{
+		if (GI->NPCResultMap.Contains(i))
+		{
+			PlayerHUD->NPCResultUI->MaxOrder++;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+}
+
+void ATestPlayerController::SetNPCResultText(int32 curOrder)
+{
+	int32 npcID =curNPC->GetNPCID();
+	
+	int32 npcState =curNPC->GetState();
+
+	int32 Answer=curNPC->GetResult();
+	
+	int32 FindKey =(npcID*1000)+(npcState*100)+(Answer*10)+curOrder;
+
+	if (0==curOrder){PlayerHUD->NPCResultUI->Btn_Back->SetVisibility(ESlateVisibility::Hidden);}
+	if (0!=curOrder){PlayerHUD->NPCResultUI->Btn_Back->SetVisibility(ESlateVisibility::Visible);}
+	if (PlayerHUD->NPCResultUI->MaxOrder!=curOrder)
+	{
+		PlayerHUD->NPCResultUI->Btn_Next->SetVisibility(ESlateVisibility::Visible);
+	
+	}
+	// 마지막 대사 출력 
+	if (PlayerHUD->NPCResultUI->MaxOrder==curOrder)
+	{
+		PlayerHUD->NPCResultUI->Btn_Next->SetVisibility(ESlateVisibility::Hidden);
+
+		// 마지막이므로 타이머로 닫도록 만들기 
+	}
+
+	if (GI->NPCResultMap.Contains(FindKey)) // 있으면 출력하기 
+	{
+		FNPCResult NPCResult=GI->NPCResultMap[FindKey];
+
+		PlayerHUD->NPCResultUI->SetText_Result(NPCResult.result_Kor);
+
+		// 이벤트가 정의 되어있으면 이벤트를 발생시키기 
+		// Dialogue_.CameraEffect 값에 따라서 이벤트를 실행시키기
+		FString str=NPCResult.Effect;
+		if (!str.IsEmpty())
+		{
+			// npc 에게 이벤트 실행하도록 만들기 
+			//PlayerHUD->NPCDialogueUI->UIEffect(str);
+			// UEventComponent 에 이벤트발생시키도록 전달
+			//EventComponent->StartEvent(str,Dialogue_.Dialogue_Kor);
+		}
+	}
+	
+	
+}
 
 void ATestPlayerController::CallCurNPCResultEvent(int32 value)
 {
@@ -293,20 +362,34 @@ void ATestPlayerController::CallCurNPCResultEvent(int32 value)
 	PlayerHUD->NPCDialogueUI->SetSelectSlotVisible(false);
 	PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
 	UE_LOG(LogTemp,Warning,TEXT("%s NPCResult :%d"),*CALLINFO,value);
-
-	// 결과대화가 있으면 나오도록 출력하기
-	// 결과창 열고
 	
+	curNPC->SelectAnswer=value;
+	// 결과 초기화 작업 => 미리 몇개인지 세고
+	SetNPCResultMaxSize(value);
+	// 결과대화가 있으면 나오도록 출력하기
+	PlayerHUD->NPCResultUI->SetVisibility(ESlateVisibility::Visible);
+	// 결과창 열고
+
+	SetNPCResultText(0);
 	
 	if (curNPC)
 	{
 		curNPC->ResultEvent(value);
 	}
-
 	// ui  닫기
-	
-	
 }
+
+void ATestPlayerController::EndResult()
+{
+	SetUIMode(false);
+	PlayerHUD->NPCResultUI->SetVisibility(ESlateVisibility::Hidden);
+	PlayerHUD->NPCResultUI->curOrder=0; // 초기화 작업
+	me->SetPlayerState(EPlayerState::Idle);
+	// 플레이어 상태 idle으로
+	CameraViewChangePlayer();
+}
+
+
 void ATestPlayerController::SetCurNPCSelectUI(const int32& NPC_ID, const int32& State, const FString& Lang)
 {
 	int32 npc_id=NPC_ID;

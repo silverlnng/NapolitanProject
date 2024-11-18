@@ -83,6 +83,11 @@ int32 ANPCCharacter::GetState()
 	return State;
 }
 
+int32 ANPCCharacter::GetResult()
+{
+	return SelectAnswer;
+}
+
 void ANPCCharacter::ResultEvent(int32 result)
 {
 	// result에 따라서 경우의 수 나누기 

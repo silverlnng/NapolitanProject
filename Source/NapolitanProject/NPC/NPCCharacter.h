@@ -30,13 +30,17 @@ public:
 
 	int32 State =-1;
 
+	int32 SelectAnswer=-1;
+
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
 	class APlayerHUD* PlayerHUD;
 	
 	virtual int32 GetNPCID();
 
-	virtual int32 GetState(); 
+	virtual int32 GetState();
+
+	virtual int32 GetResult(); 
 	
 	virtual void ResultEvent(int32 result); //결과 함수
 

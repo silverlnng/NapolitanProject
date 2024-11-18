@@ -55,6 +55,7 @@ struct FNPCResult
 	FString State;
 	FString result_Kor;
 	FString result_Eng;
+	FString Effect;
 };
 
 USTRUCT(BlueprintType)

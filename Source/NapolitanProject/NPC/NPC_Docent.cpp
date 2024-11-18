@@ -35,7 +35,11 @@ void ANPC_Docent::ResultEvent(int32 result)
 		else if (1==result)
 		{
 			int32 key=(NPC_ID*100)+(State*10)+result;
+			// int32 key=(NPC_ID*1000)+(State*100)+result*10;
 			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
+
+			// 결과창이 나오도록하기 
+			
 			TestPC->SetCurNPCResultUI(key);
 			 // TestPC-> 키전달 c
 

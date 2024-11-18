@@ -135,10 +135,7 @@ void ANPCDongjon::ResultEvent(int32 result)
 			//플레이어 카메라 전환 -> 노인을 바라보도록 카메라를 다시 조정
 			
 			//“큐레이터에게 가보십시오. 분명 도움이 되리라.” 라는 대사
-			//결과 대사 출력 부분
-			int32 key=(NPC_ID*100)+(State*10)+result;
-			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
-			TestPC->SetCurNPCResultUI(key); // 대사한줄용 
+			
 
 			
 			//머터리얼 수정
@@ -159,7 +156,7 @@ void ANPCDongjon::ResultEvent(int32 result)
 			{
 				bisDissolve = true; //유품 스폰 뒤에 사라짐
 				bIsSpawn = true;
-				TestPC->StartEndNPCDialougue(false); //결과 출력
+				//결과 출력
 				ChangeCleared(); //NPC 클리어
 			}, 4.0f, false);
 
@@ -172,12 +169,7 @@ void ANPCDongjon::ResultEvent(int32 result)
 			/*int32 key=(NPC_ID*100)+(State*10)+result;
 			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
 			TestPC->SetCurNPCResultUI(key);*/
-
-			// 대사가 많아서 state 2으로 해결 
-			State=2;
-			TestPC->StartEndNPCDialougue(true);
-			TestPC->SetNPCDialougueText(0);
-
+			
 			//머터리얼 수정
 			DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);
 			DynamicMaterial2 = UMaterialInstanceDynamic::Create(DissolveMaterial2, this);
@@ -195,7 +187,7 @@ void ANPCDongjon::ResultEvent(int32 result)
 			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 			{
 				bisDissolve = true; //유품 스폰 뒤에 사라짐
-				//TestPC->StartEndNPCDialougue(false); //결과 출력
+				
 				ChangeCleared(); //NPC 클리어
 				
 			}, 4.0f, false);
