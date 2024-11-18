@@ -28,5 +28,5 @@ NPC_ID,State,order,key,who,Dialogue_Kor,Dialogue_Eng,CameraEffect
 5,3,2,5302,npc,<Default>“고마워요!고마워요! 이건 선물이에요.” ,,
 5,3,3,5303,npc,<Default> “드디어 내 머리가….”,,
 6,1,0,6100,npc,"<Default>전시를 꾸밀, 물품을 주지 않겠나요?",,
-7,1,0,7100,Me,<Default> 어린 소녀가 금발의 소녀들이 그려져있는 그림을 찢고있다...,,
-7,2,0,7200,Me,<Default> 소녀가 그림을 바라보며 울고있다. ,,
+7,1,0,7100,me,<Default> 어린 소녀가 금발의 소녀들이 그려져있는 그림을 찢고있다,,
+7,2,0,7200,me,<Default> 소녀가 그림을 바라보며 울고있다. ,,

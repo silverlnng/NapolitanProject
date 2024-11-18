@@ -30,10 +30,10 @@ public:
 	virtual void ResultEvent(int32 result) override;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-	int32 NPC_ID =7; //최이서의 번호
+	int32 NPC_ID = 7; //최이서의 번호
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-	int32 State =1;
+	int32 State = 1;
 	
 	virtual void Interact() override;
 
@@ -43,12 +43,25 @@ public:
 
 	virtual void ChangeCleared() override; //사라지고 난 뒤 클리어
 
+public:
+	//0-1. 비명 소리
+	UPROPERTY(EditAnywhere)
+	class USoundBase* ScreamSound;
+	
 	//유품을 스폰하는 함수
 	void SpawnItem();
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<ASouvenirActor> SouvenirClass;
 
+	//유품 스폰 위치
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Point")
+	TSubclassOf<AActor> LeeseoPoint;
+	
 	//점프스퀘어 발동 변수
-	bool JumpSquare = false;
+	bool bJumpSquare = false;
+
+	FTimerHandle JumpSquareTimerHandle;
+	
+	
 };
