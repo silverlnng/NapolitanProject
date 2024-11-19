@@ -302,10 +302,11 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 			
 			// 스크립트 출력
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");
-			State=3;
-			TestPC->StartEndNPCDialougue(true);
-			TestPC->SetNPCDialougueText(0);
-
+			//State=3;
+			//TestPC->StartEndNPCDialougue(true);
+			//TestPC->SetNPCDialougueText(0);
+			//TestPC->CallCurNPCResultEvent(0);
+			
 			//몸 머터리얼 수정
 			DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);
 			DynamicMaterial2 = UMaterialInstanceDynamic::Create(DissolveMaterial2, this);

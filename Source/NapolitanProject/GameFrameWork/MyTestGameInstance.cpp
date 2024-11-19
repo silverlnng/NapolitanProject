@@ -136,12 +136,12 @@ bool UMyTestGameInstance::LoadResultFromCSV(const FString& FilePath)
 		
 		// 1행의 0 ,1 ,2 ,3 ....열
 		
-		int32 FindKey=FCString::Atoi(col[3]);
+		int32 FindKey=FCString::Atoi(col[4]);
 		
 		FNPCResult Dialogue;
-		Dialogue.result_Kor = col[4];
-		Dialogue.result_Eng= col[5];
-
+		Dialogue.result_Kor = col[5];
+		Dialogue.result_Eng= col[6];
+		Dialogue.Effect=col[7];
 		
 		// NPC 대사를 맵에 저장
 		NPCResultMap.Add(FindKey, Dialogue);

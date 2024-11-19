@@ -6,6 +6,7 @@
 #include "NPCDialogueWidget.h"
 #include "Components/Button.h"
 #include "Components/RichTextBlock.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
 void UNPCResultWidget::NativeConstruct()
@@ -56,14 +57,22 @@ void UNPCResultWidget::UpdateText()
 
 void UNPCResultWidget::OnClickbackButton()
 {
-	
+	if(curOrder<0){return;}
+	curOrder-=1;
+	TestPC->SetNPCResultText(curOrder);
 }
 
 void UNPCResultWidget::OnClickfrontButton()
 {
+	if(curOrder>MaxOrder){return;}
+	curOrder+=1;
+	UE_LOG(LogTemp,Warning,TEXT("%s,curOrder : %d"),*CALLINFO,curOrder);
+	TestPC->SetNPCResultText(curOrder);
 }
 
 void UNPCResultWidget::OnClickExitButton()
 {
+	//
+	TestPC->EndResult();
 }
 

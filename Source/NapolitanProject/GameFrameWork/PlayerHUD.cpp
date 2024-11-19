@@ -15,6 +15,7 @@
 #include "BehaviorTree/Tasks/BTTask_PlayAnimation.h"
 #include "Components/ScrollBox.h"
 #include "NapolitanProject/NapolitanProject.h"
+#include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueSlotWidget.h"
 void APlayerHUD::BeginPlay()
@@ -37,6 +38,13 @@ void APlayerHUD::BeginPlay()
 	{
 		NPCDialogueUI->AddToViewport(1);
 		NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	NPCResultUI =CreateWidget<UNPCResultWidget>(GetWorld(),NPCResultWidgetFactory);
+	if (NPCResultUI)
+	{
+		NPCResultUI->AddToViewport(1);
+		NPCResultUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	

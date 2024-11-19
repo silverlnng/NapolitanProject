@@ -63,9 +63,20 @@ public:
 	void CameraViewChangePlayer();
 
 	FTimerHandle DialogueTimerHandle;
+
+
+	UFUNCTION()
+	void SetNPCResultMaxSize(int32 selectedAnswer);
+
+	UFUNCTION()
+	void SetNPCResultText(int32 curOrder);
 	
 	UFUNCTION()
 	void CallCurNPCResultEvent(int32 value);
+
+	UFUNCTION()
+	void EndResult();
+	
 
 	UFUNCTION(BlueprintCallable)
 	void SetCurNPCSelectUI(const int32& NPC_ID,const int32& State,const FString& Lang);
