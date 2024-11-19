@@ -3,3 +3,9 @@
 
 #include "NPCInfoWidget.h"
 
+#include "Components/WidgetSwitcher.h"
+
+void UNPCInfoWidget::SelectContent(int32 idx)
+{
+	WidgetSwitcher_->SetActiveWidgetIndex(idx);
+}

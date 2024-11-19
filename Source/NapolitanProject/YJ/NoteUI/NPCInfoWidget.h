@@ -14,4 +14,11 @@ class NAPOLITANPROJECT_API UNPCInfoWidget : public UUserWidget
 {
 	GENERATED_BODY()
 	
+public:
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher_;
+
+	UFUNCTION()
+	void SelectContent(int32 idx);
+	
 };

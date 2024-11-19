@@ -24,6 +24,8 @@ public:
 	class UNPCInfoWidget* WBP_NPCInfo;
 	UPROPERTY(meta = (BindWidget))
 	class UUserWidget* WBP_SettingInNote;
+	UPROPERTY(meta = (BindWidget))
+	class UUserWidget* WBP_RuleInfo;
 
 	UPROPERTY(meta = (BindWidget))
 	class UClueInfoWidget* WBP_ClueInfo;
@@ -40,8 +42,27 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_ClueInfo;
 
+///////// NPC Info //////////////////////////////////	
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Security;
+
 	UFUNCTION()
-	void OnClickBtn_NPNInfo();
+	void OnClickBtn_Btn_Security();
+	
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Cleaner;
+
+	UFUNCTION()
+	void OnClickBtn_Btn_Cleaner();
+	
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WS_Content;
+
+	UFUNCTION()
+	void SelectContent(int32 idx);
+
+	UFUNCTION()
+	void OnClickBtn_RuleInfo();
 
 	UFUNCTION()
 	void OnClickBtn_Souvenir();
@@ -58,3 +79,4 @@ public:
 	
 	
 };
+

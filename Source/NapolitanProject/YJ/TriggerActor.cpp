@@ -78,6 +78,13 @@ void ATriggerActor::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		NPC_Security->AudioComp->Play();
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "BoxCompBeginOverlap");
 		//CheckSide();
+
+		// 타이머로 불끄고 배경음 달라지게 하기
+		FTimerHandle Timer;
+		GetWorldTimerManager().SetTimer(Timer,[this]()
+		{
+			
+		},3.0f,false);
 	}
 }
 
