@@ -4,6 +4,7 @@
 #include "NoteWidget.h"
 
 #include "ClueInfoWidget.h"
+#include "InventoryWidget.h"
 #include "NPCInfoWidget.h"
 #include "SouvenirWidget.h"
 #include "../GameFrameWork/TestPlayerController.h"
@@ -18,10 +19,13 @@ void UNoteWidget::NativeConstruct()
 	Btn_Setting->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Setting);
 	Btn_ClueInfo->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_ClueInfo);
 	
+	Btn_Setting->SetVisibility(ESlateVisibility::Hidden);
+	
 	WBP_Souvenir->SetVisibility(ESlateVisibility::Hidden);
 	WBP_NPCInfo->SetVisibility(ESlateVisibility::Hidden);
 	WBP_SettingInNote->SetVisibility(ESlateVisibility::Hidden);
 	WBP_ClueInfo->SetVisibility(ESlateVisibility::Hidden);
+	WBP_Inventory->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UNoteWidget::OnClickBtn_NPNInfo()
@@ -42,6 +46,7 @@ void UNoteWidget::OnClickBtn_Souvenir()
 	WBP_Souvenir->SetVisibility(ESlateVisibility::Visible);
 	WBP_NPCInfo->SetVisibility(ESlateVisibility::Hidden);
 	WBP_SettingInNote->SetVisibility(ESlateVisibility::Hidden);
+	
 	if (ClickSoundWave)
 	{
 		UGameplayStatics::PlaySound2D(this, ClickSoundWave);
