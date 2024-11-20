@@ -64,6 +64,11 @@ void UInteractWidget::PlayNoteUIEvent(bool val)
 }
 
 
+void UInteractWidget::SetImgClueContent(UTexture2D* Texture)
+{
+	Img_ClueContent->SetVisibility(ESlateVisibility::Visible);
+	Img_ClueContent->SetBrushFromTexture(Texture);
+}
 
 void UInteractWidget::SetRichText_Clue(FString str)
 {

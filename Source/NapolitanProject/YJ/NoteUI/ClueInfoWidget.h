@@ -32,6 +32,9 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	class URichTextBlock* RichText_ClueInfo;
 
+	UPROPERTY(meta=(BindWidget))
+	class UImage* Img_ClueContent;
+	
 	void SetClueContent(int32 Clue_ID);
 
 	// clue 슬롯을 미리 배열로 가지고 있기

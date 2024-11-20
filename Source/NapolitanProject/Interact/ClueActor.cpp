@@ -9,6 +9,7 @@
 #include "../GameFrameWork/TestPlayerController.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/Image.h"
 #include "Components/TextRenderComponent.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
@@ -57,6 +58,7 @@ void AClueActor::LookAt()
 	FVector CameraLoc =MainCharacter->myArrowComp->GetComponentLocation();
 	FRotator CameraRot =MainCharacter->myArrowComp->GetComponentRotation();
 	
+	MainCharacter->SetPlayerState(EPlayerState::UI);
 	FName Clue_FName = FName(*FString::FromInt(Clue_ID));
 	FClueData* ClueData= GI->DT_Clue->FindRow<FClueData>(Clue_FName , TEXT(""));
 	if (!ClueData){ UE_LOG(LogTemp,Warning,TEXT("ClueData null")) return;}
@@ -69,10 +71,23 @@ void AClueActor::LookAt()
 	PlayerHUD->NoteUI->WBP_ClueInfo->ClueSlots[Clue_ID-1]->SetWidgetSwitcher(1);
 	
 	FString ClueContent =ClueData->Content;
-		// ClueData->Content 를 전달
-	MainCharacter->SetPlayerState(EPlayerState::UI);
-	PlayerHUD->InteractUI->SetRichText_Clue(*ClueContent);
+	// ClueData->Content 를 전달
 
+	//방어코드
+	
+	PlayerHUD->InteractUI->SetRichText_Clue(*ClueContent);
+	
+	
+
+	UTexture2D* ClueImage = ClueData->ClueImage;
+	if (ClueImage)
+	{
+		PlayerHUD->InteractUI->SetImgClueContent(ClueImage);
+	}
+	else
+	{
+		PlayerHUD->InteractUI->Img_ClueContent->SetVisibility(ESlateVisibility::Hidden);
+	}
 	//
 	
 	PlayerHUD->InteractUI->SetVisibleCanvasPanel_Clue(true);

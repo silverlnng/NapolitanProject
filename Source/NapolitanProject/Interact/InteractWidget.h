@@ -50,10 +50,15 @@ public:
 	class URichTextBlock* RichTextBlock_Clue;
 
 	UPROPERTY(meta=(BindWidget))
+	class UImage* Img_ClueContent;
+	
+	UPROPERTY(meta=(BindWidget))
 	class UCanvasPanel* CanvasPanel_Hit;
 
 	UPROPERTY(meta=(BindWidget))
 	class UButton* Btn_ClueClose;
+
+	void SetImgClueContent(UTexture2D* Texture);
 	
 	void SetRichText_Clue(FString str);
 

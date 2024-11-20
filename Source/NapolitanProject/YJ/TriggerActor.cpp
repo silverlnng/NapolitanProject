@@ -4,8 +4,10 @@
 #include "TriggerActor.h"
 
 #include "EngineUtils.h"
+#include "SoundControlActor.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
+#include "Sound/SoundCue.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/NPC/NPC_Security.h"
@@ -19,12 +21,20 @@ ATriggerActor::ATriggerActor()
 	SetRootComponent(SceneComp);
 	BoxComp=CreateDefaultSubobject<UBoxComponent>(TEXT("SphereComponent"));
 	BoxComp->SetupAttachment(RootComponent);
+	
 }
 
 // Called when the game starts or when spawned
 void ATriggerActor::BeginPlay()
 {
 	Super::BeginPlay();
+	SecondFloorSound = LoadObject<USoundCue>(nullptr, TEXT("SoundCue'/Game/Resource/Sound/BG/Parasitic_Host__Horror_Atmospheric_Theme_l_Creepy_l_Haunting__Cue_2nd.Parasitic_Host__Horror_Atmospheric_Theme_l_Creepy_l_Haunting__Cue_2nd'"));
+	// /Script/Engine.SoundCue'/Game/Resource/Sound/BG/Parasitic_Host__Horror_Atmospheric_Theme_l_Creepy_l_Haunting__Cue_2nd.Parasitic_Host__Horror_Atmospheric_Theme_l_Creepy_l_Haunting__Cue_2nd'
+
+	for (TActorIterator<ASoundControlActor> It(GetWorld(), ASoundControlActor::StaticClass()); It; ++It)
+	{
+		SoundControlActor = *It;
+	}
 	
 	for (TActorIterator<ANPC_Security> It(GetWorld(), ANPC_Security::StaticClass()); It; ++It)
 	{
@@ -83,8 +93,11 @@ void ATriggerActor::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		FTimerHandle Timer;
 		GetWorldTimerManager().SetTimer(Timer,[this]()
 		{
-			
-		},3.0f,false);
+			if (SecondFloorSound)
+			{
+			//SoundControlActor->BGSoundChange(SecondFloorSound);
+			}
+		},4.0f,false);
 	}
 }
 

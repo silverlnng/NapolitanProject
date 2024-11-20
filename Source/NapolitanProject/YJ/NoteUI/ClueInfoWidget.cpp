@@ -3,6 +3,7 @@
 
 #include "ClueInfoWidget.h"
 
+#include "Components/Image.h"
 #include "Components/RichTextBlock.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 
@@ -27,4 +28,18 @@ void UClueInfoWidget::SetClueContent(int32 Clue_ID)
 	FString content = ClueData->Content;
 
 	RichText_ClueInfo->SetText(FText::FromString(content));
+
+	UTexture2D* ClueImage = ClueData->ClueImage;
+	if (ClueImage)
+	{
+		Img_ClueContent->SetVisibility(ESlateVisibility::Visible);
+		Img_ClueContent->SetBrushFromTexture(ClueImage);
+	}
+	else
+	{
+		Img_ClueContent->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	
+	
 }

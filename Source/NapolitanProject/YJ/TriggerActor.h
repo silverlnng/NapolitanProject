@@ -32,6 +32,11 @@ public:
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
 
+	class ASoundControlActor* SoundControlActor;
+
+	UPROPERTY(VisibleAnywhere)
+	class USoundCue* SecondFloorSound;
+	
 	UPROPERTY(VisibleAnywhere)
 	class ANPC_Security* NPC_Security;
 
