@@ -3,6 +3,7 @@
 
 #include "InteractWidget.h"
 
+#include "Components/Border.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
 #include "Components/HorizontalBox.h"
@@ -16,7 +17,7 @@ void UInteractWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	HBox_GetSouvenir->SetVisibility(ESlateVisibility::Hidden);
-	Img_Note->SetVisibility(ESlateVisibility::Hidden);
+	Border_Note->SetVisibility(ESlateVisibility::Hidden);
 	CanvasPanel_Clue->SetVisibility(ESlateVisibility::Hidden);
 	CanvasPanel_Hit->SetVisibility(ESlateVisibility::Hidden);
 	Btn_ClueClose->OnClicked.AddDynamic(this,&UInteractWidget::OnClickBtn_ClueClose);
@@ -57,7 +58,7 @@ void UInteractWidget::PlayNoteUIEvent(bool val)
 {
 	if (val)
 	{
-		Img_Note->SetVisibility(ESlateVisibility::Visible);
+		Border_Note->SetVisibility(ESlateVisibility::Visible);
 		PlayAnimation(NoteImgAnim);
 	}
 	

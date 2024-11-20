@@ -3,10 +3,14 @@
 
 #include "EventComponent.h"
 
+#include "PlayerHUD.h"
+#include "TestCharacter.h"
 #include "TestPlayerController.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/RichTextBlock.h"
 #include "NapolitanProject/YJ/EventWidget.h"
+#include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
+#include "NapolitanProject/YJ/NoteUI/NPCInfoWidget.h"
 
 // Sets default values for this component's properties
 UEventComponent::UEventComponent()
@@ -24,8 +28,9 @@ void UEventComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	TestPC=GetWorld()->GetFirstPlayerController<ATestPlayerController>();
+	MainCharacter=Cast<ATestCharacter>(TestPC->GetPawn());
 	// ...
-	
+	PlayerHUD=TestPC->GetHUD<APlayerHUD>();
 }
 
 void UEventComponent::InitializeComponent()
@@ -50,10 +55,16 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 	{
 		Event_RedDosent(str,content);
 	}
-	else if ("RedDosentEnd")
+	else if (str=="RedDosentEnd")
 	{
 		Event_RedDosent(str,content);
 	}
+	else if (str=="CleanerQuest")
+	{
+		// 퀘스트 함수
+		Event_Cleaner();
+	}
+	
 	
 }
 
@@ -91,6 +102,35 @@ void UEventComponent::Event_RedDosent(FString& str,const FString& content)
 			TestPC->EventUI = nullptr;  // 포인터 초기화로 메모리 누수 방지
 		}
 	}
+}
+
+void UEventComponent::Event_Cleaner()
+{
+
+	// 대화 창 닫고
+	TestPC->StartEndNPCDialougue(false);
+
+	MainCharacter->SetPlayerState(EPlayerState::UI);
+	
+	// 시간지연
+	FTimerHandle UITimer;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
+
+		PlayerHUD->NoteUI->OnClickBtn_Btn_Cleaner();
+		
+	},2.0f,false);
+	
+
+	// 시간지연
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Cleaner(1,1);
+	},2.5f,false);
 }
 
 void UEventComponent::UpdateText()

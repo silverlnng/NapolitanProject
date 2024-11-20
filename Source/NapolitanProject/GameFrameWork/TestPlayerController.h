@@ -66,7 +66,7 @@ public:
 
 
 	UFUNCTION()
-	void SetNPCResultMaxSize(int32 selectedAnswer);
+	int32 SetNPCResultMaxSize(int32 selectedAnswer);
 
 	UFUNCTION()
 	void SetNPCResultText(int32 curOrder);

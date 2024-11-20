@@ -36,8 +36,10 @@ public:
 	void GetSouvenirEvent(const FString& str); // 유물획득할때 획득한 유물이름 넣어주고 호출하는 함수
 
 	//// 수첩 ui ////////
+	//UPROPERTY(meta=(BindWidget))
+	
 	UPROPERTY(meta=(BindWidget))
-	class UImage* Img_Note;
+	class UBorder* Border_Note;
 	UPROPERTY(Transient,meta=(BindWidgetAnim))
 	class UWidgetAnimation* NoteImgAnim;
 	UFUNCTION()

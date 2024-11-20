@@ -26,8 +26,8 @@ ASculpture::ASculpture()
 	SkeletalMeshComp=CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp"));
 	SkeletalMeshComp->SetupAttachment(BoxComp);
 	
-	//StaticMeshComp=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	//StaticMeshComp->SetupAttachment(BoxComp);
+	StaticMeshComp=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
+	StaticMeshComp->SetupAttachment(BoxComp);
 
 	SceneComp1 =CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp1"));
 	SceneComp1->SetupAttachment(StaticMeshComp);
@@ -68,15 +68,15 @@ void ASculpture::PutDownPiece(APieceActor* Piece)
 	{
 	case 1:
 		// 케릭터가 가진 현재조각을
-			Piece->AttachToComponent(SkeletalMeshComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale,"headSocket");
+			Piece->AttachToComponent(SceneComp1,FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
 			PieceArray.Add(Piece);
 		break;
 	case 2:
-		Piece->AttachToComponent(SkeletalMeshComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale,"EyeSocket_1");
+		Piece->AttachToComponent(SceneComp2,FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
 		PieceArray.Add(Piece);
 		break;
 	case 3:
-		Piece->AttachToComponent(SkeletalMeshComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale,"EyeSocket_2");
+		Piece->AttachToComponent(SceneComp3,FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
 		PieceArray.Add(Piece);
 		break;	
 	}

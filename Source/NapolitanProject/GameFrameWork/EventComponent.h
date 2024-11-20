@@ -27,7 +27,8 @@ public:
 	void StartEvent(FString& str,const FString& content);
 
 	void Event_RedDosent(FString& str,const FString& content);
-	
+
+	void Event_Cleaner();
 
 	void UpdateText();
 
@@ -40,4 +41,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class ATestPlayerController* TestPC;
+	UPROPERTY(VisibleAnywhere)
+	class APlayerHUD* PlayerHUD;
+	UPROPERTY(VisibleAnywhere)
+	class ATestCharacter* MainCharacter;
 };

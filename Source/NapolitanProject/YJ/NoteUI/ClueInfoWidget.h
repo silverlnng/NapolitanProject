@@ -27,7 +27,7 @@ public:
 	class UScrollBox* ScrollBox_List;
 
 	UPROPERTY(meta=(BindWidget))
-	class URichTextBlock* RichText_ClueName;
+	class UTextBlock* Text_ClueName;
 
 	UPROPERTY(meta=(BindWidget))
 	class URichTextBlock* RichText_ClueInfo;

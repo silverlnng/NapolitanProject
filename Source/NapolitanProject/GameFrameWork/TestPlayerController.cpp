@@ -286,7 +286,7 @@ void ATestPlayerController::SetCurNPC(ANPCCharacter* curNPC_)
 }
 
 
-void ATestPlayerController::SetNPCResultMaxSize(int32 selectedAnswer)
+int32 ATestPlayerController::SetNPCResultMaxSize(int32 selectedAnswer)
 {
 	PlayerHUD->NPCResultUI->MaxOrder=0; // 초기화 작업
 	
@@ -307,7 +307,8 @@ void ATestPlayerController::SetNPCResultMaxSize(int32 selectedAnswer)
 			break;
 		}
 	}
-
+	
+	return PlayerHUD->NPCResultUI->MaxOrder;
 }
 
 void ATestPlayerController::SetNPCResultText(int32 curOrder)
@@ -363,19 +364,20 @@ void ATestPlayerController::CallCurNPCResultEvent(int32 value)
 	PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
 	UE_LOG(LogTemp,Warning,TEXT("%s NPCResult :%d"),*CALLINFO,value);
 	
+	if (curNPC)
+	{
+		curNPC->ResultEvent(value);
+	}
 	curNPC->SelectAnswer=value;
 	// 결과 초기화 작업 => 미리 몇개인지 세고
 	SetNPCResultMaxSize(value);
+	if (SetNPCResultMaxSize(value)<=0){return;}
 	// 결과대화가 있으면 나오도록 출력하기
 	PlayerHUD->NPCResultUI->SetVisibility(ESlateVisibility::Visible);
 	// 결과창 열고
 
 	SetNPCResultText(0);
 	
-	if (curNPC)
-	{
-		curNPC->ResultEvent(value);
-	}
 	// ui  닫기
 }
 

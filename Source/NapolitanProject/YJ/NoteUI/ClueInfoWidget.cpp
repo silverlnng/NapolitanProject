@@ -5,12 +5,14 @@
 
 #include "Components/Image.h"
 #include "Components/RichTextBlock.h"
+#include "Components/TextBlock.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 
 void UClueInfoWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 	GI =GetGameInstance<UMyTestGameInstance>();
+	Img_ClueContent->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UClueInfoWidget::SetClueContent(int32 Clue_ID)
@@ -23,7 +25,7 @@ void UClueInfoWidget::SetClueContent(int32 Clue_ID)
 	if (!ClueData){ UE_LOG(LogTemp,Warning,TEXT("ClueData null")) return;}
 	
 	FString name = ClueData->Name;
-	RichText_ClueName->SetText(FText::FromString(name));
+	Text_ClueName->SetText(FText::FromString(name));
 
 	FString content = ClueData->Content;
 

@@ -18,7 +18,28 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher_;
 
+/////////////////// 청소부 ///////////////////////////
+	UPROPERTY(meta = (BindWidget))
+	class UScrollBox* ScrollBox_Cleaner;
+
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_Cleaner1;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_Cleaner2;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher_Cleaner1;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher_Cleaner2;
+	
+////////////////////////////////////////////////////////////	
+	
 	UFUNCTION()
 	void SelectContent(int32 idx);
+
+	UFUNCTION(BlueprintCallable)
+	void SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum);
 	
 };
