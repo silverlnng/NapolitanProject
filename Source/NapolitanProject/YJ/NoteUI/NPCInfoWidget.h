@@ -22,6 +22,9 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UScrollBox* ScrollBox_Cleaner;
 
+	UPROPERTY(meta=(BindWidgetAnim),Transient)
+	class UWidgetAnimation* Anim_Cleaner_1;
+
 	UPROPERTY(meta = (BindWidget))
 	class UCanvasPanel* CanvasPanel_Cleaner1;
 	

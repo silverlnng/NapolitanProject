@@ -12,8 +12,11 @@ ASoundControlActor::ASoundControlActor()
 	PrimaryActorTick.bCanEverTick = true;
 	SceneComp =CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
 	SetRootComponent(SceneComp);
-	AudioComp=CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent"));
-	AudioComp->SetupAttachment(RootComponent);
+	AudioComp1=CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent1"));
+	AudioComp1->SetupAttachment(RootComponent);
+	
+	AudioComp2=CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComponent2"));
+	AudioComp2->SetupAttachment(RootComponent);
 
 }
 
@@ -21,7 +24,8 @@ ASoundControlActor::ASoundControlActor()
 void ASoundControlActor::BeginPlay()
 {
 	Super::BeginPlay();
-	AudioComp->Play();
+	AudioComp1->Play();
+	AudioComp2->Stop();
 }
 
 // Called every frame
@@ -33,6 +37,6 @@ void ASoundControlActor::Tick(float DeltaTime)
 void ASoundControlActor::BGSoundChange(USoundCue* Sound)
 {
 	USoundBase* SoundBase_ = Sound;
-	AudioComp->SetSound(SoundBase_);
+	AudioComp1->SetSound(SoundBase_);
 }
 

@@ -10,6 +10,7 @@
 #include "Sound/SoundCue.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/Interact/ControllableLightActor.h"
 #include "NapolitanProject/NPC/NPC_Security.h"
 
 // Sets default values
@@ -28,9 +29,14 @@ ATriggerActor::ATriggerActor()
 void ATriggerActor::BeginPlay()
 {
 	Super::BeginPlay();
-	SecondFloorSound = LoadObject<USoundCue>(nullptr, TEXT("SoundCue'/Game/Resource/Sound/BG/Parasitic_Host__Horror_Atmospheric_Theme_l_Creepy_l_Haunting__Cue_2nd.Parasitic_Host__Horror_Atmospheric_Theme_l_Creepy_l_Haunting__Cue_2nd'"));
-	// /Script/Engine.SoundCue'/Game/Resource/Sound/BG/Parasitic_Host__Horror_Atmospheric_Theme_l_Creepy_l_Haunting__Cue_2nd.Parasitic_Host__Horror_Atmospheric_Theme_l_Creepy_l_Haunting__Cue_2nd'
 
+	for (TActorIterator<AControllableLightActor> It(GetWorld(), AControllableLightActor::StaticClass()); It; ++It)
+	{
+		//AActor* Actor = *It;
+		ControllableLightArray.Add(*It);
+		
+	}
+	
 	for (TActorIterator<ASoundControlActor> It(GetWorld(), ASoundControlActor::StaticClass()); It; ++It)
 	{
 		SoundControlActor = *It;
@@ -89,15 +95,23 @@ void ATriggerActor::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "BoxCompBeginOverlap");
 		//CheckSide();
 
+		SoundControlActor->IsSecondFloor=true;
 		// 타이머로 불끄고 배경음 달라지게 하기
+		if (SoundControlActor)
+		{
+			SoundControlActor->AudioComp1->FadeOut(7.f , 0.f);
+			//SoundControlActor->AudioComp2->Play();
+			SoundControlActor->AudioComp2->FadeIn(14.f , 1.f);
+		}
 		FTimerHandle Timer;
 		GetWorldTimerManager().SetTimer(Timer,[this]()
 		{
-			if (SecondFloorSound)
+			for (auto light : ControllableLightArray)
 			{
-			//SoundControlActor->BGSoundChange(SecondFloorSound);
+				light->TurnOnLight(false);
 			}
-		},4.0f,false);
+			
+		},3.0f,false);
 	}
 }
 
@@ -108,5 +122,11 @@ void ATriggerActor::BoxCompEndOverlap( UPrimitiveComponent* OverlappedComponent,
 		NPC_Security->AudioComp->Stop();
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "BoxCompEndOverlap");
 		//CheckSide();
+		if (SoundControlActor)
+		{
+			SoundControlActor->AudioComp2->FadeOut(3.f,0.f);
+			SoundControlActor->AudioComp1->FadeIn(3.f,1.f);
+			SoundControlActor->IsSecondFloor=false;
+		}
 	}
 }

@@ -3,6 +3,7 @@
 
 #include "NPCInfoWidget.h"
 
+#include "Animation/WidgetAnimation.h"
 #include "Components/CanvasPanel.h"
 #include "Components/ScrollBox.h"
 #include "Components/WidgetSwitcher.h"
@@ -37,6 +38,7 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum)
 		if (wsNum==1)
 		{
 			WidgetSwitcher_Cleaner1->SetActiveWidgetIndex(1);
+			PlayAnimation(Anim_Cleaner_1);
 		}
 		else if (wsNum==2)
 		{

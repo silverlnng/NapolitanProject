@@ -27,7 +27,10 @@ public:
 	class USceneComponent* SceneComp;
 
 	UPROPERTY(EditDefaultsOnly)
-	class UAudioComponent* AudioComp;
+	class UAudioComponent* AudioComp1;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UAudioComponent* AudioComp2;
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	bool IsSecondFloor =false;

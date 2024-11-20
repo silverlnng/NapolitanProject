@@ -33,12 +33,12 @@ public:
 	class ATestPlayerController* TestPC;
 
 	class ASoundControlActor* SoundControlActor;
-
-	UPROPERTY(VisibleAnywhere)
-	class USoundCue* SecondFloorSound;
 	
 	UPROPERTY(VisibleAnywhere)
 	class ANPC_Security* NPC_Security;
+
+	UPROPERTY(VisibleAnywhere)
+	TArray<class AControllableLightActor*> ControllableLightArray;
 
 	UFUNCTION()
 	void CheckSide();
@@ -48,5 +48,6 @@ public:
 
 	UFUNCTION()
 	void BoxCompEndOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	
 };
 
