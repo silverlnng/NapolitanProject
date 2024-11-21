@@ -35,4 +35,7 @@ public:
 
 	UFUNCTION()
 	void AnimNotify_FinishClean();
+
+	UFUNCTION()
+	void AnimNotify_Decal();
 };
