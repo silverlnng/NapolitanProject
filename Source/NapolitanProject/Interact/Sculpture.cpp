@@ -2,7 +2,7 @@
 
 
 #include "Sculpture.h"
-
+#include "NiagaraComponent.h"
 #include "EngineUtils.h"
 #include "ItemActor.h"
 #include "PieceActor.h"
@@ -38,6 +38,8 @@ ASculpture::ASculpture()
 	SceneComp3 =CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp3"));
 	SceneComp3->SetupAttachment(StaticMeshComp);
 
+	NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
+	NiagaraComp->SetupAttachment(StaticMeshComp);
 }
 
 // Called when the game starts or when spawned
@@ -108,9 +110,11 @@ void ASculpture::MissionCheck()
 	{
 
 		// 피흘리도록하기
-
-		// 단서가 나오도록 하기
+		NiagaraComp->Activate();
+		// 피가 아예 묻도록 하기
 		
+		// 단서가 나오도록 하기
+		// 
 		
 	},11.f,false);
 	

@@ -59,6 +59,9 @@ FString ASouvenirActor::GetSouvenirName()
 
 void ASouvenirActor::OnPickup()
 {
+	// 얻을때마다 갯수셀꺼여서 초기화 
+	GI->AcquireSouvenirNum=0;
+	
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 	FName SouvenirName_ = FName(*FString::FromInt(GetSouvenirID()));
 			
@@ -89,6 +92,31 @@ void ASouvenirActor::OnPickup()
 		PlayerHUD->InteractUI->GetSouvenirEvent(GetSouvenirName());
 	}, 0.5f, false);
 
+
+	// 지금까지 얻은 유물의 갯수가 3개일때 , 5개일 때를 각각 체크하기
+
+	// SouvenirData 에서 had 가 true인것만 검색
+
+	for (int i = 0; i < GI->SouvenirDataRowNames.Num(); i++)
+	{
+		FSouvenirData* SouvenirData_ = GI->DT_SouvenirData->FindRow<FSouvenirData>(GI->SouvenirDataRowNames[i] , TEXT(""));
+		if (SouvenirData_->Had==true)
+		{
+			 GI->AcquireSouvenirNum++;
+			FString num=FString::FromInt(GI->AcquireSouvenirNum);
+			FString temp="얻은 유물 갯수"+num;
+			 GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, *temp);
+		}
+	}
+
+	if (GI->AcquireSouvenirNum==3)
+	{
+		// npc 이서 방문열리는 쪽으로 화면 전환 하는 이벤트 발생시키기
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "유물3개 획득");
+	}
+
+	
+	
 	FTimerHandle SouvenirTimer2;
 	GetWorldTimerManager().SetTimer(SouvenirTimer2, [this]()
 	{

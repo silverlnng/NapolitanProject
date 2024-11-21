@@ -46,6 +46,10 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class USceneComponent* SceneComp3;
 
+	// 나이아가라 컴포넌트 
+	UPROPERTY(EditDefaultsOnly)
+	class UNiagaraComponent* NiagaraComp;
+	
 	// 아이템을 가진상태에서 아이템을 내려놓을수있도록 
 	void PutDownPiece(class APieceActor* Piece);
 

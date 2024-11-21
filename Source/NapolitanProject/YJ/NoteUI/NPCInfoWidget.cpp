@@ -14,6 +14,7 @@ void UNPCInfoWidget::NativeConstruct()
 	Super::NativeConstruct();
 	Img_Head->SetVisibility(ESlateVisibility::Hidden);
 	Img_Head2->SetVisibility(ESlateVisibility::Hidden);
+	Img_Head_BG->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UNPCInfoWidget::SelectContent(int32 idx)
@@ -58,6 +59,7 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum)
 			{
 				Img_Head->SetVisibility(ESlateVisibility::Visible);
 				Img_Head2->SetVisibility(ESlateVisibility::Visible);
+				Img_Head_BG->SetVisibility(ESlateVisibility::Visible);
 			} , 2.0f , false);		
 		}
 	},3.0f,false);

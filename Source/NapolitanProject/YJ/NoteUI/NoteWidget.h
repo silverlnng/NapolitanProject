@@ -59,6 +59,14 @@ public:
 
 	UFUNCTION()
 	void OnClickBtn_Btn_Cleaner();
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Oldman;
+	UFUNCTION()
+	void OnClickBtn_Btn_Oldman();
+
+
+//////////////////////////////////////////////////////////////////	
 	
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WS_Content;

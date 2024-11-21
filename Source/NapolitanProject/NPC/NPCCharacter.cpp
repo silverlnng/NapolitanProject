@@ -141,5 +141,14 @@ void ANPCCharacter::ChangeCleared()
 	GI->ClearedNPC.Add(GetNPCID());
 	FString id =FString::FromInt(GetNPCID());
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, *id);
+
+	// 시간이 많이 지나면 아예 destroy 되도록 하기
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		this->Destroy();
+	},15.0f,false);
+	
 }
 

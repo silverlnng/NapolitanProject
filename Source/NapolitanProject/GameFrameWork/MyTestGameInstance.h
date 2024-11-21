@@ -155,6 +155,8 @@ public:
 
 	TArray<int32> AcquireSouvenir;
 
+	int32 AcquireSouvenirNum;
+	
 	UPROPERTY(VisibleAnywhere)
 	UDataTable* DT_Clue;
 

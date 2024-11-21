@@ -22,6 +22,7 @@ void UNoteWidget::NativeConstruct()
 	Btn_Security->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Security);
 	Btn_Cleaner->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Cleaner);
 	Btn_Docent->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Docent);
+	Btn_Oldman->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Oldman);
 	
 	Btn_Setting->SetVisibility(ESlateVisibility::Hidden);
 	
@@ -97,6 +98,16 @@ void UNoteWidget::OnClickBtn_Btn_Cleaner()
 {
 	SelectContent(1);
 	WBP_NPCInfo->SelectContent(0);
+	if (ClickSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, ClickSoundWave);
+	}
+}
+
+void UNoteWidget::OnClickBtn_Btn_Oldman()
+{
+	SelectContent(1);
+	WBP_NPCInfo->SelectContent(3);
 	if (ClickSoundWave)
 	{
 		UGameplayStatics::PlaySound2D(this, ClickSoundWave);

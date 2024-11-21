@@ -44,6 +44,8 @@ public:
 	class UImage* Img_Head;
 	UPROPERTY(meta = (BindWidget))
 	class UImage* Img_Head2;
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Img_Head_BG;
 	
 ////////////////////////////////////////////////////////////	
 	
