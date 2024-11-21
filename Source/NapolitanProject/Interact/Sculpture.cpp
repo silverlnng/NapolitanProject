@@ -112,9 +112,13 @@ void ASculpture::MissionCheck()
 		// 피흘리도록하기
 		NiagaraComp->Activate();
 		// 피가 아예 묻도록 하기 UGameplayStatics::SpawnDecalAtLocation
+
+		// 경비원 노트 ui 팝업되도록 만들기 
 		
 		// 단서가 나오도록 하기
-		// 
+		//
+
+		// 그단서 
 		
 	},11.f,false);
 	
