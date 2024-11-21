@@ -322,13 +322,13 @@ void ATestPlayerController::SetNPCResultText(int32 curOrder)
 
 	if (0==curOrder){PlayerHUD->NPCResultUI->Btn_Back->SetVisibility(ESlateVisibility::Hidden);}
 	if (0!=curOrder){PlayerHUD->NPCResultUI->Btn_Back->SetVisibility(ESlateVisibility::Visible);}
-	if (PlayerHUD->NPCResultUI->MaxOrder!=curOrder)
+	if (PlayerHUD->NPCResultUI->MaxOrder!=(curOrder+1))
 	{
 		PlayerHUD->NPCResultUI->Btn_Next->SetVisibility(ESlateVisibility::Visible);
 	
 	}
 	// 마지막 대사 출력 
-	if (PlayerHUD->NPCResultUI->MaxOrder==curOrder)
+	if (PlayerHUD->NPCResultUI->MaxOrder==(curOrder+1))
 	{
 		PlayerHUD->NPCResultUI->Btn_Next->SetVisibility(ESlateVisibility::Hidden);
 
@@ -337,8 +337,9 @@ void ATestPlayerController::SetNPCResultText(int32 curOrder)
 
 		GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
 		{
-			PlayerHUD->NPCResultUI->SetVisibility(ESlateVisibility::Hidden);
-		},2.0f,false);
+			//닫으면 게임모드로 변경
+			EndResult();
+		},5.0f,false);
 	}
 
 	if (GI->NPCResultMap.Contains(FindKey)) // 있으면 출력하기 

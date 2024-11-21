@@ -28,7 +28,6 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum)
 
 	GetWorld()->GetTimerManager().SetTimer(UITimer1,[this, panelNum]()
 	{
-		
 		if (panelNum==1)
 		{
 			ScrollBox_Cleaner->ScrollWidgetIntoView(CanvasPanel_Cleaner1,true);

@@ -164,6 +164,14 @@ void UEventComponent::Event_Cleaner_Completed()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Cleaner(2,2);
 	},2.5f,false);
+
+	FTimerHandle UITimer3;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer3,[this]()
+	{
+		MainCharacter->SetPlayerState(EPlayerState::UI);
+		
+	},6.0f,false);
 }
 
 void UEventComponent::UpdateText()
