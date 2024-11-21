@@ -75,7 +75,7 @@ public:
 public:
 	//상태 변수
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = State)
-	CleanerState mState = CleanerState::Cleaning; //우선 기본은 대기 상태
+	CleanerState mState = CleanerState::Idle; //우선 기본은 대기 상태
 
 	//상태함수
 	UFUNCTION(BlueprintCallable, Category = State)
@@ -145,4 +145,21 @@ public:
 
 	UPROPERTY()
 	class AActor* MobPointActor;
+
+public:
+	//데칼 생성
+	void SpawnFootsDecal();
+
+	// 발자국 데칼에 사용할 마테리얼 (에디터에서 설정 가능)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Footsteps")
+	UMaterialInterface* FootstepDecalMaterial;
+
+	// 데칼의 크기
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Footsteps")
+	FVector DecalSize = FVector(200.f, 220.f, 220.f); // X: 길이, Y: 너비, Z: 높이
+
+	// 데칼 지속 시간 (사라지기 전까지 유지되는 시간)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Footsteps")
+	float DecalLifetime = 12.f;
+	
 };

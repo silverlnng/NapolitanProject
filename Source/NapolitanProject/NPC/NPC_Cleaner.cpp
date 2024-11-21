@@ -6,6 +6,8 @@
 #include "AIController.h"
 #include "NPCCleanerAnim.h"
 #include "Components/CapsuleComponent.h"
+#include "Evaluation/MovieSceneTimeWarping.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
@@ -281,6 +283,42 @@ void ANPC_Cleaner::SpawnItems()
 	}
 
 	bItemSpawned = false; //한번만 스폰되도록
+}
+
+void ANPC_Cleaner::SpawnFootsDecal()
+{
+	if(!FootstepDecalMaterial) return;
+
+	UE_LOG(LogTemp, Warning, TEXT("SpawnFootsDecal"));
+
+	//소켓 위치 가져오기
+	FVector FootLocation = GetMesh()->GetSocketLocation(FName("BloodSpawn"));
+	FVector TraceStart = FootLocation;
+	FVector TraceEnd = TraceStart - FVector(0, 0, 100.f); //발 밑 방향으로 레이캐스트
+
+	FHitResult HitResult;
+	FCollisionQueryParams QueryParams;
+	QueryParams.AddIgnoredActor(this); //자기 자신은 무시
+
+	//바닥 충돌 검사
+	if(GetWorld()->LineTraceSingleByChannel(HitResult, TraceStart, TraceEnd, ECC_Visibility, QueryParams))
+	{
+		//FRotator DecalRotation = HitResult.Normal.Rotation();
+		FRotator DecalRotation = FRotator(-90.f, 0.f, 0.f); // Pitch = -90
+		UGameplayStatics::SpawnDecalAtLocation(
+			GetWorld(),
+			FootstepDecalMaterial,
+			DecalSize,
+			HitResult.Location,
+			DecalRotation,  // 바닥 방향에 맞춘 회전
+			DecalLifetime
+		);
+
+		//디버그 라인
+		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.f, 0, 1.f);
+		DrawDebugSphere(GetWorld(), HitResult.Location, 10.f, 12, FColor::Green, false, 1.f);
+		
+	}
 }
 
 
