@@ -8,6 +8,8 @@
 #include "Components/RichTextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
 void UDeadEndingWidget::NativeConstruct()
 {
@@ -15,6 +17,9 @@ void UDeadEndingWidget::NativeConstruct()
 
 	RestartButton->OnClicked.AddDynamic(this, &UDeadEndingWidget::OnRestart);
 	QuitButton->OnClicked.AddDynamic(this, &UDeadEndingWidget::OnQuit);
+
+	TestPlayerController=GetOwningPlayer<ATestPlayerController>();
+	MainCharacter =TestPlayerController->GetPawn<ATestCharacter>();
 }
 
 void UDeadEndingWidget::SetRichText_Name(const FString& Str) const
@@ -50,9 +55,17 @@ void UDeadEndingWidget::UpdateLerp()
 void UDeadEndingWidget::OnRestart()
 {
 	//재시작 버튼을 누르면 현재 레벨을 다시 시작하고 싶다.
-	FString mapName = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	//FString mapName = UGameplayStatics::GetCurrentLevelName(GetWorld());
 
-	UGameplayStatics::OpenLevel(GetWorld(), FName(*mapName));
+	//UGameplayStatics::OpenLevel(GetWorld(), FName(*mapName));
+
+	// 베타에서는 그냥 처음 start자리로 가도록 하기
+	MainCharacter->TeleportTo(FVector(-1410,-2020,-656),FRotator(0,-90,0));
+	//MainCharacter->SetActorLocation(FVector(-1410,2020,-656),false,);
+	//MainCharacter->SetActorRotation(FRotator(0,-90,0));
+	MainCharacter->bIsBeingAttacked=false;
+	MainCharacter->SetPlayerState(EPlayerState::Idle);
+	this->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UDeadEndingWidget::OnQuit()

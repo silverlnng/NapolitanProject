@@ -17,6 +17,10 @@ public:
 	virtual void NativeConstruct() override;
 	
 public:
+
+	class ATestPlayerController* TestPlayerController;
+	class ATestCharacter* MainCharacter;
+	
 	UPROPERTY(meta=(BindWidget))
 	class URichTextBlock* RichText_Name;
 

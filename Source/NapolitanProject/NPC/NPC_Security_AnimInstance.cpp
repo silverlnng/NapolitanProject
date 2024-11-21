@@ -21,6 +21,14 @@ void UNPC_Security_AnimInstance::AnimNotify_AttackStart()
 	
 }
 
+void UNPC_Security_AnimInstance::AnimNotify_AttackMiddle()
+{
+	if (NPCSecurity)
+	{
+		NPCSecurity->OnMyAttackMiddle();
+	}
+}
+
 void UNPC_Security_AnimInstance::AnimNotify_AttackEnd()
 {
 	if (NPCSecurity)

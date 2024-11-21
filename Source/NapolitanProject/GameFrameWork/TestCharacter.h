@@ -214,9 +214,12 @@ public:
 	class AItemActor* curItem =nullptr;
 	
 	bool bIsBeingAttacked=false;
+
+	UPROPERTY(VisibleAnywhere)
+	int32 Health=3;
 	
 	UFUNCTION()
-	void PlayDamagedAnimMontage();
+	void DamagedToSecurity();
 	UPROPERTY(EditAnywhere)
 	UAnimMontage* DamagedSecurityAnim;
 

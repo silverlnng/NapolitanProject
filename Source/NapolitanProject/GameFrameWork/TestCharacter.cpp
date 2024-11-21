@@ -24,6 +24,7 @@
 #include "NapolitanProject/Interact/PieceActor.h"
 #include "NapolitanProject/Interact/Sculpture.h"
 #include "NapolitanProject/Interact/SouvenirActor.h"
+#include "NapolitanProject/YJ/DeadEndingWidget.h"
 
 ATestCharacter::ATestCharacter()
 {
@@ -568,20 +569,49 @@ void ATestCharacter::EndCapsuleOverlap(UPrimitiveComponent* OverlappedComponent,
 	}
 }
 
-void ATestCharacter::PlayDamagedAnimMontage()
+void ATestCharacter::DamagedToSecurity()
 {
-	if (GetCharacterMovement())
+	/*if (GetCharacterMovement())
 	{
 		GetCharacterMovement()->StopMovementImmediately();
-	}
+	}*/
+
+	// 피격 소리 
 	
 	// 이동 입력 을 못하게하고
 	//bIsBeingAttacked=true;
 	
-	if (DamagedSecurityAnim)
+	/*if (DamagedSecurityAnim)
 	{
 		PlayAnimMontage(DamagedSecurityAnim);
+	}*/
+	Health--;
+	// 피격시 나오는 ui 나오도록 하기
+
+	PlayerHUD->InteractUI->PlayHitAnim();
+
+	// health 체크해서 0 이하이면 사망이벤트 나오도록 해야함 
+	if (Health<=0)
+	{
+		SetPlayerState(EPlayerState::UI);
+		
+		if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
+		{
+			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			FString name= FString(TEXT("<Red_Big>검은경비원 에게</>"));
+			PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
+			PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
+		}
+		
+		if (GetCharacterMovement())
+		{
+			GetCharacterMovement()->StopMovementImmediately();
+		}
+		// 이동 입력 을 못하게하고
+		bIsBeingAttacked=true;
+		
 	}
+	
 }
 
 void ATestCharacter::PlayHeartSound()

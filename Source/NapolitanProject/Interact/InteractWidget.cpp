@@ -47,6 +47,11 @@ void UInteractWidget::SetVisibleHBox(bool value)
 	}
 }
 
+void UInteractWidget::PlayHitAnim()
+{
+	PlayAnimation(HitAnim);
+}
+
 void UInteractWidget::GetSouvenirEvent(const FString& str)
 {
 	HBox_GetSouvenir->SetVisibility(ESlateVisibility::Visible);

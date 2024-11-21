@@ -361,6 +361,16 @@ void ANPC_Security::OnMyAttackStart()
 	// MainCharacter->PlayDamagedAnimMontage();
 }
 
+void ANPC_Security::OnMyAttackMiddle()
+{
+	if (!Target){return;}
+	float dist = GetDistanceTo(Target);
+	if ( dist <= AttackDistance) {
+		// 플레이어에게 데미지를 입히고싶다.
+		MainCharacter->DamagedToSecurity();
+	}
+}
+
 void ANPC_Security::OnMyAttackEnd()
 {
 	// 거리체크
@@ -369,6 +379,7 @@ void ANPC_Security::OnMyAttackEnd()
 	if ( dist <= AttackDistance) {
 		// 플레이어에게 데미지를 입히고싶다.
 		Anim->bAttack = true;
+		// 
 		//UE_LOG(LogTemp , Warning , TEXT("Enemy -> Player에게 Damage"));
 	}
 	// 그렇지 않다면 

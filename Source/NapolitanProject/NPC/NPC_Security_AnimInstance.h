@@ -28,6 +28,9 @@ public:
 	void AnimNotify_AttackStart();
 	
 	UFUNCTION()
+	void AnimNotify_AttackMiddle();
+	
+	UFUNCTION()
 	void AnimNotify_AttackEnd();
 
 	// NPC_Security 의 state 와 일치시켜주기

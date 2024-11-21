@@ -111,6 +111,7 @@ public:
 
 	// 애니메이션에서 발생한 알림을 받고싶다.
 	void OnMyAttackStart();
+	void OnMyAttackMiddle();
 	void OnMyAttackEnd();
 
 ////////// 카메라를 skeletalMesh의 자식으로 

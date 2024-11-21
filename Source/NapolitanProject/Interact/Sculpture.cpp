@@ -100,6 +100,19 @@ void ASculpture::MissionCheck()
 	{
 		NPC_Security->EndEvent();
 	}
+	
 	// 월드에 있는 경비원 CLEAR으로 변경
+
+	FTimerHandle Timer;
+	GetWorldTimerManager().SetTimer(Timer,[this]()
+	{
+
+		// 피흘리도록하기
+
+		// 단서가 나오도록 하기
+		
+		
+	},11.f,false);
+	
 }
 

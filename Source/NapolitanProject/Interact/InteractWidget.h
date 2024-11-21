@@ -23,6 +23,13 @@ public:
 	void SetVisibleCrossHair(bool value);
 	void SetVisibleHBox(bool value);
 
+	////// 피격당했을때 나올 animation ////////////
+	UPROPERTY(Transient,meta=(BindWidgetAnim))
+	class UWidgetAnimation* HitAnim;
+
+	UFUNCTION()
+	void PlayHitAnim();
+	
 	////// 유물 얻었을때 ////////////
 	UPROPERTY(meta=(BindWidget))
 	class UHorizontalBox* HBox_GetSouvenir;
