@@ -21,6 +21,7 @@ void UNoteWidget::NativeConstruct()
 	Btn_ClueInfo->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_ClueInfo);
 	Btn_Security->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Security);
 	Btn_Cleaner->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Cleaner);
+	Btn_Docent->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Docent);
 	
 	Btn_Setting->SetVisibility(ESlateVisibility::Hidden);
 	
