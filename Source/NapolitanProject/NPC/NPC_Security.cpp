@@ -34,7 +34,7 @@ ANPC_Security::ANPC_Security()
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 
 	HeadStaticMesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HeadStaticMeshComp"));
-	HeadStaticMesh->SetupAttachment(GetMesh(),"RightHandMiddle3Socket");
+	HeadStaticMesh->SetupAttachment(GetMesh(),"LeftHandMiddle3Socket");
 
 	AudioComp =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->SetupAttachment(GetCapsuleComponent());

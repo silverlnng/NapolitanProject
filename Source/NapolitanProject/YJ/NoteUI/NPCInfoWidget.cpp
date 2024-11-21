@@ -51,10 +51,15 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum)
 		else if (wsNum==2)
 		{
 			WidgetSwitcher_Cleaner2->SetActiveWidgetIndex(1);
-			Img_Head->SetVisibility(ESlateVisibility::Visible);
-			Img_Head2->SetVisibility(ESlateVisibility::Visible);
+
+			FTimerHandle UITimer3;
+
+			GetWorld()->GetTimerManager().SetTimer(UITimer3 , [this]()
+			{
+				Img_Head->SetVisibility(ESlateVisibility::Visible);
+				Img_Head2->SetVisibility(ESlateVisibility::Visible);
+			} , 2.0f , false);		
 		}
-		
 	},3.0f,false);
 	
 }

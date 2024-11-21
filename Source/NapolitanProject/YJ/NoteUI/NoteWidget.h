@@ -42,10 +42,15 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_ClueInfo;
 
-///////// NPC Info //////////////////////////////////	
+///////// NPC Info //////////////////////////////////
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Docent;
+	UFUNCTION()
+	void OnClickBtn_Btn_Docent();
+	
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_Security;
-
 	UFUNCTION()
 	void OnClickBtn_Btn_Security();
 	

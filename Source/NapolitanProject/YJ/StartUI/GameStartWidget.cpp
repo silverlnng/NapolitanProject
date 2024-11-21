@@ -23,7 +23,7 @@ void UGameStartWidget::NativeConstruct()
 void UGameStartWidget::OnClickedNewGame()
 {
 	
-	UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(),MainLevel,true);
+	UGameplayStatics::OpenLevelBySoftObjectPtr(this,MainLevel,true);
 	
 	// 위치 설정 
 }

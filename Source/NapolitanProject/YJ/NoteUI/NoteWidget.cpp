@@ -72,14 +72,32 @@ void UNoteWidget::OnClickBtn_ClueInfo()
 	}
 }
 
+void UNoteWidget::OnClickBtn_Btn_Docent()
+{
+	SelectContent(1);
+	WBP_NPCInfo->SelectContent(2);
+	if (ClickSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, ClickSoundWave);
+	}
+}
+
 void UNoteWidget::OnClickBtn_Btn_Security()
 {
 	SelectContent(1);
 	WBP_NPCInfo->SelectContent(1);
+	if (ClickSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, ClickSoundWave);
+	}
 }
 
 void UNoteWidget::OnClickBtn_Btn_Cleaner()
 {
 	SelectContent(1);
 	WBP_NPCInfo->SelectContent(0);
+	if (ClickSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, ClickSoundWave);
+	}
 }
