@@ -5,8 +5,16 @@
 
 #include "Animation/WidgetAnimation.h"
 #include "Components/CanvasPanel.h"
+#include "Components/Image.h"
 #include "Components/ScrollBox.h"
 #include "Components/WidgetSwitcher.h"
+
+void UNPCInfoWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	Img_Head->SetVisibility(ESlateVisibility::Hidden);
+	Img_Head2->SetVisibility(ESlateVisibility::Hidden);
+}
 
 void UNPCInfoWidget::SelectContent(int32 idx)
 {
@@ -28,7 +36,7 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum)
 		{
 			ScrollBox_Cleaner->ScrollWidgetIntoView(CanvasPanel_Cleaner2,true);
 		}
-	},1.0f,false);
+	},1.5f,false);
 	
 
 	FTimerHandle UITimer2;
@@ -43,8 +51,10 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum)
 		else if (wsNum==2)
 		{
 			WidgetSwitcher_Cleaner2->SetActiveWidgetIndex(1);
+			Img_Head->SetVisibility(ESlateVisibility::Visible);
+			Img_Head2->SetVisibility(ESlateVisibility::Visible);
 		}
 		
-	},2.0f,false);
+	},3.0f,false);
 	
 }

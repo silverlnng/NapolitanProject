@@ -27,7 +27,7 @@ void APlayerHUD::BeginPlay()
 	NoteUI =CreateWidget<UNoteWidget>(GetWorld(),NoteWidgetFactory);
 	if (NoteUI)
 	{
-		NoteUI->AddToViewport();
+		NoteUI->AddToViewport(2);
 		NoteUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 

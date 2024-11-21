@@ -325,12 +325,19 @@ void ATestCharacter::SetPlayerState(EPlayerState newState)
 	case EPlayerState::UI:
 		// 노트  ui 볼때
 		PC->SetInputMode(FInputModeGameAndUI());
-		PC->SetShowMouseCursor(true);	
+		PC->SetShowMouseCursor(true);
+		bIsBeingAttacked=true;
 		break;
 	case EPlayerState::Idle:
 		PC->SetInputMode(FInputModeGameOnly());
 		PC->SetShowMouseCursor(false);
-			break;	
+		bIsBeingAttacked=false;
+			break;
+	case EPlayerState::Talking:
+		PC->SetInputMode(FInputModeGameAndUI());
+		PC->SetShowMouseCursor(true);
+		bIsBeingAttacked=true;
+		break;
 	default:
 		break;
 	}

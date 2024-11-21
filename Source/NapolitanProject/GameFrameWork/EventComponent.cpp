@@ -61,8 +61,13 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 	}
 	else if (str=="CleanerQuest")
 	{
-		// 퀘스트 함수
-		Event_Cleaner();
+		// 청소부의 퀘스트 함수
+		Event_Cleaner_Start();
+	}
+	else if (str=="CleanerQuestCompleted")
+	{
+		// 청소부의 퀘스트 완료 함수
+		Event_Cleaner_Completed();
 	}
 	
 	
@@ -104,7 +109,7 @@ void UEventComponent::Event_RedDosent(FString& str,const FString& content)
 	}
 }
 
-void UEventComponent::Event_Cleaner()
+void UEventComponent::Event_Cleaner_Start()
 {
 
 	// 대화 창 닫고
@@ -130,6 +135,34 @@ void UEventComponent::Event_Cleaner()
 	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Cleaner(1,1);
+	},2.5f,false);
+}
+
+void UEventComponent::Event_Cleaner_Completed()
+{
+	// 대화 창 닫고
+	TestPC->StartEndNPCDialougue(false);
+	TestPC->EndResult();
+	MainCharacter->SetPlayerState(EPlayerState::UI);
+	
+	// 시간지연
+	FTimerHandle UITimer;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
+
+		PlayerHUD->NoteUI->OnClickBtn_Btn_Cleaner();
+		
+	},2.0f,false);
+	
+
+	// 시간지연
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Cleaner(2,2);
 	},2.5f,false);
 }
 

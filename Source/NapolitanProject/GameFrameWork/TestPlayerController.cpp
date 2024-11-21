@@ -162,7 +162,7 @@ void ATestPlayerController::StartEndNPCDialougue(bool value)
 		PlayerHUD->InteractUI->SetVisibleHBox(false);
 		PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업 
 		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
-		
+		PlayerHUD->NPCDialogueUI->SetText_Dialogue(""); // 초기화 작업
 		int32 npcID =curNPC->GetNPCID();
 		UE_LOG(LogTemp,Warning,TEXT("%s,npcID : %d"),*CALLINFO,npcID);
 		int32 npcState =curNPC->GetState();
@@ -236,7 +236,6 @@ void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 		PlayerHUD->NPCDialogueUI->SetSelectSlotVisible(true);
 	}
 	/////////////////////////////////////
-	
 	
 	if (GI->NPCDialogueMap.Contains(FindKey)) // 있으면 출력하기 
 	{
@@ -333,7 +332,13 @@ void ATestPlayerController::SetNPCResultText(int32 curOrder)
 	{
 		PlayerHUD->NPCResultUI->Btn_Next->SetVisibility(ESlateVisibility::Hidden);
 
-		// 마지막이므로 타이머로 닫도록 만들기 
+		// 마지막이므로 타이머로 닫도록 만들기
+		FTimerHandle UITimer;
+
+		GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+		{
+			PlayerHUD->NPCResultUI->SetVisibility(ESlateVisibility::Hidden);
+		},2.0f,false);
 	}
 
 	if (GI->NPCResultMap.Contains(FindKey)) // 있으면 출력하기 
@@ -347,10 +352,8 @@ void ATestPlayerController::SetNPCResultText(int32 curOrder)
 		FString str=NPCResult.Effect;
 		if (!str.IsEmpty())
 		{
-			// npc 에게 이벤트 실행하도록 만들기 
-			//PlayerHUD->NPCDialogueUI->UIEffect(str);
 			// UEventComponent 에 이벤트발생시키도록 전달
-			//EventComponent->StartEvent(str,Dialogue_.Dialogue_Kor);
+			EventComponent->StartEvent(str,"");
 		}
 	}
 	

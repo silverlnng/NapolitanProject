@@ -28,7 +28,9 @@ public:
 
 	void Event_RedDosent(FString& str,const FString& content);
 
-	void Event_Cleaner();
+	void Event_Cleaner_Start();
+
+	void Event_Cleaner_Completed();
 
 	void UpdateText();
 

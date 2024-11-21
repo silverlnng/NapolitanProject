@@ -150,6 +150,7 @@ void ANPC_Security::Tick(float DeltaSeconds)
 	else if (!NearLight&&!Target)
 	{
 		SetState(ESecurityState::Patrol);
+		MainCharacter->StopSound();
 	}
 
 	if (Target&&!(PawnSensingComp->CouldSeePawn(Target,false)))

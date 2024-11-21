@@ -15,6 +15,9 @@ class NAPOLITANPROJECT_API UNPCInfoWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
+
+	virtual void NativeConstruct() override;
+	
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher_;
 
@@ -36,6 +39,11 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher_Cleaner2;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Img_Head;
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Img_Head2;
 	
 ////////////////////////////////////////////////////////////	
 	
