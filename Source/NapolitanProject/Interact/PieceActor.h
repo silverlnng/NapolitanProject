@@ -18,5 +18,8 @@ public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int32 PieceNum=0;
 
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	bool Picked =false;
+	
 	virtual void OnPickup() override; 
 };

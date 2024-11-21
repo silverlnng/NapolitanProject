@@ -9,6 +9,8 @@
 
 void APieceActor::OnPickup()
 {
+	Picked=true;
+	StaticMeshComp->SetRelativeRotation(FRotator(0,0,0));
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 	//Piece 조각은 인벤에 넣지말고 앞에 들고다니기
 	AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
