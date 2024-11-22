@@ -64,3 +64,36 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum)
 	},2.5f,false);
 	
 }
+
+void UNPCInfoWidget::SetForcus_ScrollBox_Security(int32 panelNum, int32 wsNum)
+{
+	FTimerHandle UITimer1;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer1,[this, panelNum]()
+	{
+		if (panelNum==1)
+		{
+			ScrollBox_Security->ScrollWidgetIntoView(CanvasPanel_Security1,true);
+		}
+		else if (panelNum==2)
+		{
+			ScrollBox_Security->ScrollWidgetIntoView(CanvasPanel_Security2,true);
+		}
+	},1.5f,false);
+
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this, wsNum]()
+	{
+		if (wsNum==1)
+		{
+			WidgetSwitcher_Security1->SetActiveWidgetIndex(1);
+			
+		}
+		else if (wsNum==2)
+		{
+			
+		}
+	},2.5f,false);
+	
+}

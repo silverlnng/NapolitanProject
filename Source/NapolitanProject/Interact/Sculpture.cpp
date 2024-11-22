@@ -137,6 +137,14 @@ void ASculpture::MissionCheck()
 		// 그단서 
 		
 	},11.5f,false);
+
+	FTimerHandle Timer2;
+	GetWorldTimerManager().SetTimer(Timer2,[this]()
+	{
+
+		
+		
+	},14.f,false);
 	
 }
 

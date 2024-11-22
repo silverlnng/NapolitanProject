@@ -47,12 +47,27 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UImage* Img_Head_BG;
 	
-////////////////////////////////////////////////////////////	
+//////////////////////경비원//////////////////////////////////////	
+	UPROPERTY(meta = (BindWidget))
+	class UScrollBox* ScrollBox_Security;
 	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_Security1;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_Security2;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher_Security1;
+	
+/////////////////////////////////////////////////////////////	
 	UFUNCTION()
 	void SelectContent(int32 idx);
 
 	UFUNCTION(BlueprintCallable)
 	void SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum);
+
+	UFUNCTION(BlueprintCallable)
+	void SetForcus_ScrollBox_Security(int32 panelNum,int32 wsNum);
 	
 };
