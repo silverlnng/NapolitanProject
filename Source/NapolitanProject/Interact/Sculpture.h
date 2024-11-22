@@ -49,6 +49,10 @@ public:
 	// 나이아가라 컴포넌트 
 	UPROPERTY(EditDefaultsOnly)
 	class UNiagaraComponent* NiagaraComp;
+	UPROPERTY(EditDefaultsOnly)
+	class UNiagaraComponent* NiagaraComp2;
+	UPROPERTY(EditDefaultsOnly)
+	class UNiagaraComponent* NiagaraComp3;
 	
 	// 아이템을 가진상태에서 아이템을 내려놓을수있도록 
 	void PutDownPiece(class APieceActor* Piece);
@@ -61,5 +65,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class ANPC_Security* NPC_Security;
+
+	// 단서 제공하기
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AClueActor> Clue10;
 	
 };

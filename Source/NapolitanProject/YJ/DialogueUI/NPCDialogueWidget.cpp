@@ -105,6 +105,7 @@ void UNPCDialogueWidget::CreateSelectionChildren(int32 count,TArray<FString> str
 		UniformGridPanel_Selection->RemoveChild(wid);
 	}
 	// 반복문으로 갯수만큼 생성시키기
+		// 값이 없으면 생성을 안하게 됨
 	
 	for (int i=0;i<count;i++)
 	{

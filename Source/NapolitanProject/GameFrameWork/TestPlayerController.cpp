@@ -166,6 +166,7 @@ void ATestPlayerController::StartEndNPCDialougue(bool value)
 		int32 npcID =curNPC->GetNPCID();
 		UE_LOG(LogTemp,Warning,TEXT("%s,npcID : %d"),*CALLINFO,npcID);
 		int32 npcState =curNPC->GetState();
+		
 		SetCurNPCSelectUI(npcID,npcState,"kor");
 		
 		SetNPCDialougueMaxSize();
@@ -222,20 +223,25 @@ void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 	////////// 버튼 보이게,안보이게 처리
 	if (0==curOrder){PlayerHUD->NPCDialogueUI->Btn_Back->SetVisibility(ESlateVisibility::Hidden);}
 	if (0!=curOrder){PlayerHUD->NPCDialogueUI->Btn_Back->SetVisibility(ESlateVisibility::Visible);}
-	if (PlayerHUD->NPCDialogueUI->MaxOrder!=curOrder)
+	if (PlayerHUD->NPCDialogueUI->MaxOrder!=(curOrder+1))
 	{
 		PlayerHUD->NPCDialogueUI->Btn_Next->SetVisibility(ESlateVisibility::Visible);
 		// 선택창 나오도록 
 		PlayerHUD->NPCDialogueUI->SetSelectSlotVisible(false);
 	}
-	if (PlayerHUD->NPCDialogueUI->MaxOrder==curOrder)
+	if (PlayerHUD->NPCDialogueUI->MaxOrder==(curOrder+1))
 	{
 		PlayerHUD->NPCDialogueUI->Btn_Next->SetVisibility(ESlateVisibility::Hidden);
 
-		// 선택창 나오도록 
-		PlayerHUD->NPCDialogueUI->SetSelectSlotVisible(true);
+		FTimerHandle UITimer;
+		GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+		{
+			// 선택창이 있는 경우에만 선택창 나오도록 
+			PlayerHUD->NPCDialogueUI->SetSelectSlotVisible(true);
+		},1.5f,false);
 	}
-	/////////////////////////////////////
+	
+//////////////////////////////////////////////
 	
 	if (GI->NPCDialogueMap.Contains(FindKey)) // 있으면 출력하기 
 	{
@@ -312,6 +318,8 @@ int32 ATestPlayerController::SetNPCResultMaxSize(int32 selectedAnswer)
 
 void ATestPlayerController::SetNPCResultText(int32 curOrder)
 {
+	if (!curNPC){return;}
+	
 	int32 npcID =curNPC->GetNPCID();
 	
 	int32 npcState =curNPC->GetState();
@@ -431,7 +439,7 @@ void ATestPlayerController::SetCurNPCSelectUI(const int32& NPC_ID, const int32& 
 			break;
 		}
 	}
-
+	SelectionSlotNum=count;
 	// 한번호출
 	PlayerHUD->NPCDialogueUI->CreateSelectionChildren(count,str,result);
 }

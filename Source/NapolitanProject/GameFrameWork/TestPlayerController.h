@@ -80,7 +80,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetCurNPCSelectUI(const int32& NPC_ID,const int32& State,const FString& Lang);
-
+	UPROPERTY(VisibleAnywhere)
+	int32 SelectionSlotNum=0;
 	UFUNCTION()
 	void SetCurNPCResultUI(int32 FindKey);
 

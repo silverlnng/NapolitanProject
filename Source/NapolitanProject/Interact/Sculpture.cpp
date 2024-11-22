@@ -2,6 +2,8 @@
 
 
 #include "Sculpture.h"
+
+#include "ClueActor.h"
 #include "NiagaraComponent.h"
 #include "EngineUtils.h"
 #include "ItemActor.h"
@@ -40,6 +42,11 @@ ASculpture::ASculpture()
 
 	NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
 	NiagaraComp->SetupAttachment(StaticMeshComp);
+	NiagaraComp2 = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp2"));
+	NiagaraComp2->SetupAttachment(StaticMeshComp);
+	NiagaraComp3 = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp3"));
+	NiagaraComp3->SetupAttachment(StaticMeshComp);
+	
 }
 
 // Called when the game starts or when spawned
@@ -111,16 +118,25 @@ void ASculpture::MissionCheck()
 
 		// 피흘리도록하기
 		NiagaraComp->Activate();
+		NiagaraComp2->Activate();
+		NiagaraComp3->Activate();
 		// 피가 아예 묻도록 하기 UGameplayStatics::SpawnDecalAtLocation
 
-		// 경비원 노트 ui 팝업되도록 만들기 
-		
+		// 경비원 노트 ui 팝업되도록 만들기
+		FActorSpawnParameters SpawnParams;
+		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		FVector SpawnLocation = SceneComp2->GetComponentLocation();
+		FRotator tempRot =FRotator(0.f,90.f,0.f);
+		if (Clue10)
+		{
+			GetWorld()->SpawnActor<AClueActor>(Clue10,SpawnLocation,tempRot,SpawnParams);
+		}
 		// 단서가 나오도록 하기
 		//
 
 		// 그단서 
 		
-	},11.f,false);
+	},11.5f,false);
 	
 }
 

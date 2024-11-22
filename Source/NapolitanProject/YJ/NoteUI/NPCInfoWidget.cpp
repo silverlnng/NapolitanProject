@@ -61,6 +61,6 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum)
 				Img_Head_BG->SetVisibility(ESlateVisibility::Visible);
 			} , 2.0f , false);		
 		}
-	},3.0f,false);
+	},2.5f,false);
 	
 }
