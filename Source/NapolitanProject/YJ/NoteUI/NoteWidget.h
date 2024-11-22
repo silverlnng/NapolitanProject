@@ -26,6 +26,8 @@ public:
 	class UUserWidget* WBP_SettingInNote;
 	UPROPERTY(meta = (BindWidget))
 	class UUserWidget* WBP_RuleInfo;
+	UPROPERTY(meta = (BindWidget))
+	class UEscapeRuleWidget* WBP_EscapeRule;
 
 	UPROPERTY(meta = (BindWidget))
 	class UClueInfoWidget* WBP_ClueInfo;
@@ -41,6 +43,9 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_ClueInfo;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Escape;
 
 ///////// NPC Info //////////////////////////////////
 
@@ -85,6 +90,9 @@ public:
 
 	UFUNCTION()
 	void OnClickBtn_ClueInfo();
+
+	UFUNCTION()
+	void OnClickBtn_Escape();
 
 //////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")

@@ -19,6 +19,8 @@ void UNoteWidget::NativeConstruct()
 	Btn_Souvenir->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Souvenir);
 	Btn_Setting->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Setting);
 	Btn_ClueInfo->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_ClueInfo);
+	Btn_Escape->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Escape);
+	
 	Btn_Security->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Security);
 	Btn_Cleaner->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Cleaner);
 	Btn_Docent->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Docent);
@@ -67,6 +69,16 @@ void UNoteWidget::OnClickBtn_Setting()
 void UNoteWidget::OnClickBtn_ClueInfo()
 {
 	SelectContent(2);
+	
+	if (ClickSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, ClickSoundWave);
+	}
+}
+
+void UNoteWidget::OnClickBtn_Escape()
+{
+	SelectContent(5);
 	
 	if (ClickSoundWave)
 	{

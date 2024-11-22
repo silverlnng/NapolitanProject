@@ -9,6 +9,7 @@
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/YJ/NoteUI/EscapeRuleWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 #include "NapolitanProject/YJ/NoteUI/SouvenirWidget.h"
 
@@ -83,6 +84,7 @@ void ASouvenirActor::OnPickup()
 	
 		TestPC->SetSouvenirUICurNumber(GetSouvenirID());
 	}
+
 	
 	
 
@@ -104,15 +106,21 @@ void ASouvenirActor::OnPickup()
 		{
 			 GI->AcquireSouvenirNum++;
 			FString num=FString::FromInt(GI->AcquireSouvenirNum);
-			FString temp="얻은 유물 갯수"+num;
+			FString temp="AcquireSouvenirNum"+num;
 			 GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, *temp);
 		}
 	}
 
+	// GI->AcquireSouvenirNum 을 받아서 
+	PlayerHUD->NoteUI->WBP_EscapeRule->SetAcquireImage(GI->AcquireSouvenirNum,SouvenirData->thumnail);
+	PlayerHUD->NoteUI->WBP_EscapeRule->SetKeyImage(GI->AcquireSouvenirNum);
 	if (GI->AcquireSouvenirNum==3)
 	{
 		// npc 이서 방문열리는 쪽으로 화면 전환 하는 이벤트 발생시키기
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "유물3개 획득");
+
+		// ui 이벤트를 발생시키기
+		
 	}
 
 	

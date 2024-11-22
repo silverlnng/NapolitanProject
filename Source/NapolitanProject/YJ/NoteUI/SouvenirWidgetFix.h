@@ -13,9 +13,7 @@ UCLASS()
 class NAPOLITANPROJECT_API USouvenirWidgetFix : public UUserWidget
 {
 	GENERATED_BODY()
-
 public:
-
 	virtual void NativeConstruct() override;
 	
 	UPROPERTY(meta = (BindWidget))
