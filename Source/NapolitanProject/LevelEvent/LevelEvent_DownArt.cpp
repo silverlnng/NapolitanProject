@@ -47,7 +47,6 @@ void ALevelEvent_DownArt::OnBeginOverlap(UPrimitiveComponent* OverlappedComponen
 	//만약 부딪힌게 캐릭터일 경우 Frame은 아래로 내려감
 	if(OtherActor)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("OnBeginOverlap1"));
 		auto* Target = Cast<ATestCharacter>(OtherActor);
 		if(Target)
 		{
