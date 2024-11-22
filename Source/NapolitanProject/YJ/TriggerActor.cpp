@@ -122,7 +122,14 @@ void ATriggerActor::BoxCompEndOverlap( UPrimitiveComponent* OverlappedComponent,
 {
 	if (OtherActor->IsA(ATestCharacter::StaticClass()))
 	{
-		NPC_Security->AudioComp->Stop();
+		if (NPC_Security)
+		{
+			NPC_Security->AudioComp->Stop();
+		}
+		//플레이어의 심장소리 플레이 중이면 중지
+		
+		MainCharacter->StopSound();
+		
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "BoxCompEndOverlap");
 		//CheckSide();
 		if (SoundControlActor)

@@ -2,7 +2,6 @@
 
 
 #include "DeadEndingWidget.h"
-
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/RichTextBlock.h"
@@ -64,6 +63,9 @@ void UDeadEndingWidget::OnRestart()
 	//MainCharacter->SetActorLocation(FVector(-1410,2020,-656),false,);
 	//MainCharacter->SetActorRotation(FRotator(0,-90,0));
 	MainCharacter->bIsBeingAttacked=false;
+	
+	MainCharacter->StopSound();
+		
 	MainCharacter->SetPlayerState(EPlayerState::Idle);
 	this->SetVisibility(ESlateVisibility::Hidden);
 }
