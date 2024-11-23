@@ -9,12 +9,14 @@
 #include "NavigationSystem.h"
 #include "NPC_Cleaner.h"
 #include "NPC_Security_AnimInstance.h"
+#include "NPC_Youngsoo.h"
 #include "Camera/CameraComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/ItemActor.h"
@@ -423,6 +425,21 @@ void ANPC_Security::EndEvent()
 		//ItemHead->SetActorRotation(HeadStaticMesh->GetComponentRotation());
 	},1.0f,false);
 
+	//영수 캐스팅 후 보이게 하기
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName(TEXT("Youngsoo")), FoundActors);
+
+	for (AActor* Actor : FoundActors)
+	{
+		ANPC_Youngsoo* Youngsoo = Cast<ANPC_Youngsoo>(Actor);
+		if (Youngsoo)
+		{
+			UE_LOG(LogTemp,Warning,TEXT("Youngsoo"));
+			//영수 보이게 하기
+			Youngsoo->GetMesh()->SetHiddenInGame(false);
+			Youngsoo->GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("NPC"));
+		}
+	}
 	
 
 	ChangeCleared(); // 더이상 상호작용 안하도록 막고
