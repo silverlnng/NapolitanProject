@@ -8,6 +8,7 @@
 #include "Components/Image.h"
 #include "Components/ScrollBox.h"
 #include "Components/WidgetSwitcher.h"
+#include "Kismet/GameplayStatics.h"
 
 void UNPCInfoWidget::NativeConstruct()
 {
@@ -61,7 +62,11 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum)
 				Img_Head_BG->SetVisibility(ESlateVisibility::Visible);
 			} , 2.0f , false);		
 		}
-	},2.5f,false);
+		if (StickSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, StickSoundWave);
+		}
+	},2.0f,false);
 	
 }
 
