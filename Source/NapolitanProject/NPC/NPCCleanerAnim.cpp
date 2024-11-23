@@ -30,5 +30,5 @@ void UNPCCleanerAnim::AnimNotify_FinishClean()
 void UNPCCleanerAnim::AnimNotify_Decal()
 {
 	Cleaner->SpawnFootsDecal();
-	UE_LOG(LogTemp, Warning, TEXT("AnimNotify_Footstep called at frame: %f"), GetWorld()->GetTimeSeconds());
+	//UE_LOG(LogTemp, Warning, TEXT("AnimNotify_Footstep called at frame: %f"), GetWorld()->GetTimeSeconds());
 }

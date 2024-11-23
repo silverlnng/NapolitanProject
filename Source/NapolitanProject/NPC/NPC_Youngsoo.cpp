@@ -12,6 +12,7 @@
 #include "../GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
+#include "NapolitanProject/Interact/SouvenirActor.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 // Sets default values
@@ -28,7 +29,8 @@ void ANPC_Youngsoo::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//GetMesh()->SetVisibility(false);
+	GetMesh()->SetVisibility(false);
+	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
 }
 
 // Called every frame
@@ -114,9 +116,10 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			FTimerHandle SouvenirTimer;
 			GetWorldTimerManager().SetTimer(SouvenirTimer, [this]()
 			{
-				FString SouvenirName= FString(TEXT("파란 스카프를"));
-				PlayerHUD->InteractUI->GetSouvenirEvent(SouvenirName);
-				ChangeCleared();
+				//FString SouvenirName= FString(TEXT("파란 스카프를"));
+				//PlayerHUD->InteractUI->GetSouvenirEvent(SouvenirName);
+				//ChangeCleared();
+				SpawnItems();
 			}, 8.0f, false);
 
 			
@@ -172,6 +175,24 @@ void ANPC_Youngsoo::ChangeCleared()
 void ANPC_Youngsoo::DissolveEvent(FString& str)
 {
 	Super::DissolveEvent(str);
+}
+
+void ANPC_Youngsoo::SpawnItems()
+{
+	// 발끝 위치를 기준으로 스폰 위치 설정
+	FVector FootLocation = GetMesh()->GetSocketLocation(FName("ItemSpawn"));
+	FTransform SpawnTransform(FootLocation);
+
+	// 블루프린트에서 설정된 ItemClass와 SouvenirClass로 스폰
+	AActor* SouvenirActor = GetWorld()->SpawnActor<ASouvenirActor>(SouvenirClass, SpawnTransform );
+	//AActor* ItemActor = GetWorld()->SpawnActor<AItemActor>(ItemClass, SpawnTransform);
+
+	if (SouvenirActor)
+	{
+		//ItemActor->Tags.Add(FName("Item"));
+		SouvenirActor->Tags.Add(FName("Souvenir"));
+		Destroy();
+	}		
 }
 
 

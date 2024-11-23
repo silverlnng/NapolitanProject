@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "NPCCharacter.h"
 #include "GameFramework/Character.h"
+#include "NapolitanProject/Interact/SouvenirActor.h"
 #include "NPC_Youngsoo.generated.h"
 
 UCLASS()
@@ -55,5 +56,12 @@ public:
 	class USoundBase* YSScreamSound;
 
 	FTimerHandle TimerHandle;  // 타이머 핸들 선언
+
+public:
+	//유품을 스폰하는 함수
+	void SpawnItems();
+	
+	UPROPERTY(EditAnywhere, Category = "Spawn Items")
+	TSubclassOf<ASouvenirActor> SouvenirClass;
 
 };
