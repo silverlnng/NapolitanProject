@@ -73,16 +73,16 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 		if (0 == result)
 		{
 			//남자를 위로해주자. “괜찮으십니까”의 경우 => 남자는 소리를 지르다가 사라지고, 물 나이아가라 발생
-			int32 key=(NPC_ID*100)+(State*10)+result;
+			/*int32 key=(NPC_ID*100)+(State*10)+result;
 			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
-			TestPC->SetCurNPCResultUI(key);
+			TestPC->SetCurNPCResultUI(key);*/
 			
 			//애니메이션 블루프린트 실행
 			anim = Cast<UYoungsooAnim>(GetMesh()->GetAnimInstance());
 			anim->playYSSadMontage(); //슬퍼하는 애니메이션 작동
 			UGameplayStatics::PlaySound2D(GetWorld(), YSScreamSound);
 
-			TestPC->StartEndNPCDialougue(false);
+			//TestPC->StartEndNPCDialougue(false);
 			
 			// 5초 후에 캐릭터를 숨기기 위한 타이머 설정
 			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
@@ -97,9 +97,9 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 		{
 			// “단 한명만이 닻을 풀어 익사했다." => 내 가족들은... 이라는 대사
 			// DynamicMaterial 생성 및 적용
-			int32 key=(NPC_ID*100)+(State*10)+result;
+			/*int32 key=(NPC_ID*100)+(State*10)+result;
 			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
-			TestPC->SetCurNPCResultUI(key);
+			TestPC->SetCurNPCResultUI(key);*/
 			
 			//유품 스폰
 

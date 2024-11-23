@@ -58,15 +58,15 @@ public:
 	class UVerticalBox* VBox_Quest; 
 
 	// 생성한 (받은) 퀘스트를 배열로 가지고 있기
-	TMap<int,class UQuestSlotWidget*> QuestSlotsMap;
+	TArray<class UQuestSlotWidget*> QuestSlotsArray;
 	
 	// 퀘스트 슬롯 생성, 제거
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UQuestSlotWidget> QuestSlotWidgetFactory;
 
-	void AddQuestSlot();
+	void AddQuestSlot(int32 QuestNum,FString& str);
 
-	void RemoveQuestSlot();
+	void RemoveQuestSlot(int32 RemoveQuestNum);
 	
 /////////// 단서 ui ///////////
 	UPROPERTY(meta=(BindWidget))

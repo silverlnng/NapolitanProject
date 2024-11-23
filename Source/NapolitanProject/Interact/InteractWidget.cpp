@@ -71,30 +71,36 @@ void UInteractWidget::PlayNoteUIEvent(bool val)
 	
 }
 
-void UInteractWidget::AddQuestSlot()
+void UInteractWidget::AddQuestSlot(int32 QuestNum,FString& str)
 {
 	//
-	UQuestSlotWidget* QuestSlot = CreateWidget<UQuestSlotWidget>(this, UQuestSlotWidget::StaticClass());
+	UQuestSlotWidget* QuestSlot = CreateWidget<UQuestSlotWidget>(this, QuestSlotWidgetFactory);
 	// 어떤 퀘스트 인지 ??
 	if (QuestSlot)
 	{
 		// VerticalBox에 추가
+		// 만들때 아이디를 부여해서
+		QuestSlot->SetQuestNum(QuestNum);
+		QuestSlot->SetText_QuestName(str);
 		VBox_Quest->AddChildToVerticalBox(QuestSlot);
-		//QuestSlotsMap.Add(QuestSlot)
+		QuestSlotsArray.Add(QuestSlot);
 	}
 }
 
-void UInteractWidget::RemoveQuestSlot()
+void UInteractWidget::RemoveQuestSlot(int32 RemoveQuestNum)
 {
 	//퀘스트를 달성할떄 호출해야함 어떤걸 제거할지 ??
 
-	
-	
-	/*if (VBox_Quest && ItemToRemove)
+	// 제거할 아이디를 받아서 map에 검색을 하기 
+	for ( auto QuestSlot : QuestSlotsArray)
 	{
-		// VerticalBox에서 아이템 제거
-		VBox_Quest->RemoveChild(ItemToRemove);
-	}*/
+		if (QuestSlot->QuestNum==RemoveQuestNum)
+		{
+			VBox_Quest->RemoveChild(QuestSlot);
+			QuestSlotsArray.Remove(QuestSlot);
+			break;
+		}
+	}
 }
 
 

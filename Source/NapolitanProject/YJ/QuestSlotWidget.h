@@ -15,10 +15,19 @@ class NAPOLITANPROJECT_API UQuestSlotWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	
+	UPROPERTY(VisibleAnywhere)
+	int32 QuestNum=0;
+	
 	UPROPERTY(meta=(BindWidget))
 	class UTextBlock* Text_QuestName;
 
 	UFUNCTION()
-	void SetText_QuestName(FString str);
-	
+	void SetText_QuestName(const FString& str) const;
+
+	UFUNCTION()
+	int32 GetQuestNum();
+
+	UFUNCTION()
+	void SetQuestNum(int32 val);
 };
