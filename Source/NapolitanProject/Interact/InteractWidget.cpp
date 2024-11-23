@@ -10,8 +10,10 @@
 #include "Components/Image.h"
 #include "Components/RichTextBlock.h"
 #include "Components/TextBlock.h"
+#include "Components/VerticalBox.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/YJ/QuestSlotWidget.h"
 
 void UInteractWidget::NativeConstruct()
 {
@@ -67,6 +69,32 @@ void UInteractWidget::PlayNoteUIEvent(bool val)
 		PlayAnimation(NoteImgAnim);
 	}
 	
+}
+
+void UInteractWidget::AddQuestSlot()
+{
+	//
+	UQuestSlotWidget* QuestSlot = CreateWidget<UQuestSlotWidget>(this, UQuestSlotWidget::StaticClass());
+	// 어떤 퀘스트 인지 ??
+	if (QuestSlot)
+	{
+		// VerticalBox에 추가
+		VBox_Quest->AddChildToVerticalBox(QuestSlot);
+		//QuestSlotsMap.Add(QuestSlot)
+	}
+}
+
+void UInteractWidget::RemoveQuestSlot()
+{
+	//퀘스트를 달성할떄 호출해야함 어떤걸 제거할지 ??
+
+	
+	
+	/*if (VBox_Quest && ItemToRemove)
+	{
+		// VerticalBox에서 아이템 제거
+		VBox_Quest->RemoveChild(ItemToRemove);
+	}*/
 }
 
 
