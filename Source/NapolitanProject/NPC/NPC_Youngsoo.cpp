@@ -29,7 +29,8 @@ void ANPC_Youngsoo::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetMesh()->SetVisibility(false);
+	//GetMesh()->SetVisibility(false);
+	GetMesh()->SetHiddenInGame(true);
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
 }
 
