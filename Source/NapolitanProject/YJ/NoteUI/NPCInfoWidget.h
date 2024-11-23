@@ -18,6 +18,10 @@ public:
 
 	virtual void NativeConstruct() override;
 	
+/////////////////////소리///////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* StickSoundWave;	
+	
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher_;
 

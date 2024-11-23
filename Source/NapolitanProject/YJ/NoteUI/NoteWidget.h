@@ -70,6 +70,21 @@ public:
 	UFUNCTION()
 	void OnClickBtn_Btn_Oldman();
 
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Artist;
+	UFUNCTION()
+	void OnClickBtn_Btn_Artist();
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Girl;
+	UFUNCTION()
+	void OnClickBtn_Btn_Girl();
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Curator;
+	UFUNCTION()
+	void OnClickBtn_Btn_Curator();
+
 
 //////////////////////////////////////////////////////////////////	
 	

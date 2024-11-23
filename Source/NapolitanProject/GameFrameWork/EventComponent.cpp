@@ -8,6 +8,7 @@
 #include "TestPlayerController.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/RichTextBlock.h"
+#include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/YJ/EventWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NPCInfoWidget.h"
@@ -136,6 +137,17 @@ void UEventComponent::Event_Cleaner_Start()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Cleaner(1,1);
 	},2.5f,false);
+
+	
+
+	FTimerHandle UITimer3;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer3,[this]()
+	{
+		FString QuestText =FString(TEXT("머리를 찾아주기"));
+		PlayerHUD->InteractUI->AddQuestSlot(1,QuestText);
+	},8.0f,false);
+	
 }
 
 void UEventComponent::Event_Cleaner_Completed()
@@ -172,6 +184,13 @@ void UEventComponent::Event_Cleaner_Completed()
 		MainCharacter->SetPlayerState(EPlayerState::UI);
 		
 	},6.0f,false);
+
+	FTimerHandle UITimer4;
+	
+	GetWorld()->GetTimerManager().SetTimer(UITimer4,[this]()
+	{
+		PlayerHUD->InteractUI->RemoveQuestSlot(1);
+	},8.0f,false);
 }
 
 void UEventComponent::UpdateText()

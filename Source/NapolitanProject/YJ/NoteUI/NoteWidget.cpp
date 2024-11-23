@@ -25,6 +25,9 @@ void UNoteWidget::NativeConstruct()
 	Btn_Cleaner->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Cleaner);
 	Btn_Docent->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Docent);
 	Btn_Oldman->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Oldman);
+	Btn_Artist->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Artist);
+	Btn_Girl->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Girl);
+	Btn_Curator->OnClicked.AddDynamic(this,&UNoteWidget::OnClickBtn_Btn_Curator);
 	
 	Btn_Setting->SetVisibility(ESlateVisibility::Hidden);
 	
@@ -120,6 +123,36 @@ void UNoteWidget::OnClickBtn_Btn_Oldman()
 {
 	SelectContent(1);
 	WBP_NPCInfo->SelectContent(3);
+	if (ClickSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, ClickSoundWave);
+	}
+}
+
+void UNoteWidget::OnClickBtn_Btn_Artist()
+{
+	SelectContent(1);
+	WBP_NPCInfo->SelectContent(4);
+	if (ClickSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, ClickSoundWave);
+	}
+}
+
+void UNoteWidget::OnClickBtn_Btn_Girl()
+{
+	SelectContent(1);
+	WBP_NPCInfo->SelectContent(5);
+	if (ClickSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, ClickSoundWave);
+	}
+}
+
+void UNoteWidget::OnClickBtn_Btn_Curator()
+{
+	SelectContent(1);
+	WBP_NPCInfo->SelectContent(6);
 	if (ClickSoundWave)
 	{
 		UGameplayStatics::PlaySound2D(this, ClickSoundWave);

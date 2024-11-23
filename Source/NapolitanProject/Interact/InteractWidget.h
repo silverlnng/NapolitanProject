@@ -42,7 +42,7 @@ public:
 	UFUNCTION()
 	void GetSouvenirEvent(const FString& str); // 유물획득할때 획득한 유물이름 넣어주고 호출하는 함수
 
-	//// 수첩 ui ////////
+////////// 수첩 ui ////////
 	//UPROPERTY(meta=(BindWidget))
 	
 	UPROPERTY(meta=(BindWidget))
@@ -51,7 +51,23 @@ public:
 	class UWidgetAnimation* NoteImgAnim;
 	UFUNCTION()
 	void PlayNoteUIEvent(bool val);
+	
+//////////// 퀘스트 ui //////////////////
 
+	UPROPERTY(meta=(BindWidget))
+	class UVerticalBox* VBox_Quest; 
+
+	// 생성한 (받은) 퀘스트를 배열로 가지고 있기
+	TArray<class UQuestSlotWidget*> QuestSlotsArray;
+	
+	// 퀘스트 슬롯 생성, 제거
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UQuestSlotWidget> QuestSlotWidgetFactory;
+
+	void AddQuestSlot(int32 QuestNum,FString& str);
+
+	void RemoveQuestSlot(int32 RemoveQuestNum);
+	
 /////////// 단서 ui ///////////
 	UPROPERTY(meta=(BindWidget))
 	class UCanvasPanel* CanvasPanel_Clue;

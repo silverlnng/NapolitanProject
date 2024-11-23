@@ -400,8 +400,11 @@ void ANPC_Security::EndEvent()
 {
 	AudioComp->Stop();
 	TestPC->curNPC=this;
+	
 	PawnSensingComp->bEnableSensingUpdates=false;
+	PawnSensingComp->bSeePawns=false;
 	Target=nullptr;
+	
 	GetCharacterMovement()->DisableMovement();
 	EnemyAI->StopMovement();
 	SetState(ESecurityState::Stop);

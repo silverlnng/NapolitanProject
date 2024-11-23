@@ -10,8 +10,10 @@
 #include "Components/Image.h"
 #include "Components/RichTextBlock.h"
 #include "Components/TextBlock.h"
+#include "Components/VerticalBox.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/YJ/QuestSlotWidget.h"
 
 void UInteractWidget::NativeConstruct()
 {
@@ -67,6 +69,38 @@ void UInteractWidget::PlayNoteUIEvent(bool val)
 		PlayAnimation(NoteImgAnim);
 	}
 	
+}
+
+void UInteractWidget::AddQuestSlot(int32 QuestNum,FString& str)
+{
+	//
+	UQuestSlotWidget* QuestSlot = CreateWidget<UQuestSlotWidget>(this, QuestSlotWidgetFactory);
+	// 어떤 퀘스트 인지 ??
+	if (QuestSlot)
+	{
+		// VerticalBox에 추가
+		// 만들때 아이디를 부여해서
+		QuestSlot->SetQuestNum(QuestNum);
+		QuestSlot->SetText_QuestName(str);
+		VBox_Quest->AddChildToVerticalBox(QuestSlot);
+		QuestSlotsArray.Add(QuestSlot);
+	}
+}
+
+void UInteractWidget::RemoveQuestSlot(int32 RemoveQuestNum)
+{
+	//퀘스트를 달성할떄 호출해야함 어떤걸 제거할지 ??
+
+	// 제거할 아이디를 받아서 map에 검색을 하기 
+	for ( auto QuestSlot : QuestSlotsArray)
+	{
+		if (QuestSlot->QuestNum==RemoveQuestNum)
+		{
+			VBox_Quest->RemoveChild(QuestSlot);
+			QuestSlotsArray.Remove(QuestSlot);
+			break;
+		}
+	}
 }
 
 
