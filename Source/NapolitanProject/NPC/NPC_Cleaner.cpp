@@ -289,7 +289,7 @@ void ANPC_Cleaner::SpawnFootsDecal()
 {
 	if(!FootstepDecalMaterial) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("SpawnFootsDecal"));
+	//UE_LOG(LogTemp, Warning, TEXT("SpawnFootsDecal"));
 
 	//소켓 위치 가져오기
 	FVector FootLocation = GetMesh()->GetSocketLocation(FName("BloodSpawn"));
@@ -315,8 +315,8 @@ void ANPC_Cleaner::SpawnFootsDecal()
 		);
 
 		//디버그 라인
-		DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.f, 0, 1.f);
-		DrawDebugSphere(GetWorld(), HitResult.Location, 10.f, 12, FColor::Green, false, 1.f);
+		//DrawDebugLine(GetWorld(), TraceStart, TraceEnd, FColor::Red, false, 1.f, 0, 1.f);
+		//DrawDebugSphere(GetWorld(), HitResult.Location, 10.f, 12, FColor::Green, false, 1.f);
 		
 	}
 }

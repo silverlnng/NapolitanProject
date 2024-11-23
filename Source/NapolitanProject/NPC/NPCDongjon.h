@@ -72,8 +72,7 @@ public:
 
 	bool bItemSpawned = false;
 	bool bIsSpawn = false;
-
-	// Item and Souvenir classes for Blueprint assignment
+	
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<AItemActor> ItemClass;
 
