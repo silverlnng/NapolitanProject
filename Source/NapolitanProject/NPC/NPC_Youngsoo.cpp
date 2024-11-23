@@ -22,6 +22,13 @@ ANPC_Youngsoo::ANPC_Youngsoo()
 	PrimaryActorTick.bCanEverTick = true;
 
 	anim = Cast<UYoungsooAnim>(GetMesh()->GetAnimInstance());
+
+	Scarf = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("scarf"));
+	ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Script/Engine.StaticMesh'/Game/Bada/Asset/Youngsoo/Scarf.Scarf'"));
+	
+	Scarf->SetupAttachment(GetMesh());
+	Scarf->SetRelativeLocationAndRotation(FVector(4.f, 1.f,110.f),FRotator(90, 0, 110));
+	//(X=2.000000,Y=1.000000,Z=1.500000)
 }
 
 // Called when the game starts or when spawned
@@ -110,6 +117,7 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 				DissolveEvent(dissolve); //디졸브 이벤트 발생
 				TestPC->StartEndNPCDialougue(false); //결과 대화창 출력
 				ChangeCleared();
+				Scarf->SetVisibility(false);
 			}, 4.0f, false);
 
 		

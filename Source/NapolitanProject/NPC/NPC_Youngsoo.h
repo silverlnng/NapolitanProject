@@ -49,6 +49,9 @@ public:
 public:
 	UPROPERTY(EditDefaultsOnly, Category = Anim)
 	class UYoungsooAnim* anim;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UStaticMeshComponent* Scarf;
 	
 public:
 	//0-1. 비명 소리
