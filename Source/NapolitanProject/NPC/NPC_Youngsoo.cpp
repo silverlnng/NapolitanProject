@@ -39,6 +39,7 @@ void ANPC_Youngsoo::BeginPlay()
 	//GetMesh()->SetVisibility(false);
 	GetMesh()->SetHiddenInGame(true);
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+	Scarf->SetHiddenInGame(true);
 }
 
 // Called every frame

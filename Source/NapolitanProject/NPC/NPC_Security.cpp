@@ -438,6 +438,7 @@ void ANPC_Security::EndEvent()
 			//영수 보이게 하기
 			Youngsoo->GetMesh()->SetHiddenInGame(false);
 			Youngsoo->GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("NPC"));
+			Youngsoo->Scarf->SetHiddenInGame(false);
 		}
 	}
 	

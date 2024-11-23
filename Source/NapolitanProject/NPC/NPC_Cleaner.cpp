@@ -179,7 +179,7 @@ void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 		TargetPoint = points[randomIndex];
 		LastVisitedPoint = TargetPoint;
 
-		UE_LOG(LogTemp, Error, TEXT("New target point set: X=%f, Y=%f, Z=%f"), TargetPoint.X, TargetPoint.Y, TargetPoint.Z);
+		//UE_LOG(LogTemp, Error, TEXT("New target point set: X=%f, Y=%f, Z=%f"), TargetPoint.X, TargetPoint.Y, TargetPoint.Z);
 
 		// Move 상태로 전환
 		SetState(CleanerState::Move);
@@ -191,7 +191,7 @@ void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 	{
 		SetState(CleanerState::Stop); // Stop 상태로 변경
 		
-		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickIdle->stop"));
+		//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickIdle->stop"));
 	}
 }
 
@@ -213,7 +213,7 @@ void ANPC_Cleaner::TickMove(const float& DeltaTime)
 	if (MainCharacter->curState==EPlayerState::Talking)
 	{
 		SetState(CleanerState::Stop); // Stop 상태로 변경
-		UE_LOG(LogTemp,Error,TEXT("%s,%s"),*CALLINFO,TEXT("TickMove->stop"));
+		//UE_LOG(LogTemp,Error,TEXT("%s,%s"),*CALLINFO,TEXT("TickMove->stop"));
 	}
 }
 
@@ -222,7 +222,7 @@ void ANPC_Cleaner::TickCleaning(const float& DeltaTime)
 	if (MainCharacter->curState==EPlayerState::Talking)
 	{
 		SetState(CleanerState::Stop); // Stop 상태로 변경
-		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickCleaning->stop"));
+		//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickCleaning->stop"));
 	}
 	//MobPointActor->SetActorHiddenInGame(false);
 	if (AI) 
