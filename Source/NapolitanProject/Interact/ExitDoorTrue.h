@@ -33,14 +33,14 @@ public:
 public:
 
 	UFUNCTION()
-	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UPROPERTY(EditAnywhere)
 	class USoundBase* OpenDoorSound; //문이 열리는 소리
 
 	FTimerHandle TimerHandle;
 
-	void RotateDoor();
+	virtual void RotateDoor();
 	float TargetYaw;
 
 	bool bIsOpenDoor = false;

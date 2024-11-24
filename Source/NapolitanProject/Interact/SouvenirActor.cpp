@@ -3,6 +3,8 @@
 
 #include "SouvenirActor.h"
 
+#include "EngineUtils.h"
+#include "ExitDoor_LeeSeo.h"
 #include "InteractWidget.h"
 #include "Components/BoxComponent.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
@@ -120,7 +122,23 @@ void ASouvenirActor::OnPickup()
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "유물3개 획득");
 
 		// ui 이벤트를 발생시키기
-		
+		FTimerHandle UITimer5;
+
+		GetWorld()->GetTimerManager().SetTimer(UITimer5,[this]()
+		{
+			FString QuestText =FString(TEXT("숨겨진 공간을 찾아보자"));
+			PlayerHUD->InteractUI->AddQuestSlot(4,QuestText);
+		},1.5f,false);
+
+		AExitDoor_LeeSeo* Door=nullptr;
+		for (TActorIterator<AExitDoor_LeeSeo> It(GetWorld(), AExitDoor_LeeSeo::StaticClass()); It; ++It)
+		{
+			Door = *It;
+		}
+		if (Door)
+		{
+			Door->BindBeginOverlap();
+		}
 	}
 
 	
