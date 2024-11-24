@@ -118,6 +118,15 @@ void ANPC_Docent::ResultEvent(int32 result)
 				FString color ="Yellow";
 				DissolveEvent(color);
 			},2.0f,false);
+
+			// 미술관을 탐색하자 퀘스트 발생 시키기
+			FTimerHandle UITimer1;
+
+			GetWorld()->GetTimerManager().SetTimer(UITimer1,[this]()
+			{
+				FString QuestText =FString(TEXT("미술관을 탐색하자"));
+				PlayerHUD->InteractUI->AddQuestSlot(1,QuestText);
+			},6.0f,false);
 			
 		}
 	}

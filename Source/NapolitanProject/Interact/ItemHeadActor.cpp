@@ -4,6 +4,7 @@
 #include "ItemHeadActor.h"
 
 #include "EngineUtils.h"
+#include "InteractWidget.h"
 #include "Components/SlateWrapperTypes.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
@@ -25,7 +26,7 @@ void AItemHeadActor::OnPickup()
 	CleanerNextState();
 	Super::OnPickup();
 
-	// 머리잡았을때 경비원의 노트ui 나오고 단서 추가하도록 하기
+	/*// 머리잡았을때 경비원의 노트ui 나오고 단서 추가하도록 하기
 	MainCharacter->SetPlayerState(EPlayerState::UI);
 
 	// 시간지연
@@ -44,8 +45,25 @@ void AItemHeadActor::OnPickup()
 	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Security(2,1);
-	},2.5f,false);
+	},2.5f,false);*/
+	
+	FTimerHandle UITimer4;
+	
+	GetWorld()->GetTimerManager().SetTimer(UITimer4,[this]()
+	{
+		PlayerHUD->InteractUI->RemoveQuestSlot(2);
+	},1.0f,false);
 
+	
+	
+
+	FTimerHandle UITimer3;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer3,[this]()
+	{
+		FString QuestText =FString(TEXT("머리를 가져다 주자"));
+		PlayerHUD->InteractUI->AddQuestSlot(3,QuestText);
+	},1.5f,false);
 
 	
 }

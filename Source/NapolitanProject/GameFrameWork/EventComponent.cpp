@@ -145,7 +145,7 @@ void UEventComponent::Event_Cleaner_Start()
 	GetWorld()->GetTimerManager().SetTimer(UITimer3,[this]()
 	{
 		FString QuestText =FString(TEXT("머리를 찾아주기"));
-		PlayerHUD->InteractUI->AddQuestSlot(1,QuestText);
+		PlayerHUD->InteractUI->AddQuestSlot(2,QuestText);
 	},8.0f,false);
 	
 }
@@ -189,8 +189,16 @@ void UEventComponent::Event_Cleaner_Completed()
 	
 	GetWorld()->GetTimerManager().SetTimer(UITimer4,[this]()
 	{
-		PlayerHUD->InteractUI->RemoveQuestSlot(1);
+		PlayerHUD->InteractUI->RemoveQuestSlot(3);
 	},8.0f,false);
+
+	FTimerHandle UITimer5;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer5,[this]()
+	{
+		FString QuestText =FString(TEXT("숨겨진 공간을 찾아보자"));
+		PlayerHUD->InteractUI->AddQuestSlot(4,QuestText);
+	},8.5f,false);
 }
 
 void UEventComponent::UpdateText()
