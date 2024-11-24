@@ -13,5 +13,18 @@ UCLASS()
 class NAPOLITANPROJECT_API URequestLetter : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+	virtual void NativeConstruct() override;
+
+public:
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Button_Ticket; //티켓 버튼을 누를시 시퀀스 발동 후 미술관 레벨로 이동 하는 코드
+
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> MuseumLevel; //미술관 맵
+
+	UFUNCTION()
+	void OnTicketClicked();
 	
 };
