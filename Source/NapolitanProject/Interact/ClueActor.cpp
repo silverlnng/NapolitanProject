@@ -11,6 +11,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/Image.h"
 #include "Components/TextRenderComponent.h"
+#include "NapolitanProject/BDUI/RequestLetter.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
@@ -61,8 +62,24 @@ void AClueActor::LookAt()
 	MainCharacter->SetPlayerState(EPlayerState::UI);
 	FName Clue_FName = FName(*FString::FromInt(Clue_ID));
 	FClueData* ClueData= GI->DT_Clue->FindRow<FClueData>(Clue_FName , TEXT(""));
-	if (!ClueData){ UE_LOG(LogTemp,Warning,TEXT("ClueData null")) return;}
-
+	if (!ClueData)
+	{
+		// ClueData에 없으면 의뢰서. 의뢰서 ui 나오도록 하기
+		if (RequestLetterFactory)
+		{
+			RequestLetterUI =CreateWidget<URequestLetter>(GetWorld(),RequestLetterFactory);
+			if (RequestLetterUI)
+			{
+				RequestLetterUI->AddToViewport(2);
+				MainCharacter->SetPlayerState(EPlayerState::UI);
+			}
+			
+		}
+		
+		UE_LOG(LogTemp,Warning,TEXT("ClueData null"))
+		return;
+	}
+	
 
 	//데이터 테이블에 had으로 표시
 	ClueData->Had=true;

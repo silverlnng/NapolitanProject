@@ -45,6 +45,11 @@ public:
 	
     // 캐릭터가 상호작용 눌렀을때 실행시킬 함수
 	void LookAt();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class URequestLetter> RequestLetterFactory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
+	class URequestLetter* RequestLetterUI;
 };
 
 

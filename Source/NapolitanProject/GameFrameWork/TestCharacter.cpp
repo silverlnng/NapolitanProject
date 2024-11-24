@@ -488,6 +488,9 @@ void ATestCharacter::OnInteraction()
 			Clue->LookAt();
 		}
 
+		// 의뢰서라면 의뢰서 하나 나오도록 하기 
+		
+
 		ASouvenirActor* Souvenir=Cast<ASouvenirActor>(Interact);
 
 		if (Souvenir)
