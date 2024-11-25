@@ -43,7 +43,7 @@ void UEscapeRuleWidget::SetKeyImage(int32 num)
 		Img_Key->SetOpacity(0.35f);
 		break;
 	case 2:
-		Img_Key->SetOpacity(0.7f);
+		Img_Key->SetOpacity(0.5f);
 		break;
 	case 3:
 		Img_Key->SetOpacity(1.f);

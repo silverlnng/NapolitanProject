@@ -69,5 +69,9 @@ public:
 	// 단서 제공하기
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class AClueActor> Clue10;
+
+	//////////////////소리///////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* MissionClearSoundWave;
 	
 };

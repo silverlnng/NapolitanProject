@@ -9,6 +9,9 @@
 #include "ItemActor.h"
 #include "PieceActor.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/EventComponent.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/NPC/NPC_Security.h"
 
 // Sets default values
@@ -53,6 +56,7 @@ ASculpture::ASculpture()
 void ASculpture::BeginPlay()
 {
 	Super::BeginPlay();
+	TestPC=GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	for (TActorIterator<ANPC_Security> It(GetWorld(), ANPC_Security::StaticClass()); It; ++It)
 	{
 		NPC_Security = *It;
@@ -104,6 +108,14 @@ void ASculpture::MissionCheck()
 	UE_LOG(LogTemp,Warning,TEXT("경비원 미션 달성"));
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 
+	// 소리나오도록 하기
+	if (MissionClearSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, MissionClearSoundWave);
+	}
+	// 배경음 바꾸기 
+	
+
 	// 경비원으로 카메라 전환한뒤 사라지고 머리 남기는걸 보여 주기
 	if (NPC_Security)
 	{
@@ -141,10 +153,13 @@ void ASculpture::MissionCheck()
 	FTimerHandle Timer2;
 	GetWorldTimerManager().SetTimer(Timer2,[this]()
 	{
+		if (TestPC)
+		{
+			TestPC->EventComponent->Event_Security_Completed();
+		}
 
-		
-		
 	},14.f,false);
+
 	
 }
 

@@ -145,7 +145,7 @@ void UEventComponent::Event_Cleaner_Start()
 	GetWorld()->GetTimerManager().SetTimer(UITimer3,[this]()
 	{
 		FString QuestText =FString(TEXT("머리를 찾아주기"));
-		PlayerHUD->InteractUI->AddQuestSlot(1,QuestText);
+		PlayerHUD->InteractUI->AddQuestSlot(2,QuestText);
 	},8.0f,false);
 	
 }
@@ -189,8 +189,36 @@ void UEventComponent::Event_Cleaner_Completed()
 	
 	GetWorld()->GetTimerManager().SetTimer(UITimer4,[this]()
 	{
-		PlayerHUD->InteractUI->RemoveQuestSlot(1);
+		PlayerHUD->InteractUI->RemoveQuestSlot(3);
 	},8.0f,false);
+
+
+}
+
+void UEventComponent::Event_Security_Completed()
+{
+	TestPC->StartEndNPCDialougue(false);
+	TestPC->EndResult();
+	// 머리잡았을때 경비원의 노트ui 나오고 단서 추가하도록 하기
+	MainCharacter->SetPlayerState(EPlayerState::UI);
+
+	// 시간지연
+	FTimerHandle UITimer;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
+
+		PlayerHUD->NoteUI->OnClickBtn_Btn_Security();
+		
+	},2.0f,false);
+
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Security(2,1);
+	},2.5f,false);
 }
 
 void UEventComponent::UpdateText()

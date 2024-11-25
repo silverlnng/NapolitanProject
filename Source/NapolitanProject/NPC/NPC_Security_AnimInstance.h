@@ -36,5 +36,11 @@ public:
 	// NPC_Security 의 state 와 일치시켜주기
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	ESecurityState State;
+
+	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
+	class UAnimMontage* IdleMontage;
+
+	UFUNCTION()
+	void playIdleMontage();
 	
 };

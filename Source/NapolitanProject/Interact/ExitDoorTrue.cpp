@@ -29,7 +29,7 @@ void AExitDoorTrue::BeginPlay()
 {
 	Super::BeginPlay();
 
-	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &AExitDoorTrue::OnBeginOverlap);
+	 // BoxComp->OnComponentBeginOverlap.AddDynamic(this, &AExitDoorTrue::OnBeginOverlap);
 }
 
 // Called every frame
@@ -45,7 +45,7 @@ void AExitDoorTrue::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 	//만약 부딪힌게 캐릭터일 경우 Frame은 아래로 내려감
 	if(OtherActor)
 	{
-		if(bIsOpenDoor)
+		if(bIsOpenDoor) // 한번만 열리도록 만든 것
 			return;
 		
 		auto* Target = Cast<ATestCharacter>(OtherActor);
