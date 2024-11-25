@@ -26,5 +26,12 @@ public:
 
 	UFUNCTION()
 	void OnTicketClicked();
+
+public:
+	UPROPERTY(EditAnywhere, Category = "Cinematic")
+	class ULevelSequence* OpeningSequence;
+
+	UPROPERTY()
+	class ATestCharacter* playerCharacter;
 	
 };
