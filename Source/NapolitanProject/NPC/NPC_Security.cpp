@@ -408,9 +408,13 @@ void ANPC_Security::EndEvent()
 	GetCharacterMovement()->DisableMovement();
 	EnemyAI->StopMovement();
 	SetState(ESecurityState::Stop);
+
+	Anim->playIdleMontage();
 	
 	TestPC->SetViewTargetWithBlend(this,0.f);
 
+	
+	
 	// 사라지는 효과
 
 	FTimerHandle dissolveTimer;

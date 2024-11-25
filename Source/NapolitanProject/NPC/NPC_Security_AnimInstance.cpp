@@ -36,3 +36,11 @@ void UNPC_Security_AnimInstance::AnimNotify_AttackEnd()
 		NPCSecurity->OnMyAttackEnd();
 	}
 }
+
+void UNPC_Security_AnimInstance::playIdleMontage()
+{
+	if (IdleMontage)
+	{
+		Montage_Play(IdleMontage);
+	}
+}

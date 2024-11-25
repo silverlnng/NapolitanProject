@@ -116,11 +116,18 @@ void ASouvenirActor::OnPickup()
 	// GI->AcquireSouvenirNum 을 받아서 
 	PlayerHUD->NoteUI->WBP_EscapeRule->SetAcquireImage(GI->AcquireSouvenirNum,SouvenirData->thumnail);
 	PlayerHUD->NoteUI->WBP_EscapeRule->SetKeyImage(GI->AcquireSouvenirNum);
+
+	PlayerHUD->NoteUI->SelectContent(5);
+
+/////////////////// 유물 3개 모으는 순간 
 	if (GI->AcquireSouvenirNum==3)
 	{
 		// npc 이서 방문열리는 쪽으로 화면 전환 하는 이벤트 발생시키기
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "유물3개 획득");
 
+		
+	
+		
 		// ui 이벤트를 발생시키기
 		FTimerHandle UITimer5;
 
@@ -142,12 +149,17 @@ void ASouvenirActor::OnPickup()
 	}
 
 	
+	FTimerHandle SouvenirTimer3;
+	GetWorldTimerManager().SetTimer(SouvenirTimer3, [this]()
+	{
+		StaticMeshComp->SetHiddenInGame(true);
+	}, 1.0f, false);
 	
 	FTimerHandle SouvenirTimer2;
 	GetWorldTimerManager().SetTimer(SouvenirTimer2, [this]()
 	{
 		this->Destroy();
-	}, 2.0, false);
+	}, 5.0, false);
 	
 }
 
