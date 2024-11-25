@@ -4,6 +4,7 @@
 #include "NoteWidget.h"
 
 #include "ClueInfoWidget.h"
+#include "EscapeRuleWidget.h"
 #include "InventoryWidget.h"
 #include "NPCInfoWidget.h"
 #include "SouvenirWidget.h"
@@ -32,6 +33,7 @@ void UNoteWidget::NativeConstruct()
 	Btn_Setting->SetVisibility(ESlateVisibility::Hidden);
 	
 	WBP_Inventory->SetVisibility(ESlateVisibility::Hidden);
+	SelectContent(0);
 }
 
 void UNoteWidget::SelectContent(int32 idx)
