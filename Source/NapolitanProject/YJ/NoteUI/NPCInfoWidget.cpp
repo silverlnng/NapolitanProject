@@ -52,15 +52,6 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum)
 		else if (wsNum==2)
 		{
 			WidgetSwitcher_Cleaner2->SetActiveWidgetIndex(1);
-
-			FTimerHandle UITimer3;
-
-			GetWorld()->GetTimerManager().SetTimer(UITimer3 , [this]()
-			{
-				Img_Head->SetVisibility(ESlateVisibility::Visible);
-				Img_Head2->SetVisibility(ESlateVisibility::Visible);
-				Img_Head_BG->SetVisibility(ESlateVisibility::Visible);
-			} , 2.0f , false);		
 		}
 		if (StickSoundWave)
 		{
@@ -94,10 +85,22 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Security(int32 panelNum, int32 wsNum)
 		{
 			WidgetSwitcher_Security1->SetActiveWidgetIndex(1);
 			
+			FTimerHandle UITimer3;
+			GetWorld()->GetTimerManager().SetTimer(UITimer3 , [this]()
+			{
+				Img_Head->SetVisibility(ESlateVisibility::Visible);
+				Img_Head2->SetVisibility(ESlateVisibility::Visible);
+				Img_Head_BG->SetVisibility(ESlateVisibility::Visible);
+			} , 0.5f , false);		
+			
 		}
 		else if (wsNum==2)
 		{
 			
+		}
+		if (StickSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, StickSoundWave);
 		}
 	},2.5f,false);
 	

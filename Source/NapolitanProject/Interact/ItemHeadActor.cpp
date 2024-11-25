@@ -26,26 +26,7 @@ void AItemHeadActor::OnPickup()
 	CleanerNextState();
 	Super::OnPickup();
 
-	/*// 머리잡았을때 경비원의 노트ui 나오고 단서 추가하도록 하기
-	MainCharacter->SetPlayerState(EPlayerState::UI);
-
-	// 시간지연
-	FTimerHandle UITimer;
-
-	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
-	{
-		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
-
-		PlayerHUD->NoteUI->OnClickBtn_Btn_Security();
-		
-	},2.0f,false);
-
-	FTimerHandle UITimer2;
-
-	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
-	{
-		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Security(2,1);
-	},2.5f,false);*/
+	
 	
 	FTimerHandle UITimer4;
 	
