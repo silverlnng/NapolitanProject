@@ -160,6 +160,7 @@ public:
 
 	// 데칼 지속 시간 (사라지기 전까지 유지되는 시간)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Footsteps")
-	float DecalLifetime = 12.f;
-	
+	float DecalLifetime = 9.f;
+
+	bool bIsResult = false;
 };

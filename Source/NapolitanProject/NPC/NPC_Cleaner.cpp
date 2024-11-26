@@ -241,7 +241,7 @@ void ANPC_Cleaner::TickStop(const float& DeltaTime)
 	//멈춤 상태로 변경, 만약 플레이어가 대화창 UI를 종료했을 시 Idle로 변경
 	// 플레이어가 대화창 UI를 종료했는지 확인
 	AI->StopMovement();
-	if (MainCharacter->curState!=EPlayerState::Talking)
+	if (MainCharacter->curState!=EPlayerState::Talking && bIsResult == false)
 	{
 		SetState(CleanerState::Idle); // Idle 상태로 변경
 	}
@@ -335,6 +335,13 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 			{
 				MainCharacter->curItem->PutDown();
 			}
+
+			if (AI) 
+			{
+				AI->StopMovement(); //멈춤
+			}
+
+			bIsResult = true;
 			
 			HeadStaticMesh->SetHiddenInGame(false); //머리를 보이게 함
 			
