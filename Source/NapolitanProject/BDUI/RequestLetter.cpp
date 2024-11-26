@@ -30,6 +30,8 @@ void URequestLetter::OnTicketClicked()
 {
 	//UI안보이게 하기
 	SetVisibility(ESlateVisibility::Hidden);
+
+	// 기존의 배경음은 stop 하도록 만들기 
 	
 	if(OpeningSequence)
 	{
