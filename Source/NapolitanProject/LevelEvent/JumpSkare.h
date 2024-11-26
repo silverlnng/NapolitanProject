@@ -38,4 +38,7 @@ public:
 
 	UPROPERTY()
 	class UCapsuleComponent* CapsuleComp;
+
+	UPROPERTY(EditAnywhere)
+	float JumpSkareMaxSpeed=800.f;
 };
