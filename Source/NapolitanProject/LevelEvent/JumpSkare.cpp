@@ -24,10 +24,10 @@ void AJumpSkare::BeginPlay()
 
 	CapsuleComp->OnComponentBeginOverlap.AddDynamic(this, &AJumpSkare::AJumpSkare::BeginOverlap);
 	
-	GetMesh()->SetVisibility(false);
+	//GetMesh()->SetVisibility(false);
 
 	// 이동 속도 조정
-	GetCharacterMovement()->MaxWalkSpeed = 1200.0f; // 기본 속도보다 빠르게 설정
+	GetCharacterMovement()->MaxWalkSpeed = JumpSkareMaxSpeed; // 기본 속도보다 빠르게 설정
 }
 
 // Called every frame
@@ -41,7 +41,7 @@ void AJumpSkare::Tick(float DeltaTime)
 
 		//앞으로 빠르게 달려오기
 		FVector ForwardDirection = GetActorForwardVector(); // 캐릭터의 앞 방향 벡터
-		AddMovementInput(ForwardDirection, 1.0f); // 앞으로 이동
+		//AddMovementInput(ForwardDirection, 1.0f); // 앞으로 이동
 	}
 
 }
