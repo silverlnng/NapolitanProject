@@ -62,6 +62,7 @@ FString ASouvenirActor::GetSouvenirName()
 
 void ASouvenirActor::OnPickup()
 {
+	StaticMeshComp->SetHiddenInGame(true);
 	// 얻을때마다 갯수셀꺼여서 초기화 
 	GI->AcquireSouvenirNum=0;
 	
@@ -94,7 +95,7 @@ void ASouvenirActor::OnPickup()
 	GetWorldTimerManager().SetTimer(SouvenirTimer, [this]()
 	{
 		PlayerHUD->InteractUI->GetSouvenirEvent(GetSouvenirName());
-	}, 0.5f, false);
+	}, 0.2f, false);
 
 
 	// 지금까지 얻은 유물의 갯수가 3개일때 , 5개일 때를 각각 체크하기
@@ -152,7 +153,7 @@ void ASouvenirActor::OnPickup()
 	FTimerHandle SouvenirTimer3;
 	GetWorldTimerManager().SetTimer(SouvenirTimer3, [this]()
 	{
-		StaticMeshComp->SetHiddenInGame(true);
+		
 	}, 1.0f, false);
 	
 	FTimerHandle SouvenirTimer2;

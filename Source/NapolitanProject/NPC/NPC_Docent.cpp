@@ -51,7 +51,7 @@ void ANPC_Docent::ResultEvent(int32 result)
 			GetWorldTimerManager().SetTimer(Timer,[this]()
 			{
 				PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
-				PlayAnimMontage(attackAnimMontage);
+				//PlayAnimMontage(attackAnimMontage);
 			},3.0f,false);
 
 			
@@ -137,7 +137,7 @@ void ANPC_Docent::playTalkAnimMontage()
 {
 	if (TalkAnimMontage)
 	{
-		PlayAnimMontage(TalkAnimMontage);
+		//PlayAnimMontage(TalkAnimMontage);
 	}
 }
 
