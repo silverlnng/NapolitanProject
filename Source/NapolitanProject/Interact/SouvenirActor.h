@@ -51,5 +51,9 @@ public:
 	virtual FString GetSouvenirName();
 	
 	virtual void OnPickup();
+
+	//////////////////소리///////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* PickUpSoundWave;
 };
 
