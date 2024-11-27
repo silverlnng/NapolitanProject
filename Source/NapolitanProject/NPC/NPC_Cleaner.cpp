@@ -331,6 +331,12 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 	{
 		if (0==result)
 		{
+
+			if (MissionClearSoundWave)
+			{
+				UGameplayStatics::PlaySound2D(this, MissionClearSoundWave);
+			}
+			
 			if (MainCharacter->curItem)
 			{
 				MainCharacter->curItem->PutDown();

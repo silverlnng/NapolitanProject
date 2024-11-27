@@ -70,6 +70,11 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 		// 청소부의 퀘스트 완료 함수
 		Event_Cleaner_Completed();
 	}
+	else if (str=="OldmanClue")
+	{
+		// 청소부의 퀘스트 완료 함수
+		Event_Oldman();
+	}
 	
 	
 }
@@ -218,6 +223,32 @@ void UEventComponent::Event_Security_Completed()
 	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Security(2,1);
+	},2.5f,false);
+}
+
+void UEventComponent::Event_Oldman()
+{
+	TestPC->StartEndNPCDialougue(false);
+	TestPC->EndResult();
+	
+	MainCharacter->SetPlayerState(EPlayerState::UI);
+
+	// 시간지연
+	FTimerHandle UITimer;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
+
+		PlayerHUD->NoteUI->OnClickBtn_Btn_Oldman();
+		
+	},2.0f,false);
+
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Oldman(2,1);
 	},2.5f,false);
 }
 

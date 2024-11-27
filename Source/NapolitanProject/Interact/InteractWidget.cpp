@@ -11,6 +11,7 @@
 #include "Components/RichTextBlock.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/QuestSlotWidget.h"
@@ -23,6 +24,8 @@ void UInteractWidget::NativeConstruct()
 	CanvasPanel_Clue->SetVisibility(ESlateVisibility::Hidden);
 	CanvasPanel_Hit->SetVisibility(ESlateVisibility::Hidden);
 	Btn_ClueClose->OnClicked.AddDynamic(this,&UInteractWidget::OnClickBtn_ClueClose);
+	pc =GetOwningPlayer<ATestPlayerController>();
+	MainCharacter=pc->GetPawn<ATestCharacter>();
 }
 
 void UInteractWidget::SetVisibleCrossHair(bool value)
@@ -59,6 +62,10 @@ void UInteractWidget::GetSouvenirEvent(const FString& str)
 	HBox_GetSouvenir->SetVisibility(ESlateVisibility::Visible);
 	Text_SouvenirName->SetText(FText::FromString(str));
 	PlayAnimation(GetSouvenirAnim);
+	if (PickUpSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, PickUpSoundWave);
+	}
 }
 
 void UInteractWidget::PlayNoteUIEvent(bool val)
@@ -120,6 +127,10 @@ void UInteractWidget::SetVisibleCanvasPanel_Clue(bool val)
 	if (val)
 	{
 		CanvasPanel_Clue->SetVisibility(ESlateVisibility::Visible);
+		if (ClueSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, ClueSoundWave);
+		}
 	}
 	else
 	{
@@ -131,9 +142,12 @@ void UInteractWidget::OnClickBtn_ClueClose()
 {
 	CanvasPanel_Clue->SetVisibility(ESlateVisibility::Hidden);
 	// 캐릭터 모드도 변경
-	ATestPlayerController* pc =GetOwningPlayer<ATestPlayerController>();
+	
 	if (pc)
 	{
-		pc->GetPawn<ATestCharacter>()->SetPlayerState(EPlayerState::Idle);
+		if (MainCharacter)
+		{
+			MainCharacter->SetPlayerState(EPlayerState::Idle);
+		}
 	}
 }

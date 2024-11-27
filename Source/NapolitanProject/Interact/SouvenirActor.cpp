@@ -64,11 +64,6 @@ FString ASouvenirActor::GetSouvenirName()
 void ASouvenirActor::OnPickup()
 {
 	StaticMeshComp->SetHiddenInGame(true);
-
-	if (PickUpSoundWave)
-	{
-		UGameplayStatics::PlaySound2D(this, PickUpSoundWave);
-	}
 	
 	// 얻을때마다 갯수셀꺼여서 초기화 
 	GI->AcquireSouvenirNum=0;

@@ -137,7 +137,7 @@ void ANPCDongjon::ResultEvent(int32 result)
 			
 			//“큐레이터에게 가보십시오. 분명 도움이 되리라.” 라는 대사
 			
-
+			// 마지막 대화 때 되도록 수정하기 
 			
 			//머터리얼 수정
 			DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);
@@ -159,7 +159,7 @@ void ANPCDongjon::ResultEvent(int32 result)
 				bIsSpawn = true;
 				//결과 출력
 				ChangeCleared(); //NPC 클리어
-			}, 4.0f, false);
+			}, 5.0f, false);
 		}	
 		
 		else if(1 == result)

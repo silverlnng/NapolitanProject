@@ -53,6 +53,20 @@ public:
 	
 	virtual void DissolveEvent(FString& str) override;
 	virtual void ChangeCleared() override;
+
+	UMaterialInstanceDynamic* DynamicMaterial1;  // 몸 머터리얼
+	UMaterialInstanceDynamic* DynamicMaterial2;  // 목 머터리얼
+	UMaterialInstanceDynamic* DynamicMaterial3;
+	UMaterialInstanceDynamic* DynamicMaterial4;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial1;  // 블루프린트에서 지정할 머터리얼, 1-0
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial2;  
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial3;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial4;
 	
 };
 

@@ -4,6 +4,7 @@
 #include "EscapeRuleWidget.h"
 
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 
 void UEscapeRuleWidget::NativeConstruct()
 {
@@ -11,6 +12,11 @@ void UEscapeRuleWidget::NativeConstruct()
 	Img_Souvenir1->SetVisibility(ESlateVisibility::Hidden);
 	Img_Souvenir2->SetVisibility(ESlateVisibility::Hidden);
 	Img_Souvenir3->SetVisibility(ESlateVisibility::Hidden);
+	
+	TextBlock_Souvenir_1->SetVisibility(ESlateVisibility::Hidden);
+	TextBlock_Souvenir_2->SetVisibility(ESlateVisibility::Hidden);
+	TextBlock_Souvenir_3->SetVisibility(ESlateVisibility::Hidden);
+	
 	Img_Key->SetOpacity(0.f);
 }
 
@@ -22,14 +28,17 @@ void UEscapeRuleWidget::SetAcquireImage(int32 num,UTexture2D* thumnail)
 	case 1:
 		Img_Souvenir1->SetVisibility(ESlateVisibility::Visible);
 		Img_Souvenir1->SetBrushFromTexture(thumnail);
+		TextBlock_Souvenir_1->SetVisibility(ESlateVisibility::Visible);
 		break;
 	case 2:
 		Img_Souvenir2->SetVisibility(ESlateVisibility::Visible);
 		Img_Souvenir2->SetBrushFromTexture(thumnail);
+		TextBlock_Souvenir_2->SetVisibility(ESlateVisibility::Visible);
 		break;
 	case 3:
 		Img_Souvenir3->SetVisibility(ESlateVisibility::Visible);
 		Img_Souvenir3->SetBrushFromTexture(thumnail);
+		TextBlock_Souvenir_3->SetVisibility(ESlateVisibility::Visible);
 		break;
 		
 	}

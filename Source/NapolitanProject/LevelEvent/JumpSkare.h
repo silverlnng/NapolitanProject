@@ -41,4 +41,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float JumpSkareMaxSpeed=800.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UAnimMontage* CrawlMontage;
 };

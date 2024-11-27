@@ -19,6 +19,7 @@
 #include "../YJ/NoteUI/NoteWidget.h"
 #include "Components/ArrowComponent.h"
 #include "Components/AudioComponent.h"
+#include "Components/CanvasPanel.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/ItemActor.h"
 #include "NapolitanProject/Interact/PieceActor.h"
@@ -347,9 +348,14 @@ void ATestCharacter::SetPlayerState(EPlayerState newState)
 
 void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)
 {
-	if (PlayerHUD->NoteUI->IsVisible())
+	if (PlayerHUD->NoteUI->IsVisible()) // 노트가 보이는 중 이면
 	{
-		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Hidden);
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Hidden); // 노트를 닫아라
+		
+		if (PlayerHUD->InteractUI->CanvasPanel_Clue->GetVisibility() == ESlateVisibility::Visible)
+		{
+			return;
+		}
 		PC->SetInputMode(FInputModeGameOnly());
 		PC->SetShowMouseCursor(false);
 		SetPlayerState(EPlayerState::Idle);
@@ -457,6 +463,11 @@ void ATestCharacter::OnInteraction()
 			TestPC->SetNPCDialougueText(0);
 			// 나의 상태 변화
 			SetPlayerState(EPlayerState::Talking);
+
+			if (NPCEventSoundWave)
+			{
+				UGameplayStatics::PlaySound2D(this, NPCEventSoundWave);
+			}
 		}
 
 		AControllableLightActor* ControllableLight =Cast<AControllableLightActor>(Interact);

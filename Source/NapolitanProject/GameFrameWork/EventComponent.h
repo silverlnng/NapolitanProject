@@ -33,6 +33,8 @@ public:
 	void Event_Cleaner_Completed();
 
 	void Event_Security_Completed();
+	
+	void Event_Oldman();
 
 	void UpdateText();
 

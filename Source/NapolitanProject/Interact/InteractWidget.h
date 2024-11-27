@@ -15,6 +15,8 @@ class NAPOLITANPROJECT_API UInteractWidget : public UUserWidget
 	GENERATED_BODY()
 public:
 	virtual void NativeConstruct() override;
+	class ATestPlayerController* pc;
+	class ATestCharacter* MainCharacter;
 	UPROPERTY(meta=(BindWidget))
 	class UImage* Image_CrossHair;
 	UPROPERTY(meta=(BindWidget))
@@ -99,4 +101,12 @@ public:
 
 	UFUNCTION()
 	void OnClickBtn_ClueClose();
+
+///////////////////소리///////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* ClueSoundWave;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* PickUpSoundWave;
+	
 };

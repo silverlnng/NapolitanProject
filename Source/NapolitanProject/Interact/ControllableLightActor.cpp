@@ -4,6 +4,7 @@
 #include "ControllableLightActor.h"
 #include "Components/RectLightComponent.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NPC/NPC_Security.h"
 
 // Sets default values
@@ -93,6 +94,11 @@ void AControllableLightActor::TurnOnLight(bool value)
 		RectLightComp2->SetIntensity(RectLightIntensity);
 		RectLightComp3->SetIntensity(RectLightIntensity);*/
 		IsTurnOn=true;
+		// 소리
+		if (LightSwitchSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, LightSwitchSoundWave);
+		}
 	}
 	else
 	{
