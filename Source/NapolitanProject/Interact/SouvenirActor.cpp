@@ -126,10 +126,8 @@ void ASouvenirActor::OnPickup()
 	if (GI->AcquireSouvenirNum==3)
 	{
 		// npc 이서 방문열리는 쪽으로 화면 전환 하는 이벤트 발생시키기
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "유물3개 획득");
-
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "유물3개 획득");
 		
-	
 		
 		// ui 이벤트를 발생시키기
 		FTimerHandle UITimer5;
@@ -151,12 +149,6 @@ void ASouvenirActor::OnPickup()
 		}
 	}
 
-	
-	FTimerHandle SouvenirTimer3;
-	GetWorldTimerManager().SetTimer(SouvenirTimer3, [this]()
-	{
-		
-	}, 1.0f, false);
 	
 	FTimerHandle SouvenirTimer2;
 	GetWorldTimerManager().SetTimer(SouvenirTimer2, [this]()
