@@ -52,7 +52,11 @@ void ABDTrigger::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 				if (JumpCharacter)
 				{
 					JumpCharacter->JumpSkareStart();
-
+					// 음악 플레이하기
+					/*if (LeeSeoSoundWave)
+					{
+						UGameplayStatics::PlaySound2D(this, LeeSeoSoundWave);
+					}*/
 					// 바인드 해제
 					BoxComponent->OnComponentBeginOverlap.Clear();
 					
