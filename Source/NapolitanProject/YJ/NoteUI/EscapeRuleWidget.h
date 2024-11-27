@@ -32,6 +32,14 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UImage* Img_Key;
 
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* TextBlock_Souvenir_1;
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* TextBlock_Souvenir_2;
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* TextBlock_Souvenir_3;
+
 	UFUNCTION()
 	void SetAcquireImage(int32 num,UTexture2D* thumnail);
 

@@ -11,6 +11,7 @@
 #include "Components/RichTextBlock.h"
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/QuestSlotWidget.h"
@@ -122,6 +123,10 @@ void UInteractWidget::SetVisibleCanvasPanel_Clue(bool val)
 	if (val)
 	{
 		CanvasPanel_Clue->SetVisibility(ESlateVisibility::Visible);
+		if (ClueSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, ClueSoundWave);
+		}
 	}
 	else
 	{

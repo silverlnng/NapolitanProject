@@ -80,7 +80,7 @@ void ANPC_Docent::ResultEvent(int32 result)
 		}
 		else if (2==result)
 		{
-		
+			TestPC->StartEndNPCDialougue(false);
 		}
 	}
 	else if (2==State) //
@@ -95,14 +95,17 @@ void ANPC_Docent::ResultEvent(int32 result)
 		else if (1==result)
 		{
 			// 찔러죽인다
+			TestPC->StartEndNPCDialougue(false);
 		}
 		else if (2==result)
 		{
 			// 삶아죽인다
+			TestPC->StartEndNPCDialougue(false);
 		}
 		else if (3==result)
 		{
 			// 튀겨죽인다
+			TestPC->StartEndNPCDialougue(false);
 		}
 		else if (4==result)
 		{

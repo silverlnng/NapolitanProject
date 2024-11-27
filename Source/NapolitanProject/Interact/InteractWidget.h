@@ -101,4 +101,9 @@ public:
 
 	UFUNCTION()
 	void OnClickBtn_ClueClose();
+
+///////////////////소리///////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* ClueSoundWave;
+	
 };
