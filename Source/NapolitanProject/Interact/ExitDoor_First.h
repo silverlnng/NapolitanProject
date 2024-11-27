@@ -14,9 +14,10 @@ class NAPOLITANPROJECT_API AExitDoor_First : public AExitDoorTrue
 {
 	GENERATED_BODY()
 	
-public:	
+public:
+	
 	void BindBeginOverlap();
-
+	
 	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
 
 	virtual void RotateDoor() override;
@@ -24,9 +25,12 @@ public:
 	void EndEvent();
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class UUserWidget> GameEndingwidget;
+	TSubclassOf<class UNormalGameEndingWidget> GameEndingwidget;
 
-	UUserWidget* GameEndingUI;
+	UNormalGameEndingWidget* GameEndingUI;
+
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> StartLevel;
 	
 	//////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
