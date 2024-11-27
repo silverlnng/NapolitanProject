@@ -463,6 +463,11 @@ void ATestCharacter::OnInteraction()
 			TestPC->SetNPCDialougueText(0);
 			// 나의 상태 변화
 			SetPlayerState(EPlayerState::Talking);
+
+			if (NPCEventSoundWave)
+			{
+				UGameplayStatics::PlaySound2D(this, NPCEventSoundWave);
+			}
 		}
 
 		AControllableLightActor* ControllableLight =Cast<AControllableLightActor>(Interact);

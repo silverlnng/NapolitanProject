@@ -38,5 +38,9 @@ public:
 	void OnHoverSelection();
 	UFUNCTION()
 	void SetTextSelection(FString str);
+
+	//////////////////소리///////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* NPCEventSoundWave;
 	
 };

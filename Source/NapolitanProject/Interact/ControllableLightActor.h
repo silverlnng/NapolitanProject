@@ -72,6 +72,10 @@ public:
 	void BtnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 	void TurnOnLight(bool value); // 한개 함수로 여러 light 제어 해야함
+
+	//////////////////소리///////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* LightSwitchSoundWave;
 	
 
 };

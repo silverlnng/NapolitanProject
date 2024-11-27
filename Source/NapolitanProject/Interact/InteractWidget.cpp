@@ -62,6 +62,10 @@ void UInteractWidget::GetSouvenirEvent(const FString& str)
 	HBox_GetSouvenir->SetVisibility(ESlateVisibility::Visible);
 	Text_SouvenirName->SetText(FText::FromString(str));
 	PlayAnimation(GetSouvenirAnim);
+	if (PickUpSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, PickUpSoundWave);
+	}
 }
 
 void UInteractWidget::PlayNoteUIEvent(bool val)

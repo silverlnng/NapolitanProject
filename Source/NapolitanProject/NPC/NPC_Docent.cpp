@@ -15,7 +15,23 @@
 void ANPC_Docent::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	
+	if (bisDissolve)
+	{
+		dissolveAnimValue += DeltaSeconds / 4;
+
+		// 원하는 범위 (0.5에서 -0.5)로 클램핑
+		float DissolveValue1 = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
+		float DissolveValue2 = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
+		float DissolveValue3 = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
+		float DissolveValue4 = FMath::Clamp(0.5f - dissolveAnimValue, -0.5f, 0.5f);
+		
+		DynamicMaterial1->SetScalarParameterValue(TEXT("dissolve"), DissolveValue1);
+		DynamicMaterial2->SetScalarParameterValue(TEXT("dissolve"), DissolveValue2);
+		DynamicMaterial3->SetScalarParameterValue(TEXT("dissolve"), DissolveValue3);
+		DynamicMaterial4->SetScalarParameterValue(TEXT("dissolve"), DissolveValue4);
+		
+		
+	}
 }
 
 void ANPC_Docent::ResultEvent(int32 result)
@@ -118,9 +134,29 @@ void ANPC_Docent::ResultEvent(int32 result)
 				SouvenirName= FString(TEXT("수첩"));
 				PlayerHUD->InteractUI->GetSouvenirEvent(SouvenirName);
 				PlayerHUD->InteractUI->PlayNoteUIEvent(true);
-				FString color ="Yellow";
-				DissolveEvent(color);
-			},2.0f,false);
+
+				//몸 머터리얼 수정
+				DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1 , this);
+				DynamicMaterial2 = UMaterialInstanceDynamic::Create(DissolveMaterial2 , this);
+				DynamicMaterial3 = UMaterialInstanceDynamic::Create(DissolveMaterial3 , this);
+				DynamicMaterial4 = UMaterialInstanceDynamic::Create(DissolveMaterial4 , this);
+
+
+				if (DynamicMaterial1 && DynamicMaterial2 && DynamicMaterial3&&DynamicMaterial4)
+				{
+					GetMesh()->SetMaterial(0 , DynamicMaterial1);
+					GetMesh()->SetMaterial(1 , DynamicMaterial2);
+					GetMesh()->SetMaterial(2 , DynamicMaterial3);
+					GetMesh()->SetMaterial(3 , DynamicMaterial4);
+				}
+
+				// 디졸브 이벤트 
+				//FString color ="Yellow";
+				//DissolveEvent(color);
+
+				bisDissolve = true;
+				
+			} , 2.0f , false);
 
 			// 미술관을 탐색하자 퀘스트 발생 시키기
 			FTimerHandle UITimer1;
@@ -129,6 +165,7 @@ void ANPC_Docent::ResultEvent(int32 result)
 			{
 				FString QuestText =FString(TEXT("미술관을 탐색하자"));
 				PlayerHUD->InteractUI->AddQuestSlot(1,QuestText);
+				ChangeCleared(); 
 			},6.0f,false);
 			
 		}

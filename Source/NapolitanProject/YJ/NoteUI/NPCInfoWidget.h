@@ -63,6 +63,22 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher_Security1;
+
+///////////노인///////////////////////////
+
+	UPROPERTY(meta = (BindWidget))
+	class UScrollBox* ScrollBox_Oldman;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_Oldman1;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_Oldman2;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher_Oldman1;
+
+
 	
 /////////////////////////////////////////////////////////////	
 	UFUNCTION()
@@ -73,5 +89,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetForcus_ScrollBox_Security(int32 panelNum,int32 wsNum);
+
+	UFUNCTION(BlueprintCallable)
+	void SetForcus_ScrollBox_Oldman(int32 panelNum,int32 wsNum);
 	
 };
