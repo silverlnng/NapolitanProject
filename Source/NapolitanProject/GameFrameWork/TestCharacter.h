@@ -98,7 +98,7 @@ public:
 	bool bIsRunning;
 	bool bIsRunGageRemains;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=run)
-	float RunGage =runCooltime ;
+	float RunGage =4.0f ;
 	
 	void OnRunAction(const FInputActionValue& Value);
 
