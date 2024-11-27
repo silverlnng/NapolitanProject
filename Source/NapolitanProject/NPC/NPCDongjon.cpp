@@ -159,7 +159,7 @@ void ANPCDongjon::ResultEvent(int32 result)
 				bIsSpawn = true;
 				//결과 출력
 				ChangeCleared(); //NPC 클리어
-			}, 4.0f, false);
+			}, 5.0f, false);
 		}	
 		
 		else if(1 == result)
