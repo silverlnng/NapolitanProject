@@ -67,4 +67,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<ASouvenirActor> SouvenirClass;
 
+public:
+	UPROPERTY(EditAnywhere, Category = "Cinematic")
+	class ULevelSequence* YoungSooSequence;
+
+	UPROPERTY()
+	class ATestCharacter* playerCharacter;
 };
