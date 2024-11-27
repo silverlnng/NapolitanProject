@@ -234,6 +234,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly,Category=Sound)
 	class USoundWave* HeartSound;
+
+	//////////////////소리///////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* NPCEventSoundWave;
 };
 
 

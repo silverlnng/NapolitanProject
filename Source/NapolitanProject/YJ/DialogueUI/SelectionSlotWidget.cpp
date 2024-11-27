@@ -5,6 +5,7 @@
 #include "../GameFrameWork/TestPlayerController.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
+#include "Kismet/GameplayStatics.h"
 
 void USelectionSlotWidget::NativeConstruct()
 {
@@ -20,6 +21,11 @@ void USelectionSlotWidget::OnClickedSelection()
 	// 지금 대화하는 npc는 주인공 캐릭터를 통해 알수있
 	//SelectionSlotBtnDele.Broadcast(result);
 	TestPlayerController->CallCurNPCResultEvent(result);
+
+	if (NPCEventSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, NPCEventSoundWave);
+	}
 }
 
 void USelectionSlotWidget::OnHoverSelection()
