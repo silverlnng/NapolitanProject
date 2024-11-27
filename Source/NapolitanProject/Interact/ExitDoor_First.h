@@ -23,6 +23,11 @@ public:
 
 	void EndEvent();
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class UUserWidget> GameEndingwidget;
+
+	UUserWidget* GameEndingUI;
+	
 	//////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* EndEventSoundWave;

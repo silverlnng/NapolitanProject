@@ -3,6 +3,7 @@
 
 #include "ExitDoor_First.h"
 
+#include "Blueprint/UserWidget.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -30,11 +31,18 @@ void AExitDoor_First::EndEvent()
 	GetWorldTimerManager().SetTimer(Timer2,[this]()
 	{
 		// 엔딩 bgm
-
+		if (GameEndingwidget)
+		{
+			GameEndingUI=CreateWidget<UUserWidget>(GetWorld(),GameEndingwidget);
+		}
+		if (GameEndingUI)
+		{
+			GameEndingUI->AddToViewport(3);
+		}
 		// 엔딩 ui 
 		if (EndEventSoundWave)
 		{
 			UGameplayStatics::PlaySound2D(this, EndEventSoundWave);
 		}
-	},5.f,false);
+	},2.f,false);
 }
