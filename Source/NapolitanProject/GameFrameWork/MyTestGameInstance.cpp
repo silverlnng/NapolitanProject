@@ -100,7 +100,11 @@ void UMyTestGameInstance::Init()
 	// "C:\UnrealProjects\NapolitanProject\NPC_Result.csv"
 	// "C:\UnrealProjects\NapolitanProject\NPC_Selection.csv"
 	
-		
+	if (GEngine)
+	{
+		GEngine->bEnableOnScreenDebugMessages = false;
+	}
+
 }
 
 void UMyTestGameInstance::SetGameInstanceLang(int32 value)
