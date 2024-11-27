@@ -106,33 +106,12 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			//TestPC->StartEndNPCDialougue(false);
 			
 			// 5초 후에 캐릭터를 숨기기 위한 타이머 설정
-			/*GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 			{
 				FString dissolve = "Black";
 				DissolveEvent(dissolve);
 				ChangeCleared();
-				FTimerHandle SeTimer;
-				GetWorldTimerManager().SetTimer(SeTimer, [this]()
-				{
-					//안보이게 한 후 시퀀스 재생
-					playerCharacter->GetMesh()->SetHiddenInGame(true);
-
-					ALevelSequenceActor* outActor;
-					ULevelSequencePlayer* SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), YoungSooSequence, FMovieSceneSequencePlaybackSettings(), outActor);
-					
-					if(YoungSooSequence)
-					{
-						SequencePlayer->Play();
-						FTimerHandle finishTimer;
-						GetWorldTimerManager().SetTimer(finishTimer, [this]()
-						{
-							
-							
-						}, 5.0f, false);
-					}
-					
-				}, 5.0f, false);
-			}, 4.0f, false);*/
+			}, 4.0f, false);
 			
 		}
 		else if (1 == result)
@@ -160,10 +139,23 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			FTimerHandle SouvenirTimer;
 			GetWorldTimerManager().SetTimer(SouvenirTimer, [this]()
 			{
-				//FString SouvenirName= FString(TEXT("파란 스카프를"));
-				//PlayerHUD->InteractUI->GetSouvenirEvent(SouvenirName);
-				//ChangeCleared();
-				SpawnItems();
+				FTimerHandle SeTimer;
+				ALevelSequenceActor* outActor;
+				ULevelSequencePlayer* SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), YoungSooSequence, FMovieSceneSequencePlaybackSettings(), outActor);
+				
+				if(YoungSooSequence)
+				{
+					//안보이게 한 후 시퀀스 재생
+					playerCharacter->GetMesh()->SetHiddenInGame(true);
+					SequencePlayer->Play();
+					SpawnItems();
+					FTimerHandle finishTimer;
+					//시퀀스 재생 종료시 캐릭터 다시 보임
+					GetWorldTimerManager().SetTimer(finishTimer, [this]()
+					{
+						playerCharacter->GetMesh()->SetHiddenInGame(false);
+					}, 17.f, false);
+				}
 			}, 8.0f, false);
 
 			
