@@ -120,6 +120,32 @@ void UEventComponent::Event_RedDosent(FString& str,const FString& content)
 	}
 }
 
+void UEventComponent::Event_Docent_NoteUI()
+{
+	TestPC->StartEndNPCDialougue(false);
+	TestPC->EndResult();
+	// 머리잡았을때 경비원의 노트ui 나오고 단서 추가하도록 하기
+	MainCharacter->SetPlayerState(EPlayerState::UI);
+
+	// 시간지연
+	FTimerHandle UITimer;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
+
+		PlayerHUD->NoteUI->OnClickBtn_Btn_Docent();
+		
+	},1.0f,false);
+
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Docent(2,1);
+	},1.5f,false);
+}
+
 void UEventComponent::Event_Cleaner_Start()
 {
 

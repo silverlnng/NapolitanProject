@@ -28,6 +28,8 @@ public:
 
 	void Event_RedDosent(FString& str,const FString& content);
 
+	void Event_Docent_NoteUI();
+
 	void Event_Cleaner_Start();
 
 	void Event_Cleaner_Completed();
