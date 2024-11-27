@@ -14,6 +14,8 @@
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interact/SouvenirActor.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
+#include "MovieSceneSequencePlaybackSettings.h"
+#include <Runtime/LevelSequence/Public/LevelSequencePlayer.h>
 
 // Sets default values
 ANPC_Youngsoo::ANPC_Youngsoo()
@@ -40,6 +42,17 @@ void ANPC_Youngsoo::BeginPlay()
 	GetMesh()->SetHiddenInGame(true);
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
 	Scarf->SetHiddenInGame(true);
+
+	// playerCharacter 초기화
+	APlayerController* PC = GetWorld()->GetFirstPlayerController();
+	if (PC)
+	{
+		playerCharacter = Cast<ATestCharacter>(PC->GetPawn());
+		if (!playerCharacter)
+		{
+			UE_LOG(LogTemp, Error, TEXT("playerCharacter is nullptr. Ensure your pawn is of type ATestCharacter."));
+		}
+	}
 }
 
 // Called every frame
@@ -93,12 +106,33 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			//TestPC->StartEndNPCDialougue(false);
 			
 			// 5초 후에 캐릭터를 숨기기 위한 타이머 설정
-			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+			/*GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 			{
 				FString dissolve = "Black";
 				DissolveEvent(dissolve);
 				ChangeCleared();
-			}, 4.0f, false);
+				FTimerHandle SeTimer;
+				GetWorldTimerManager().SetTimer(SeTimer, [this]()
+				{
+					//안보이게 한 후 시퀀스 재생
+					playerCharacter->GetMesh()->SetHiddenInGame(true);
+
+					ALevelSequenceActor* outActor;
+					ULevelSequencePlayer* SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), YoungSooSequence, FMovieSceneSequencePlaybackSettings(), outActor);
+					
+					if(YoungSooSequence)
+					{
+						SequencePlayer->Play();
+						FTimerHandle finishTimer;
+						GetWorldTimerManager().SetTimer(finishTimer, [this]()
+						{
+							
+							
+						}, 5.0f, false);
+					}
+					
+				}, 5.0f, false);
+			}, 4.0f, false);*/
 			
 		}
 		else if (1 == result)
