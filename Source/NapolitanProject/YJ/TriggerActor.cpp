@@ -7,10 +7,12 @@
 #include "SoundControlActor.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "Sound/SoundCue.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/ControllableLightActor.h"
+#include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/NPC/NPC_Security.h"
 
 // Sets default values
@@ -115,6 +117,13 @@ void ATriggerActor::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComponent
 			}
 			
 		},3.0f,false);
+	}
+
+	// 미술관을 탐색하자 ui 제거
+	APlayerHUD* PlayerHUD=TestPC->GetHUD<APlayerHUD>();
+	if (PlayerHUD&&PlayerHUD->InteractUI)
+	{
+		PlayerHUD->InteractUI->RemoveQuestSlot(1);
 	}
 }
 
