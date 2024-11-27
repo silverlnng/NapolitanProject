@@ -24,7 +24,7 @@ void AJumpSkare::BeginPlay()
 
 	CapsuleComp->OnComponentBeginOverlap.AddDynamic(this, &AJumpSkare::AJumpSkare::BeginOverlap);
 	
-	//GetMesh()->SetVisibility(false);
+	GetMesh()->SetVisibility(false);
 
 	// 이동 속도 조정
 	GetCharacterMovement()->MaxWalkSpeed = JumpSkareMaxSpeed; // 기본 속도보다 빠르게 설정
@@ -35,14 +35,14 @@ void AJumpSkare::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if(bIsJumpSkare)
+	/*if(bIsJumpSkare)
 	{
 		GetMesh()->SetVisibility(true);
 
 		//앞으로 빠르게 달려오기
 		FVector ForwardDirection = GetActorForwardVector(); // 캐릭터의 앞 방향 벡터
 		//AddMovementInput(ForwardDirection, 1.0f); // 앞으로 이동
-	}
+	}*/
 
 }
 
@@ -55,13 +55,23 @@ void AJumpSkare::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 
 void AJumpSkare::JumpSkareStart()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("JumpSkare Start"));
+	UE_LOG(LogTemp, Warning, TEXT("JumpSkare Start"));
 
 
 	//불 깜빡깜빡하는 효과 넣기
 
 	//그다음 달려오기
 	bIsJumpSkare = true;
+	if (CrawlMontage)
+	{
+		PlayAnimMontage(CrawlMontage);
+	}
+
+	FTimerHandle ScareTimer;
+	GetWorldTimerManager().SetTimer(ScareTimer, [this]()
+	{
+		GetMesh()->SetVisibility(true);
+	}, 1.2f, false);
 	
 }
 
@@ -75,7 +85,14 @@ void AJumpSkare::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 		if(TriggerActor)
 		{
 			//캐릭터가 트리거 박스 위치로 왓을 경우 사라지기
-			GetMesh()->SetVisibility(false);
+			FTimerHandle ScareTimer;
+			GetWorldTimerManager().SetTimer(ScareTimer, [this]()
+			{
+			
+				GetMesh()->SetVisibility(false);
+				Destroy();
+			}, 2.0f, false);
+			
 		}
 	}
 }

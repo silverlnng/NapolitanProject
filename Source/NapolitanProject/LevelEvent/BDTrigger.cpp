@@ -52,6 +52,10 @@ void ABDTrigger::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* 
 				if (JumpCharacter)
 				{
 					JumpCharacter->JumpSkareStart();
+
+					// 바인드 해제
+					BoxComponent->OnComponentBeginOverlap.Clear();
+					
 				}
 			}
 		}

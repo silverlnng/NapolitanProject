@@ -15,6 +15,8 @@ class NAPOLITANPROJECT_API UInteractWidget : public UUserWidget
 	GENERATED_BODY()
 public:
 	virtual void NativeConstruct() override;
+	class ATestPlayerController* pc;
+	class ATestCharacter* MainCharacter;
 	UPROPERTY(meta=(BindWidget))
 	class UImage* Image_CrossHair;
 	UPROPERTY(meta=(BindWidget))

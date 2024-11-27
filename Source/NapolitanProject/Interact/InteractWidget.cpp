@@ -23,6 +23,8 @@ void UInteractWidget::NativeConstruct()
 	CanvasPanel_Clue->SetVisibility(ESlateVisibility::Hidden);
 	CanvasPanel_Hit->SetVisibility(ESlateVisibility::Hidden);
 	Btn_ClueClose->OnClicked.AddDynamic(this,&UInteractWidget::OnClickBtn_ClueClose);
+	pc =GetOwningPlayer<ATestPlayerController>();
+	MainCharacter=pc->GetPawn<ATestCharacter>();
 }
 
 void UInteractWidget::SetVisibleCrossHair(bool value)
@@ -131,9 +133,12 @@ void UInteractWidget::OnClickBtn_ClueClose()
 {
 	CanvasPanel_Clue->SetVisibility(ESlateVisibility::Hidden);
 	// 캐릭터 모드도 변경
-	ATestPlayerController* pc =GetOwningPlayer<ATestPlayerController>();
+	
 	if (pc)
 	{
-		pc->GetPawn<ATestCharacter>()->SetPlayerState(EPlayerState::Idle);
+		if (MainCharacter)
+		{
+			MainCharacter->SetPlayerState(EPlayerState::Idle);
+		}
 	}
 }
