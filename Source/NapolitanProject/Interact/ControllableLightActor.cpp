@@ -52,7 +52,7 @@ void AControllableLightActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	RectLightIntensity = 30.f;
+	RectLightIntensity = 10.f;
 
 	GetComponents<URectLightComponent>(RectLightArray);
 	

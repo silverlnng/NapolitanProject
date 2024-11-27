@@ -141,3 +141,39 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Oldman(int32 panelNum, int32 wsNum)
 		}
 	},2.0f,false);
 }
+
+void UNPCInfoWidget::SetForcus_ScrollBox_Docent(int32 panelNum, int32 wsNum)
+{
+	FTimerHandle UITimer1;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer1,[this, panelNum]()
+	{
+		if (panelNum==1)
+		{
+			ScrollBox_Docent->ScrollWidgetIntoView(CanvasPanel_Docent1,true);
+		}
+		else if (panelNum==2)
+		{
+			ScrollBox_Docent->ScrollWidgetIntoView(CanvasPanel_Docent2,true);
+		}
+	},1.5f,false);
+	
+
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this, wsNum]()
+	{
+		if (wsNum==1)
+		{
+			WidgetSwitcher_Docent1->SetActiveWidgetIndex(1);
+		}
+		else if (wsNum==2)
+		{
+			
+		}
+		if (StickSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, StickSoundWave);
+		}
+	},1.5f,false);
+}

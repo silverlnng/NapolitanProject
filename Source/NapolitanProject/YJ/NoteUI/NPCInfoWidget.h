@@ -24,6 +24,21 @@ public:
 	
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher_;
+	
+///////////////////// 도슨트 ///////////////////////////
+
+	UPROPERTY(meta = (BindWidget))
+	class UScrollBox* ScrollBox_Docent;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_Docent1;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_Docent2;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher_Docent1;
+	
 
 /////////////////// 청소부 ///////////////////////////
 	UPROPERTY(meta = (BindWidget))
@@ -92,5 +107,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetForcus_ScrollBox_Oldman(int32 panelNum,int32 wsNum);
+	
+	UFUNCTION(BlueprintCallable)
+	void SetForcus_ScrollBox_Docent(int32 panelNum,int32 wsNum);
 	
 };

@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/Image.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "NapolitanProject/GameFrameWork/EventComponent.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
@@ -50,7 +51,8 @@ void ANPC_Docent::ResultEvent(int32 result)
 		}
 		else if (1==result)
 		{
-			int32 key=(NPC_ID*100)+(State*10)+result;
+			TestPC->StartEndNPCDialougue(false);
+			/*int32 key=(NPC_ID*100)+(State*10)+result;
 			// int32 key=(NPC_ID*1000)+(State*100)+result*10;
 			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
 
@@ -89,7 +91,7 @@ void ANPC_Docent::ResultEvent(int32 result)
 					PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
 				}
 			
-			},8.0f,false);
+			},8.0f,false);*/
 		
 		
 			
@@ -166,6 +168,18 @@ void ANPC_Docent::ResultEvent(int32 result)
 				FString QuestText =FString(TEXT("미술관을 탐색하자"));
 				PlayerHUD->InteractUI->AddQuestSlot(1,QuestText);
 				ChangeCleared(); 
+			},6.0f,false);
+
+			// ui 단서 발동시키기
+
+			FTimerHandle UITimer2;
+
+			GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+			{
+				if (TestPC)
+				{
+					TestPC->EventComponent->Event_Docent_NoteUI();
+				} 
 			},6.0f,false);
 			
 		}
