@@ -37,8 +37,11 @@ void ANPCCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	 TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
+	if (TestPC)
+	{
 	 MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	 PlayerHUD =TestPC->GetHUD<APlayerHUD>();
+	}
 	 GI = GetGameInstance<UMyTestGameInstance>();
 
 	//TestPC00

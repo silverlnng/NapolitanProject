@@ -39,8 +39,11 @@ void AClueActor::BeginPlay()
 {
 	Super::BeginPlay();
 	TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
-	MainCharacter =TestPC->GetPawn<ATestCharacter>();
-	PlayerHUD =TestPC->GetHUD<APlayerHUD>();
+	if (TestPC)
+	{
+		MainCharacter =TestPC->GetPawn<ATestCharacter>();
+		PlayerHUD =TestPC->GetHUD<APlayerHUD>();
+	}
 	GI = GetGameInstance<UMyTestGameInstance>();
 }
 

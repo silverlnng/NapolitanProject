@@ -49,7 +49,10 @@ void ATriggerActor::BeginPlay()
 		NPC_Security = *It;
 	}
 	TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
-	MainCharacter =TestPC->GetPawn<ATestCharacter>();
+	if (TestPC)
+	{
+		MainCharacter =TestPC->GetPawn<ATestCharacter>();
+	}
 
 	BoxComp->OnComponentBeginOverlap.AddDynamic(this,&ATriggerActor::BoxCompBeginOverlap);
 	BoxComp->OnComponentEndOverlap.AddDynamic(this,&ATriggerActor::BoxCompEndOverlap);
