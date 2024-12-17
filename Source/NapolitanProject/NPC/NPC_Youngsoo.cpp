@@ -38,10 +38,11 @@ void ANPC_Youngsoo::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//GetMesh()->SetVisibility(false);
-	GetMesh()->SetHiddenInGame(true);
-	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
-	Scarf->SetHiddenInGame(true);
+	//시작 시 메쉬 숨김
+	GetMesh()->SetHiddenInGame(false);
+	//GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("NPC"));
+	Scarf->SetHiddenInGame(false);
 
 	// playerCharacter 초기화
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();
@@ -94,16 +95,11 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 		if (0 == result)
 		{
 			//남자를 위로해주자. “괜찮으십니까”의 경우 => 남자는 소리를 지르다가 사라지고, 물 나이아가라 발생
-			/*int32 key=(NPC_ID*100)+(State*10)+result;
-			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
-			TestPC->SetCurNPCResultUI(key);*/
 			
 			//애니메이션 블루프린트 실행
 			anim = Cast<UYoungsooAnim>(GetMesh()->GetAnimInstance());
 			anim->playYSSadMontage(); //슬퍼하는 애니메이션 작동
 			UGameplayStatics::PlaySound2D(GetWorld(), YSScreamSound);
-
-			//TestPC->StartEndNPCDialougue(false);
 			
 			// 5초 후에 캐릭터를 숨기기 위한 타이머 설정
 			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
@@ -112,6 +108,29 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 				DissolveEvent(dissolve);
 				ChangeCleared();
 			}, 4.0f, false);
+
+			//물 시퀀스 재생
+			FTimerHandle SouvenirTimer;
+			GetWorldTimerManager().SetTimer(SouvenirTimer, [this]()
+			{
+				FTimerHandle SeTimer;
+				ALevelSequenceActor* outActor;
+				ULevelSequencePlayer* SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), YoungSooSequence, FMovieSceneSequencePlaybackSettings(), outActor);
+				
+				if(YoungSooSequence)
+				{
+					//안보이게 한 후 시퀀스 재생
+					playerCharacter->GetMesh()->SetHiddenInGame(true);
+					SequencePlayer->Play();
+					FTimerHandle finishTimer;
+					//시퀀스 재생 종료시 캐릭터 다시 보임
+					GetWorldTimerManager().SetTimer(finishTimer, [this]()
+					{
+						playerCharacter->GetMesh()->SetHiddenInGame(false);
+					}, 17.f, false);
+				}
+			}, 8.0f, false);
+			
 			
 		}
 		else if (1 == result)
@@ -171,17 +190,19 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 		}
 		else if (2 == result)
 		{
-			//남자에게 말을 걸어선 안된다. 어서 도망치자.의 경우 => 도망칠 경우 5초뒤에 NPC 사라짐
+			//남자에게 말을 걸어선 안된다. 어서 도망치자.의 경우 => 도망칠 경우 디졸브 블랙 후 NPC 사라짐
 
-			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
-			{
-				// 캐릭터의 Mesh를 보이지 않게 설정
-				GetMesh()->SetVisibility(false);
-				ChangeCleared();
-			}, 5.0f, false);
+			FString dissolve = "Black";
+			DissolveEvent(dissolve); //디졸브 이벤트 발생
+			TestPC->StartEndNPCDialougue(false); //결과 대화창 출력
+			ChangeCleared();
+			Scarf->SetHiddenInGame(true);
+			
 		}
 		else
 		{
+			//"위대한 빨간 등대를 부수자" 선택 후
+			
 			TestPC->CameraViewChangePlayer();
 			//위대한 빨간 등대를 부수자 -> 카메라 시점 변경 및 플레이어 얼굴을 클로즈 업
 			MainCharacter->AdjustCameraPosition(); //시점 변경
