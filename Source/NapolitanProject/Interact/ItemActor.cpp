@@ -36,8 +36,11 @@ void AItemActor::BeginPlay()
 	Super::BeginPlay();
 
 	TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
-	MainCharacter =TestPC->GetPawn<ATestCharacter>();
-	PlayerHUD=TestPC->GetHUD<APlayerHUD>();
+	if (TestPC)
+	{
+		MainCharacter =TestPC->GetPawn<ATestCharacter>();
+		PlayerHUD=TestPC->GetHUD<APlayerHUD>();
+	}
 }
 
 // Called every frame
