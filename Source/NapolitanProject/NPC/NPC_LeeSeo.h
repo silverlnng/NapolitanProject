@@ -47,6 +47,14 @@ public:
 	//0-1. 비명 소리
 	UPROPERTY(EditAnywhere)
 	class USoundBase* ScreamSound;
+
+	//맵에서 나오는 소름돋는 사운드
+	UPROPERTY(EditAnywhere)
+	class USoundBase* LSSound;
+
+	//이서 점프스케어 시 재생되는 사운드
+	UPROPERTY(EditAnywhere)
+	class USoundBase* LSJump;
 	
 	//유품을 스폰하는 함수
 	void SpawnItem();
