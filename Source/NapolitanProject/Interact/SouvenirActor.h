@@ -42,6 +42,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	class UBoxComponent* BoxComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UMaterialInterface* M_Overlay;
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	FString SouvenirName= FString(TEXT(""));

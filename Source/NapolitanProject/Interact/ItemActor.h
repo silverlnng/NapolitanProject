@@ -36,6 +36,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	class UBoxComponent* BoxComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UMaterialInterface* M_Overlay;
 	
 //////언리얼 데이터 테이블 읽어오기 	//////////////////////////////////////////////////////////
 	

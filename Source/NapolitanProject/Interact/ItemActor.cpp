@@ -41,6 +41,10 @@ void AItemActor::BeginPlay()
 		MainCharacter =TestPC->GetPawn<ATestCharacter>();
 		PlayerHUD=TestPC->GetHUD<APlayerHUD>();
 	}
+	if(M_Overlay)
+	{
+		StaticMeshComp->SetOverlayMaterial(M_Overlay);
+	}
 }
 
 // Called every frame
