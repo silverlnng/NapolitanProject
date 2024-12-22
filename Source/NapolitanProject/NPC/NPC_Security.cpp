@@ -263,7 +263,7 @@ void ANPC_Security::TickPatrol(const float& DeltaTime)
 	{
 		// 목적지를 향해서 이동하고싶다.
 		EnemyAI->MoveToLocation(destinataion);
-		// 만약 목적지와의 거리가 공격 가능거리라면
+
 		EPathFollowingRequestResult::Type result = EnemyAI->MoveToLocation(PatrolPoint);
 		// 만약 도착했다면 다시 랜덤한 위치를 정하고싶다.
 		if ( result == EPathFollowingRequestResult::AlreadyAtGoal ||
@@ -271,10 +271,17 @@ void ANPC_Security::TickPatrol(const float& DeltaTime)
 		{
 			SetPatrolPoint(GetActorLocation() , PatrolPointRadius , PatrolPoint);
 		}
+		
 	}
 	else
 	{
-		SetPatrolPoint(GetActorLocation() , PatrolPointRadius , PatrolPoint);
+		EPathFollowingRequestResult::Type result = EnemyAI->MoveToLocation(PatrolPoint);
+		// 만약 도착했다면 다시 랜덤한 위치를 정하고싶다.
+		if ( result == EPathFollowingRequestResult::AlreadyAtGoal ||
+			result == EPathFollowingRequestResult::Failed )
+		{
+			SetPatrolPoint(GetActorLocation() , PatrolPointRadius , PatrolPoint);
+		}
 	}
 	/*else
 	{
