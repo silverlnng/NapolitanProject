@@ -3,6 +3,7 @@
 
 #include "NPC_LeeSeo.h"
 
+#include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -89,10 +90,13 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 
 			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
 			{
-				//앞으로 달리기
-				FVector ForwardDirection = GetActorForwardVector(); // 캐릭터의 전방 벡터
-				FVector LaunchVelocity = ForwardDirection * 600.0f; // 속도 조절 (600 = 이동 속도)
-				LaunchCharacter(LaunchVelocity, true, false); // X, Y 방향 이동 가능. Z(점프)는 비활성화
+				
+				//FVector ForwardDirection = GetActorForwardVector(); // 캐릭터의 전방 벡터
+				//FVector LaunchVelocity = ForwardDirection * 600.0f; // 속도 조절 (600 = 이동 속도)
+				//LaunchCharacter(LaunchVelocity, true, false); // X, Y 방향 이동 가능. Z(점프)는 비활성화
+
+				//앞으로 달리는 듯한 애니메이션 몽타주 재생 -> 점프스케어
+				
 			}, 1.0f, false);
 
 			
@@ -100,6 +104,64 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 			{
 				SpawnItem();
 			}, 4.0f, false);
+		}
+		else if( 1 == result)
+		{
+			//1-2. 그림을 찢어선 안돼 => 맵에서 갑자기 소름 돋는 노래 재생.
+			UGameplayStatics::PlaySound2D(GetWorld(), LSJump);
+			
+			//대사창 5초 뒤 사라지고 그와 동시에 전구가 깜빡거림
+
+			
+			//이서 1초 사라졌다가 달려오는 점프 스케어 발동
+			FTimerHandle TimeHandle;
+			GetWorldTimerManager().SetTimer(TimeHandle, [this]()
+			{
+				//일시적으로 안보이게 하기
+				GetMesh()->SetHiddenInGame(false);
+				GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+			}, 2.0f, false);
+
+			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
+			{
+				GetMesh()->SetHiddenInGame(true);
+				
+				//앞으로 달리는 애니메이션 재생 : 칼 등의 요소 들고 달리기
+				
+			}, 3.0f, false);
+
+			//점프 스케어 후 사라짐
+			GetMesh()->SetHiddenInGame(false);
+			
+		}
+		else if( 2 == result)
+		{
+			//1-3. 도망친다 => 맵에서 갑자기 소름 돋는 노래 재생.
+			UGameplayStatics::PlaySound2D(GetWorld(), LSJump);
+			
+			//전구가 깜빡거림
+
+			//이서 1초 사라졌다가 달려오는 점프 스케어 발동
+			FTimerHandle TimeHandle;
+			GetWorldTimerManager().SetTimer(TimeHandle, [this]()
+			{
+				//일시적으로 안보이게 하기
+				GetMesh()->SetHiddenInGame(false);
+				GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+			}, 2.0f, false);
+
+			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
+			{
+				GetMesh()->SetHiddenInGame(true);
+				
+				//앞으로 달리는 애니메이션 재생 : 칼 등의 요소 들고 달리기
+				
+			}, 3.0f, false);
+
+			//점프 스케어 후 사라짐
+			GetMesh()->SetHiddenInGame(false);
+
+			//사망 UI 재생
 		}
 	}
 	
