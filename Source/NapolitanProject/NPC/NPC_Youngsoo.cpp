@@ -26,7 +26,7 @@ ANPC_Youngsoo::ANPC_Youngsoo()
 	anim = Cast<UYoungsooAnim>(GetMesh()->GetAnimInstance());
 
 	Scarf = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("scarf"));
-	ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Script/Engine.StaticMesh'/Game/Bada/Asset/Youngsoo/Scarf.Scarf'"));
+	//ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Script/Engine.StaticMesh'/Game/Bada/Asset/Youngsoo/Scarf.Scarf'"));
 	
 	Scarf->SetupAttachment(GetMesh());
 	Scarf->SetRelativeLocationAndRotation(FVector(4.f, 1.f,110.f),FRotator(90, 0, 110));

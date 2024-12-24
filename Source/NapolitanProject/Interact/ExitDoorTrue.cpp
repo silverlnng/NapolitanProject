@@ -18,7 +18,7 @@ AExitDoorTrue::AExitDoorTrue()
 	BoxComp->SetupAttachment(RootComponent);
 
 	ExitDoor = CreateDefaultSubobject<UStaticMeshComponent>("ExitDoor");
-	ConstructorHelpers::FObjectFinder<UStaticMeshComponent>(TEXT("/Script/Engine.StaticMesh'/Game/Museum/Meshes/SM_MetalDoors_01.SM_MetalDoors_01'"));
+	//ConstructorHelpers::FObjectFinder<UStaticMeshComponent>(TEXT("/Game/Museum/Meshes/SM_MetalDoors_01.SM_MetalDoors_01'"));
 	ExitDoor->SetupAttachment(BoxComp);
 	
 
