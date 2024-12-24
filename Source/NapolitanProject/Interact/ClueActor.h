@@ -42,6 +42,9 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	int32 Clue_ID;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UMaterialInterface* M_Overlay;
 	
     // 캐릭터가 상호작용 눌렀을때 실행시킬 함수
 	void LookAt();

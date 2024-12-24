@@ -45,6 +45,10 @@ void AClueActor::BeginPlay()
 		PlayerHUD =TestPC->GetHUD<APlayerHUD>();
 	}
 	GI = GetGameInstance<UMyTestGameInstance>();
+	if(M_Overlay)
+	{
+		StaticMeshComp->SetOverlayMaterial(M_Overlay);
+	}
 }
 
 // Called every frame
