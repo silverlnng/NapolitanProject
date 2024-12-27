@@ -18,14 +18,26 @@ void UYSEvanceUI::NativeOnInitialized()
 		PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD());
 	}
 
+	//텍스트애니메이션1이 종료되면 텍스트 애니메이션 2 재생
+	TextAnimDelegate.Clear();
+	TextAnimDelegate.BindDynamic(this, &UYSEvanceUI::PlayTextAnim);
+	BindToAnimationFinished(TextAnim, TextAnimDelegate);
+
+	//텍스트 애니메이션 2가 종료될때 엔딩 UI 재생
 	EndDelegate.Clear();
 	EndDelegate.BindDynamic(this, &UYSEvanceUI::AddDeadEnding);
-	BindToAnimationFinished(TextAnim, EndDelegate);
+	BindToAnimationFinished(TextAnim2, EndDelegate);
 }
 
 void UYSEvanceUI::PlayAnim()
 {
 	PlayAnimationForward(TextAnim);
+	
+}
+
+void UYSEvanceUI::PlayTextAnim()
+{
+	PlayAnimationForward(TextAnim2);
 }
 
 void UYSEvanceUI::AddDeadEnding()

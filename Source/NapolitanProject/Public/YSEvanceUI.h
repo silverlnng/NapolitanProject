@@ -21,9 +21,17 @@ public:
 	UPROPERTY(EditDefaultsOnly, meta = (BindWidgetAnim), Transient);
 	class UWidgetAnimation* TextAnim;
 
+	//텍스트 애니메이션2
+	UPROPERTY(EditDefaultsOnly, meta = (BindWidgetAnim), Transient);
+	class UWidgetAnimation* TextAnim2;
+
 	UFUNCTION()
 	void PlayAnim();
 
+	UFUNCTION()
+	void PlayTextAnim();
+
+	FWidgetAnimationDynamicEvent TextAnimDelegate; //애니메이션 종료시 콜백 함수 부르기 위함
 	FWidgetAnimationDynamicEvent EndDelegate; //애니메이션 종료시 콜백 함수 부르기 위함
 
 	UFUNCTION()

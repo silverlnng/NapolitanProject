@@ -560,8 +560,34 @@ void ATestCharacter::AdjustCameraPosition()
 	
 }
 
+void ATestCharacter::HangNeckUp()
+{
+	//이동할 목표 위치 설정
+	FVector CurrentLocation = GetMesh()->GetRelativeLocation();
+	TargetNeckLocation = FVector(CurrentLocation.X, CurrentLocation.Y, CurrentLocation.Z + 50.0f);
+
+	//타이머 시작
+	GetWorldTimerManager().SetTimer(MoveMeshTimerHandle, this, &ATestCharacter::UpdateMeshLocation, 0.01f, true);
+}
+
+void ATestCharacter::UpdateMeshLocation()
+{
+	//현재의 위치를 계산하여 목표 위치로 점진적으로 이동
+	FVector CurrentLocation = GetMesh()->GetRelativeLocation();
+	FVector NewLocation = FMath::VInterpTo(CurrentLocation, TargetNeckLocation, GetWorld()->DeltaTimeSeconds, 5.0f);
+
+	// 새로운 위치 설정
+	GetMesh()->SetRelativeLocation(NewLocation);
+
+	// 목표 위치에 도달하면 이동 중지
+	if (FVector::Dist(NewLocation, TargetNeckLocation) <= 1.0f)
+	{
+		GetWorldTimerManager().ClearTimer(MoveMeshTimerHandle);
+	}
+}
+
 void ATestCharacter::OnCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	// 라이트 스위치 액터 등 가까이 있는 액터와 반응 할때 만든 함수
 	/*AControllableLightActor* ControllableLight = Cast<AControllableLightActor>(OtherActor);

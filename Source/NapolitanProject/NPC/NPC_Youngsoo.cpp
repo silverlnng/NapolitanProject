@@ -210,6 +210,13 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 			GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 			{
 				PlayerHUD->CreateYSEvance(); //=교수형 UI 출력
+				//UI 애니메이션 재생 후 카메라는 고정, 목을 매달는 애니메이션 재생
+				FTimerHandle DeadTimer;
+				GetWorldTimerManager().SetTimer(DeadTimer, [this]()
+				{
+					MainCharacter->HangNeckUp(); //메쉬가 위로 올라감
+				}, 13.f, false);
+				
 			}, 7.0f, false);
 		}
 	}

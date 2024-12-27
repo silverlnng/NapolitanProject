@@ -191,6 +191,16 @@ public:
 	float CurrentFieldOfView; //현재 줌 = 90도
 	bool bIsFieldOfViewTransitioning;
 
+	//UI애니메이션 종료 후 목으로 올라간 뒤에 사망
+	UFUNCTION()
+	void HangNeckUp();
+	
+	UFUNCTION()
+	void UpdateMeshLocation();
+
+	FVector TargetNeckLocation;
+	FTimerHandle MoveMeshTimerHandle;
+
 ////////////////// 소리 /////////////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* NoteUIOpenSound;
