@@ -220,7 +220,17 @@ void ATestCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
-
+	
+	
+	if (curState==EPlayerState::Talking)
+	{
+		// 대화창 ui 에서 다음, 이전 으로 넘어가도록 하기
+		if (PlayerHUD)
+		{
+			// PlayerHUD->NPCDialogueUI
+		}
+	}
+	
 	if (!bIsBeingAttacked && Controller != nullptr)
 	{
 		// add movement 
@@ -445,7 +455,7 @@ void ATestCharacter::SphereTraceFromCamera()
 //E키 누르면 실행되는 함수
 void ATestCharacter::OnInteraction()
 {
-	if (InteractHit && Interact)
+	if (InteractHit && Interact && curState!=EPlayerState::Talking)
 	{
 		// 상호작용 대상에게 만들어져있는 상호작용 함수 호출시키기
 		 // Interact 을 npc로 캐스팅 가능하다면
