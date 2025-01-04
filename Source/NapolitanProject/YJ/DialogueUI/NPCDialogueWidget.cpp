@@ -67,7 +67,8 @@ void UNPCDialogueWidget::UpdateText()
 	if (CurrentText.Len() >= RemoveTags.Len())
 	{
 		GetWorld()->GetTimerManager().ClearTimer(TextUpdateTimerHandle);
-		// 끝나는 시점 에 특정함수를 실행할수 있도록 만들기 
+		// 끝나는 시점 에 특정함수를 실행할수 있도록 만들기
+		
 		return;
 	}
 	

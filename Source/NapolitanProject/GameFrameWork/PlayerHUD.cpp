@@ -16,6 +16,7 @@
 #include "Components/ScrollBox.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
+#include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueSlotWidget.h"
 void APlayerHUD::BeginPlay()
@@ -62,6 +63,14 @@ void APlayerHUD::BeginPlay()
 		DeadEndingWidgetUI->AddToViewport();
 		DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Hidden);
 	}
+	
+	MonolugueWidgetUI =CreateWidget<UMonolugueWidget>(GetWorld(),MonolugueWidgetFactory);
+	if (MonolugueWidgetUI)
+	{
+		MonolugueWidgetUI->AddToViewport(1);
+		MonolugueWidgetUI->SetVisibility(ESlateVisibility::Hidden);
+	}
+	
 
 	if (GI)
 	{

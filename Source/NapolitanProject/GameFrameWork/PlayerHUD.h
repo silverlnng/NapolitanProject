@@ -62,6 +62,10 @@ public:
 	//단서
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UClueSlotWidget> ClueSlotWidgetFactory;
-	
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UMonolugueWidget> MonolugueWidgetFactory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
+	class UMonolugueWidget* MonolugueWidgetUI;
 	
 };

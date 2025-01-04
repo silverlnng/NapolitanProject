@@ -14,6 +14,7 @@
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 #include "NapolitanProject/YJ/NoteUI/SouvenirWidget.h"
 #include "Components/Image.h"
+#include "Components/RichTextBlock.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
@@ -162,7 +163,9 @@ void ATestPlayerController::StartEndNPCDialougue(bool value)
 		PlayerHUD->InteractUI->SetVisibleHBox(false);
 		PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업 
 		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
-		PlayerHUD->NPCDialogueUI->SetText_Dialogue(""); // 초기화 작업
+		PlayerHUD->NPCDialogueUI->Text_Dialogue->SetText(FText::FromString(("")));
+		//남아있는 텍스트 초기화
+		//PlayerHUD->NPCDialogueUI->SetText_Dialogue(""); // 초기화 작업
 		int32 npcID =curNPC->GetNPCID();
 		UE_LOG(LogTemp,Warning,TEXT("%s,npcID : %d"),*CALLINFO,npcID);
 		int32 npcState =curNPC->GetState();

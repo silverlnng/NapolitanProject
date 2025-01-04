@@ -34,10 +34,25 @@ public:
 
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
-
+	class APlayerHUD* PlayerHUD;
+	
 	UFUNCTION()
 	void BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	UFUNCTION()
 	void BoxCompEndOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	// 출력할 독백을 배열로 정의해두기
+	UPROPERTY(EditAnywhere)
+	TArray<FString> TextLines;
+	
+	// 현재 출력 중인 인덱스
+	int32 CurrentIndex;
+
+	// 이벤트가 한 번만 실행되도록 제어하는 플래그
+	bool bHasTriggered;
+	
+	// 타이머 핸들러
+	FTimerHandle TimerHandle;
+
 };
