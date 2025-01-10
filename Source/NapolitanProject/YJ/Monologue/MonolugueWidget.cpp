@@ -35,8 +35,11 @@ void UMonolugueWidget::UpdateText()
 			// 인덱스 증가
 			CurrentIndex++;
 
-			SetText_Dialogue(OutputLines[CurrentIndex]);
-			
+			FTimerHandle TimerHandle;
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				SetText_Dialogue(OutputLines[CurrentIndex]);		
+			}, 1.f, false);
 		}
 		else
 		{
