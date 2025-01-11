@@ -15,8 +15,11 @@ class NAPOLITANPROJECT_API UTestSaveGame : public USaveGame
 	GENERATED_BODY()
 public:
 	UPROPERTY(BlueprintReadWrite)
-	FVector PlayerPosition;
-
+	FVector PlayerLocation;
+	// 플레이어 회전
+	UPROPERTY(VisibleAnywhere, Category = "SaveData")
+	FRotator PlayerRotation;
+	
 	// 아이템 획득,단서 획득 , npc 들간의 관계성 ,클리어 여부
 	
 	// npc id 와 state를 저장

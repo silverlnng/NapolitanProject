@@ -20,6 +20,9 @@ public:
 	// 저장 묻는 창 나오도록 하기
 	UPROPERTY(meta = (BindWidget))
 	class UCanvasPanel* CanvasPanel;
+
+	UPROPERTY(meta=(BindWidget))
+	class UButton* Btn_Exit;
 	
 	UPROPERTY(meta=(BindWidget))
 	class USaveSlotSwitcherWidget* SaveSlotSwitcherWidget_0;

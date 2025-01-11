@@ -25,7 +25,7 @@ void USaveConfirmWidget::OnClickYes()
 	// SaveSlotSwitcherWidget->SlotNumber 을 이용해서 Save하기
 	if (!SaveGameManager)
 	{
-		SaveGameManager = NewObject<UGameSaveController>();
+		SaveGameManager = NewObject<UGameSaveController>(this);
 	}
 
 	SaveGameManager->SaveGameToSlot(SaveSlotSwitcherWidget->SlotNumber);
