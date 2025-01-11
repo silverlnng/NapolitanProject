@@ -2,4 +2,9 @@
 
 
 #include "SavedSlotWidget.h"
+#include "Components/TextBlock.h"
 
+void USavedSlotWidget::SetText_Date(const FString& str)
+{
+	Text_Date->SetText(FText::FromString(str));
+}

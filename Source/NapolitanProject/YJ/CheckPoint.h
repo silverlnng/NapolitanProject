@@ -23,6 +23,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	class ATestCharacter* MainCharacter;
+	class ATestPlayerController* TestPC;
+	class APlayerHUD* PlayerHUD;
+	
 	UPROPERTY(EditDefaultsOnly)
 	class USceneComponent* SceneComp;
 	

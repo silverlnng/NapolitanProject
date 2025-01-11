@@ -19,6 +19,9 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UVacantSaveWidget* WBP_VacantSlot;
+
+	UPROPERTY(meta = (BindWidget))
+	class USavedSlotWidget* WBP_SavedSlot;
 	
 	UPROPERTY(VisibleAnywhere)
 	int32 SlotNumber;

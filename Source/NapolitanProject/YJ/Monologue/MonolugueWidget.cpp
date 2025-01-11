@@ -41,11 +41,15 @@ void UMonolugueWidget::UpdateText()
 				SetText_Dialogue(OutputLines[CurrentIndex]);		
 			}, 1.f, false);
 		}
-		else
+		else // 맨마지막줄 출력
 		{
-			SetVisibility(ESlateVisibility::Hidden);
-			// 남아있는 text 지우기
-			Text_Monologue->SetText(FText::FromString(("")));
+			FTimerHandle TimerHandle;
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				SetVisibility(ESlateVisibility::Hidden);
+				// 남아있는 text 지우기
+				Text_Monologue->SetText(FText::FromString(("")));
+			}, 1.f, false);
 			return;
 		}
 		

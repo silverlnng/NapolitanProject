@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "NapolitanProject/YJ/Save/GameSaveController.h"
 #include "SaveConfirmWidget.generated.h"
 
 /**
@@ -33,4 +34,7 @@ public:
 	
 	UFUNCTION()
 	void OnClickNo();
+private:
+	UPROPERTY()
+	UGameSaveController* SaveGameManager;
 };

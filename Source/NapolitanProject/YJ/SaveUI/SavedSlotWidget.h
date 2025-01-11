@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "NapolitanProject/YJ/Save/GameSaveController.h"
 #include "SavedSlotWidget.generated.h"
 
 /**
@@ -16,4 +17,12 @@ class NAPOLITANPROJECT_API USavedSlotWidget : public UUserWidget
 public:
 	UPROPERTY(VisibleAnywhere)
 	int32 SlotNumber;
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_LoadSelectSlot;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* Text_Date;
+	
+	UFUNCTION()
+	void SetText_Date(const FString& str);
 };

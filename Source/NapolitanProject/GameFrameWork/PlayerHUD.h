@@ -67,5 +67,11 @@ public:
 	TSubclassOf<class UMonolugueWidget> MonolugueWidgetFactory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UMonolugueWidget* MonolugueWidgetUI;
+
+	// 저장 ui
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class ULoadScreenWidget> LoadScreenWidgetFactory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
+	class ULoadScreenWidget* LoadScreenUI;
 	
 };

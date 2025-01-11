@@ -58,17 +58,21 @@ void AMonologueTriggerBox::Tick(float DeltaTime)
 void AMonologueTriggerBox::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (bHasTriggered)
-    {
-        return;
-    }
 
-    bHasTriggered = true; 
-	// MainCharacter 의 MonologueUI 에 나오도록 해야함 .
-	// 각자의 Monologue_ID 에 따라서 다른 글을 나오도록 하기
+	if (OtherActor->IsA(ATestCharacter::StaticClass()))
+	{
+		if (bHasTriggered)
+		{
+			return;
+		}
 
-	PlayerHUD->MonolugueWidgetUI->SetOutputLines(TextLines);
-	PlayerHUD->MonolugueWidgetUI->SetVisibility(ESlateVisibility::Visible);
+		bHasTriggered = true; 
+		// MainCharacter 의 MonologueUI 에 나오도록 해야함 .
+		// 각자의 Monologue_ID 에 따라서 다른 글을 나오도록 하기
+
+		PlayerHUD->MonolugueWidgetUI->SetOutputLines(TextLines);
+		PlayerHUD->MonolugueWidgetUI->SetVisibility(ESlateVisibility::Visible);
+	}
 }
 
 void AMonologueTriggerBox::BoxCompEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

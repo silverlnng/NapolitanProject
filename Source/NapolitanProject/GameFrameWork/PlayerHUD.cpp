@@ -19,6 +19,8 @@
 #include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueSlotWidget.h"
+#include "NapolitanProject/YJ/SaveUI/LoadScreenWidget.h"
+
 void APlayerHUD::BeginPlay()
 {
 	Super::BeginPlay();
@@ -71,6 +73,12 @@ void APlayerHUD::BeginPlay()
 		MonolugueWidgetUI->SetVisibility(ESlateVisibility::Hidden);
 	}
 	
+	LoadScreenUI=CreateWidget<ULoadScreenWidget>(GetWorld(),LoadScreenWidgetFactory);
+	if (LoadScreenUI)
+	{
+		LoadScreenUI->AddToViewport(1);
+		LoadScreenUI->SetVisibility(ESlateVisibility::Hidden);
+	}
 
 	if (GI)
 	{

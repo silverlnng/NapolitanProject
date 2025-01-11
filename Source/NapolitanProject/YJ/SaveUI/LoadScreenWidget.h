@@ -35,9 +35,14 @@ public:
 	
 	UPROPERTY(meta=(BindWidget))
 	class USaveConfirmWidget* SaveConfirmWidget;
+
+	UPROPERTY(meta=(BindWidget))
+	class ULoadConfirmWidget* WBP_LoadConfirm;
 	
 	UPROPERTY(EditDefaultsOnly)
 	TMap<int32, class USaveSlotSwitcherWidget*> SaveSlotSwitcherList;
+
+	
 	
 	UFUNCTION()
 	void OnSaveQuestionWidgetCreate_0();
@@ -45,5 +50,8 @@ public:
 	void OnSaveQuestionWidgetCreate_1();
 	UFUNCTION()
 	void OnSaveQuestionWidgetCreate_2();
+
+	UFUNCTION()
+	void OnLoadConfirm_0();
 	
 };

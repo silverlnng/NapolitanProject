@@ -21,7 +21,7 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_SaveGame;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere)
 	int32 SlotNumber;
 
 	UPROPERTY(EditDefaultsOnly)

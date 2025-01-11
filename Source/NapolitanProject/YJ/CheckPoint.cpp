@@ -4,6 +4,10 @@
 #include "CheckPoint.h"
 
 #include "Components/SphereComponent.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "SaveUI/LoadScreenWidget.h"
 
 // Sets default values
 ACheckPoint::ACheckPoint()
@@ -34,6 +38,12 @@ ACheckPoint::ACheckPoint()
 void ACheckPoint::BeginPlay()
 {
 	Super::BeginPlay();
+	TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
+	if (TestPC)
+	{
+		MainCharacter =TestPC->GetPawn<ATestCharacter>();
+		PlayerHUD=TestPC->GetHUD<APlayerHUD>();
+	}
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ACheckPoint::OnSphereOverlap);
 }
 
@@ -48,5 +58,13 @@ void ACheckPoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	// OtherActor 플레이어면 저장 되도록 만들기
-	
+	if (OtherActor->IsA(ATestCharacter::StaticClass()))
+	{
+		PlayerHUD->LoadScreenUI->SetVisibility(ESlateVisibility::Visible);
+
+		// ui 보는 모드로 만들기
+		TestPC->SetInputMode(FInputModeGameAndUI());
+		TestPC->SetShowMouseCursor(true);
+		MainCharacter->SetPlayerState(EPlayerState::UI);
+	}
 }
