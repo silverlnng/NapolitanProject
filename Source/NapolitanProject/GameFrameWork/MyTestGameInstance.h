@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "NapolitanProject/YJ/Save/TestSaveGame.h"
 #include "MyTestGameInstance.generated.h"
 
 /**
@@ -164,5 +165,9 @@ public:
 	TArray<FName> ClueDataRowNames;
 
 	TMap<int32,FClueData> ClueMap;
+
+//////////// 게임 저장 //////////////
+	class UGameSaveController* GameSaveController;
+	TArray<UTestSaveGame*> SaveSlotInfos;
 };
 

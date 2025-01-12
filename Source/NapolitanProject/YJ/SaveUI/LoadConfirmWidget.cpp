@@ -18,7 +18,7 @@ void ULoadConfirmWidget::OnClickYes()
 {
 	if (!SaveGameManager)
 	{
-		SaveGameManager = NewObject<UGameSaveController>();
+		SaveGameManager = NewObject<UGameSaveController>(this);
 	}
 	SaveGameManager->LoadGameFromSlot(SaveSlotSwitcherWidget->SlotNumber);
 	SetVisibility(ESlateVisibility::Hidden);

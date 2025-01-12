@@ -3,15 +3,14 @@
 
 #include "MyTestGameInstance.h"
 #include "NapolitanProject/NapolitanProject.h"
+#include "NapolitanProject/YJ/Save/GameSaveController.h"
 #include "Serialization/Csv/CsvParser.h"
 
 void UMyTestGameInstance::Init()
 {
 	Super::Init();
 	DT_itemData = LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/Item/DT_Item.DT_Item'"));
-	//DT_itemData = LoadObject<UDataTable>(nullptr , TEXT("/Script/Engine.DataTable'/Game/YJ/Item/DT_Item.DT_Item'"));
-	// C:/UnrealProjects/NapolitanProject/Content/YJ/Item/DT_Item.uasset
-	// /Script/Engine.DataTable'/Game/YJ/Item/DT_Item.DT_Item'
+	
 	if (DT_itemData)
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s DT_Item 로드성공"),*CALLINFO);
@@ -104,6 +103,13 @@ void UMyTestGameInstance::Init()
 	{
 		GEngine->bEnableOnScreenDebugMessages = false;
 	}*/
+	
+  // 저장한 게임 저장데이터가 있으면 불러오기 
+	GameSaveController = NewObject<UGameSaveController>();
+	int32 MaxSlots = 3; // 예: 최대 슬롯 수
+	SaveSlotInfos = GameSaveController->LoadAllSlotInfo(MaxSlots);
+	// 로드한 정보로 ULoadScreenWidget 초기화	
+	
 }
 
 void UMyTestGameInstance::SetGameInstanceLang(int32 value)

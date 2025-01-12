@@ -21,6 +21,8 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UCanvasPanel* CanvasPanel;
 
+	class ATestPlayerController* PC;
+	class ATestCharacter* TestCharacter;
 	UPROPERTY(meta=(BindWidget))
 	class UButton* Btn_Exit;
 	
@@ -45,8 +47,12 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TMap<int32, class USaveSlotSwitcherWidget*> SaveSlotSwitcherList;
 
+	UFUNCTION()
+	void LoadUpdateUI(const TArray<UTestSaveGame*>& SlotInfos);
+
 	
-	
+	UFUNCTION()
+	void OnClickedBtnExit();
 	UFUNCTION()
 	void OnSaveQuestionWidgetCreate_0();
 	UFUNCTION()
@@ -56,5 +62,9 @@ public:
 
 	UFUNCTION()
 	void OnLoadConfirm_0();
+	UFUNCTION()
+	void OnLoadConfirm_1();
+	UFUNCTION()
+	void OnLoadConfirm_2();
 	
 };

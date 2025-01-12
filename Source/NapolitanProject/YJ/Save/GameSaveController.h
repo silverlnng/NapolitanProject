@@ -25,6 +25,11 @@ public:
 	// 슬롯 이름 생성
 	FString GetSlotName(int32 SlotIndex) const;
 
+	// 게임시작시 로드하기 - 게임인스턴스에서 실행시킬 것 
+	TArray<UTestSaveGame*> LoadAllSlotInfo(int32 MaxSlots);
+
 private:
 	const FString SlotPrefix = TEXT("SaveSlot_");
 };
+
+

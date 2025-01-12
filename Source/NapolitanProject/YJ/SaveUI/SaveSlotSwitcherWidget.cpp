@@ -3,3 +3,9 @@
 
 #include "SaveSlotSwitcherWidget.h"
 
+#include "Components/WidgetSwitcher.h"
+
+void USaveSlotSwitcherWidget::SetActiveIndex(int index)
+{
+	SlotSwitcher->SetActiveWidgetIndex(index);
+}

@@ -78,6 +78,7 @@ void APlayerHUD::BeginPlay()
 	{
 		LoadScreenUI->AddToViewport(1);
 		LoadScreenUI->SetVisibility(ESlateVisibility::Hidden);
+		LoadScreenUI->LoadUpdateUI(GI->SaveSlotInfos);
 	}
 
 	if (GI)

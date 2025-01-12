@@ -25,4 +25,7 @@ public:
 	
 	UPROPERTY(VisibleAnywhere)
 	int32 SlotNumber;
+	
+	UFUNCTION()
+	void SetActiveIndex(int index);
 };
