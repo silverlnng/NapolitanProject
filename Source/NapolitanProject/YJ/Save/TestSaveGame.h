@@ -14,6 +14,10 @@ class NAPOLITANPROJECT_API UTestSaveGame : public USaveGame
 {
 	GENERATED_BODY()
 public:
+	//레벨 정보
+	UPROPERTY(VisibleAnywhere, Category = "SaveData")
+	FString PlayerLevel;
+	
 	UPROPERTY(VisibleAnywhere, Category = "SaveData")
 	FVector PlayerLocation;
 	// 플레이어 회전

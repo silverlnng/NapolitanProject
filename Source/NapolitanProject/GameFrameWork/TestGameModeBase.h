@@ -18,7 +18,8 @@ public:
 	ATestGameModeBase();
 
 	virtual void BeginPlay() override;
-
+	class ATestPlayerController* PC;
+	class ATestCharacter* TestCharacter;
 private:
 	
 };

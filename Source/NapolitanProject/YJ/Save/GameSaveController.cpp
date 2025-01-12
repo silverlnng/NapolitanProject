@@ -25,13 +25,14 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 		// 데이터 저장 (예: 플레이어 위치)
 		SaveGameInstance->PlayerLocation = PlayerCharacter->GetActorLocation(); 
 	    SaveGameInstance->PlayerRotation =PlayerCharacter->GetActorRotation();
-		
+		SaveGameInstance->PlayerLevel=UGameplayStatics::GetCurrentLevelName(GetWorld());
 		// 저장한 날짜 
 		FDateTime Now = FDateTime::Now();
 		SaveGameInstance->SaveTime = Now.ToString(TEXT("%Y-%m-%d %H:%M:%S"));
 		
 		UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 		UE_LOG(LogTemp, Warning, TEXT("Game saved to slot: %s"), *SlotName);
+		UE_LOG(LogTemp, Warning, TEXT("Game saved to slot: %s"), *UGameplayStatics::GetCurrentLevelName(GetWorld()));
 	}
 }
 
@@ -46,6 +47,7 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 	{
 		
 		UE_LOG(LogTemp, Warning, TEXT("Game loaded from slot: %s"), *SlotName);
+		UGameplayStatics::OpenLevel(GetWorld(),FName(*LoadedGame->PlayerLevel));
 		ATestPlayerController* PlayerController =Cast<ATestPlayerController>( UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		if (PlayerController)
 		{

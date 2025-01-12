@@ -167,7 +167,10 @@ public:
 	TMap<int32,FClueData> ClueMap;
 
 //////////// 게임 저장 //////////////
+///
+	UPROPERTY()
 	class UGameSaveController* GameSaveController;
+	UPROPERTY()
 	TArray<UTestSaveGame*> SaveSlotInfos;
 };
 

@@ -6,6 +6,8 @@
 #include "SettingWidget.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/SaveUI/LoadScreenWidget.h"
 
 void UGameStartWidget::NativeConstruct()
@@ -30,7 +32,15 @@ void UGameStartWidget::OnClickedNewGame()
 
 void UGameStartWidget::OnClickedLoad()
 {
-	
+	ATestPlayerController* TestPC=GetOwningPlayer<ATestPlayerController>();
+	if (TestPC)
+	{
+		APlayerHUD* PlayerHUD=TestPC->GetHUD<APlayerHUD>();
+		if (PlayerHUD)
+		{
+			PlayerHUD->LoadScreenUI->SetVisibility(ESlateVisibility::Visible);
+		}
+	}
 }
 
 void UGameStartWidget::OnClickedSetting()

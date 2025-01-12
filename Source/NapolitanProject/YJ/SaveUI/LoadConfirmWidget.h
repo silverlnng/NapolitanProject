@@ -21,13 +21,19 @@ public:
 	class UButton* Btn_Yes;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* Btn_No;	
+	class UButton* Btn_No;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_ReSave;	
 	
 	UFUNCTION()
 	void OnClickYes();
 	
 	UFUNCTION()
 	void OnClickNo();
+
+	UFUNCTION()
+	void OnClickReSave();
 	
 	UPROPERTY(VisibleAnywhere)
 	class USaveSlotSwitcherWidget* SaveSlotSwitcherWidget;

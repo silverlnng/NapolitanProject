@@ -10,6 +10,7 @@
 #include "VacantSaveWidget.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
@@ -18,7 +19,7 @@ void ULoadScreenWidget::NativeConstruct()
 	Super::NativeConstruct();
 	
 	PC=GetOwningPlayer<ATestPlayerController>();
-	TestCharacter = Cast<ATestCharacter>(PC->GetPawn());
+	
 	Btn_Exit->OnClicked.AddDynamic(this,&ULoadScreenWidget::OnClickedBtnExit);
 	
 	SaveConfirmWidget->SetVisibility(ESlateVisibility::Hidden);
@@ -62,9 +63,23 @@ void ULoadScreenWidget::LoadUpdateUI(const TArray<UTestSaveGame*>& SlotInfos)
 void ULoadScreenWidget::OnClickedBtnExit()
 {
 	SetVisibility(ESlateVisibility::Hidden);
-	PC->SetInputMode(FInputModeGameOnly());
-	PC->SetShowMouseCursor(false);
-	TestCharacter->SetPlayerState(EPlayerState::Idle);
+
+	
+	FString CurrentLevel=UGameplayStatics::GetCurrentLevelName(GetWorld());
+	if (CurrentLevel==TEXT("StartLevel")){return;}
+	
+	if (PC)
+	{
+		//현재 게임모드에 따라서 구별하기
+		
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->SetShowMouseCursor(false);
+		TestCharacter = Cast<ATestCharacter>(PC->GetPawn());
+		if (TestCharacter)
+		{
+			TestCharacter->SetPlayerState(EPlayerState::Idle);
+		}
+	}
 }
 
 void ULoadScreenWidget::OnSaveQuestionWidgetCreate_0()
