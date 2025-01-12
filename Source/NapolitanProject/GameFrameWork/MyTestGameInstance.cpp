@@ -3,6 +3,7 @@
 
 #include "MyTestGameInstance.h"
 #include "NapolitanProject/NapolitanProject.h"
+#include "NapolitanProject/YJ/Save/TestSaveGame.h"
 #include "NapolitanProject/YJ/Save/GameSaveController.h"
 #include "Serialization/Csv/CsvParser.h"
 
@@ -77,7 +78,11 @@ void UMyTestGameInstance::Init()
 			{
 				//단서 획득 초기화 => 게임로드안했을때
 				ClueData->Had=false;
+
+				// 저장해둔 단서 획득 상태를 로드해서 초기화하기 
+				
 				FString cluerowname=ClueDataRowNames[i].ToString();
+				
 				UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*cluerowname);
 				//UE_LOG(LogTemp,Warning,TEXT("%s,%d"),*CALLINFO,ClueData->ClueID);
 				

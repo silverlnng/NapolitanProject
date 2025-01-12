@@ -8,6 +8,7 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Components/WidgetSwitcher.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
@@ -31,6 +32,7 @@ void UClueSlotWidget::SetWidgetSwitcher(int32 val)
 	//버튼 활성화
 	Btn_ClueSlot->SetIsEnabled(true);
 	WidgetSwitcher->SetActiveWidgetIndex(val);
+	UE_LOG(LogTemp,Warning,TEXT("%s"),*CALLINFO);
 }
 
 void UClueSlotWidget::SetTextClueName(FString str)

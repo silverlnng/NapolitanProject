@@ -15,7 +15,7 @@ class NAPOLITANPROJECT_API UClueSlotWidget : public UUserWidget
 	GENERATED_BODY()
 public:
 
-	void NativeConstruct() override;
+	virtual void NativeConstruct() override;
 	
 	UPROPERTY(VisibleAnywhere)
 	int32 Clue_ID;
@@ -38,8 +38,8 @@ public:
 
 	UFUNCTION()
 	void OnClickBtn_ClueSlot();
-
+	UFUNCTION()
 	void SetWidgetSwitcher(int32 val);
-
+	UFUNCTION()
 	void SetTextClueName(FString str);
 };

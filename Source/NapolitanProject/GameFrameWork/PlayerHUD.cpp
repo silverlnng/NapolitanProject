@@ -13,7 +13,9 @@
 #include "../YJ/NoteUI/NoteWidget.h"
 #include "Animation/WidgetAnimation.h"
 #include "BehaviorTree/Tasks/BTTask_PlayAnimation.h"
+#include "Components/Button.h"
 #include "Components/ScrollBox.h"
+#include "Components/WidgetSwitcher.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
@@ -92,7 +94,9 @@ void APlayerHUD::BeginPlay()
 			FClueData* ClueData =GI-> DT_Clue->FindRow<FClueData>(GI->ClueDataRowNames[i],TEXT(""));
 			
 			UClueSlotWidget* newSlot=CreateWidget<UClueSlotWidget>(GetWorld(),NoteUI->WBP_ClueInfo->ClueSlotWidgetFactory);
-
+			
+			 NoteUI->WBP_ClueInfo->ScrollBox_List->AddChild(newSlot);
+			
 			 NoteUI->WBP_ClueInfo->ClueSlots.Add(i,newSlot);
 			
 			 newSlot->SetTextClueName(ClueData->Name);
@@ -102,14 +106,16 @@ void APlayerHUD::BeginPlay()
 			 if (ClueData->Had)
 			 {
 				 // 있으면
-			 	newSlot->SetWidgetSwitcher(1);
+			 	//newSlot->SetWidgetSwitcher(1);
+			 	newSlot->Btn_ClueSlot->SetIsEnabled(true);
+			 	newSlot->WidgetSwitcher->SetActiveWidgetIndex(1);
 			 }
 			 else
 			 {
 			 	// 없으면
-			 	newSlot->SetWidgetSwitcher(0);
+			 	newSlot->WidgetSwitcher->SetActiveWidgetIndex(0);
 			 }
-			 NoteUI->WBP_ClueInfo->ScrollBox_List->AddChild(newSlot);
+			
 			
 		}
 	}
@@ -130,4 +136,23 @@ void APlayerHUD::CreateYSEvance()
 		//텍스트 애니메이션
 		YsEvanceUserWidget->PlayAnim();
 	}
+}
+
+void APlayerHUD::UpdateClueSlotWidget()
+{
+	UE_LOG(LogTemp, Warning, TEXT("UpdateClueSlotWidget"));
+	TArray<FName> RowNames = GI->DT_Clue->GetRowNames();
+
+	for (int i = 0; i < GI->ClueDataRowNames.Num(); i++)
+	{
+		FClueData* ClueData =GI-> DT_Clue->FindRow<FClueData>(GI->ClueDataRowNames[i],TEXT(""));
+		if (ClueData->Had)
+		{
+			UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*ClueData->Name);
+			UE_LOG(LogTemp,Warning,TEXT("%s,%d"),*CALLINFO,i);
+			NoteUI->WBP_ClueInfo->ClueSlots[i]->SetWidgetSwitcher(1);
+			NoteUI->WBP_ClueInfo->ClueSlots[i]->Btn_ClueSlot->SetIsEnabled(true);
+			NoteUI->WBP_ClueInfo->ClueSlots[i]->WidgetSwitcher->SetActiveWidgetIndex(1);
+		}
+	}		
 }

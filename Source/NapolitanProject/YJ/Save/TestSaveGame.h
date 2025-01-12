@@ -31,7 +31,9 @@ public:
 	int SlotNum;
 	
 	// 아이템 획득,단서 획득 , npc 들간의 관계성 ,클리어 여부
-	
+	UPROPERTY(VisibleAnywhere, Category = "SaveData")
+	TMap<FName,bool> ClueStates;
+
 	// npc id 와 state를 저장
 	UPROPERTY(BlueprintReadWrite)
 	TMap<int32,int32> NPCStates;

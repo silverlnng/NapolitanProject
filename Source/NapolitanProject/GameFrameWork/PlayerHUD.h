@@ -73,5 +73,8 @@ public:
 	TSubclassOf<class ULoadScreenWidget> LoadScreenWidgetFactory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class ULoadScreenWidget* LoadScreenUI;
+
+	UFUNCTION()
+	void UpdateClueSlotWidget();
 	
 };

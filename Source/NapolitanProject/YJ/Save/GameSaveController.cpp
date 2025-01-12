@@ -5,6 +5,8 @@
 
 #include "TestSaveGame.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
@@ -15,6 +17,8 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 
 	ACharacter* PlayerCharacter = Cast<ATestCharacter>(PlayerController->GetPawn());
 	if (!PlayerCharacter) return;
+
+	UMyTestGameInstance* GameInstance = Cast<UMyTestGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	
 	FString SlotName = GetSlotName(SlotIndex);
 	UTestSaveGame* SaveGameInstance = Cast<UTestSaveGame>(UGameplayStatics::CreateSaveGameObject(UTestSaveGame::StaticClass()));
@@ -29,8 +33,27 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 		// 저장한 날짜 
 		FDateTime Now = FDateTime::Now();
 		SaveGameInstance->SaveTime = Now.ToString(TEXT("%Y-%m-%d %H:%M:%S"));
-		
+
+		// 획득한 단서에 대해 저장하기
+		if (GameInstance && GameInstance->DT_Clue)
+		{
+			TArray<FName> RowNames = GameInstance->DT_Clue->GetRowNames();
+
+			for (const FName& RowName : RowNames)
+			{
+				FClueData* Row = GameInstance->DT_Clue->FindRow<FClueData>(RowName, "");
+				if (Row)
+				{
+					// 상태 저장
+					SaveGameInstance->ClueStates.Add(RowName,Row->Had);
+					UE_LOG(LogTemp, Warning, TEXT("Game saved to slot clue: %s"), *Row->Name);
+				}
+			}
+		}
+
+		// 슬롯에 저장
 		UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
+		
 		UE_LOG(LogTemp, Warning, TEXT("Game saved to slot: %s"), *SlotName);
 		UE_LOG(LogTemp, Warning, TEXT("Game saved to slot: %s"), *UGameplayStatics::GetCurrentLevelName(GetWorld()));
 	}
@@ -38,17 +61,20 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 
 UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 {
-	
+	////// 슬롯 불러오기 ///////////////
 	FString SlotName = GetSlotName(SlotIndex);
 	UTestSaveGame* LoadedGame = Cast<UTestSaveGame>(
 		UGameplayStatics::LoadGameFromSlot(SlotName, 0));
-
+	//////////////////////////////////
+	
 	if (LoadedGame)
 	{
 		
 		UE_LOG(LogTemp, Warning, TEXT("Game loaded from slot: %s"), *SlotName);
 		UGameplayStatics::OpenLevel(GetWorld(),FName(*LoadedGame->PlayerLevel));
+		
 		ATestPlayerController* PlayerController =Cast<ATestPlayerController>( UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		
 		if (PlayerController)
 		{
 			ATestCharacter* PlayerCharacter = Cast<ATestCharacter>(PlayerController->GetPawn());
@@ -59,8 +85,29 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 				
 			}
 		}
-		
 
+		UMyTestGameInstance* GameInstance = Cast<UMyTestGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+		if (GameInstance && GameInstance->DT_Clue)
+		{
+			TMap<FName, bool>& SavedClueStates = LoadedGame->ClueStates;
+
+			for (const TPair<FName, bool>& Pair : SavedClueStates)
+			{
+				FClueData* Row = GameInstance->DT_Clue->FindRow<FClueData>(Pair.Key, "");
+				if (Row)
+				{
+					// 상태 복원
+					Row->Had = Pair.Value;
+				}
+			}
+
+			UE_LOG(LogTemp, Warning, TEXT("ClueStates 로드 완료"));
+		}
+		
+		APlayerHUD* PlayerHUD=PlayerController->GetHUD<APlayerHUD>();
+		PlayerHUD->UpdateClueSlotWidget();
+		// hud 를 업데이트 하기 
+		
 		return LoadedGame;
 	}
 
