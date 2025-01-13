@@ -60,7 +60,7 @@ public:
 	class UVerticalBox* VBox_Quest; 
 
 	// 생성한 (받은) 퀘스트를 배열로 가지고 있기
-	TArray<class UQuestSlotWidget*> QuestSlotsArray;
+	TMap<int32,class UQuestSlotWidget*> QuestSlotsArray;
 
 	// 1. 미술관을 탐색하자 : 도슨트에게 수첩을 얻고 난 뒤의 퀘스트
 	// 2. 머리를 찾아보자 : 

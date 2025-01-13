@@ -23,6 +23,7 @@
 #include "NapolitanProject/YJ/NoteUI/ClueSlotWidget.h"
 #include "NapolitanProject/YJ/SaveUI/LoadScreenWidget.h"
 
+// hud 의 BeginPlay 는 저장되어있는거 로드된후에 실행됨 
 void APlayerHUD::BeginPlay()
 {
 	Super::BeginPlay();
@@ -106,9 +107,9 @@ void APlayerHUD::BeginPlay()
 			 if (ClueData->Had)
 			 {
 				 // 있으면
-			 	//newSlot->SetWidgetSwitcher(1);
-			 	newSlot->Btn_ClueSlot->SetIsEnabled(true);
-			 	newSlot->WidgetSwitcher->SetActiveWidgetIndex(1);
+			 	newSlot->SetWidgetSwitcher(1);
+			 	//newSlot->Btn_ClueSlot->SetIsEnabled(true);
+			 	//newSlot->WidgetSwitcher->SetActiveWidgetIndex(1);
 			 }
 			 else
 			 {

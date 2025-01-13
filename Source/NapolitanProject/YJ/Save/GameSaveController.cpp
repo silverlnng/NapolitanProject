@@ -104,8 +104,8 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 			UE_LOG(LogTemp, Warning, TEXT("ClueStates 로드 완료"));
 		}
 		
-		APlayerHUD* PlayerHUD=PlayerController->GetHUD<APlayerHUD>();
-		PlayerHUD->UpdateClueSlotWidget();
+		//APlayerHUD* PlayerHUD=PlayerController->GetHUD<APlayerHUD>();
+		//PlayerHUD->UpdateClueSlotWidget();
 		// hud 를 업데이트 하기 
 		
 		return LoadedGame;

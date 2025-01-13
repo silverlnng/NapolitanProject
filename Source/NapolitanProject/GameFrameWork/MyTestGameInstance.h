@@ -152,8 +152,8 @@ public:
 	// npc 만날떄 한번 호출로 선택지 모두 생성시키기 
 	
 /////// 플레이하면서 클리어한 NPC , 획득한 유물을 TARRAY 으로 관리하기
-	TArray<int32> ClearedNPC;
-
+	TSet<int32> ClearedNPC;
+	
 	TArray<int32> AcquireSouvenir;
 
 	int32 AcquireSouvenirNum;

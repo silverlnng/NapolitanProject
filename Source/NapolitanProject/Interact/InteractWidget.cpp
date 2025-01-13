@@ -80,7 +80,10 @@ void UInteractWidget::PlayNoteUIEvent(bool val)
 
 void UInteractWidget::AddQuestSlot(int32 QuestNum,FString& str)
 {
-	//
+	//QuestSlotsArray 에서 QuestNum 으로 중복검사하고
+	if (QuestSlotsArray.Contains(QuestNum)) {return;}
+
+	
 	UQuestSlotWidget* QuestSlot = CreateWidget<UQuestSlotWidget>(this, QuestSlotWidgetFactory);
 	// 어떤 퀘스트 인지 ??
 	if (QuestSlot)
@@ -90,7 +93,7 @@ void UInteractWidget::AddQuestSlot(int32 QuestNum,FString& str)
 		QuestSlot->SetQuestNum(QuestNum);
 		QuestSlot->SetText_QuestName(str);
 		VBox_Quest->AddChildToVerticalBox(QuestSlot);
-		QuestSlotsArray.Add(QuestSlot);
+		QuestSlotsArray.Add(QuestNum,QuestSlot);
 	}
 }
 
@@ -99,15 +102,13 @@ void UInteractWidget::RemoveQuestSlot(int32 RemoveQuestNum)
 	//퀘스트를 달성할떄 호출해야함 어떤걸 제거할지 ??
 
 	// 제거할 아이디를 받아서 map에 검색을 하기 
-	for ( auto QuestSlot : QuestSlotsArray)
+
+	if (QuestSlotsArray.Contains(RemoveQuestNum))
 	{
-		if (QuestSlot->QuestNum==RemoveQuestNum)
-		{
-			VBox_Quest->RemoveChild(QuestSlot);
-			QuestSlotsArray.Remove(QuestSlot);
-			break;
-		}
+		VBox_Quest->RemoveChild(QuestSlotsArray[RemoveQuestNum]);
+		QuestSlotsArray.Remove(RemoveQuestNum);
 	}
+	
 }
 
 
