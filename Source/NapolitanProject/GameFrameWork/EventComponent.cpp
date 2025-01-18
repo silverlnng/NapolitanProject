@@ -9,7 +9,6 @@
 #include "TestPlayerController.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/RichTextBlock.h"
-#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/YJ/EventWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"

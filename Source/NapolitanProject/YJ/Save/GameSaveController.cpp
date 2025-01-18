@@ -5,6 +5,7 @@
 
 #include "TestSaveGame.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
@@ -113,7 +114,19 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 			//// 클리어한 npc 정보를 로드해서 전달하기
 			if (!LoadedGame->ClearedNPC.IsEmpty())
 			{
+
+				for (int32 &val:LoadedGame->ClearedNPC)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("LoadedGame->ClearedNPC %s,%d"),*CALLINFO,val);
+				}
+				
 				GameInstance->ClearedNPC=LoadedGame->ClearedNPC;
+				for (int32 &val:GameInstance->ClearedNPC)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("GameInstance->ClearedNPC %s,%d"),*CALLINFO,val);
+				}
+				//제대로 되는지 로그로 확인하기
+				
 			}
 		}
 		
