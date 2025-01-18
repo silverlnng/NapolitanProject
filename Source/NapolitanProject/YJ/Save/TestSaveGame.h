@@ -38,5 +38,6 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	TMap<int32,int32> NPCStates;
 	
-	
+	UPROPERTY(VisibleAnywhere, Category = "SaveData")
+	TSet<int32> ClearedNPC;
 };

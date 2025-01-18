@@ -49,6 +49,13 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 					UE_LOG(LogTemp, Warning, TEXT("Game saved to slot clue: %s"), *Row->Name);
 				}
 			}
+
+			// 클리어한 npc 정보를 저장하기
+			if (!GameInstance->ClearedNPC.IsEmpty())
+			{
+				SaveGameInstance->ClearedNPC=GameInstance->ClearedNPC;
+			}
+			
 		}
 
 		// 슬롯에 저장
@@ -102,6 +109,12 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 			}
 
 			UE_LOG(LogTemp, Warning, TEXT("ClueStates 로드 완료"));
+
+			//// 클리어한 npc 정보를 로드해서 전달하기
+			if (!LoadedGame->ClearedNPC.IsEmpty())
+			{
+				GameInstance->ClearedNPC=LoadedGame->ClearedNPC;
+			}
 		}
 		
 		//APlayerHUD* PlayerHUD=PlayerController->GetHUD<APlayerHUD>();

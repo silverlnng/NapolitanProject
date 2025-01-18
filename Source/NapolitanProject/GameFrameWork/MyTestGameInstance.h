@@ -151,19 +151,25 @@ public:
 	void GetNPCSelect(const int32& NPC_ID,const int32& State,const FString& Lang);
 	// npc 만날떄 한번 호출로 선택지 모두 생성시키기 
 	
-/////// 플레이하면서 클리어한 NPC , 획득한 유물을 TARRAY 으로 관리하기
+/////// 플레이하면서 클리어한 NPC , 획득한 유물을 TARRAY 으로 관리하기 /////////////////
+
+	// 월드에 존재하는 npc를 관리 
+	UPROPERTY()
 	TSet<int32> ClearedNPC;
-	
+	UPROPERTY()
+	TSet<FName> NPCEventManage; // npc 의 id , 발생한 이벤트 여부
+	UPROPERTY()
 	TArray<int32> AcquireSouvenir;
 
 	int32 AcquireSouvenirNum;
 	
+///////////// 추리 단서 ////////////////////////	
 	UPROPERTY(VisibleAnywhere)
 	UDataTable* DT_Clue;
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<FName> ClueDataRowNames;
-
+	UPROPERTY()
 	TMap<int32,FClueData> ClueMap;
 
 //////////// 게임 저장 //////////////
