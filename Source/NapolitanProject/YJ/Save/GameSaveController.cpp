@@ -56,6 +56,16 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 			{
 				SaveGameInstance->ClearedNPC=GameInstance->ClearedNPC;
 			}
+
+			if (!GameInstance->NPCEventManage.IsEmpty())
+			{
+				SaveGameInstance->NPCEventManage=GameInstance->NPCEventManage;
+			}
+			
+			if (!GameInstance->QuestSlots.IsEmpty())
+			{
+				SaveGameInstance->QuestSlots=GameInstance->QuestSlots;
+			}
 			
 		}
 
@@ -95,21 +105,26 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 		}
 
 		UMyTestGameInstance* GameInstance = Cast<UMyTestGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-		if (GameInstance && GameInstance->DT_Clue)
+		
+		if (GameInstance)
 		{
-			TMap<FName, bool>& SavedClueStates = LoadedGame->ClueStates;
-
-			for (const TPair<FName, bool>& Pair : SavedClueStates)
+			if (GameInstance->DT_Clue)
 			{
-				FClueData* Row = GameInstance->DT_Clue->FindRow<FClueData>(Pair.Key, "");
-				if (Row)
-				{
-					// 상태 복원
-					Row->Had = Pair.Value;
-				}
-			}
+				TMap<FName, bool>& SavedClueStates = LoadedGame->ClueStates;
 
-			UE_LOG(LogTemp, Warning, TEXT("ClueStates 로드 완료"));
+				for (const TPair<FName, bool>& Pair : SavedClueStates)
+				{
+					FClueData* Row = GameInstance->DT_Clue->FindRow<FClueData>(Pair.Key, "");
+					if (Row)
+					{
+						// 상태 복원
+						Row->Had = Pair.Value;
+					}
+				}
+
+				UE_LOG(LogTemp, Warning, TEXT("ClueStates 로드 완료"));
+			}
+		
 
 			//// 클리어한 npc 정보를 로드해서 전달하기
 			if (!LoadedGame->ClearedNPC.IsEmpty())
@@ -124,10 +139,20 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 				for (int32 &val:GameInstance->ClearedNPC)
 				{
 					UE_LOG(LogTemp, Warning, TEXT("GameInstance->ClearedNPC %s,%d"),*CALLINFO,val);
-				}
 				//제대로 되는지 로그로 확인하기
-				
+				}
 			}
+
+			if (!LoadedGame->NPCEventManage.IsEmpty())
+			{
+				GameInstance->NPCEventManage=LoadedGame->NPCEventManage;
+			}
+			
+			if (!LoadedGame->QuestSlots.IsEmpty())
+			{
+				GameInstance->QuestSlots=LoadedGame->QuestSlots;
+			}
+			
 		}
 		
 		//APlayerHUD* PlayerHUD=PlayerController->GetHUD<APlayerHUD>();

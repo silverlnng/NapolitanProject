@@ -126,7 +126,7 @@ void ATriggerActor::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	APlayerHUD* PlayerHUD=TestPC->GetHUD<APlayerHUD>();
 	if (PlayerHUD&&PlayerHUD->InteractUI)
 	{
-		PlayerHUD->InteractUI->RemoveQuestSlot(1);
+		PlayerHUD->InteractUI->RemoveQuestSlot("미술관을 탐색하자");
 	}
 }
 

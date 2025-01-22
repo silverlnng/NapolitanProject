@@ -158,6 +158,10 @@ public:
 	TSet<int32> ClearedNPC;
 	UPROPERTY()
 	TSet<FName> NPCEventManage; // npc 의 id , 발생한 이벤트 여부
+
+	UPROPERTY()
+	TSet<FString> QuestSlots;
+	
 	UPROPERTY()
 	TArray<int32> AcquireSouvenir;
 

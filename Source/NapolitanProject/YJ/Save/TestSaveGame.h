@@ -40,4 +40,10 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, Category = "SaveData")
 	TSet<int32> ClearedNPC;
+	
+	UPROPERTY(VisibleAnywhere, Category = "SaveData")
+	TSet<FName> NPCEventManage;
+
+	UPROPERTY(VisibleAnywhere, Category = "SaveData")
+	TSet<FString> QuestSlots;
 };

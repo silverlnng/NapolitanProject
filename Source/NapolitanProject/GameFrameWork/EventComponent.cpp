@@ -235,7 +235,7 @@ void UEventComponent::Event_Cleaner_Completed()
 	
 	GetWorld()->GetTimerManager().SetTimer(UITimer4,[this]()
 	{
-		PlayerHUD->InteractUI->RemoveQuestSlot(3);
+		PlayerHUD->InteractUI->RemoveQuestSlot("머리를 가져다 주자");
 	},8.0f,false);
 
 

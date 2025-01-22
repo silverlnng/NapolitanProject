@@ -12,6 +12,7 @@
 #include "Components/TextBlock.h"
 #include "Components/VerticalBox.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/QuestSlotWidget.h"
@@ -78,11 +79,36 @@ void UInteractWidget::PlayNoteUIEvent(bool val)
 	
 }
 
+void UInteractWidget::LoadUpdateQuestSlot()
+{
+	if (GI&&!GI->QuestSlots.IsEmpty())
+	{
+		for (auto &QuestSlot:GI->QuestSlots)
+		{
+			
+			UQuestSlotWidget* QuestSlotWidget = CreateWidget<UQuestSlotWidget>(this, QuestSlotWidgetFactory);
+			// 어떤 퀘스트 인지 ??
+			if (QuestSlotWidget)
+			{
+				// VerticalBox에 추가
+				// 만들때 아이디를 부여해서
+				QuestSlotWidget->SetText_QuestName(QuestSlot);
+				VBox_Quest->AddChildToVerticalBox(QuestSlotWidget);
+				QuestSlotsArray.Add(QuestSlot,QuestSlotWidget);
+			}
+		}
+	}
+}
+
 void UInteractWidget::AddQuestSlot(int32 QuestNum,FString& str)
 {
 	//QuestSlotsArray 에서 QuestNum 으로 중복검사하고
-	if (QuestSlotsArray.Contains(QuestNum)) {return;}
+	if (QuestSlotsArray.Contains(str)) {return;}
 
+	if (GI)
+	{
+		GI->QuestSlots.Add(str);
+	}
 	
 	UQuestSlotWidget* QuestSlot = CreateWidget<UQuestSlotWidget>(this, QuestSlotWidgetFactory);
 	// 어떤 퀘스트 인지 ??
@@ -93,20 +119,24 @@ void UInteractWidget::AddQuestSlot(int32 QuestNum,FString& str)
 		QuestSlot->SetQuestNum(QuestNum);
 		QuestSlot->SetText_QuestName(str);
 		VBox_Quest->AddChildToVerticalBox(QuestSlot);
-		QuestSlotsArray.Add(QuestNum,QuestSlot);
+		QuestSlotsArray.Add(str,QuestSlot);
 	}
 }
 
-void UInteractWidget::RemoveQuestSlot(int32 RemoveQuestNum)
+void UInteractWidget::RemoveQuestSlot(const FString& str)
 {
 	//퀘스트를 달성할떄 호출해야함 어떤걸 제거할지 ??
 
 	// 제거할 아이디를 받아서 map에 검색을 하기 
 
-	if (QuestSlotsArray.Contains(RemoveQuestNum))
+	if (QuestSlotsArray.Contains(str))
 	{
-		VBox_Quest->RemoveChild(QuestSlotsArray[RemoveQuestNum]);
-		QuestSlotsArray.Remove(RemoveQuestNum);
+		VBox_Quest->RemoveChild(QuestSlotsArray[str]);
+		QuestSlotsArray.Remove(str);
+		if (GI)
+		{
+			GI->QuestSlots.Remove(str);
+		}
 	}
 	
 }
