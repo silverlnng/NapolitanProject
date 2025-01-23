@@ -3,6 +3,7 @@
 
 #include "EventComponent.h"
 
+#include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
@@ -32,6 +33,7 @@ void UEventComponent::BeginPlay()
 	MainCharacter=Cast<ATestCharacter>(TestPC->GetPawn());
 	// ...
 	PlayerHUD=TestPC->GetHUD<APlayerHUD>();
+	
 }
 
 void UEventComponent::InitializeComponent()
@@ -52,6 +54,13 @@ void UEventComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 void UEventComponent::StartEvent(FString& str,const FString& content)
 {
+	const FName NameKey(str);
+	// NPCEventManage에서 한번 조회 
+	if (GI&&!(GI->NPCEventManage.IsEmpty())&&GI->NPCEventManage.Contains(NameKey))
+	{
+		return;
+	}
+		
 	if (str=="RedDosentStart")
 	{
 		Event_RedDosent(str,content);
@@ -64,11 +73,13 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 	{
 		// 청소부의 퀘스트 함수
 		Event_Cleaner_Start();
+		GI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="CleanerQuestCompleted")
 	{
 		// 청소부의 퀘스트 완료 함수
 		Event_Cleaner_Completed();
+		GI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="OldmanClue")
 	{
@@ -79,9 +90,8 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 			// 청소부의 퀘스트 완료 함수
 			Event_Oldman();
 		},3.0f,false);
+		GI->NPCEventManage.Add(NameKey);
 	}
-	
-	
 }
 
 void UEventComponent::Event_RedDosent(FString& str,const FString& content)
@@ -225,7 +235,7 @@ void UEventComponent::Event_Cleaner_Completed()
 	
 	GetWorld()->GetTimerManager().SetTimer(UITimer4,[this]()
 	{
-		PlayerHUD->InteractUI->RemoveQuestSlot(3);
+		PlayerHUD->InteractUI->RemoveQuestSlot("머리를 가져다 주자");
 	},8.0f,false);
 
 

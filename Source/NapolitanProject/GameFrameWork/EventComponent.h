@@ -53,4 +53,6 @@ public:
 	class APlayerHUD* PlayerHUD;
 	UPROPERTY(VisibleAnywhere)
 	class ATestCharacter* MainCharacter;
+	UPROPERTY()
+	class UMyTestGameInstance* GI;
 };

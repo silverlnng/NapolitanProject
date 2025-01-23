@@ -76,5 +76,7 @@ public:
 
 	UFUNCTION()
 	void UpdateClueSlotWidget();
-	
+
+	UFUNCTION()
+	void UpdateNPCInfoWidget();
 };

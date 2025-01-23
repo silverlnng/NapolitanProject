@@ -5,6 +5,7 @@
 
 #include "TestSaveGame.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
@@ -49,6 +50,23 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 					UE_LOG(LogTemp, Warning, TEXT("Game saved to slot clue: %s"), *Row->Name);
 				}
 			}
+
+			// 클리어한 npc 정보를 저장하기
+			if (!GameInstance->ClearedNPC.IsEmpty())
+			{
+				SaveGameInstance->ClearedNPC=GameInstance->ClearedNPC;
+			}
+
+			if (!GameInstance->NPCEventManage.IsEmpty())
+			{
+				SaveGameInstance->NPCEventManage=GameInstance->NPCEventManage;
+			}
+			
+			if (!GameInstance->QuestSlots.IsEmpty())
+			{
+				SaveGameInstance->QuestSlots=GameInstance->QuestSlots;
+			}
+			
 		}
 
 		// 슬롯에 저장
@@ -87,21 +105,54 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 		}
 
 		UMyTestGameInstance* GameInstance = Cast<UMyTestGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-		if (GameInstance && GameInstance->DT_Clue)
+		
+		if (GameInstance)
 		{
-			TMap<FName, bool>& SavedClueStates = LoadedGame->ClueStates;
-
-			for (const TPair<FName, bool>& Pair : SavedClueStates)
+			if (GameInstance->DT_Clue)
 			{
-				FClueData* Row = GameInstance->DT_Clue->FindRow<FClueData>(Pair.Key, "");
-				if (Row)
+				TMap<FName, bool>& SavedClueStates = LoadedGame->ClueStates;
+
+				for (const TPair<FName, bool>& Pair : SavedClueStates)
 				{
-					// 상태 복원
-					Row->Had = Pair.Value;
+					FClueData* Row = GameInstance->DT_Clue->FindRow<FClueData>(Pair.Key, "");
+					if (Row)
+					{
+						// 상태 복원
+						Row->Had = Pair.Value;
+					}
+				}
+
+				UE_LOG(LogTemp, Warning, TEXT("ClueStates 로드 완료"));
+			}
+		
+
+			//// 클리어한 npc 정보를 로드해서 전달하기
+			if (!LoadedGame->ClearedNPC.IsEmpty())
+			{
+
+				for (int32 &val:LoadedGame->ClearedNPC)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("LoadedGame->ClearedNPC %s,%d"),*CALLINFO,val);
+				}
+				
+				GameInstance->ClearedNPC=LoadedGame->ClearedNPC;
+				for (int32 &val:GameInstance->ClearedNPC)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("GameInstance->ClearedNPC %s,%d"),*CALLINFO,val);
+				//제대로 되는지 로그로 확인하기
 				}
 			}
 
-			UE_LOG(LogTemp, Warning, TEXT("ClueStates 로드 완료"));
+			if (!LoadedGame->NPCEventManage.IsEmpty())
+			{
+				GameInstance->NPCEventManage=LoadedGame->NPCEventManage;
+			}
+			
+			if (!LoadedGame->QuestSlots.IsEmpty())
+			{
+				GameInstance->QuestSlots=LoadedGame->QuestSlots;
+			}
+			
 		}
 		
 		//APlayerHUD* PlayerHUD=PlayerController->GetHUD<APlayerHUD>();

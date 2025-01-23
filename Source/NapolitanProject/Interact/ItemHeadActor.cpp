@@ -32,7 +32,7 @@ void AItemHeadActor::OnPickup()
 	
 	GetWorld()->GetTimerManager().SetTimer(UITimer4,[this]()
 	{
-		PlayerHUD->InteractUI->RemoveQuestSlot(2);
+		PlayerHUD->InteractUI->RemoveQuestSlot("머리를 찾아주기");
 	},1.0f,false);
 
 	

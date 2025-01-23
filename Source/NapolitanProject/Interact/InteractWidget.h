@@ -17,6 +17,10 @@ public:
 	virtual void NativeConstruct() override;
 	class ATestPlayerController* pc;
 	class ATestCharacter* MainCharacter;
+
+	UPROPERTY()
+	class UMyTestGameInstance* GI;
+	
 	UPROPERTY(meta=(BindWidget))
 	class UImage* Image_CrossHair;
 	UPROPERTY(meta=(BindWidget))
@@ -60,7 +64,7 @@ public:
 	class UVerticalBox* VBox_Quest; 
 
 	// 생성한 (받은) 퀘스트를 배열로 가지고 있기
-	TMap<int32,class UQuestSlotWidget*> QuestSlotsArray;
+	TMap<FString,class UQuestSlotWidget*> QuestSlotsArray;
 
 	// 1. 미술관을 탐색하자 : 도슨트에게 수첩을 얻고 난 뒤의 퀘스트
 	// 2. 머리를 찾아보자 : 
@@ -76,7 +80,9 @@ public:
 
 	void AddQuestSlot(int32 QuestNum,FString& str);
 
-	void RemoveQuestSlot(int32 RemoveQuestNum);
+	void RemoveQuestSlot(const FString& str);
+
+	void LoadUpdateQuestSlot();
 	
 /////////// 단서 ui ///////////
 	UPROPERTY(meta=(BindWidget))
@@ -110,3 +116,4 @@ public:
 	USoundWave* PickUpSoundWave;
 	
 };
+

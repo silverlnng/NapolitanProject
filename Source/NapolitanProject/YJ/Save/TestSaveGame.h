@@ -38,5 +38,12 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	TMap<int32,int32> NPCStates;
 	
+	UPROPERTY(VisibleAnywhere, Category = "SaveData")
+	TSet<int32> ClearedNPC;
 	
+	UPROPERTY(VisibleAnywhere, Category = "SaveData")
+	TSet<FName> NPCEventManage;
+
+	UPROPERTY(VisibleAnywhere, Category = "SaveData")
+	TSet<FString> QuestSlots;
 };

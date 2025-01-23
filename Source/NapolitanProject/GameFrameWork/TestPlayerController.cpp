@@ -40,6 +40,8 @@ void ATestPlayerController::BeginPlay()
 	GI = GetGameInstance<UMyTestGameInstance>();
 	me = Cast<ATestCharacter>(GetPawn());
 	
+	EventComponent->GI=GI;
+	
 	FTimerHandle TimerHandle;
 	GetWorldTimerManager().SetTimer(TimerHandle,[this]()
 	{

@@ -17,6 +17,10 @@ class NAPOLITANPROJECT_API UNPCInfoWidget : public UUserWidget
 public:
 
 	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void LoadUpdate(const FString& str);
+	
 	
 /////////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")

@@ -18,6 +18,21 @@ void UNPCInfoWidget::NativeConstruct()
 	Img_Head_BG->SetVisibility(ESlateVisibility::Hidden);
 }
 
+void UNPCInfoWidget::LoadUpdate(const FString& str)
+{
+	if (str=="CleanerQuest")
+	{
+		ScrollBox_Cleaner->ScrollWidgetIntoView(CanvasPanel_Cleaner1,true);
+		WidgetSwitcher_Cleaner1->SetActiveWidgetIndex(1);
+		PlayAnimation(Anim_Cleaner_1);
+	}
+	else if (str=="CleanerQuestCompleted")
+	{
+		ScrollBox_Cleaner->ScrollWidgetIntoView(CanvasPanel_Cleaner2,true);
+		WidgetSwitcher_Cleaner2->SetActiveWidgetIndex(1);
+	}
+}
+
 void UNPCInfoWidget::SelectContent(int32 idx)
 {
 	WidgetSwitcher_->SetActiveWidgetIndex(idx);

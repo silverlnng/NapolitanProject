@@ -21,6 +21,7 @@
 #include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueSlotWidget.h"
+#include "NapolitanProject/YJ/NoteUI/NPCInfoWidget.h"
 #include "NapolitanProject/YJ/SaveUI/LoadScreenWidget.h"
 
 // hud 의 BeginPlay 는 저장되어있는거 로드된후에 실행됨 
@@ -60,6 +61,7 @@ void APlayerHUD::BeginPlay()
 		InteractUI->AddToViewport();
 		InteractUI->SetVisibleCrossHair(true);
 		InteractUI->SetVisibleHBox(false);
+		InteractUI->GI=GI;
 	}
 
 	DeadEndingWidgetUI=CreateWidget<UDeadEndingWidget>(GetWorld(),DeadEndingWidgetFactory);
@@ -117,8 +119,13 @@ void APlayerHUD::BeginPlay()
 			 	newSlot->WidgetSwitcher->SetActiveWidgetIndex(0);
 			 }
 			
-			
 		}
+
+		// GI 의 NPCEventManage 받아서 로드하고 업데이트 하는 함수 
+		UpdateNPCInfoWidget();
+		// 진행하고 있던 퀘스트 목록을 받아서 로드하고 업데이트하기 
+		InteractUI->LoadUpdateQuestSlot();
+		
 	}
 	
 	
@@ -156,4 +163,20 @@ void APlayerHUD::UpdateClueSlotWidget()
 			NoteUI->WBP_ClueInfo->ClueSlots[i]->WidgetSwitcher->SetActiveWidgetIndex(1);
 		}
 	}		
+}
+
+void APlayerHUD::UpdateNPCInfoWidget()
+{
+	// GI 의 TSet<FName> NPCEventManage; 을 보고 업데이트할꺼 만들어두기
+	
+	if (!GI->NPCEventManage.IsEmpty())
+	{
+		for (FName &EventName:GI->NPCEventManage)
+		{
+			FString EventString = EventName.ToString();
+			
+			NoteUI->WBP_NPCInfo->LoadUpdate(EventString);
+		}
+	}
+	
 }
