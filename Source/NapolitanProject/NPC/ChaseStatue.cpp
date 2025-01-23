@@ -82,8 +82,9 @@ void AChaseStatue::TickMove(const float& DeltaTime)
 	FVector dirR = targetLoc - myLoc;
 	FRotator rot = dirR.Rotation();
 	
-
-	//AddMovementInput(dirR);
+	me->SetActorRotation(FRotator(0, rot.Yaw, 0));
+	//AddMovementInput(dirR.GetSafeNormal());
+	//UE_LOG()
 
 	//NavigationSystem 객체 얻어오기
 	auto ns = UNavigationSystemV1::GetNavigationSystem(GetWorld());
@@ -110,18 +111,20 @@ void AChaseStatue::TickMove(const float& DeltaTime)
 	// 그렇지 않다면
 	else
 	{
-		//랜덤한 위치로 이동
+		UE_LOG(LogTemp, Warning, TEXT("AI 작동 안함"));
+		/*//랜덤한 위치로 이동
 		auto result = ChaseAI->MoveToLocation(randomPos);
 		//목적지에 도착하면
 		if (result == EPathFollowingRequestResult::AlreadyAtGoal ||result == EPathFollowingRequestResult::Failed )
 		{
 			//새로운 랜덤 위치 가져오기
 			GetRandomPositionNavMesh(me->GetActorLocation(), 500, randomPos);
-		}
+		}*/
 		
 	}
 	
-	UE_LOG(LogTemp,Warning,TEXT("%s,거리 :%f"),*CALLINFO,dirR.Size());
+	//UE_LOG(LogTemp,Warning,TEXT("%s,거리 :%f"),*CALLINFO,dirR.Size());
+	
 	//너무 가까이 왔을 때 사망 이벤트 발생
 	/*if (dirR.Size() <= 400.0f)
 	{
