@@ -37,12 +37,21 @@ AChaseStatue::AChaseStatue()
 void AChaseStatue::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 	me = this;
 
+	mState = ChaseStatueState::Move;
+
 	ChaseAI = Cast<AAIController>(me->GetController());
+	if (!ChaseAI)
+	{
+		UE_LOG(LogTemp, Error, TEXT("ChaseAI is null! Make sure the AIController is correctly set."));
+		return;
+	}
 
 	CSCol->OnComponentBeginOverlap.AddDynamic(this, &AChaseStatue::CuratorOverlap);
+
+	//캐릭터 캐스팅
 	
 }
 
@@ -53,12 +62,8 @@ void AChaseStatue::Tick(float DeltaTime)
 
 	switch (mState)
 	{
-	case ChaseStatueState::Patrol:
-		TickPatrol(DeltaTime);
 	case ChaseStatueState::Move:
 		TickMove(DeltaTime);
-	case ChaseStatueState::Attack:
-		TickAttack(DeltaTime);
 	}
 }
 
@@ -69,11 +74,6 @@ void AChaseStatue::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 }
 
-void AChaseStatue::TickPatrol(const float& DeltaTime)
-{
-	
-}
-
 void AChaseStatue::TickMove(const float& DeltaTime)
 {
 	//플레이어가 안에 들어왔고, 그 안에서 자신을 바라보지 않을 때 우선은 대기 상태로 있는다.
@@ -81,6 +81,7 @@ void AChaseStatue::TickMove(const float& DeltaTime)
 	FVector myLoc = me->GetActorLocation();
 	FVector dirR = targetLoc - myLoc;
 	FRotator rot = dirR.Rotation();
+	
 
 	//AddMovementInput(dirR);
 
@@ -92,7 +93,7 @@ void AChaseStatue::TickMove(const float& DeltaTime)
 	FAIMoveRequest req;
 
 	//목적지에서 인지할 수 잇는 범위
-	req.SetAcceptanceRadius(500);
+	req.SetAcceptanceRadius(5000);
 	req.SetGoalLocation(targetLoc);
 
 	//길찾기를 위한 쿼리 생성
@@ -122,7 +123,7 @@ void AChaseStatue::TickMove(const float& DeltaTime)
 	
 	UE_LOG(LogTemp,Warning,TEXT("%s,거리 :%f"),*CALLINFO,dirR.Size());
 	//너무 가까이 왔을 때 사망 이벤트 발생
-	if (dirR.Size() <= 300.0f)
+	/*if (dirR.Size() <= 400.0f)
 	{
 		UE_LOG(LogTemp,Warning,TEXT("%s 거리안"),*CALLINFO);
 		// 끝나는 엔딩 위젯 나오도록 하기
@@ -135,21 +136,10 @@ void AChaseStatue::TickMove(const float& DeltaTime)
 			PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
 			PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
 		}
-	}
+	}*/
 	
 }
 
-void AChaseStatue::TickAttack(const float& DeltaTime)
-{
-	//사망 코드 넣기
-}
-
-void AChaseStatue::SetState(ChaseStatueState newState)
-{
-	mState = newState; //상태 지정
-
-	//애니메이션 변경
-}
 
 //랜덤한 위치를 가져오기
 bool AChaseStatue::GetRandomPositionNavMesh(FVector CenterLocation, float radius, FVector& dest)

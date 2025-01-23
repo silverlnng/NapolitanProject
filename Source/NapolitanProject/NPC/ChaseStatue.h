@@ -9,9 +9,7 @@
 
 UENUM(BlueprintType)
 enum class ChaseStatueState : uint8 {
-	Patrol,
 	Move,
-	Attack,
 };
 
 UCLASS()
@@ -43,26 +41,16 @@ public:
 	ChaseStatueState mState = ChaseStatueState::Move;
 
 	//상태 함수
-	UFUNCTION(BlueprintCallable, Category = State)
-	void TickPatrol(const float& DeltaTime);
 
 	UFUNCTION(BlueprintCallable, Category = State)
 	void TickMove(const float& DeltaTime);
 
-	UFUNCTION(BlueprintCallable, Category = State)
-	void TickAttack(const float& DeltaTime); //플레이어 공격 -> 사망이벤트 발생
-
 public:
 	UPROPERTY()
-	class ATestCharacter* Target; //플레이어 추격
-
-	UPROPERTY()
-	class AChaseStatue* me; // 나 자신
+	class AChaseStatue* me; // 큐레이터 자신
 
 	UPROPERTY()
 	class AAIController* ChaseAI; //네비게이션 길찾기
-
-	void SetState(ChaseStatueState newState);
 
 	//길찾기 수행시 랜덤 위치
 	FVector randomPos;
