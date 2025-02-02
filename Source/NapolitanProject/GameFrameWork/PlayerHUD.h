@@ -41,6 +41,14 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UInteractWidget* InteractUI;
 
+
+	/////인벤토리 ui ///
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UInventoryWidget> InventoryFactory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
+	class UInventoryWidget* InventoryUI;
+	
 	//===========
 	//사망 UI 생김
 	

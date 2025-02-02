@@ -55,13 +55,13 @@ void ATestPlayerController::BeginPlay()
 			UE_LOG(LogTemp,Warning,TEXT("PlayerHUD->NoteUI is null"));
 			return;
 		}
-		if (!PlayerHUD->NoteUI->WBP_Inventory)
+		if (!PlayerHUD->InventoryUI)
 		{
-			UE_LOG(LogTemp,Warning,TEXT("PlayerHUD->NoteUI->WBP_Inventory is null"));
+			UE_LOG(LogTemp,Warning,TEXT("PlayerHUD->InventoryUI is null"));
 			return;
 		}
 		
-		auto InvenSlotMap = PlayerHUD->NoteUI->WBP_Inventory->InvenSlots;
+		/*auto InvenSlotMap = PlayerHUD->InventoryUI->InvenSlots;
 		//먼저 모든 행단위로 가져오기  
 		
 		for (int i = 0; i < GI->itemDataRowNames.Num(); i++)
@@ -73,7 +73,7 @@ void ATestPlayerController::BeginPlay()
 				// 인벤토리 슬롯에 썸네일 이미지 할당
 				InvenSlotMap[i]->Img_Thumnail->SetBrushFromTexture(ItemData->thumnail);
 			}
-		}
+		}*/
 
 		 // auto ClueSlotMap = PlayerHUD->NoteUI->WBP_ClueInfo->ClueSlots; 
 		

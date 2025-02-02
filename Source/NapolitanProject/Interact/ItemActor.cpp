@@ -73,11 +73,11 @@ void AItemActor::OnInventorySlot()
 {
 	// 게임인스턴스의 데이터 테이블도 had로 변경시키면 기록될것
 	// 본인 아이템 ItemID 으로 슬롯 찾아서 활성화 되도록 만들기
-	if (PlayerHUD->NoteUI->WBP_Inventory)
+	if (PlayerHUD->InventoryUI)
 	{
-		if (PlayerHUD->NoteUI->WBP_Inventory->InvenSlots.Contains(ItemID))
+		if (PlayerHUD->InventoryUI->InvenSlots.Contains(ItemID))
 		{
-			PlayerHUD->NoteUI->WBP_Inventory->InvenSlots[ItemID]->OnItemAcquired();
+			PlayerHUD->InventoryUI->InvenSlots[ItemID]->OnItemAcquired();
 		}
 	}
 }
