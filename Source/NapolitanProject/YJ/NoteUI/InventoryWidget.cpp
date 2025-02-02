@@ -10,7 +10,7 @@ void UInventoryWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	//ItemActor에 있는  ItemMap에 있는 정보로 slot을 초반에 생성시키고 싶다
-	for (int i=0;i<8;i++)
+	for (int i=0;i<8;i++) //최대 8칸.
 	{
 		
 		UInvenSlotWidget* newSlot=CreateWidget<UInvenSlotWidget>(this,InvenSlotWidgetFactory);

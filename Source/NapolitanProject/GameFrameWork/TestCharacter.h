@@ -129,9 +129,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Crouch)
 	float CrouchingWalkSpeed;
 
-/////////////////////////////
+///////////////////////////  인벤토리 ui /////////////////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	class UInputAction* IA_Tab;
+	class UInputAction* IA_Inventory;
+
+	UFUNCTION()
+	void InventoryUIToggle(const FInputActionValue& Value);
+
+	
+/////////////////////////////  노트 ui /////////////////////////////////////
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* IA_NoteUI;
 
 	UFUNCTION()
 	void NoteUIToggle(const FInputActionValue& Value);

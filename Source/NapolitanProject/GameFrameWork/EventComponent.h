@@ -38,6 +38,8 @@ public:
 	
 	void Event_Oldman();
 
+	void Event_Butterfly_Start();
+
 	void UpdateText();
 
 	

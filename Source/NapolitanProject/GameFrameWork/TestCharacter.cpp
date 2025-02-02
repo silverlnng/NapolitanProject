@@ -26,6 +26,7 @@
 #include "NapolitanProject/Interact/Sculpture.h"
 #include "NapolitanProject/Interact/SouvenirActor.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
+#include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 
 ATestCharacter::ATestCharacter()
 {
@@ -202,8 +203,9 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(IA_Run, ETriggerEvent::Started, this, &ATestCharacter::OnRunAction);
 		EnhancedInputComponent->BindAction(IA_Run, ETriggerEvent::Completed, this, &ATestCharacter::EndRunAction);
 
+		EnhancedInputComponent->BindAction(IA_Inventory, ETriggerEvent::Started, this, &ATestCharacter::InventoryUIToggle);
 
-		EnhancedInputComponent->BindAction(IA_Tab, ETriggerEvent::Started, this, &ATestCharacter::NoteUIToggle);
+		EnhancedInputComponent->BindAction(IA_NoteUI, ETriggerEvent::Started, this, &ATestCharacter::NoteUIToggle);
 
 		EnhancedInputComponent->BindAction(IA_Interact, ETriggerEvent::Started, this, &ATestCharacter::OnInteraction);
 		
@@ -353,7 +355,39 @@ void ATestCharacter::SetPlayerState(EPlayerState newState)
 	default:
 		break;
 	}
-	
+}
+
+void ATestCharacter::InventoryUIToggle(const FInputActionValue& Value)
+{
+	if (PlayerHUD->InventoryUI->IsVisible()) // 노트가 보이는 중 이면
+	{
+		PlayerHUD->InventoryUI->SetVisibility(ESlateVisibility::Hidden); // 노트를 닫아라
+		
+		if (PlayerHUD->InteractUI->CanvasPanel_Clue->GetVisibility() == ESlateVisibility::Visible)
+		{
+			return;
+		}
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->SetShowMouseCursor(false);
+		SetPlayerState(EPlayerState::Idle);
+		if (NoteUICloseSound)
+		{
+			UGameplayStatics::PlaySound2D(this, NoteUICloseSound);
+		}
+	}
+	else
+	{
+		UWidgetBlueprintLibrary::SetFocusToGameViewport();
+		PlayerHUD->InventoryUI->SetVisibility(ESlateVisibility::Visible);
+		PC->SetInputMode(FInputModeGameAndUI());
+		PC->SetShowMouseCursor(true);
+		SetPlayerState(EPlayerState::UI);
+		//
+		if (NoteUIOpenSound)
+		{
+			UGameplayStatics::PlaySound2D(this, NoteUIOpenSound);
+		}
+	}
 }
 
 void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)

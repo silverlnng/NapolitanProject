@@ -55,13 +55,13 @@ void ATestPlayerController::BeginPlay()
 			UE_LOG(LogTemp,Warning,TEXT("PlayerHUD->NoteUI is null"));
 			return;
 		}
-		if (!PlayerHUD->NoteUI->WBP_Inventory)
+		if (!PlayerHUD->InventoryUI)
 		{
-			UE_LOG(LogTemp,Warning,TEXT("PlayerHUD->NoteUI->WBP_Inventory is null"));
+			UE_LOG(LogTemp,Warning,TEXT("PlayerHUD->InventoryUI is null"));
 			return;
 		}
 		
-		auto InvenSlotMap = PlayerHUD->NoteUI->WBP_Inventory->InvenSlots;
+		/*auto InvenSlotMap = PlayerHUD->InventoryUI->InvenSlots;
 		//먼저 모든 행단위로 가져오기  
 		
 		for (int i = 0; i < GI->itemDataRowNames.Num(); i++)
@@ -73,7 +73,7 @@ void ATestPlayerController::BeginPlay()
 				// 인벤토리 슬롯에 썸네일 이미지 할당
 				InvenSlotMap[i]->Img_Thumnail->SetBrushFromTexture(ItemData->thumnail);
 			}
-		}
+		}*/
 
 		 // auto ClueSlotMap = PlayerHUD->NoteUI->WBP_ClueInfo->ClueSlots; 
 		
@@ -163,15 +163,18 @@ void ATestPlayerController::StartEndNPCDialougue(bool value)
 		SetUIMode(true); // ui 모드로 
 		PlayerHUD->InteractUI->SetVisibleCrossHair(false);
 		PlayerHUD->InteractUI->SetVisibleHBox(false);
+		
 		PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업 
 		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
 		PlayerHUD->NPCDialogueUI->Text_Dialogue->SetText(FText::FromString(("")));
+		PlayerHUD->NPCDialogueUI->Text_Name->SetText(FText::FromString(("")));
 		//남아있는 텍스트 초기화
-		//PlayerHUD->NPCDialogueUI->SetText_Dialogue(""); // 초기화 작업
+		
 		int32 npcID =curNPC->GetNPCID();
 		UE_LOG(LogTemp,Warning,TEXT("%s,npcID : %d"),*CALLINFO,npcID);
 		int32 npcState =curNPC->GetState();
-		
+
+		// NPC 의 ID , STATE를 가져와서 
 		SetCurNPCSelectUI(npcID,npcState,"kor");
 		
 		SetNPCDialougueMaxSize();
@@ -253,7 +256,9 @@ void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 		FNPCDialogue Dialogue_=GI->NPCDialogueMap[FindKey];
 
 		PlayerHUD->NPCDialogueUI->SetText_Dialogue(Dialogue_.Dialogue_Kor);
-
+		
+		PlayerHUD->NPCDialogueUI->SetText_Name(Dialogue_.Who);
+		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue_.Who);
 		// 이벤트가 정의 되어있으면 이벤트를 발생시키기 
 		// Dialogue_.CameraEffect 값에 따라서 이벤트를 실행시키기
 		FString str=Dialogue_.CameraEffect;

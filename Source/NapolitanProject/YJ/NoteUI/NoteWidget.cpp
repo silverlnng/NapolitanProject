@@ -32,7 +32,7 @@ void UNoteWidget::NativeConstruct()
 	
 	Btn_Setting->SetVisibility(ESlateVisibility::Hidden);
 	
-	WBP_Inventory->SetVisibility(ESlateVisibility::Hidden);
+	// WBP_Inventory->SetVisibility(ESlateVisibility::Hidden);
 	SelectContent(0);
 }
 

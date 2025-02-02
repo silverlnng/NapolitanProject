@@ -14,6 +14,7 @@
 #include "Animation/WidgetAnimation.h"
 #include "BehaviorTree/Tasks/BTTask_PlayAnimation.h"
 #include "Components/Button.h"
+#include "Components/Image.h"
 #include "Components/ScrollBox.h"
 #include "Components/WidgetSwitcher.h"
 #include "NapolitanProject/NapolitanProject.h"
@@ -21,6 +22,7 @@
 #include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueSlotWidget.h"
+#include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NPCInfoWidget.h"
 #include "NapolitanProject/YJ/SaveUI/LoadScreenWidget.h"
 
@@ -39,6 +41,12 @@ void APlayerHUD::BeginPlay()
 	}
 
 	// 초반에 slot 을 생성해주기
+	InventoryUI =CreateWidget<UInventoryWidget>(GetWorld(),InventoryFactory);
+	if (InventoryUI)
+	{
+		InventoryUI->AddToViewport(1);
+		InventoryUI->SetVisibility(ESlateVisibility::Hidden);
+	}
 	
 	NPCDialogueUI =CreateWidget<UNPCDialogueWidget>(GetWorld(),NPCDialogueWidgetFactory);
 	if (NPCDialogueUI)
@@ -125,8 +133,27 @@ void APlayerHUD::BeginPlay()
 		UpdateNPCInfoWidget();
 		// 진행하고 있던 퀘스트 목록을 받아서 로드하고 업데이트하기 
 		InteractUI->LoadUpdateQuestSlot();
-		
 	}
+
+
+	if (InventoryUI) //InventoryUI 초기화 작업
+	{
+		auto InvenSlotMap = InventoryUI->InvenSlots;
+		//먼저 모든 행단위로 가져오기  
+
+		for (int i = 0; i < GI->itemDataRowNames.Num(); i++)
+		{
+			// DT_itemData 에서 행 찾아서 
+			FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(GI->itemDataRowNames[i] , TEXT(""));
+			if (ItemData)
+			{
+				// 인벤토리 슬롯에 썸네일 이미지 할당
+				InvenSlotMap[i]->Img_Thumnail->SetBrushFromTexture(ItemData->thumnail);
+			}
+		}
+	}
+	
+	
 	
 	
 }

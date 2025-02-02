@@ -61,6 +61,11 @@ void UNPCDialogueWidget::SetText_Dialogue(const FString& str)
 	//Text_Dialogue->SetText(FText::FromString(str));
 }
 
+void UNPCDialogueWidget::SetText_Name(const FString& str)
+{
+	Text_Name->SetText(FText::FromString(*str));
+}
+
 void UNPCDialogueWidget::UpdateText()
 {
 	// 전체 텍스트의 끝까지 도달하면 타이머 중지
