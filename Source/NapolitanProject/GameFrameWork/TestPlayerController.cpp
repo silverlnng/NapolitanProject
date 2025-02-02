@@ -163,15 +163,18 @@ void ATestPlayerController::StartEndNPCDialougue(bool value)
 		SetUIMode(true); // ui 모드로 
 		PlayerHUD->InteractUI->SetVisibleCrossHair(false);
 		PlayerHUD->InteractUI->SetVisibleHBox(false);
+		
 		PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업 
 		PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
 		PlayerHUD->NPCDialogueUI->Text_Dialogue->SetText(FText::FromString(("")));
+		PlayerHUD->NPCDialogueUI->Text_Name->SetText(FText::FromString(("")));
 		//남아있는 텍스트 초기화
-		//PlayerHUD->NPCDialogueUI->SetText_Dialogue(""); // 초기화 작업
+		
 		int32 npcID =curNPC->GetNPCID();
 		UE_LOG(LogTemp,Warning,TEXT("%s,npcID : %d"),*CALLINFO,npcID);
 		int32 npcState =curNPC->GetState();
-		
+
+		// NPC 의 ID , STATE를 가져와서 
 		SetCurNPCSelectUI(npcID,npcState,"kor");
 		
 		SetNPCDialougueMaxSize();
@@ -253,7 +256,9 @@ void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 		FNPCDialogue Dialogue_=GI->NPCDialogueMap[FindKey];
 
 		PlayerHUD->NPCDialogueUI->SetText_Dialogue(Dialogue_.Dialogue_Kor);
-
+		
+		PlayerHUD->NPCDialogueUI->SetText_Name(Dialogue_.Who);
+		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue_.Who);
 		// 이벤트가 정의 되어있으면 이벤트를 발생시키기 
 		// Dialogue_.CameraEffect 값에 따라서 이벤트를 실행시키기
 		FString str=Dialogue_.CameraEffect;

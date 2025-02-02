@@ -28,6 +28,9 @@ public:
 	class URichTextBlock* Text_Dialogue;
 
 	UPROPERTY(meta=(BindWidget))
+	class UTextBlock* Text_Name;
+
+	UPROPERTY(meta=(BindWidget))
 	class UButton* Btn_Exit;
 
 	
@@ -59,6 +62,9 @@ public:
 	
 	UFUNCTION()
 	void SetText_Dialogue(const FString& str);
+
+	UFUNCTION()
+	void SetText_Name(const FString& str);
 
 	/// 동적으로 UniformGridPanel_Selection 의 자식으로 선택지를 생성시켜야 함
 	UPROPERTY()

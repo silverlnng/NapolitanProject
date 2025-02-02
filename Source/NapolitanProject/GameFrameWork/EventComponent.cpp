@@ -92,6 +92,11 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 		},3.0f,false);
 		GI->NPCEventManage.Add(NameKey);
 	}
+	else if (str=="ButterflyQuest")
+	{
+		Event_Butterfly_Start();
+		GI->NPCEventManage.Add(NameKey);
+	}
 }
 
 void UEventComponent::Event_RedDosent(FString& str,const FString& content)
@@ -297,6 +302,14 @@ void UEventComponent::Event_Oldman()
 	{
 		MainCharacter->SetPlayerState(EPlayerState::UI);
 	},6.0f,false);
+}
+
+void UEventComponent::Event_Butterfly_Start()
+{
+	TestPC->StartEndNPCDialougue(false);
+	TestPC->EndResult();
+
+	
 }
 
 void UEventComponent::UpdateText()
