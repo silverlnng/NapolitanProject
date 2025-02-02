@@ -160,7 +160,7 @@ void AChaseStatue::CuratorOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 {
 	if (OtherActor && (OtherActor != this) && OtherComp)
 	{
-		auto*  cha=Cast<ATestCharacter>(OtherActor);
+		auto* cha=Cast<ATestCharacter>(OtherActor);
 		//플레이어일때
 		if (cha)
 		{
