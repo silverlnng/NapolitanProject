@@ -5,6 +5,7 @@
 
 #include "Components/Button.h"
 #include "Components/Image.h"
+#include "NapolitanProject/Interact/ItemActor.h"
 
 void UInvenSlotWidget::NativeConstruct()
 {
@@ -22,13 +23,20 @@ void UInvenSlotWidget::NativeConstruct()
 
 void UInvenSlotWidget::OnClickedInvenSlot()
 {
-	// 자신의 ItemIndex 으로 
+	// 자신의 ItemIndex 으로 해당하는 ItemAcotr의 함수실행시키기  
 	// 해당 메쉬를 카메라앞에 스폰되도록 하기
+		// 중복되면 안됨. 먼저 앞에들고있는걸 해제하고. 
 	//GI->DT_itemData->FindRow<FItemData>
+
+	if (MyItem)
+	{
+		MyItem->Use();
+	}
 }
 
 void UInvenSlotWidget::OnHoverInvenSlot()
 {
+	// 사용 을 묻는 ui 나오도록 하기 
 }
 
 void UInvenSlotWidget::OnItemAcquired()

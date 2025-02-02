@@ -58,8 +58,15 @@ void AItemActor::OnPickup()
 {
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 	OnInventorySlot();
-	
 	AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+	// 해당하는 아이템슬롯을 찾아서 자신을 넣어주기
+	PlayerHUD->InventoryUI->InvenSlots[ItemID]->MyItem=this;
+}
+
+void AItemActor::Use()
+{
+	
 }
 
 void AItemActor::PutDown()

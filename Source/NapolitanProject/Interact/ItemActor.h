@@ -52,6 +52,8 @@ public:
 	
 	virtual void OnPickup(); // 아이템을 상호작용e키 눌렀을때 부를 함수 + 카메라 앞에 부착하기 
 
+	virtual void Use();
+	
 	virtual void PutDown();
 
 	virtual void OnInventorySlot();

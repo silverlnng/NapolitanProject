@@ -25,7 +25,9 @@ public:
 
 	UPROPERTY()
 	int32 ItemIndex;
-	
+
+	UPROPERTY()
+	class AItemActor* MyItem;
 	
 	UFUNCTION()
 	void OnClickedInvenSlot();
