@@ -36,8 +36,9 @@ public:
 	int32 NPC_ID =4;
 	
 	UPROPERTY(VisibleAnywhere)
-	ESecurityState SecurityState= ESecurityState::Patrol;
-	
+	ESecurityState SecurityState= ESecurityState::Stop;
+
+	UFUNCTION(BlueprintCallable)
 	void SetState(ESecurityState curState);
 
 	UPROPERTY(VisibleAnywhere, Category = "Sound")
