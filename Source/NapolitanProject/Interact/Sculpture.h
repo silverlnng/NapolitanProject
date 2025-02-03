@@ -72,6 +72,10 @@ public:
 
 	//////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
-	USoundWave* MissionClearSoundWave;
+	USoundWave* MissionClearSoundWave; //3개모두 다붙여서 미션 클리어했을때 소리
+	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* OneTwoSoundWave; //1,2개 붙일때 소리 
 	
 };

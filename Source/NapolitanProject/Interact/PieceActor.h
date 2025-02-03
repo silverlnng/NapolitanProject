@@ -20,6 +20,9 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	bool Picked =false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* PickUpSoundWave;
 	
 	virtual void OnPickup() override; 
 };

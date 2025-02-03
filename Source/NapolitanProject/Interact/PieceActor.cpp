@@ -5,6 +5,7 @@
 
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 
 void APieceActor::OnPickup()
@@ -14,4 +15,10 @@ void APieceActor::OnPickup()
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 	//Piece 조각은 인벤에 넣지말고 앞에 들고다니기
 	AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+	// 소리 나오도록 하기 
+	if (PickUpSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, PickUpSoundWave);
+	}
 }

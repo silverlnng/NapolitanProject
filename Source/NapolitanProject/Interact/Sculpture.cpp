@@ -83,10 +83,20 @@ void ASculpture::PutDownPiece(APieceActor* Piece)
 		// 케릭터가 가진 현재조각을
 			Piece->AttachToComponent(SceneComp1,FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
 			PieceArray.Add(Piece);
+		
+		if (OneTwoSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, OneTwoSoundWave);
+		}
 		break;
 	case 2:
 		Piece->AttachToComponent(SceneComp2,FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
 		PieceArray.Add(Piece);
+		
+		if (OneTwoSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, OneTwoSoundWave);
+		}
 		break;
 	case 3:
 		Piece->AttachToComponent(SceneComp3,FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
