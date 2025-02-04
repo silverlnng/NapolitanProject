@@ -27,7 +27,13 @@ public:
 	int32 ItemIndex;
 
 	UPROPERTY()
+	class UTexture2D* Mytexture2D;
+	
+	UPROPERTY()
 	class AItemActor* MyItem;
+	
+	UPROPERTY()
+	class UInventoryWidget* InventoryUI;
 	
 	UFUNCTION()
 	void OnClickedInvenSlot();

@@ -54,17 +54,17 @@ void AItemActor::Tick(float DeltaTime)
 
 }
 
-void AItemActor::OnPickup()
+void AItemActor::OnPickup() // 아이템을 레벨에서 처음한번 잡을때. 인벤작업까지 되어있음
 {
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
-	OnInventorySlot();
 	AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
-	// 해당하는 아이템슬롯을 찾아서 자신을 넣어주기
-	if (PlayerHUD->InventoryUI->InvenSlots.Contains(ItemID))
-	{
-		PlayerHUD->InventoryUI->InvenSlots[ItemID]->MyItem=this;
-	}
+	OnInventorySlot(); // 인벤토리 슬롯 작업
+
+	SetActorHiddenInGame(true); // 인벤에 넣을 아이템은 일단 안보이도록
+
+	//인벤에 넣었으면 다른거 집을수있도록
+	MainCharacter->curItem=nullptr;
 }
 
 void AItemActor::Use()
@@ -89,6 +89,11 @@ void AItemActor::OnInventorySlot()
 		{
 			PlayerHUD->InventoryUI->InvenSlots[ItemID]->OnItemAcquired();
 		}
+	}
+	// 해당하는 아이템슬롯을 찾아서 자신을 넣어주기
+	if (PlayerHUD->InventoryUI->InvenSlots.Contains(ItemID))
+	{
+		PlayerHUD->InventoryUI->InvenSlots[ItemID]->MyItem=this;
 	}
 }
 

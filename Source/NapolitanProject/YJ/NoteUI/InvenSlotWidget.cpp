@@ -3,6 +3,8 @@
 
 #include "InvenSlotWidget.h"
 
+#include "InvenSlotConfirmWidget.h"
+#include "InventoryWidget.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "NapolitanProject/Interact/ItemActor.h"
@@ -28,9 +30,12 @@ void UInvenSlotWidget::OnClickedInvenSlot()
 		// 중복되면 안됨. 먼저 앞에들고있는걸 해제하고. 
 	//GI->DT_itemData->FindRow<FItemData>
 
-	if (MyItem)
+	if (InventoryUI&&InventoryUI->WBP_InvenSlot_Confirm)
 	{
-		MyItem->Use();
+		InventoryUI->WBP_InvenSlot_Confirm->CurInvenSlot=this;
+		InventoryUI->WBP_InvenSlot_Confirm->Set_ImgThumnail(Mytexture2D);
+		InventoryUI->WBP_InvenSlot_Confirm->SetVisibility(ESlateVisibility::Visible);
+		InventoryUI->WBP_InvenSlot_Confirm->MyItem=MyItem;
 	}
 }
 

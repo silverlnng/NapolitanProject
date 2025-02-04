@@ -10,10 +10,12 @@
 
 void APieceActor::OnPickup()
 {
+
+	//Piece 조각은 인벤에 넣지말고 앞에 들고다니기 => 그래서 super 안함. 
+	
 	Picked=true;
 	StaticMeshComp->SetRelativeRotation(FRotator(0,0,0));
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
-	//Piece 조각은 인벤에 넣지말고 앞에 들고다니기
 	AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
 	// 소리 나오도록 하기 
@@ -21,4 +23,5 @@ void APieceActor::OnPickup()
 	{
 		UGameplayStatics::PlaySound2D(this, PickUpSoundWave);
 	}
+	
 }
