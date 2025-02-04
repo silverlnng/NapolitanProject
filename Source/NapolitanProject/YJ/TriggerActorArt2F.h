@@ -4,16 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "TriggerActor.generated.h"
+#include "TriggerActorArt2F.generated.h"
 
 UCLASS()
-class NAPOLITANPROJECT_API ATriggerActor : public AActor
+class NAPOLITANPROJECT_API ATriggerActorArt2F : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ATriggerActor();
+	ATriggerActorArt2F();
 
 protected:
 	// Called when the game starts or when spawned
@@ -48,6 +48,9 @@ public:
 
 	UFUNCTION()
 	void BoxCompEndOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION()
+	void Interaction_Art2F(AActor* Interact);
 	
 };
 

@@ -110,9 +110,6 @@ void ATestCharacter::BeginPlay()
 
 	GetWorldTimerManager().SetTimer(TimerHandle,this,&ATestCharacter::SphereTraceFromCamera,0.2f,true);
 	
-
-	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this,&ATestCharacter::OnCapsuleOverlap);
-
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this,&ATestCharacter::EndCapsuleOverlap);
 	
 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("FootstepTarget"), FootstepTargetPoints);
@@ -473,14 +470,14 @@ void ATestCharacter::SphereTraceFromCamera()
 
 		Interact =HitResult.GetActor();
 		PlayerHUD->InteractUI->SetVisibleHBox(true);
-		//PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Visible);
+		
 	}
 	else if (!InteractHit && curState==EPlayerState::Idle)
 	{
 		//DrawDebugSphere(GetWorld(), TraceEnd, SphereRadius, 12, TraceColor, false, 2.0f);
 		PlayerHUD->InteractUI->SetVisibleHBox(false);
 		PlayerHUD->InteractUI->SetVisibleCrossHair(true);
-		//PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
+		
 		TestPC->curNPC=nullptr;
 		curControllableLight=nullptr;
 	}
@@ -517,28 +514,7 @@ void ATestCharacter::OnInteraction()
 				UGameplayStatics::PlaySound2D(this, NPCEventSoundWave);
 			}
 		}
-
-		AControllableLightActor* ControllableLight =Cast<AControllableLightActor>(Interact);
 		
-		// 라이트라면 라이트로 캐스트해서 
-		//현재 조작할 라이트가 있고 그 라이트의 범위 안일떄만 작동
-		if (ControllableLight)
-		{
-			curControllableLight=ControllableLight;
-			//IsLightRangeIn=true;
-			// curControllableLight 의 불키는 함수 작동시키기
-			if (!curControllableLight->IsTurnOn)
-			{
-				curControllableLight->TurnOnLight(true);
-			}
-			else
-			{
-				curControllableLight->TurnOnLight(false);
-
-			}
-		}
-		// 그냥 아이템 이라면 아이템으로 캐스트해서 
-
 		// 단서라면 단서로 캐스트
 		// 단서를 카메라 가까이 나오고 시간 지연 주고 스크린 ui 으로 각자의 내용이 나오도록 하기
 		AClueActor* Clue =Cast<AClueActor>(Interact);
@@ -547,11 +523,7 @@ void ATestCharacter::OnInteraction()
 			Clue->LookAt();
 		}
 
-		// 의뢰서라면 의뢰서 하나 나오도록 하기 
-		
-
 		ASouvenirActor* Souvenir=Cast<ASouvenirActor>(Interact);
-
 		if (Souvenir)
 		{
 			Souvenir->OnPickup();
@@ -565,14 +537,8 @@ void ATestCharacter::OnInteraction()
 			ItemActor->OnPickup();
 		}
 		
-		ASculpture* Sculpture =Cast<ASculpture>(Interact);
-		APieceActor* CurPiece =Cast<APieceActor>(curItem);
-		if (CurPiece&&Sculpture)
-		{
-			// Sculpture 에서 내려두기 UI 출력
-			Sculpture->PutDownPiece(CurPiece);
-			curItem=nullptr;
-		}
+///////////////// 2층에서만 사용하는 기능은 델리게이트로 사용하기.//////////////////////////
+		OnSpecialInteraction.Broadcast(Interact);
 		
 	}
 }
@@ -634,18 +600,6 @@ void ATestCharacter::UpdateMeshLocation()
 	}
 }
 
-void ATestCharacter::OnCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                      UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	// 라이트 스위치 액터 등 가까이 있는 액터와 반응 할때 만든 함수
-	/*AControllableLightActor* ControllableLight = Cast<AControllableLightActor>(OtherActor);
-	if (ControllableLight)
-	{
-		curControllableLight=ControllableLight;
-		IsLightRangeIn=true;
-	}*/
-	
-}
 
 void ATestCharacter::EndCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)

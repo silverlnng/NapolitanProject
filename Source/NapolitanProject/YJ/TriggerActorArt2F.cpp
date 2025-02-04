@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TriggerActor.h"
+#include "TriggerActorArt2F.h"
 
 #include "EngineUtils.h"
 #include "SoundControlActor.h"
@@ -13,10 +13,12 @@
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/ControllableLightActor.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
+#include "NapolitanProject/Interact/Sculpture.h"
+#include "NapolitanProject/Interact/PieceActor.h"
 #include "NapolitanProject/NPC/NPC_Security.h"
 
 // Sets default values
-ATriggerActor::ATriggerActor()
+ATriggerActorArt2F::ATriggerActorArt2F()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -28,7 +30,7 @@ ATriggerActor::ATriggerActor()
 }
 
 // Called when the game starts or when spawned
-void ATriggerActor::BeginPlay()
+void ATriggerActorArt2F::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -54,18 +56,18 @@ void ATriggerActor::BeginPlay()
 		MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	}
 
-	BoxComp->OnComponentBeginOverlap.AddDynamic(this,&ATriggerActor::BoxCompBeginOverlap);
-	BoxComp->OnComponentEndOverlap.AddDynamic(this,&ATriggerActor::BoxCompEndOverlap);
+	BoxComp->OnComponentBeginOverlap.AddDynamic(this,&ATriggerActorArt2F::BoxCompBeginOverlap);
+	BoxComp->OnComponentEndOverlap.AddDynamic(this,&ATriggerActorArt2F::BoxCompEndOverlap);
 }
 
 // Called every frame
-void ATriggerActor::Tick(float DeltaTime)
+void ATriggerActorArt2F::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
-void ATriggerActor::CheckSide()
+void ATriggerActorArt2F::CheckSide()
 {
 	// 박스의 위치와 로컬 X축 방향을 기준으로 판단
 	FVector BoxLocation = GetActorLocation();
@@ -91,13 +93,14 @@ void ATriggerActor::CheckSide()
 	}
 }
 
-void ATriggerActor::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void ATriggerActorArt2F::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                    UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor->IsA(ATestCharacter::StaticClass()))
 	{
 		if (NPC_Security)
 		{
+			NPC_Security->SetState(ESecurityState::Patrol);
 			NPC_Security->AudioComp->Play();
 		}
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "BoxCompBeginOverlap");
@@ -120,17 +123,29 @@ void ATriggerActor::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComponent
 			}
 			
 		},3.0f,false);
+
+		
+		// 미술관을 탐색하자 ui 제거
+		APlayerHUD* PlayerHUD=TestPC->GetHUD<APlayerHUD>();
+		if (PlayerHUD&&PlayerHUD->InteractUI)
+		{
+			PlayerHUD->InteractUI->RemoveQuestSlot("미술관을 탐색하자");
+		}
+
+		if (MainCharacter)
+		{
+			// 기존 바인딩 제거
+			MainCharacter->OnSpecialInteraction.Clear();
+
+			// 새로운 기능 바인딩
+			MainCharacter->OnSpecialInteraction.AddDynamic(this, &ATriggerActorArt2F::Interaction_Art2F);
+		}
 	}
 
-	// 미술관을 탐색하자 ui 제거
-	APlayerHUD* PlayerHUD=TestPC->GetHUD<APlayerHUD>();
-	if (PlayerHUD&&PlayerHUD->InteractUI)
-	{
-		PlayerHUD->InteractUI->RemoveQuestSlot("미술관을 탐색하자");
-	}
 }
 
-void ATriggerActor::BoxCompEndOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+// 2층 아트갤러리에서 나갈때 . 
+void ATriggerActorArt2F::BoxCompEndOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (OtherActor->IsA(ATestCharacter::StaticClass()))
 	{
@@ -150,5 +165,43 @@ void ATriggerActor::BoxCompEndOverlap( UPrimitiveComponent* OverlappedComponent,
 			SoundControlActor->AudioComp1->FadeIn(3.f,1.f);
 			SoundControlActor->IsSecondFloor=false;
 		}
+
+		if (MainCharacter)
+		{
+			// 기존 바인딩 제거
+			MainCharacter->OnSpecialInteraction.Clear();
+		}	
 	}
+}
+
+void ATriggerActorArt2F::Interaction_Art2F(AActor* Interact)
+{
+	AControllableLightActor* ControllableLight =Cast<AControllableLightActor>(Interact);
+		
+	// 라이트라면 라이트로 캐스트해서 
+	//현재 조작할 라이트가 있고 그 라이트의 범위 안일떄만 작동
+	if (ControllableLight)
+	{
+		MainCharacter->curControllableLight=ControllableLight;
+		//IsLightRangeIn=true;
+		// curControllableLight 의 불키는 함수 작동시키기
+		if (!MainCharacter->curControllableLight->IsTurnOn)
+		{
+			MainCharacter->curControllableLight->TurnOnLight(true);
+		}
+		else
+		{
+			MainCharacter->curControllableLight->TurnOnLight(false);
+		}
+	}
+	
+	ASculpture* Sculpture =Cast<ASculpture>(Interact);
+	APieceActor* CurPiece =Cast<APieceActor>(MainCharacter->curItem);
+	if (CurPiece&&Sculpture)
+	{
+		// Sculpture 에서 내려두기 UI 출력
+		Sculpture->PutDownPiece(CurPiece);
+		MainCharacter->curItem=nullptr;
+	}
+	
 }

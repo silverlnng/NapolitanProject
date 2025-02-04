@@ -17,6 +17,8 @@ enum class EPlayerState:uint8
 	Die,
 	UI
 };
+// 델리게이트 선언
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSpecialInteraction, AActor*, InteractedActor);
 
 UCLASS()
 class NAPOLITANPROJECT_API ATestCharacter : public ACharacter
@@ -84,7 +86,7 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerState(EPlayerState newState);
-
+	
 /////////////////// 달리기 기능 ////////////////////////
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -163,6 +165,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	AActor* Interact =nullptr;
 
+	
 	UPROPERTY(VisibleAnywhere)
 	class AControllableLightActor* curControllableLight=nullptr;
 
@@ -170,6 +173,10 @@ public:
 	class UInputAction* IA_Interact;
 
 	void OnInteraction();
+	
+	// 델리게이트: 특정 장소에서만 추가될 Interaction 기능. 
+	UPROPERTY(BlueprintAssignable, Category = "Interaction")
+	FOnSpecialInteraction OnSpecialInteraction;
 
 	UPROPERTY()
 	class ATestPlayerController* TestPC;
@@ -215,10 +222,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* NoteUICloseSound;
-
-	UFUNCTION()
-	void OnCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult); // // 라이트 스위치 액터 등 가까이 있는 액터와 반응 할때 만든 함수
-
+	
 	UFUNCTION()
 	void EndCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
