@@ -10,7 +10,7 @@
 void UMyTestGameInstance::Init()
 {
 	Super::Init();
-	DT_itemData = LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/Item/DT_Item.DT_Item'"));
+	DT_itemData = LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/DT/DT_Item.DT_Item'"));
 	
 	if (DT_itemData)
 	{
@@ -37,7 +37,7 @@ void UMyTestGameInstance::Init()
 		UE_LOG(LogTemp, Error, TEXT("%s DT_Item 로드하지 못함"),*CALLINFO);
 	}
 	
-	DT_SouvenirData=LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/Item/DT_Souvenir.DT_Souvenir'"));
+	DT_SouvenirData=LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/DT/DT_Souvenir.DT_Souvenir'"));
 
 	if (DT_SouvenirData)
 	{
@@ -64,7 +64,7 @@ void UMyTestGameInstance::Init()
 	// 클루데이터
 	// /Script/Engine.DataTable'/Game/YJ/Item/DT_Clue.DT_Clue'
 
-	DT_Clue=LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/Item/DT_Clue.DT_Clue'"));
+	DT_Clue=LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/DT/DT_Clue.DT_Clue'"));
 
 	if (DT_Clue)
 	{
