@@ -16,21 +16,22 @@ AOriginEye::AOriginEye()
 
 	//콜리전
 	EyeSphere = CreateDefaultSubobject<USphereComponent>(TEXT("EyeSphere"));
-	EyeSphere->SetupAttachment(RootComponent);	
+	SetRootComponent(EyeSphere);
 
 	//애로우 컴포넌트
 	Arrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Arrow"));
 	Arrow->SetupAttachment(EyeSphere);
 
 	EyeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EyeMesh"));
-	ConstructorHelpers::FObjectFinder<UStaticMesh>EyeMeshComp(TEXT("/Script/Engine.StaticMesh'/Game/YJ/BP/SecurityMission/Eye/16_eye.16_eye'"));
+	EyeMesh->SetupAttachment(Arrow); //애로우 컴포넌트에 붙이기
+	
+	/*ConstructorHelpers::FObjectFinder<UStaticMesh>EyeMeshComp(TEXT("/Game/YJ/BP/SecurityMission/Eye/16_eye.16_eye'"));
+
 	if(EyeMeshComp.Succeeded())
 	{
 		EyeMesh->SetStaticMesh(EyeMeshComp.Object);
 		EyeMesh->SetupAttachment(Arrow); //애로우 컴포넌트에 붙이기
-	}
-
-	
+	}*/
 }
 
 // Called when the game starts or when spawned

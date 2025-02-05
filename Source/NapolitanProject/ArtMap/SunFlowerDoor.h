@@ -28,7 +28,7 @@ public:
 	class UBoxComponent* TriggerBox;
 
 	UPROPERTY(EditAnywhere, Blueprintable)
-	bool bIsOpenKey = false;
+	bool bIsOpenKey;
 	
 	UFUNCTION()
 	void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -37,5 +37,6 @@ public:
 public:
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> CuratorLevel; //큐레이터 맵
+	
 
 };

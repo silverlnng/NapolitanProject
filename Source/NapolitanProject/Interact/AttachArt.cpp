@@ -7,6 +7,7 @@
 #include "Components/BoxComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/ArtMap/SunFlowerDoor.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 
 // Sets default values
@@ -36,49 +37,88 @@ void AAttachArt::BeginPlay()
 	sunFlowerKey = Cast<ASunFlowerKey>(UGameplayStatics::GetActorOfClass(GetWorld(), ASunFlowerKey::StaticClass()));
 
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AAttachArt::BeginOverlap);
-	StaticMeshComp->SetHiddenInGame(true);
+	StaticMeshComp->SetHiddenInGame(true); //그림 숨기기
+	bIsOverlapping = false;
+	
 }
 
 // Called every frame
 void AAttachArt::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	if (bIsOverlapping && sunFlowerKey && sunFlowerKey->bIsPickUp)
+	{
+		auto* cha = Cast<ATestCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+		if (cha)
+		{
+			DrawDebugBox(
+				GetWorld(),
+				BoxComp->GetComponentLocation(),
+				BoxComp->GetScaledBoxExtent(),
+				BoxComp->GetComponentRotation().Quaternion(),
+				FColor::White,
+				false,  // 지속 시간 (false로 변경하여 Tick마다 갱신)
+				-1.0f,
+				0,
+				3.0f
+			);
 
+			FVector PlayerLocation = cha->GetActorLocation();
+			float Distance = FVector::Dist(PlayerLocation, GetActorLocation());
+
+			UE_LOG(LogTemp, Display, TEXT("Distance: %f"), Distance);
+			
+			if (Distance <= 370.0f)
+			{
+				sunFlowerKey->bIsPickUp = false;
+				sunFlowerKey->PutDown();
+				StaticMeshComp->SetHiddenInGame(false);
+				CuratorDoorOpen();
+				bIsOverlapping = false;
+			}
+		}
+	}
 }
 
 void AAttachArt::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(OtherActor)
+
+	if (OtherActor && Cast<ATestCharacter>(OtherActor))
 	{
-		auto* cha=Cast<ATestCharacter>(OtherActor);
-		//만약 플레이어가 그림을 들고 있으면 -> 라인 박스 켜짐
-		if(sunFlowerKey->bIsPickUp && cha)
-		{
-			DrawDebugBox(
-			   GetWorld(),
-			   BoxComp->GetComponentLocation(),
-			   BoxComp->GetScaledBoxExtent(),
-			   BoxComp->GetComponentRotation().Quaternion(),
-			   FColor::White,
-			   true,  // 지속 시간
-			   -1.0f, // 무한 지속
-			   0,     // 두께
-			   3.0f   // 선 두께
-			);
-			
-			FVector PlayerLocation = cha->GetActorLocation();
-			float Distance = FVector::Dist(PlayerLocation, GetActorLocation());
-			
-			if(Distance <= 350.0f){
-				//플레이어의 거리가 가까울 경우 벽에 부착 가능
-				sunFlowerKey->bIsPickUp = false;
-				sunFlowerKey->PutDown(); //아이템 없애기
-				StaticMeshComp->SetHiddenInGame(true);
-			}
-		}
-	}	
+		bIsOverlapping = true;  // 오버랩 시작 시 플래그 설정
+	}
 }
+
+void AAttachArt::CuratorDoorOpen()
+{
+	// 퍼시스턴트 레벨 및 로드된 레벨에서 SunFlowerDoor 찾기
+	TArray<AActor*> FoundDoors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ASunFlowerDoor::StaticClass(), FoundDoors);
+
+	if (FoundDoors.Num() == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No SunFlowerDoor found."));
+		return;
+	}
+
+	for (AActor* Actor : FoundDoors)
+	{
+		ASunFlowerDoor* SunFlowerDoor = Cast<ASunFlowerDoor>(Actor);
+		if (SunFlowerDoor)
+		{
+			SunFlowerDoor->bIsOpenKey = true;
+
+			// 문 열림 상태 확인 로그
+			UE_LOG(LogTemp, Warning, TEXT("SunFlowerDoor is open"));
+			UE_LOG(LogTemp, Warning, TEXT("bIsOpenKey: %s"), SunFlowerDoor->bIsOpenKey ? TEXT("True") : TEXT("False"));
+			
+		}
+	}
+
+}
+
 
 
 

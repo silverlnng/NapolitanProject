@@ -23,6 +23,7 @@ void ASunFlowerDoor::BeginPlay()
 	Super::BeginPlay();
 
 	TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &ASunFlowerDoor::BeginOverlap);
+	bIsOpenKey = false;
 }
 
 // Called every frame
@@ -35,6 +36,7 @@ void ASunFlowerDoor::Tick(float DeltaTime)
 void ASunFlowerDoor::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	UE_LOG(LogTemp, Warning, TEXT("문과 충돌"));
 	if(OtherActor)
 	{
 		auto* cha=Cast<ATestCharacter>(OtherActor);
