@@ -26,6 +26,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UInvenSlotWidget> InvenSlotWidgetFactory;
+
+	UPROPERTY(meta=(BindWidget))
+	class UInvenSlotConfirmWidget* WBP_InvenSlot_Confirm;
+
+	UPROPERTY(VisibleAnywhere)
+	class UMyTestGameInstance* GI;
 	
 	// create 8번 
 	/*UPROPERTY(meta = (BindWidget))

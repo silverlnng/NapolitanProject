@@ -5,6 +5,8 @@
 
 #include "EngineUtils.h"
 #include "InteractWidget.h"
+#include "Components/ArrowComponent.h"
+#include "Components/BoxComponent.h"
 #include "Components/SlateWrapperTypes.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
@@ -24,8 +26,11 @@ void AItemHeadActor::BeginPlay()
 void AItemHeadActor::OnPickup()
 {
 	CleanerNextState();
-	Super::OnPickup();
-
+	
+	// Super::OnPickup(); 머리 아이템은 인벤작업을 안할것.
+	
+	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
+	AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	
 	
 	FTimerHandle UITimer4;

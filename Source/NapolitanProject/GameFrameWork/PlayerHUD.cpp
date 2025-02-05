@@ -11,8 +11,6 @@
 #include "NYS_Choice.h"
 #include "YSEvanceUI.h"
 #include "../YJ/NoteUI/NoteWidget.h"
-#include "Animation/WidgetAnimation.h"
-#include "BehaviorTree/Tasks/BTTask_PlayAnimation.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/ScrollBox.h"
@@ -46,6 +44,7 @@ void APlayerHUD::BeginPlay()
 	{
 		InventoryUI->AddToViewport(1);
 		InventoryUI->SetVisibility(ESlateVisibility::Hidden);
+		InventoryUI->GI=GI;
 	}
 	
 	NPCDialogueUI =CreateWidget<UNPCDialogueWidget>(GetWorld(),NPCDialogueWidgetFactory);
@@ -136,6 +135,7 @@ void APlayerHUD::BeginPlay()
 	}
 
 
+	/*
 	if (InventoryUI) //InventoryUI 초기화 작업
 	{
 		auto InvenSlotMap = InventoryUI->InvenSlots;
@@ -151,10 +151,7 @@ void APlayerHUD::BeginPlay()
 				InvenSlotMap[i]->Img_Thumnail->SetBrushFromTexture(ItemData->thumnail);
 			}
 		}
-	}
-	
-	
-	
+	}*/
 	
 }
 
