@@ -22,6 +22,8 @@ public:
 	
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_InvenSlot;
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* Text_Num;
 
 	UPROPERTY()
 	int32 ItemIndex;
@@ -44,4 +46,9 @@ public:
 	void OnHoverInvenSlot();
 	UFUNCTION()
 	void OnItemAcquired();
+	
+	UFUNCTION()
+	void Set_TextNum(const FString& str) const;
+	
+
 };

@@ -56,7 +56,10 @@ void UInvenSlotConfirmWidget::OnClickTake()
 void UInvenSlotConfirmWidget::OnClickNo()
 {
 	//SetVisibility(ESlateVisibility::Hidden);
-	MyItem->SetActorHiddenInGame(true);
+	if (MyItem)
+	{
+		MyItem->SetActorHiddenInGame(true);
+	}
 	TestCharacter->curItem=nullptr;
 }
 
