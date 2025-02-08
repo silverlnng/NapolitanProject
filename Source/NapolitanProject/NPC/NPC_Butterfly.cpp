@@ -20,7 +20,7 @@ int32 ANPC_Butterfly::GetNPCID()
 
 int32 ANPC_Butterfly::GetState()
 {
-	return Super::GetState();
+	return State;
 }
 
 void ANPC_Butterfly::Interact()

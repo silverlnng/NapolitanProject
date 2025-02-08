@@ -35,6 +35,7 @@ void UInvenSlotWidget::OnClickedInvenSlot()
 		InventoryUI->WBP_InvenSlot_Confirm->CurInvenSlot=this;
 		InventoryUI->WBP_InvenSlot_Confirm->Set_ImgThumnail(Mytexture2D);
 		InventoryUI->WBP_InvenSlot_Confirm->SetVisibility(ESlateVisibility::Visible);
+		InventoryUI->WBP_InvenSlot_Confirm->Set_TextItemInfo(ItemInfo);
 		InventoryUI->WBP_InvenSlot_Confirm->MyItem=MyItem;
 	}
 }

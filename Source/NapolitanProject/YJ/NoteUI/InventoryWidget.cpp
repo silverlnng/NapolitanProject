@@ -47,6 +47,7 @@ void UInventoryWidget::NativeConstruct()
 				{
 					InvenSlots[i]->Img_Thumnail->SetBrushFromTexture(ItemData->thumnail);
 					InvenSlots[i]->Mytexture2D=ItemData->thumnail;
+					InvenSlots[i]->ItemInfo=ItemData->ItemInfo;
 				}
 			}
 		}

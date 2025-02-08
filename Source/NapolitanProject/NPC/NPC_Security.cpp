@@ -46,6 +46,9 @@ void ANPC_Security::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	SetActorTickEnabled(false); //최적화를 위해 tick 막아두기 
+	PawnSensingComp->SetComponentTickEnabled(false);
+	
 	AudioComp->Stop();
 	
 	Anim=Cast<UNPC_Security_AnimInstance>(GetMesh()->GetAnimInstance());

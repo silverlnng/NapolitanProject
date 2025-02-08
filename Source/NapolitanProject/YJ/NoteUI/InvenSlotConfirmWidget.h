@@ -25,6 +25,9 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UImage* Img_Thumnail;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* Text_ItemInfo;
 	
 	UPROPERTY(VisibleAnywhere)
 	class UInvenSlotWidget* CurInvenSlot;
@@ -43,5 +46,8 @@ public:
 
 	UFUNCTION()
 	void Set_ImgThumnail(UTexture2D* Texture);
+
+	UFUNCTION()
+	void Set_TextItemInfo(const FString& str) const;
 	
 };

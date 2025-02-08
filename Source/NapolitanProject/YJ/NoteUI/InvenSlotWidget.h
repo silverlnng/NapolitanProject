@@ -31,6 +31,9 @@ public:
 	
 	UPROPERTY()
 	class AItemActor* MyItem;
+
+	UPROPERTY()
+	FString ItemInfo;
 	
 	UPROPERTY()
 	class UInventoryWidget* InventoryUI;

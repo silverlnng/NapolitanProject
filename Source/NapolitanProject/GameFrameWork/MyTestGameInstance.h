@@ -28,6 +28,9 @@ struct FItemData : public FTableRowBase
 	UTexture2D* thumnail=nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString ItemInfo;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	UStaticMesh* ItemMesh=nullptr;
 };
 

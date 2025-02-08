@@ -6,6 +6,7 @@
 #include "InvenSlotWidget.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/ItemActor.h"
@@ -62,4 +63,9 @@ void UInvenSlotConfirmWidget::OnClickNo()
 void UInvenSlotConfirmWidget::Set_ImgThumnail(UTexture2D* Texture)
 {
 	Img_Thumnail->SetBrushFromTexture(Texture);
+}
+
+void UInvenSlotConfirmWidget::Set_TextItemInfo(const FString& str) const
+{
+	Text_ItemInfo->SetText(FText::FromString(*str));
 }

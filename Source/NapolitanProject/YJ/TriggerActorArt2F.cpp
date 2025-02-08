@@ -102,6 +102,8 @@ void ATriggerActorArt2F::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComp
 		{
 			NPC_Security->SetState(ESecurityState::Patrol);
 			NPC_Security->AudioComp->Play();
+			NPC_Security->SetActorTickEnabled(true);
+			NPC_Security->PawnSensingComp->SetComponentTickEnabled(true);
 		}
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "BoxCompBeginOverlap");
 		//CheckSide();
