@@ -57,6 +57,7 @@ void ASculpture::BeginPlay()
 {
 	Super::BeginPlay();
 	TestPC=GetWorld()->GetFirstPlayerController<ATestPlayerController>();
+	
 	for (TActorIterator<ANPC_Security> It(GetWorld(), ANPC_Security::StaticClass()); It; ++It)
 	{
 		NPC_Security = *It;

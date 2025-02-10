@@ -6,6 +6,7 @@
 #include "InvenSlotWidget.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/ItemActor.h"
@@ -55,11 +56,19 @@ void UInvenSlotConfirmWidget::OnClickTake()
 void UInvenSlotConfirmWidget::OnClickNo()
 {
 	//SetVisibility(ESlateVisibility::Hidden);
-	MyItem->SetActorHiddenInGame(true);
+	if (MyItem)
+	{
+		MyItem->SetActorHiddenInGame(true);
+	}
 	TestCharacter->curItem=nullptr;
 }
 
 void UInvenSlotConfirmWidget::Set_ImgThumnail(UTexture2D* Texture)
 {
 	Img_Thumnail->SetBrushFromTexture(Texture);
+}
+
+void UInvenSlotConfirmWidget::Set_TextItemInfo(const FString& str) const
+{
+	Text_ItemInfo->SetText(FText::FromString(*str));
 }

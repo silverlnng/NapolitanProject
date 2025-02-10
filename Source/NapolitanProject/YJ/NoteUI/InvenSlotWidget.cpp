@@ -7,6 +7,7 @@
 #include "InventoryWidget.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
+#include "Components/TextBlock.h"
 #include "NapolitanProject/Interact/ItemActor.h"
 
 void UInvenSlotWidget::NativeConstruct()
@@ -35,6 +36,7 @@ void UInvenSlotWidget::OnClickedInvenSlot()
 		InventoryUI->WBP_InvenSlot_Confirm->CurInvenSlot=this;
 		InventoryUI->WBP_InvenSlot_Confirm->Set_ImgThumnail(Mytexture2D);
 		InventoryUI->WBP_InvenSlot_Confirm->SetVisibility(ESlateVisibility::Visible);
+		InventoryUI->WBP_InvenSlot_Confirm->Set_TextItemInfo(ItemInfo);
 		InventoryUI->WBP_InvenSlot_Confirm->MyItem=MyItem;
 	}
 }
@@ -49,4 +51,16 @@ void UInvenSlotWidget::OnItemAcquired()
 	// 아이템 얻는다면 버튼 , 이미지 활성화 되도록
 	Img_Thumnail->SetVisibility(ESlateVisibility::Visible);
 	Btn_InvenSlot->SetIsEnabled(true);
+}
+
+void UInvenSlotWidget::Set_TextNum(const FString& str) const
+{
+	Text_Num->SetText(FText::FromString(*str));
+}
+
+void UInvenSlotWidget::SetIsEnabledBtn()
+{
+	// 인벤슬롯 초기화
+	Img_Thumnail->SetVisibility(ESlateVisibility::Hidden);
+	Btn_InvenSlot->SetIsEnabled(false);
 }

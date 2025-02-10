@@ -32,7 +32,7 @@ class NAPOLITANPROJECT_API UMonolugueWidget : public UUserWidget
 
 	// 현재 출력 중인 인덱스
 	int32 CurrentIndex;
-	
+public:	
 	UFUNCTION()
 	void SetText_Dialogue(const FString& str);
 	

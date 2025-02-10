@@ -309,7 +309,13 @@ void UEventComponent::Event_Butterfly_Start()
 	TestPC->StartEndNPCDialougue(false);
 	TestPC->EndResult();
 
-	
+	FTimerHandle UITimer3;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer3,[this]()
+	{
+		FString QuestText =FString(TEXT("거미버거를 만들어주기"));
+		PlayerHUD->InteractUI->AddQuestSlot(3,QuestText);
+	},8.0f,false);
 }
 
 void UEventComponent::UpdateText()
