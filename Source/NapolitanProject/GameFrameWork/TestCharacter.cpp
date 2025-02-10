@@ -364,7 +364,10 @@ void ATestCharacter::InventoryUIToggle(const FInputActionValue& Value)
 {
 	if (PlayerHUD->InventoryUI->IsVisible()) // 노트가 보이는 중 이면
 	{
-		PlayerHUD->InventoryUI->SetVisibility(ESlateVisibility::Hidden); // 노트를 닫아라
+		PlayerHUD->InventoryUI->SetVisibility(ESlateVisibility::Hidden); // Inventory를 닫아라
+
+		//Inventory 초기화 작업
+		PlayerHUD->InventoryUI->WhenClosed();
 		
 		if (PlayerHUD->InteractUI->CanvasPanel_Clue->GetVisibility() == ESlateVisibility::Visible)
 		{

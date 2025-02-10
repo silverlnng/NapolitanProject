@@ -78,72 +78,76 @@ void ATargetForItem_BurgerPlate::NoItem()
 void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 {
 	FString SpiderNum;
-	int IntSpiderNum;	
+	int IntSpiderNum;
 	switch (itemID)
 	{
 	case 1:
 		// 장미
-			curItem->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
-			curItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
-		MainCharacter->curItem=nullptr;	
-		curItem->AttachToComponent(SceneComp2,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+		curItem->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+		curItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3 , ECR_Ignore);
+		MainCharacter->curItem = nullptr;
+		curItem->AttachToComponent(SceneComp2 , FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		PutDownitemID.Add(itemID);
+
+	// 인벤에서 안보이도록 작업 . 
+		PlayerHUD->InventoryUI->InvenSlots[1]->SetIsEnabledBtn();
 		break;
 	case 3:
 
 		// 거미는 갯수도 비교해야함 .
 
-		SpiderNum=PlayerHUD->InventoryUI->InvenSlots[3]->Text_Num->GetText().ToString();
+		SpiderNum = PlayerHUD->InventoryUI->InvenSlots[3]->Text_Num->GetText().ToString();
 		IntSpiderNum = FCString::Atoi(*SpiderNum);
-		if (IntSpiderNum>=10)
+		if (IntSpiderNum >= 10)
 		{
 			curItem->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
-			curItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
-			MainCharacter->curItem=nullptr;	
-			curItem->AttachToComponent(SceneComp3,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			curItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3 , ECR_Ignore);
+			MainCharacter->curItem = nullptr;
+			curItem->AttachToComponent(SceneComp3 , FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+			PlayerHUD->InventoryUI->InvenSlots[3]->SetIsEnabledBtn();
 			PutDownitemID.Add(itemID);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Error, TEXT("%s SpiderNum"),*CALLINFO);
-			FString NoItem =FString(TEXT("<Monologue>거미가 부족하다"));
+			UE_LOG(LogTemp , Error , TEXT("%s SpiderNum") , *CALLINFO);
+			FString NoItem = FString(TEXT("<Monologue>거미가 부족하다"));
 			PlayerHUD->MonolugueWidgetUI->SetVisibility(ESlateVisibility::Visible);
 			PlayerHUD->MonolugueWidgetUI->SetText_Dialogue(NoItem);
 		}
-		
+
 		break;
 	case 4:
+		curItem->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+		curItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3 , ECR_Ignore);
+		MainCharacter->curItem = nullptr;
+
 		if (SceneComp1->GetAttachChildren().IsEmpty())
 		{
-			curItem->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
-			curItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
-			MainCharacter->curItem=nullptr;	
-			curItem->AttachToComponent(SceneComp1,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			curItem->AttachToComponent(SceneComp1 , FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		}
 		else
 		{
-			curItem->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
-			curItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
-			MainCharacter->curItem=nullptr;	
-			curItem->AttachToComponent(SceneComp4,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			curItem->AttachToComponent(SceneComp4 , FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		}
-			PutDownitemID.Add(itemID);
+
+		PlayerHUD->InventoryUI->InvenSlots[4]->SetIsEnabledBtn();
+		PutDownitemID.Add(itemID);
+
 		break;
 	case 5:
+		curItem->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
+		curItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3 , ECR_Ignore);
+		MainCharacter->curItem = nullptr;
 		if (SceneComp1->GetAttachChildren().IsEmpty())
 		{
-			curItem->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
-			curItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
-			MainCharacter->curItem=nullptr;	
-			curItem->AttachToComponent(SceneComp1,FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
+			curItem->AttachToComponent(SceneComp1 , FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		}
 		else
 		{
-			curItem->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
-			curItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
-			MainCharacter->curItem=nullptr;	
-			curItem->AttachToComponent(SceneComp4,FAttachmentTransformRules::SnapToTargetNotIncludingScale);	
+			curItem->AttachToComponent(SceneComp4 , FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		}
+		PlayerHUD->InventoryUI->InvenSlots[5]->SetIsEnabledBtn();
 		PutDownitemID.Add(itemID);
 		break;
 	}

@@ -57,3 +57,10 @@ void UInvenSlotWidget::Set_TextNum(const FString& str) const
 {
 	Text_Num->SetText(FText::FromString(*str));
 }
+
+void UInvenSlotWidget::SetIsEnabledBtn()
+{
+	// 인벤슬롯 초기화
+	Img_Thumnail->SetVisibility(ESlateVisibility::Hidden);
+	Btn_InvenSlot->SetIsEnabled(false);
+}

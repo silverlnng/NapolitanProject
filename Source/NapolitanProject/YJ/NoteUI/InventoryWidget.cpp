@@ -54,3 +54,9 @@ void UInventoryWidget::NativeConstruct()
 	}
 	
 }
+
+void UInventoryWidget::WhenClosed()
+{
+	WBP_InvenSlot_Confirm->Img_Thumnail->SetBrushFromTexture(nullptr);
+	WBP_InvenSlot_Confirm->Set_TextItemInfo("");
+}

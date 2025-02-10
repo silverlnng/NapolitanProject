@@ -49,6 +49,7 @@ public:
 	
 	UFUNCTION()
 	void Set_TextNum(const FString& str) const;
-	
 
+	UFUNCTION()
+	void SetIsEnabledBtn();
 };
