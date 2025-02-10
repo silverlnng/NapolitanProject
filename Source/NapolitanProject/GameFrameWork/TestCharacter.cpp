@@ -26,6 +26,7 @@
 #include "NapolitanProject/Interact/PieceActor.h"
 #include "NapolitanProject/Interact/Sculpture.h"
 #include "NapolitanProject/Interact/SouvenirActor.h"
+#include "NapolitanProject/Interact/TargetForItem.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 
@@ -540,6 +541,15 @@ void ATestCharacter::OnInteraction()
 ///////////////// 아이템을 내려놓는 대상 /////////////////////////
 
 		//현재 아이템 curItem 을 받아서 검증 하는 방법으로
+		ATargetForItem* TargetForItem =Cast<ATargetForItem>(Interact);
+		if (TargetForItem&&curItem)
+		{
+			TargetForItem->CheckItem(curItem);
+		}
+		else if (TargetForItem&&!curItem)
+		{
+			TargetForItem->NoItem();
+		}
 		
 ///////////////// 2층에서만 사용하는 기능은 델리게이트로 사용하기.//////////////////////////
 		OnSpecialInteraction.Broadcast(Interact);

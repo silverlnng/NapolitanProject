@@ -18,15 +18,33 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+public:
+	class ATestCharacter* MainCharacter;
+	class ATestPlayerController* TestPC;
+	class APlayerHUD* PlayerHUD;
+	
+	UPROPERTY(EditDefaultsOnly)
+	class USceneComponent* SceneComp;
 
+	UPROPERTY(EditDefaultsOnly)
+	class UBoxComponent* BoxComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UStaticMeshComponent* StaticMeshComp;
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	virtual void CheckItem(class AItemActor* curItem);
 
-	void CheckItem(class AItemActor* curItem);
+	virtual void CheckItemSuccess();
 
-	void CheckItemSuccess();
-
+	virtual void CheckItemFail();
+	
+	virtual void NoItem();
+	
 	// 상호작용하는 아이템에대해 미리 설정
 	UPROPERTY(EditAnywhere)
 	int32 TargetItemID=0;

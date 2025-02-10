@@ -37,5 +37,6 @@ FString ASouvenir_Dongjun::GetSouvenirName()
 void ASouvenir_Dongjun::OnPickup()
 {
 	Super::OnPickup();
+	// 아이템처럼 들어오는 작업도 수행하기 
 }
 
