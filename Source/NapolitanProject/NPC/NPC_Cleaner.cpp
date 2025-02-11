@@ -387,4 +387,3 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 		}
 	}
 }
-
