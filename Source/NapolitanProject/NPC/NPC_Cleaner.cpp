@@ -51,6 +51,7 @@ void ANPC_Cleaner::BeginPlay()
 	HeadStaticMesh->SetHiddenInGame(true);
 
 	bIsMoving = false;
+	bCleaning = false;
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -89,6 +90,17 @@ void ANPC_Cleaner::Tick(float DeltaTime)
 	case CleanerState::Stop:
 		TickStop(DeltaTime);
 		break;
+	}
+
+	//랜덤 시간이 지날 경우 어떤 경우든 청소모드로 변경
+	CleaningTime += DeltaTime;
+	//40초에서 2분 랜덤 시간 설정
+	RandomCleaningTime = FMath::RandRange(40.0f, 120.0f);
+	// 40~120초 사이 시간이 지나면 Cleaning 상태로 전환
+	if (CleaningTime >= RandomCleaningTime)
+	{
+		bCleaning = true;
+		CleaningTime = 0;
 	}
 
 	//디졸브 이벤트
@@ -163,12 +175,19 @@ void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 	
 		// Idle 상태에서 목표 지점 설정
 		TArray<FVector> points = {
-			FVector(-470.0f, -1550.0f, 100.0f), // point1
-			FVector(-800.0f, -4460.0f, 100.0f), // point2
-			FVector(-2410.0f, -4460.0f, 100.0f), // point3
-			FVector(-1950.0f, -1700.0f, 100.0f), // point4
-			FVector(-1260.0f, -2890.0f, 100.0f)  // point5
+			FVector(-2188.554545f, -3640.667534f, 47.877220f),
+			FVector(-1638.554545f, -3640.667534f, 47.877220f),
+			FVector(-1218.554545f, -3640.667534f, 47.877220f),
+			FVector(-1148.554545f, -3310.667534f, 47.877220f),
+			FVector(-1148.554545f, -2970.667534f, 47.877220f),
+			FVector(-1208.554545f, -2590.667534f, 47.877220f),
+			FVector(-1468.554545f, -2470.667534f, 47.877220f),
+			FVector(-1928.554545f, -2430.667534f, 47.877220f),
+			FVector(-2408.554545f, -2380.667534f, 47.877220f),
+			FVector(-1648.554545f, -2930.667534f, 47.877220f),
+			FVector(-1478.554545f, -3310.667534f, 47.877220f)
 		};
+
 
 		// 마지막 방문한 위치 제외하고 랜덤으로 선택
 		if (points.Contains(LastVisitedPoint))
@@ -187,11 +206,16 @@ void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 		bIsMoving = true;
 	}
 
+	//Tick에서 bCleaning이 true가 되었을 경우 어떤 상태이든 청소 상태로 돌입
+	if(bCleaning)
+	{
+		SetState(CleanerState::Cleaning);
+		bCleaning = false;
+	}
+
 	if (MainCharacter->curState==EPlayerState::Talking)
 	{
 		SetState(CleanerState::Stop); // Stop 상태로 변경
-		
-		//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickIdle->stop"));
 	}
 }
 
@@ -201,12 +225,19 @@ void ANPC_Cleaner::TickMove(const float& DeltaTime)
 	{
 		// 목표 지점으로 이동
 		AI->MoveToLocation(TargetPoint);
-		// 목표 지점 근처에 도달하면 Cleaning 상태로 전환
+		// 목표 지점 근처에 도달하면 다시 멈췄다가 목적지 설정
 		if (FVector::Dist(GetActorLocation(), TargetPoint) <= 100.f)
 		{
-			AI->StopMovement();
-			SetState(CleanerState::Cleaning);
+			//AI->StopMovement();
+			SetState(CleanerState::Idle);
 		}
+	}
+
+	//Tick에서 bCleaning이 true가 되었을 경우 어떤 상태이든 청소 상태로 돌입
+	if(bCleaning)
+	{
+		SetState(CleanerState::Cleaning);
+		bCleaning = false;
 	}
 
 	//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickMove"));
@@ -225,6 +256,7 @@ void ANPC_Cleaner::TickCleaning(const float& DeltaTime)
 		//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickCleaning->stop"));
 	}
 	//MobPointActor->SetActorHiddenInGame(false);
+	
 	if (AI) 
 	{
 		AI->StopMovement();

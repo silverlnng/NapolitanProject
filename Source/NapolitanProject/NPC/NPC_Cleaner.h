@@ -91,7 +91,11 @@ public:
 	void TickStop(const float& DeltaTime); //플레이어와 대화시 완전 멈춤
 
 	float CurrentTime = 0; //현재 시간
-	float IdleDelayTime = 1.f; //대기 시간
+	float IdleDelayTime = 1.5f; //대기 시간
+
+	float CleaningTime = 0;
+	float RandomCleaningTime;
+	bool bCleaning;
 
 	FVector LastVisitedPoint; //마지막으로 방문한 점 위치 저장
 	FVector TargetPoint; //타겟 포인트 지점
