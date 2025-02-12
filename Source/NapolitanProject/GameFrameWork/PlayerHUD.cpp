@@ -16,6 +16,7 @@
 #include "Components/ScrollBox.h"
 #include "Components/WidgetSwitcher.h"
 #include "NapolitanProject/NapolitanProject.h"
+#include "NapolitanProject/YJ/ESCWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
 #include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
@@ -30,6 +31,13 @@ void APlayerHUD::BeginPlay()
 	Super::BeginPlay();
 	
 	GI =GetGameInstance<UMyTestGameInstance>();
+	
+	UESC_UI =CreateWidget<UESCWidget>(GetWorld(),UESCWidgetFactory);
+	if (UESC_UI)
+	{
+		UESC_UI->AddToViewport(3);
+		UESC_UI->SetVisibility(ESlateVisibility::Hidden);
+	}
 	
 	NoteUI =CreateWidget<UNoteWidget>(GetWorld(),NoteWidgetFactory);
 	if (NoteUI)

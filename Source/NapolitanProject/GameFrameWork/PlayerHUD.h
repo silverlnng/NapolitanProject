@@ -82,6 +82,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class ULoadScreenWidget* LoadScreenUI;
 
+	//ESC UI
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UESCWidget> UESCWidgetFactory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
+	class UESCWidget* UESC_UI;
+	
 	UFUNCTION()
 	void UpdateClueSlotWidget();
 

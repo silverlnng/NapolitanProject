@@ -88,12 +88,12 @@ public:
 	void SetPlayerState(EPlayerState newState);
 	
 /////////////////// 달리기 기능 ////////////////////////
-
+	float DefaultWalkSpeed;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* IA_Run;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=run)
-	float runSpeed = StandingWalkSpeed*2.f;
+	float runSpeed = DefaultWalkSpeed*2.f;
 	// 특정 키를 누르면 달리기
 		// 누르고 있는 동안 && 쿨타임 내에서 
 	float runCooltime =3.f;
@@ -108,29 +108,15 @@ public:
 
 	void UpdateRunAction(float DeltaTime);
 	void UpdateNotRunAction(float DeltaTime);
-////////////////// 업드리기 기능 //////////////////////////
-///
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input)
-	class UInputAction* IA_Crouched;
-
-	void StartCrouch();
-	void StopCrouch();
-	void CrouchToggle(const FInputActionValue& Value);
-
-	bool bCrouched;
 	
-	float StandingCapsuleHalfHeight;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Crouch)
-	float CrouchingCapsuleHalfHeight;
-
-	float StandingCapsuleRadius;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Crouch)
-	float CrouchingCapsuleRadius;
+////////////////// ESC 키 기능//////////////////////////
 	
-	float StandingWalkSpeed;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Crouch)
-	float CrouchingWalkSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* IA_ESC;
 
+	UFUNCTION()
+	void ESCUIToggle(const FInputActionValue& Value);
+	
 ///////////////////////////  인벤토리 ui /////////////////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* IA_Inventory;
