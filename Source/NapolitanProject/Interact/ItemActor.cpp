@@ -2,6 +2,8 @@
 
 
 #include "ItemActor.h"
+
+#include "InteractWidget.h"
 #include "../YJ/NoteUI/InventoryWidget.h"
 #include "../YJ/NoteUI/InvenSlotWidget.h"
 #include "../GameFrameWork/PlayerHUD.h"
@@ -95,5 +97,7 @@ void AItemActor::OnInventorySlot()
 	{
 		PlayerHUD->InventoryUI->InvenSlots[ItemID]->MyItem=this;
 	}
+	// 인벤 효과 애니메이션 실행시키기 
+	PlayerHUD->InteractUI->PlayInvenUIEvent();
 }
 

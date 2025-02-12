@@ -33,4 +33,13 @@ public:
 	virtual FString GetSouvenirName() override;
 	
 	virtual void OnPickup() override;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	int32 ItemID=1;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AItemActor> RoseItemBP;
+
+	UPROPERTY()
+	class AItemActor* RoseItem;
 };

@@ -58,6 +58,15 @@ public:
 	UFUNCTION()
 	void PlayNoteUIEvent(bool val);
 	
+/////////////// 인벤 UI ////////////////////
+
+	UPROPERTY(meta=(BindWidget))
+	class UBorder* Border_Inven;
+	UPROPERTY(Transient,meta=(BindWidgetAnim))
+	class UWidgetAnimation* InvenImgAnim;
+	UFUNCTION()
+	void PlayInvenUIEvent();
+	
 //////////// 퀘스트 ui //////////////////
 
 	UPROPERTY(meta=(BindWidget))
