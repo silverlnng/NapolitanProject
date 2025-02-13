@@ -6,6 +6,7 @@
 #include "ItemActor.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
@@ -57,20 +58,12 @@ void ASouvenir_Dongjun::OnPickup()
 			
 	RoseItem->SetActorHiddenInGame(true);
 	RoseItem->OnInventorySlot();
+
+	//인벤에 넣었으면 다른거 집을수있도록
+	MainCharacter->curItem=nullptr;
 	
-	/*if (PlayerHUD->InventoryUI)
-	{
-		if (PlayerHUD->InventoryUI->InvenSlots.Contains(ItemID))
-		{
-			PlayerHUD->InventoryUI->InvenSlots[ItemID]->OnItemAcquired();
-			// 아이템 슬롯 작업.
-		}
-	}
-	// 해당하는 아이템슬롯을 찾아서 자신을 넣어주기
-	if (PlayerHUD->InventoryUI->InvenSlots.Contains(ItemID))
-	{
-		PlayerHUD->InventoryUI->InvenSlots[ItemID]->MyItem=RoseItem;
-	}*/
+	GI->SavedItems.Add(RoseItem->GetClass());
+	
 	
 }
 

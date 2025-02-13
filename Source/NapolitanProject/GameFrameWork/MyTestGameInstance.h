@@ -133,7 +133,7 @@ public:
 	UFUNCTION()
 	int32 GetGameInstanceLang();
 
-	/////////CSV Read 하기
+///////////////////CSV Read 하기
 	TMap<int32,FNPCResult> NPCResultMap;
 	
 	TMap<int32,FNPCDialogue> NPCDialogueMap;
@@ -169,6 +169,19 @@ public:
 	TArray<int32> AcquireSouvenir;
 
 	int32 AcquireSouvenirNum;
+	
+//////////////획득한 아이템 관리하기 ///////////////////////	
+
+	UPROPERTY()
+	TArray<TSubclassOf<class AItemActor>> SavedItems;
+	
+	//  아이템 저장
+	UFUNCTION(BlueprintCallable)
+	void SaveAttachedItems();
+
+	//  저장된 아이템 복원
+	UFUNCTION(BlueprintCallable)
+	void RestoreAttachedItems();
 	
 ///////////// 추리 단서 ////////////////////////	
 	UPROPERTY(VisibleAnywhere)

@@ -2,7 +2,16 @@
 
 
 #include "MyTestGameInstance.h"
+
+#include "PlayerHUD.h"
+#include "TestCharacter.h"
+#include "Components/ArrowComponent.h"
+#include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NapolitanProject.h"
+#include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
+#include "NapolitanProject/YJ/NoteUI/InvenSlotWidget.h"
 #include "NapolitanProject/YJ/Save/TestSaveGame.h"
 #include "NapolitanProject/YJ/Save/GameSaveController.h"
 #include "Serialization/Csv/CsvParser.h"
@@ -116,7 +125,6 @@ void UMyTestGameInstance::Init()
 	// 로드한 정보로 ULoadScreenWidget 초기화	
 
 	// ClearedNPC 는 로드한 정보로 초기화가 되야함 
-	
 }
 
 void UMyTestGameInstance::SetGameInstanceLang(int32 value)
@@ -305,4 +313,40 @@ void UMyTestGameInstance::GetNPCSelect(const int32& NPC_ID, const int32& State, 
 			return;
 		}
 	}
+}
+
+void UMyTestGameInstance::SaveAttachedItems()
+{
+	ATestCharacter* MainCharacter=Cast<ATestCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	
+}
+
+void UMyTestGameInstance::RestoreAttachedItems()
+{
+	ATestCharacter* MainCharacter=Cast<ATestCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	
+	APlayerHUD* PlayerHUD = Cast<APlayerHUD>(UGameplayStatics::GetPlayerController(GetWorld(),0)->GetHUD());
+	
+	if (!MainCharacter || SavedItems.Num() == 0) return;
+	for (const TSubclassOf<class AItemActor> ItemActor: SavedItems)
+	{
+		if (ItemActor)
+		{
+			AItemActor* NewItem = MainCharacter->GetWorld()->SpawnActor<AItemActor>(ItemActor);
+			// ✅ 아이템 스폰
+			NewItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
+			
+			NewItem->AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			
+			NewItem->SetActorHiddenInGame(true); // 인벤에 넣을 아이템은 일단 안보이도록
+			if (PlayerHUD)
+			{
+				if (PlayerHUD->InventoryUI->InvenSlots.Contains(NewItem->ItemID))
+				{
+					PlayerHUD->InventoryUI->InvenSlots[NewItem->ItemID]->MyItem=NewItem;
+				}
+			}
+			
+		}
+	}	
 }

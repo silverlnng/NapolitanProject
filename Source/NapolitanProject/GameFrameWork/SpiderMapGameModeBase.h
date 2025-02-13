@@ -17,6 +17,9 @@ public:
 	ASpiderMapGameModeBase();
 
 	virtual void BeginPlay() override;
+
+	UPROPERTY()
+	class UMyTestGameInstance* GI;
 	
 	class ATestPlayerController* PC;
 	

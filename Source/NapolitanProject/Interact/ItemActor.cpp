@@ -69,6 +69,8 @@ void AItemActor::OnPickup() // 아이템을 레벨에서 처음한번 잡을때.
 
 	//인벤에 넣었으면 다른거 집을수있도록
 	MainCharacter->curItem=nullptr;
+
+	GI->SavedItems.Add(this->GetClass());
 }
 
 void AItemActor::Use()
@@ -94,7 +96,7 @@ void AItemActor::OnInventorySlot()
 			PlayerHUD->InventoryUI->InvenSlots[ItemID]->OnItemAcquired();
 		}
 	}
-	// 해당하는 아이템슬롯을 찾아서 자신을 넣어주기
+	// 해당하는 아이템슬롯을 찾아서 자신을 넣어주기 ==> 이걸 초기화 때 하는게 편할수도 있음 
 	if (PlayerHUD->InventoryUI->InvenSlots.Contains(ItemID))
 	{
 		PlayerHUD->InventoryUI->InvenSlots[ItemID]->MyItem=this;

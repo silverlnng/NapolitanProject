@@ -3,6 +3,7 @@
 
 #include "SpiderMapGameModeBase.h"
 
+#include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
@@ -41,7 +42,20 @@ void ASpiderMapGameModeBase::BeginPlay()
 		//SpiderItem=SpiderBP->GetDefaultObject<AItemActor>();
 		SpiderItem = GetWorld()->SpawnActor<AItemActor>(SpiderBP);
 	}
+
 	
+	GI =GetGameInstance<UMyTestGameInstance>();
+	if (GI)
+	{
+		// 시간 지연을 주기
+
+		FTimerHandle GITimer;
+
+		GetWorld()->GetTimerManager().SetTimer(GITimer,[this]()
+		{
+			GI->RestoreAttachedItems();
+		},2.0f,false);
+	}
 }
 
 void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)

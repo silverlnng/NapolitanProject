@@ -43,7 +43,15 @@ void UInvenSlotWidget::OnClickedInvenSlot()
 
 void UInvenSlotWidget::OnHoverInvenSlot()
 {
-	// 사용 을 묻는 ui 나오도록 하기 
+	// 사용 을 묻는 ui 나오도록 하기
+	if (InventoryUI&&InventoryUI->WBP_InvenSlot_Confirm)
+	{
+		InventoryUI->WBP_InvenSlot_Confirm->CurInvenSlot=this;
+		InventoryUI->WBP_InvenSlot_Confirm->Set_ImgThumnail(Mytexture2D);
+		InventoryUI->WBP_InvenSlot_Confirm->SetVisibility(ESlateVisibility::Visible);
+		InventoryUI->WBP_InvenSlot_Confirm->Set_TextItemInfo(ItemInfo);
+		InventoryUI->WBP_InvenSlot_Confirm->MyItem=MyItem;
+	}
 }
 
 void UInvenSlotWidget::OnItemAcquired()

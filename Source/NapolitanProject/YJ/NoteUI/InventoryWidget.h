@@ -21,7 +21,8 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UUniformGridPanel* GridPanel_Slot;
 
-	// 인벤토리 슬롯을 미리 배열로 가지고 있기 0~7 번. 
+	// 인벤토리 슬롯을 미리 배열로 가지고 있기 0~7 번.
+	UPROPERTY(VisibleAnywhere)
 	TMap<int,UInvenSlotWidget*> InvenSlots;
 
 	UPROPERTY(EditDefaultsOnly)
