@@ -25,8 +25,14 @@ public:
 	class UButton* Btn_Setting;
 
 	UPROPERTY(meta = (BindWidget))
-	class USettingWidget* SettingUI;
+	class UButton* Btn_Exit;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Achievement;
 
+	UPROPERTY(meta = (BindWidget))
+	class USettingWidget* SettingUI;
+	
 	UPROPERTY(meta = (BindWidget))
 	class ULoadScreenWidget* WBP_LoadScreen;
 
@@ -39,5 +45,8 @@ public:
 	void OnClickedLoad();
 	UFUNCTION()
 	void OnClickedSetting();
-	
+	UFUNCTION()
+	void OnClick_Exit();
+	UFUNCTION()
+	void OnClick_Achievement();
 };

@@ -16,6 +16,8 @@ void UGameStartWidget::NativeConstruct()
 	Btn_NewGame->OnClicked.AddDynamic(this,&UGameStartWidget::OnClickedNewGame);
 	Btn_Load->OnClicked.AddDynamic(this,&UGameStartWidget::OnClickedLoad);
 	Btn_Setting->OnClicked.AddDynamic(this,&UGameStartWidget::OnClickedSetting);
+	Btn_Exit->OnClicked.AddDynamic(this,&UGameStartWidget::OnClick_Exit);
+	Btn_Achievement->OnClicked.AddDynamic(this,&UGameStartWidget::OnClick_Achievement);
 
 	SettingUI->SetVisibility(ESlateVisibility::Hidden);
 
@@ -46,4 +48,14 @@ void UGameStartWidget::OnClickedLoad()
 void UGameStartWidget::OnClickedSetting()
 {
 	SettingUI->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UGameStartWidget::OnClick_Exit()
+{
+	UKismetSystemLibrary::QuitGame(this, GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, false);
+}
+
+void UGameStartWidget::OnClick_Achievement()
+{
+	
 }

@@ -10,6 +10,7 @@
 #include "../YJ/NoteUI/NoteWidget.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
@@ -47,6 +48,7 @@ void AItemActor::BeginPlay()
 	{
 		StaticMeshComp->SetOverlayMaterial(M_Overlay);
 	}
+	GI =GetGameInstance<UMyTestGameInstance>();
 }
 
 // Called every frame
@@ -99,5 +101,15 @@ void AItemActor::OnInventorySlot()
 	}
 	// 인벤 효과 애니메이션 실행시키기 
 	PlayerHUD->InteractUI->PlayInvenUIEvent();
+
+	int32 ItemRow =ItemID+1;
+	
+	FString ItemIDstr=FString::FromInt(ItemRow);
+	//DT 작업하기 
+	FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(FName(*ItemIDstr) , TEXT(""));
+	if (ItemData)
+	{
+		ItemData->Had=true;
+	}
 }
 

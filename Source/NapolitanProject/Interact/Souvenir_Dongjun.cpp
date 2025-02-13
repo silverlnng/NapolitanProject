@@ -56,8 +56,9 @@ void ASouvenir_Dongjun::OnPickup()
 	RoseItem->AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 			
 	RoseItem->SetActorHiddenInGame(true);
-
-	if (PlayerHUD->InventoryUI)
+	RoseItem->OnInventorySlot();
+	
+	/*if (PlayerHUD->InventoryUI)
 	{
 		if (PlayerHUD->InventoryUI->InvenSlots.Contains(ItemID))
 		{
@@ -69,6 +70,7 @@ void ASouvenir_Dongjun::OnPickup()
 	if (PlayerHUD->InventoryUI->InvenSlots.Contains(ItemID))
 	{
 		PlayerHUD->InventoryUI->InvenSlots[ItemID]->MyItem=RoseItem;
-	}
+	}*/
+	
 }
 

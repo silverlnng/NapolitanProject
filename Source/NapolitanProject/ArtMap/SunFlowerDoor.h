@@ -27,7 +27,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	class UBoxComponent* TriggerBox;
 
-	UPROPERTY(EditAnywhere, Blueprintable)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool bIsOpenKey;
 	
 	UFUNCTION()

@@ -25,6 +25,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(VisibleAnywhere)
+	class UMyTestGameInstance* GI;
+	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int32 ItemID=0;
 

@@ -7,6 +7,7 @@
 #include "InvenSlotWidget.h"
 #include "Components/Image.h"
 #include "Components/UniformGridPanel.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 
 void UInventoryWidget::NativeConstruct()
@@ -48,6 +49,12 @@ void UInventoryWidget::NativeConstruct()
 					InvenSlots[i]->Img_Thumnail->SetBrushFromTexture(ItemData->thumnail);
 					InvenSlots[i]->Mytexture2D=ItemData->thumnail;
 					InvenSlots[i]->ItemInfo=ItemData->ItemInfo;
+				}
+				
+				if (ItemData->Had)
+				{
+					UE_LOG(LogTemp, Error, TEXT("%s DT_Item Had"),*CALLINFO);
+					InvenSlots[i]->OnItemAcquired();
 				}
 			}
 		}
