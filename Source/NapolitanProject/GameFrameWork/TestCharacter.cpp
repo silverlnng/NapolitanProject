@@ -28,24 +28,14 @@
 #include "NapolitanProject/Interact/SouvenirActor.h"
 #include "NapolitanProject/Interact/TargetForItem.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
+#include "NapolitanProject/YJ/ESCWidget.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 
 ATestCharacter::ATestCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
-
-	// Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
-	//Mesh1P = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("CharacterMesh1P"));
-	//Mesh1P->SetOnlyOwnerSee(true);
 	
-	//Mesh1P->SetupAttachment(GetCapsuleComponent()); // 변경
-	
-	//Mesh1P->bCastDynamicShadow = false;
-	//Mesh1P->CastShadow = false;
-	//Mesh1P->SetRelativeRotation(FRotator(0.9f, -19.19f, 5.2f));
-	//Mesh1P->SetRelativeLocation(FVector(-30.f, 0.f, -150.f));
-
 	GetMesh()->bCastDynamicShadow = false;
 	GetMesh()->CastShadow = false;
 	
@@ -57,20 +47,7 @@ ATestCharacter::ATestCharacter()
 	//CameraComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("HeadSocket"));
 
 	PrimaryActorTick.bCanEverTick = true;
-
-
-	StandingCapsuleHalfHeight = GetCapsuleComponent()->GetUnscaledCapsuleHalfHeight();
-	CrouchingCapsuleHalfHeight = StandingCapsuleHalfHeight / 4.0f;  // Example value, adjust as needed
-
-	StandingCapsuleRadius =GetCapsuleComponent()->GetUnscaledCapsuleRadius();
-	CrouchingCapsuleRadius = StandingCapsuleRadius / 4.0f;
 	
-	StandingWalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
-	CrouchingWalkSpeed = StandingWalkSpeed / 2.0f;  // Example value, adjust as needed
-
-	// Ensure crouch isn't blocking movement
-	GetCharacterMovement()->NavAgentProps.bCanCrouch = true;
-
 	// 스프링암을 생성해서 루트에 붙이고싶다.
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->SetupAttachment(RootComponent);
@@ -101,7 +78,8 @@ ATestCharacter::ATestCharacter()
 void ATestCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	runSpeed = StandingWalkSpeed*3.f;
+	DefaultWalkSpeed=GetCharacterMovement()->MaxWalkSpeed;
+	runSpeed = GetCharacterMovement()->MaxWalkSpeed*3.f;
 	PC = Cast<APlayerController>(Controller);
 	TestPC = Cast<ATestPlayerController>(PC);
 	PlayerHUD=PC->GetHUD<APlayerHUD>();
@@ -201,7 +179,6 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ATestCharacter::Look);
 
-		EnhancedInputComponent->BindAction(IA_Crouched, ETriggerEvent::Started, this, &ATestCharacter::CrouchToggle);
 
 		EnhancedInputComponent->BindAction(IA_Run, ETriggerEvent::Started, this, &ATestCharacter::OnRunAction);
 		EnhancedInputComponent->BindAction(IA_Run, ETriggerEvent::Completed, this, &ATestCharacter::EndRunAction);
@@ -271,7 +248,7 @@ void ATestCharacter::EndRunAction(const FInputActionValue& Value)
 {
 	// 타이머 종료
 	bIsRunning=false;
-	GetCharacterMovement()->MaxWalkSpeed=StandingWalkSpeed;
+	GetCharacterMovement()->MaxWalkSpeed=DefaultWalkSpeed;
 }
 
 void ATestCharacter::UpdateRunAction(float DeltaTime)
@@ -284,7 +261,7 @@ void ATestCharacter::UpdateRunAction(float DeltaTime)
 		if (RunGage <= 0)
 		{
 			bIsRunGageRemains=false;
-			GetCharacterMovement()->MaxWalkSpeed = StandingWalkSpeed;
+			GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 		}
 	
 }
@@ -300,38 +277,7 @@ void ATestCharacter::UpdateNotRunAction(float DeltaTime)
 	}
 }
 
-void ATestCharacter::StartCrouch()
-{
-	GetCharacterMovement()->MaxWalkSpeed = CrouchingWalkSpeed;
 
-	GetCapsuleComponent()->SetCapsuleRadius(CrouchingCapsuleRadius);
-	GetCapsuleComponent()->SetCapsuleHalfHeight(CrouchingCapsuleHalfHeight);
-
-	// Crouch down using Character's built-in function
-	Crouch();
-}
-
-void ATestCharacter::StopCrouch()
-{
-	GetCharacterMovement()->MaxWalkSpeed = StandingWalkSpeed;
-	GetCapsuleComponent()->SetCapsuleRadius(StandingCapsuleRadius);
-	GetCapsuleComponent()->SetCapsuleHalfHeight(StandingCapsuleHalfHeight);
-	// Stand up using Character's built-in function
-	UnCrouch();
-}
-
-void ATestCharacter::CrouchToggle(const FInputActionValue& Value)
-{
-	bCrouched = !bCrouched;
-	if ( bCrouched )
-	{
-		StartCrouch();
-	}
-	else
-	{
-		StopCrouch();
-	}
-}
 
 void ATestCharacter::SetPlayerState(EPlayerState newState)
 {
@@ -357,6 +303,32 @@ void ATestCharacter::SetPlayerState(EPlayerState newState)
 		break;
 	default:
 		break;
+	}
+}
+
+void ATestCharacter::ESCUIToggle(const FInputActionValue& Value)
+{
+	if (PlayerHUD->UESC_UI->IsVisible()) // 노트가 보이는 중 이면
+	{
+		PlayerHUD->UESC_UI->SetVisibility(ESlateVisibility::Hidden); // Inventory를 닫아라
+		
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->SetShowMouseCursor(false);
+		if (NoteUICloseSound)
+		{
+			UGameplayStatics::PlaySound2D(this, NoteUICloseSound);
+		}
+	}
+	else
+	{
+		UWidgetBlueprintLibrary::SetFocusToGameViewport();
+		PlayerHUD->UESC_UI->SetVisibility(ESlateVisibility::Visible);
+		PC->SetInputMode(FInputModeGameAndUI());
+		PC->SetShowMouseCursor(true);
+		if (NoteUIOpenSound)
+		{
+			UGameplayStatics::PlaySound2D(this, NoteUIOpenSound);
+		}
 	}
 }
 
@@ -495,7 +467,7 @@ void ATestCharacter::SphereTraceFromCamera()
 //E키 누르면 실행되는 함수
 void ATestCharacter::OnInteraction()
 {
-	if (InteractHit && Interact && curState!=EPlayerState::Talking)
+	if (InteractHit && Interact && curState!=EPlayerState::Talking && curState!=EPlayerState::UI)
 	{
 		// 상호작용 대상에게 만들어져있는 상호작용 함수 호출시키기
 		 // Interact 을 npc로 캐스팅 가능하다면

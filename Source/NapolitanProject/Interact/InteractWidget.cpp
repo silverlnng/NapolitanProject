@@ -79,6 +79,11 @@ void UInteractWidget::PlayNoteUIEvent(bool val)
 	
 }
 
+void UInteractWidget::PlayInvenUIEvent()
+{
+	PlayAnimation(InvenImgAnim);
+}
+
 void UInteractWidget::LoadUpdateQuestSlot()
 {
 	if (GI&&!GI->QuestSlots.IsEmpty())

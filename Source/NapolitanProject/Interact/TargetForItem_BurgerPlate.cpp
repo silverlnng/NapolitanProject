@@ -170,5 +170,5 @@ void ATargetForItem_BurgerPlate::MissionCheck()
 		UGameplayStatics::PlaySound2D(this, MissionClearSoundWave);
 	}
 
-	
+	NiagaraComp->Activate();
 }
