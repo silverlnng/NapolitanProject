@@ -42,7 +42,7 @@ void ASunFlowerDoor::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		auto* cha=Cast<ATestCharacter>(OtherActor);
 		if(cha && bIsOpenKey)
 		{
-			//레벨이동 -> 큐레이터 방
+			//레벨이동
 			UGameplayStatics::OpenLevelBySoftObjectPtr(this,CuratorLevel,true); 
 		}
 	}
