@@ -22,13 +22,13 @@ void ACatchSpider::BeginPlay()
 {
 	Super::BeginPlay();
 	EnemyAI = Cast<AAIController>(this->GetController());
+	GetCharacterMovement()->MaxWalkSpeed = 300.f;
 }
 
 // Called every frame
 void ACatchSpider::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	GetCharacterMovement()->MaxWalkSpeed = 300.f;
 	FVector Destination = PatrolPoint;
 
 	auto* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
@@ -60,12 +60,7 @@ void ACatchSpider::Tick(float DeltaTime)
 	}
 }
 
-// Called to bind functionality to input
-void ACatchSpider::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-}
 
 bool ACatchSpider::SetPatrolPoint(FVector origin, float radius, FVector& dest)
 {

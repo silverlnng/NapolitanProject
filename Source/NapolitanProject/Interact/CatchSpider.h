@@ -22,9 +22,7 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 	// 네비게이션을 이용해서 길찾기를 하고싶다.
 	UPROPERTY(VisibleAnywhere)
 	class AAIController* EnemyAI;
