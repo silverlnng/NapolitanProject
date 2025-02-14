@@ -86,6 +86,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void SetPlayerState(EPlayerState newState);
+
+	UPROPERTY(VisibleAnywhere)
+	bool curLevelISLobby=false;
 	
 /////////////////// 달리기 기능 ////////////////////////
 	float DefaultWalkSpeed;
@@ -124,7 +127,8 @@ public:
 	UFUNCTION()
 	void InventoryUIToggle(const FInputActionValue& Value);
 
-	
+	UPROPERTY(BlueprintReadWrite, Category="Game Rules")
+	bool b_IA_Inven_Allowed = true;
 /////////////////////////////  노트 ui /////////////////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* IA_NoteUI;
@@ -140,6 +144,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	int32 traceLength=500;
 
+	UPROPERTY(BlueprintReadWrite, Category="Game Rules")
+	bool b_IA_Note_Allowed = true;
+	
 	/////////// 지금 대화하고 있는 npc 가 누구인지 기억하기
 	UPROPERTY(VisibleAnywhere)
 	class ANPCCharacter* curNPC=nullptr;

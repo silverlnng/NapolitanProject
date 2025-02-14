@@ -25,7 +25,9 @@ void ATestGameModeBase::BeginPlay()
 	PC->SetShowMouseCursor(false);
 	
 	MainCharacter=Cast<ATestCharacter>(PC->GetPawn());
-
+	MainCharacter->b_IA_Note_Allowed=true;
+	MainCharacter->b_IA_Inven_Allowed=true;
+	
 	PlayerHUD =PC->GetHUD<APlayerHUD>();
 	
 	GI =GetGameInstance<UMyTestGameInstance>();

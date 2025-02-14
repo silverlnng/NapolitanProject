@@ -92,6 +92,8 @@ void ATestCharacter::BeginPlay()
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this,&ATestCharacter::EndCapsuleOverlap);
 	
 	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("FootstepTarget"), FootstepTargetPoints);
+
+	
 }
 
 void ATestCharacter::Tick(float DeltaSeconds)
@@ -334,6 +336,8 @@ void ATestCharacter::ESCUIToggle(const FInputActionValue& Value)
 
 void ATestCharacter::InventoryUIToggle(const FInputActionValue& Value)
 {
+	if (!b_IA_Inven_Allowed){return;}
+	
 	if (PlayerHUD->InventoryUI->IsVisible()) // 노트가 보이는 중 이면
 	{
 		PlayerHUD->InventoryUI->SetVisibility(ESlateVisibility::Hidden); // Inventory를 닫아라
@@ -370,6 +374,9 @@ void ATestCharacter::InventoryUIToggle(const FInputActionValue& Value)
 
 void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)
 {
+
+	if (!b_IA_Note_Allowed){return;}
+	
 	if (PlayerHUD->NoteUI->IsVisible()) // 노트가 보이는 중 이면
 	{
 		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Hidden); // 노트를 닫아라
