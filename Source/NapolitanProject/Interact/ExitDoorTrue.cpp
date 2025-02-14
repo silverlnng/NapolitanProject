@@ -52,7 +52,10 @@ void AExitDoorTrue::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 		if(Target)
 		{
 			bIsOpenDoor = true;
-			UGameplayStatics::PlaySound2D(GetWorld(), OpenDoorSound); // 소리 재생
+			if (OpenDoorSound)
+			{
+				UGameplayStatics::PlaySound2D(GetWorld(), OpenDoorSound); // 소리 재생
+			}
 			
 			// 목표 Yaw 계산 (현재 Yaw에서 90도 추가)
 			FRotator CurrentRotation = ExitDoor->GetRelativeRotation();

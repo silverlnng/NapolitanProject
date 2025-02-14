@@ -64,6 +64,8 @@ void ATargetForItem::CheckItem(class AItemActor* curItem)
 
 void ATargetForItem::CheckItemSuccess()
 {
+	// 성공하면 다시 interact할필요없어서. 
+	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 }
 
 void ATargetForItem::CheckItemFail()

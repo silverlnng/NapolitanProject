@@ -25,4 +25,18 @@ class NAPOLITANPROJECT_API ATargetForItem_LobbyDoor : public ATargetForItem
 	virtual void CheckItemFail()override;
 	
 	virtual void NoItem()override;
+
+	virtual void Tick(float DeltaSeconds) override;
+	
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
+	UMaterialInterface* DissolveMaterial;
+
+	UMaterialInstanceDynamic* DynamicMaterial;  // 동적 머터리얼 인스턴스
+	
+	UFUNCTION()
+	void DissolveEvent();
+
+	bool bisDissolve = false;
+	float dissolveAnimValue;
 };

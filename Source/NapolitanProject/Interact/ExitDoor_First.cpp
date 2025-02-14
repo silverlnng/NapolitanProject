@@ -18,7 +18,11 @@ void AExitDoor_First::BindBeginOverlap()
 void AExitDoor_First::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	// AExitDoorTrue 의 OnBeginOverlap까지 발생해서 회전하는 것.
+	
 	Super::OnBeginOverlap(OverlappedComponent , OtherActor , OtherComp , OtherBodyIndex , bFromSweep , SweepResult);
+
+	
 	// 시간지연 주고 end event 발생시키기
 	auto* Target = Cast<ATestCharacter>(OtherActor);
 	if(Target)
