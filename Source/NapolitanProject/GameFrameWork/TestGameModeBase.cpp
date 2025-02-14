@@ -3,6 +3,8 @@
 
 #include "TestGameModeBase.h"
 
+#include "MyTestGameInstance.h"
+#include "PlayerHUD.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
 #include "Kismet/GameplayStatics.h"
@@ -21,13 +23,25 @@ void ATestGameModeBase::BeginPlay()
 	PC=Cast<ATestPlayerController>(GetWorld()->GetFirstPlayerController());
 	PC->SetInputMode(FInputModeGameOnly());
 	PC->SetShowMouseCursor(false);
-	/*if (PC)
+	
+	MainCharacter=Cast<ATestCharacter>(PC->GetPawn());
+	MainCharacter->b_IA_Note_Allowed=true;
+	MainCharacter->b_IA_Inven_Allowed=true;
+	
+	PlayerHUD =PC->GetHUD<APlayerHUD>();
+	
+	GI =GetGameInstance<UMyTestGameInstance>();
+	if (GI)
 	{
-		TestCharacter = Cast<ATestCharacter>(PC->GetPawn());
-		if (TestCharacter)
+		// 시간 지연을 주기
+
+		FTimerHandle GITimer;
+
+		GetWorld()->GetTimerManager().SetTimer(GITimer,[this]()
 		{
-			TestCharacter->SetPlayerState(EPlayerState::Idle);
-		}
-	}*/
+			GI->RestoreAttachedItems();
+		},2.0f,false);
+	}
+	
 }
 

@@ -4,19 +4,17 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "NapolitanProject/YJ/Save/TestSaveGame.h"
-#include "TestGameModeBase.generated.h"
+#include "DetectiveMapGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class NAPOLITANPROJECT_API ATestGameModeBase : public AGameModeBase
+class NAPOLITANPROJECT_API ADetectiveMapGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 public:
-	ATestGameModeBase();
-
+	
 	virtual void BeginPlay() override;
 	
 	class ATestPlayerController* PC;
@@ -27,6 +25,4 @@ public:
 
 	UPROPERTY()
 	class UMyTestGameInstance* GI;
-private:
-	
 };

@@ -12,6 +12,7 @@
 #include "Kismet/GameplayStatics.h"
 
 #include "NapolitanProject/Interact/CatchSpider.h"
+#include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interact/ItemActor.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 
@@ -79,6 +80,8 @@ void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)
 			SpiderItem->AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 			
 			SpiderItem->SetActorHiddenInGame(true);
+
+			GI->SavedItems.Add(SpiderItem->GetClass());
 			
 			if (PlayerHUD->InventoryUI)
 			{
@@ -94,9 +97,26 @@ void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)
 			{
 				PlayerHUD->InventoryUI->InvenSlots[SpiderItemID]->MyItem=SpiderItem;
 			}
+
+			// 인벤 효과 애니메이션 실행시키기 
+			PlayerHUD->InteractUI->PlayInvenUIEvent();
+
+			int32 ItemRow =SpiderItemID+1;
+	
+			FString ItemIDstr=FString::FromInt(ItemRow);
+			//DT 작업하기 
+			FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(FName(*ItemIDstr) , TEXT(""));
+			if (ItemData)
+			{
+				ItemData->Had=true;
+			}
+			
+			
 		}
 		else
 		{
+			// 인벤 효과 애니메이션 실행시키기 
+			PlayerHUD->InteractUI->PlayInvenUIEvent();
 			PlayerHUD->InventoryUI->InvenSlots[SpiderItemID]->Set_TextNum(CatchSpiderNum);
 		}
 	}
@@ -107,4 +127,5 @@ void ASpiderMapGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 	MainCharacter->OnSpecialInteraction.Clear();
+	GI->CatchSpiderNum=FString::FromInt(CatchSpiderCount);
 }
