@@ -182,7 +182,9 @@ public:
 	//  저장된 아이템 복원
 	UFUNCTION(BlueprintCallable)
 	void RestoreAttachedItems();
-	
+
+	UPROPERTY()
+	FString CatchSpiderNum;
 ///////////// 추리 단서 ////////////////////////	
 	UPROPERTY(VisibleAnywhere)
 	UDataTable* DT_Clue;

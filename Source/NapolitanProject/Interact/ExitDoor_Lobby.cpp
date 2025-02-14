@@ -27,7 +27,22 @@ void AExitDoor_Lobby::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, A
 
 void AExitDoor_Lobby::RotateDoor()
 {
-	Super::RotateDoor();
+	FRotator CurrentRotation = ExitDoor->GetRelativeRotation();
+	float InterpSpeed = 2.0f; // 회전 속도 조절
+
+	// FMath::FInterpTo로 현재 Yaw에서 목표 Yaw까지 이동
+	CurrentRotation.Yaw = FMath::FInterpTo(CurrentRotation.Yaw, TargetYaw, GetWorld()->GetDeltaSeconds(), InterpSpeed);
+
+	// 새로운 회전 값 설정
+	ExitDoor->SetRelativeRotation(CurrentRotation);
+
+	// 목표 각도 도달 여부 확인
+	if (FMath::Abs(CurrentRotation.Yaw - TargetYaw) < 0.5f)
+	{
+		// 목표 각도에 도달하면 회전 종료
+		ExitDoor->SetRelativeRotation(FRotator(CurrentRotation.Pitch, TargetYaw, CurrentRotation.Roll)); // 정확히 목표 각도로 설정
+		GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+	}
 }
 
 void AExitDoor_Lobby::RotateDoor2()
@@ -37,17 +52,17 @@ void AExitDoor_Lobby::RotateDoor2()
 	float InterpSpeed = 2.0f; // 회전 속도 조절
 
 	// FMath::FInterpTo로 현재 Yaw에서 목표 Yaw까지 이동
-	CurrentRotation.Yaw = FMath::FInterpTo(CurrentRotation.Yaw, TargetYaw, GetWorld()->GetDeltaSeconds(), InterpSpeed);
+	CurrentRotation.Yaw = FMath::FInterpTo(CurrentRotation.Yaw, TargetYaw2, GetWorld()->GetDeltaSeconds(), InterpSpeed);
 
 	// 새로운 회전 값 설정
 	ExitDoor2->SetRelativeRotation(CurrentRotation);
 
 	// 목표 각도 도달 여부 확인
-	if (FMath::Abs(CurrentRotation.Yaw - TargetYaw) < 0.5f)
+	if (FMath::Abs(CurrentRotation.Yaw - TargetYaw2) < 0.5f)
 	{
 		// 목표 각도에 도달하면 회전 종료
-		ExitDoor2->SetRelativeRotation(FRotator(CurrentRotation.Pitch, TargetYaw, CurrentRotation.Roll)); // 정확히 목표 각도로 설정
-		GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
+		ExitDoor2->SetRelativeRotation(FRotator(CurrentRotation.Pitch, TargetYaw2, CurrentRotation.Roll)); // 정확히 목표 각도로 설정
+		GetWorld()->GetTimerManager().ClearTimer(TimerHandle2);
 	}
 }
 
@@ -65,9 +80,13 @@ void AExitDoor_Lobby::StartRotateDoor()
 	// 목표 Yaw 계산 (현재 Yaw에서 90도 추가)
 	FRotator CurrentRotation = ExitDoor->GetRelativeRotation();
 	TargetYaw = CurrentRotation.Yaw + 90.0f;
+	
+	TargetYaw2 = CurrentRotation.Yaw - 90.0f;
 
 	// 타이머 설정: 문을 부드럽게 회전
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle , this , &AExitDoor_Lobby::RotateDoor , 0.01f , true);
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle , this , &AExitDoor_Lobby::RotateDoor2 , 0.01f , true);
+	
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle2 , this , &AExitDoor_Lobby::RotateDoor2 , 0.01f , true);
 	
 }

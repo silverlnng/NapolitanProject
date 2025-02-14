@@ -29,4 +29,8 @@ public:
 	virtual void RotateDoor() override;
 	void RotateDoor2();
 	void StartRotateDoor();
+
+	FTimerHandle TimerHandle2;
+
+	float TargetYaw2;
 };

@@ -54,7 +54,13 @@ void ATargetForItem_LobbyDoor::CheckItemSuccess()
 	}
 	if (Door)
 	{
-		Door->StartRotateDoor();
+		
+
+		FTimerHandle DoorTimer;
+		GetWorldTimerManager().SetTimer(DoorTimer, [this,Door]()
+		{
+			Door->StartRotateDoor();
+		}, 1.8f, false);
 	}
 }
 

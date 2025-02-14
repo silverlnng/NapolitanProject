@@ -18,8 +18,15 @@ public:
 	ATestGameModeBase();
 
 	virtual void BeginPlay() override;
+	
 	class ATestPlayerController* PC;
-	class ATestCharacter* TestCharacter;
+		
+	class ATestCharacter* MainCharacter;
+	
+	class APlayerHUD* PlayerHUD;
+
+	UPROPERTY()
+	class UMyTestGameInstance* GI;
 private:
 	
 };
