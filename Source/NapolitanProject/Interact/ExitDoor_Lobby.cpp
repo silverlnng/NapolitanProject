@@ -13,17 +13,6 @@ AExitDoor_Lobby::AExitDoor_Lobby()
 	ExitDoor2->SetupAttachment(BoxComp);
 }
 
-void AExitDoor_Lobby::BindBeginOverlap()
-{
-	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &AExitDoor_Lobby::OnBeginOverlap);
-}
-
-void AExitDoor_Lobby::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-                                     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	Super::OnBeginOverlap(OverlappedComponent , OtherActor , OtherComp , OtherBodyIndex , bFromSweep , SweepResult);
-	
-}
 
 void AExitDoor_Lobby::RotateDoor()
 {

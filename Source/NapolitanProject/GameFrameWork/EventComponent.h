@@ -32,6 +32,9 @@ public:
 
 	void Event_Cleaner_Start();
 
+	UPROPERTY(VisibleAnywhere)
+	class ADoor_2Floor* Door_2Floor;
+
 	void Event_Cleaner_Completed();
 
 	void Event_Security_Completed();

@@ -20,15 +20,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class UStaticMeshComponent* ExitDoor2;
 	
-	
-	void BindBeginOverlap();
-
-	
-	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
-
 	virtual void RotateDoor() override;
-	void RotateDoor2();
-	void StartRotateDoor();
+	virtual void RotateDoor2();
+	virtual void StartRotateDoor();
 
 	FTimerHandle TimerHandle2;
 

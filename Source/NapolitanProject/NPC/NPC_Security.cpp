@@ -202,11 +202,11 @@ void ANPC_Security::SetState(ESecurityState curState)
 
 void ANPC_Security::OnSeePawn(APawn *OtherPawn)
 {
-	if (OtherPawn)
+	/*if (OtherPawn)
 	{
 		FString message = TEXT("Saw Actor ") + OtherPawn->GetName();
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
-	}
+	}*/
 	auto* testCha =Cast<ATestCharacter>(OtherPawn);
 	if (testCha)
 	{

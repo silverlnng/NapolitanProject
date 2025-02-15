@@ -3,12 +3,14 @@
 
 #include "EventComponent.h"
 
+#include "EngineUtils.h"
 #include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/RichTextBlock.h"
+#include "NapolitanProject/Interact/Door_2Floor.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/YJ/EventWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
@@ -33,7 +35,6 @@ void UEventComponent::BeginPlay()
 	MainCharacter=Cast<ATestCharacter>(TestPC->GetPawn());
 	// ...
 	PlayerHUD=TestPC->GetHUD<APlayerHUD>();
-	
 }
 
 void UEventComponent::InitializeComponent()
@@ -198,7 +199,24 @@ void UEventComponent::Event_Cleaner_Start()
 		FString QuestText =FString(TEXT("머리를 찾아주기"));
 		PlayerHUD->InteractUI->AddQuestSlot(2,QuestText);
 	},8.0f,false);
+
+	FTimerHandle Timer4;
+
+	GetWorld()->GetTimerManager().SetTimer(Timer4,[this]()
+	{
+		// 2층문이 열리도록 하기
+		for (TActorIterator<ADoor_2Floor> It(GetWorld(), ADoor_2Floor::StaticClass()); It; ++It)
+		{
+			Door_2Floor=*It;
+		}
+		if(Door_2Floor)
+		{
+			Door_2Floor->UnBindBeginOverlap();
+		}
+	},14.0f,false);
 	
+	
+
 }
 
 void UEventComponent::Event_Cleaner_Completed()
