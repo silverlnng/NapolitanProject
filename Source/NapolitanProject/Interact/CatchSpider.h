@@ -26,13 +26,23 @@ public:
 	// 네비게이션을 이용해서 길찾기를 하고싶다.
 	UPROPERTY(VisibleAnywhere)
 	class AAIController* EnemyAI;
-
+	
+	UPROPERTY()
+	class UCatchSpider_AnimInstance* Anim;
+	
 	FVector PatrolPoint;
 	float PatrolPointRadius = 700;
 
 	bool SetPatrolPoint(FVector origin, float radius, FVector& dest);
 
+	int32 Health =3;
+	
 	void Damaged();
+
+	void Die();
+	
+	UPROPERTY(VisibleAnywhere)
+	bool Died=false;
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int32 ItemID=5;

@@ -67,60 +67,66 @@ void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)
 		
 	if (CatchSpider)
 	{
-		
-
-		// 갯수도 누적해서 표시.
-		CatchSpiderCount++;
-		
-		FString CatchSpiderNum=FString::FromInt(CatchSpiderCount);
-
-		if (CatchSpiderCount==1)
+		CatchSpider->Health--;
+		if (CatchSpider->Health>0)
 		{
-			SpiderItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
-			SpiderItem->AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-			
-			SpiderItem->SetActorHiddenInGame(true);
+			CatchSpider->Damaged();
+		}
+		else if (CatchSpider->Health==0)
+		{
+			CatchSpider->Die();
+			// 갯수도 누적해서 표시.
+			CatchSpiderCount++;
+		
+			FString CatchSpiderNum=FString::FromInt(CatchSpiderCount);
 
-			GI->SavedItems.Add(SpiderItem->GetClass());
-			
-			if (PlayerHUD->InventoryUI)
+			if (CatchSpiderCount==1)
 			{
+				SpiderItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
+				SpiderItem->AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			
+				SpiderItem->SetActorHiddenInGame(true);
+
+				GI->SavedItems.Add(SpiderItem->GetClass());
+			
+				if (PlayerHUD->InventoryUI)
+				{
+					if (PlayerHUD->InventoryUI->InvenSlots.Contains(SpiderItemID))
+					{
+						PlayerHUD->InventoryUI->InvenSlots[SpiderItemID]->OnItemAcquired();
+						// 아이템 슬롯 작업.
+						PlayerHUD->InventoryUI->InvenSlots[SpiderItemID]->Set_TextNum(CatchSpiderNum);
+					}
+				}
+				// 해당하는 아이템슬롯을 찾아서 자신을 넣어주기
 				if (PlayerHUD->InventoryUI->InvenSlots.Contains(SpiderItemID))
 				{
-					PlayerHUD->InventoryUI->InvenSlots[SpiderItemID]->OnItemAcquired();
-					// 아이템 슬롯 작업.
-					PlayerHUD->InventoryUI->InvenSlots[SpiderItemID]->Set_TextNum(CatchSpiderNum);
+					PlayerHUD->InventoryUI->InvenSlots[SpiderItemID]->MyItem=SpiderItem;
 				}
-			}
-			// 해당하는 아이템슬롯을 찾아서 자신을 넣어주기
-			if (PlayerHUD->InventoryUI->InvenSlots.Contains(SpiderItemID))
-			{
-				PlayerHUD->InventoryUI->InvenSlots[SpiderItemID]->MyItem=SpiderItem;
-			}
 
-			// 인벤 효과 애니메이션 실행시키기 
-			PlayerHUD->InteractUI->PlayInvenUIEvent();
+				// 인벤 효과 애니메이션 실행시키기 
+				PlayerHUD->InteractUI->PlayInvenUIEvent();
 
-			int32 ItemRow =SpiderItemID+1;
+				int32 ItemRow =SpiderItemID+1;
 	
-			FString ItemIDstr=FString::FromInt(ItemRow);
-			//DT 작업하기 
-			FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(FName(*ItemIDstr) , TEXT(""));
-			if (ItemData)
-			{
-				ItemData->Had=true;
+				FString ItemIDstr=FString::FromInt(ItemRow);
+				//DT 작업하기 
+				FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(FName(*ItemIDstr) , TEXT(""));
+				if (ItemData)
+				{
+					ItemData->Had=true;
+				}
+			
+			
 			}
-			
-			
-		}
-		else
-		{
-			// 인벤 효과 애니메이션 실행시키기 
-			PlayerHUD->InteractUI->PlayInvenUIEvent();
-			PlayerHUD->InventoryUI->InvenSlots[SpiderItemID]->Set_TextNum(CatchSpiderNum);
+			else
+			{
+				// 인벤 효과 애니메이션 실행시키기 
+				PlayerHUD->InteractUI->PlayInvenUIEvent();
+				PlayerHUD->InventoryUI->InvenSlots[SpiderItemID]->Set_TextNum(CatchSpiderNum);
+			}
 		}
 	}
-	
 }
 
 void ASpiderMapGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)

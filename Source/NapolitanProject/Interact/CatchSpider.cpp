@@ -5,6 +5,7 @@
 
 #include "AIController.h"
 #include "AITypes.h"
+#include "CatchSpider_AnimInstance.h"
 #include "NavigationSystem.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -23,12 +24,16 @@ void ACatchSpider::BeginPlay()
 	Super::BeginPlay();
 	EnemyAI = Cast<AAIController>(this->GetController());
 	GetCharacterMovement()->MaxWalkSpeed = 300.f;
+	Anim=Cast<UCatchSpider_AnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 // Called every frame
 void ACatchSpider::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (Died){return;}
+	
 	FVector Destination = PatrolPoint;
 
 	auto* NavSystem = UNavigationSystemV1::GetNavigationSystem(GetWorld());
@@ -79,13 +84,23 @@ bool ACatchSpider::SetPatrolPoint(FVector origin, float radius, FVector& dest)
 
 void ACatchSpider::Damaged()
 {
-	// 죽는 애니메이션 실행
+	// 피격 애니메이션 실행
+	Anim->PlayDamagedMontage();
+}
 
+void ACatchSpider::Die()
+{
+	Died=true;
+	// 죽는 애니메이션 실행
+	Anim->bDied=true;
 	// 피격 나이아가라 실행
 	
 	// 아이템 인벤토리 창에 담아지기
-
+	FTimerHandle DieTimer;
+	GetWorld()->GetTimerManager().SetTimer(DieTimer,[this]()
+	{
+		Destroy();
+	},3.0f,false);
 	// 3초뒤에 사라지도록 하기
-	
 }
 
