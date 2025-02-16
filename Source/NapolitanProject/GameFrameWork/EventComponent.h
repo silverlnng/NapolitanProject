@@ -43,6 +43,8 @@ public:
 
 	void Event_Butterfly_Start();
 
+	void Event_Butterfly_Completed();
+
 	void UpdateText();
 
 	

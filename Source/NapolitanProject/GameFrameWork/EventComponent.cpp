@@ -336,6 +336,11 @@ void UEventComponent::Event_Butterfly_Start()
 	},8.0f,false);
 }
 
+void UEventComponent::Event_Butterfly_Completed()
+{
+	
+}
+
 void UEventComponent::UpdateText()
 {
 	if (CurrentText.Len() >= RemoveTags.Len())

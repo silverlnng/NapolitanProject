@@ -3,6 +3,7 @@
 
 #include "TargetForItem_BurgerPlate.h"
 
+#include "EngineUtils.h"
 #include "ItemActor.h"
 #include "NiagaraComponent.h"
 #include "Components/BoxComponent.h"
@@ -12,6 +13,8 @@
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/NPC/NPC_Butterfly.h"
 #include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 
@@ -171,4 +174,38 @@ void ATargetForItem_BurgerPlate::MissionCheck()
 	}
 
 	NiagaraComp->Activate();
+
+	
+	
+	FTimerHandle Timer1;
+	//바로 나비의 대사 나오도록 하기
+	GetWorld()->GetTimerManager().SetTimer(Timer1,[this]()
+	{
+		
+		// 2층문이 열리도록 하기
+		for (TActorIterator<ANPC_Butterfly> It(GetWorld(), ANPC_Butterfly::StaticClass()); It; ++It)
+		{
+			NPC_Butterfly=*It;
+		}
+		if (NPC_Butterfly)
+		{
+			NPC_Butterfly->State=2;
+		}
+	},3.0f,false);
+
+	FTimerHandle Timer4;
+	
+
+	FTimerHandle Timer2;
+	GetWorld()->GetTimerManager().SetTimer(Timer2 , [this]()
+	{
+		
+		TestPC->curNPC =NPC_Butterfly;
+		TestPC->StartEndNPCDialougue(true);
+		TestPC->SetNPCDialougueText(0);
+		// 나의 상태 변화
+		MainCharacter->SetPlayerState(EPlayerState::Talking);
+	} , 5.0f , false);
+
+	
 }

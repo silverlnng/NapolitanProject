@@ -44,6 +44,8 @@ class NAPOLITANPROJECT_API ATargetForItem_BurgerPlate : public ATargetForItem
 	TArray<int32> PutDownitemID;
 	
 	void MissionCheck();
+
+	class ANPC_Butterfly* NPC_Butterfly=nullptr;
 	
 public:	
 	//////////////////소리///////////////////////////
