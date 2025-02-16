@@ -42,7 +42,7 @@ public:
 
 	virtual void RotateDoor();
 	float TargetYaw;
-
+	
 	bool bIsOpenDoor = false;
 	
 

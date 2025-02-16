@@ -87,4 +87,3 @@ void AExitDoorTrue::RotateDoor()
 		GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	}
 }
-
