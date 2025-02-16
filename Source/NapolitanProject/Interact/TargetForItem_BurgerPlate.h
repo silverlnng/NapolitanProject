@@ -14,7 +14,7 @@ class NAPOLITANPROJECT_API ATargetForItem_BurgerPlate : public ATargetForItem
 {
 	GENERATED_BODY()
 	ATargetForItem_BurgerPlate();
-	
+public:	
 	UPROPERTY(EditDefaultsOnly)
 	class USceneComponent* SceneComp1;
 	UPROPERTY(EditDefaultsOnly)

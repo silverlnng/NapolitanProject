@@ -70,6 +70,11 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 	{
 		Event_RedDosent(str,content);
 	}
+	else if (str=="NPCFinalEvent")
+	{
+		NPCFinalEvent();
+		// 선택지 누르고 결과가 아니라 그냥 대사 마지막에 npc의  ResultEvent 호출시키고 싶을때 
+	}
 	else if (str=="CleanerQuest")
 	{
 		// 청소부의 퀘스트 함수
@@ -96,8 +101,19 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 	else if (str=="ButterflyQuest")
 	{
 		Event_Butterfly_Start();
-		GI->NPCEventManage.Add(NameKey);
+		//GI->NPCEventManage.Add(NameKey);
 	}
+	else if (str=="ButterflyQuestCompleted")
+	{
+		Event_Butterfly_Completed();
+		//GI->NPCEventManage.Add(NameKey);
+	}
+}
+
+void UEventComponent::NPCFinalEvent()
+{
+	TestPC->CallCurNPCResultEvent(0);
+	//MainCharacter->curNPC->ResultEvent(value);
 }
 
 void UEventComponent::Event_RedDosent(FString& str,const FString& content)
@@ -334,10 +350,18 @@ void UEventComponent::Event_Butterfly_Start()
 		FString QuestText =FString(TEXT("거미버거를 만들어주기"));
 		PlayerHUD->InteractUI->AddQuestSlot(3,QuestText);
 	},8.0f,false);
+
+	
 }
 
 void UEventComponent::Event_Butterfly_Completed()
 {
+	FTimerHandle UITimer;
+	
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		PlayerHUD->InteractUI->RemoveQuestSlot("거미버거를 만들어주기");
+	},1.0f,false);
 	
 }
 

@@ -24,10 +24,20 @@ public:
 	virtual int32 GetState() override;
 
 	virtual void Interact() override;
+
+	virtual void ResultEvent(int32 result) override; 
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	int32 NPC_ID =8;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	int32 State =1;
+
+	UPROPERTY()
+	class ATargetForItem_BurgerPlate* TargetForItem_BurgerPlate;
+		
+	UPROPERTY(EditAnywhere, Category = "Spawn Items")
+	TSubclassOf<class AItemActor> CutterItemClass;
+	UFUNCTION()
+	void SpawnItems();
 };

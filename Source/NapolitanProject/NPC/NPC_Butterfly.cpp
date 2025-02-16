@@ -3,6 +3,10 @@
 
 #include "NPC_Butterfly.h"
 
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/Interact/TargetForItem_BurgerPlate.h"
+
 void ANPC_Butterfly::BeginPlay()
 {
 	Super::BeginPlay();
@@ -26,4 +30,41 @@ int32 ANPC_Butterfly::GetState()
 void ANPC_Butterfly::Interact()
 {
 	Super::Interact();
+}
+
+void ANPC_Butterfly::ResultEvent(int32 result)
+{
+	if (1==State)
+	{
+		if (0==result)
+		{
+			State=2;
+			TestPC->StartEndNPCDialougue(true);
+			TestPC->SetNPCDialougueText(0);
+		}
+	}
+	else if (2==State)
+	{
+		if (0==result)
+		{
+			SpawnItems();
+		}
+	}
+}
+
+void ANPC_Butterfly::SpawnItems()
+{
+	FTransform SpawnTransform;
+	// 발끝 위치를 기준으로 스폰 위치 설정
+	if (TargetForItem_BurgerPlate)
+	{
+		//FVector BurgerPlateLocation = TargetForItem_BurgerPlate->SceneComp3->;
+		SpawnTransform=TargetForItem_BurgerPlate->SceneComp3->GetComponentTransform();
+	}
+	//
+	if (CutterItemClass)
+	{
+		AActor* CutterItem = GetWorld()->SpawnActor<AItemActor>(CutterItemClass, SpawnTransform );
+	}
+	
 }
