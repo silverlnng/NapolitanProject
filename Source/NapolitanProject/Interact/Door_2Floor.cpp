@@ -4,7 +4,10 @@
 #include "Door_2Floor.h"
 
 #include "Components/BoxComponent.h"
+#include "Components/SlateWrapperTypes.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
+#include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
 
 void ADoor_2Floor::BeginPlay()
 {
@@ -29,11 +32,14 @@ void ADoor_2Floor::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 	if(OtherActor)
 	{
 		
-		auto* MainCharacter = Cast<ATestCharacter>(OtherActor);
-
+		ATestCharacter* MainCharacter = Cast<ATestCharacter>(OtherActor);
+		if (MainCharacter)
 		//퀘스트 있는지 검사
-		
-		
+		{
+			FString NoEnter =FString(TEXT("<Monologue>2층 전시관은 닫혀있어서 갈수없다"));
+			MainCharacter->PlayerHUD->MonolugueWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			MainCharacter->PlayerHUD->MonolugueWidgetUI->SetText_Dialogue(NoEnter);
+		}
 	}
 }
 
