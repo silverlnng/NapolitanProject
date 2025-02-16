@@ -112,7 +112,7 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 
 void UEventComponent::NPCFinalEvent()
 {
-	TestPC->CallCurNPCResultEvent(0);
+	TestPC->CallCurNPCResultEvent(9);
 	//MainCharacter->curNPC->ResultEvent(value);
 }
 

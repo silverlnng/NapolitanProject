@@ -45,7 +45,7 @@ void ANPC_Butterfly::ResultEvent(int32 result)
 	}
 	else if (2==State)
 	{
-		if (0==result)
+		if (9==result)
 		{
 			SpawnItems();
 		}
