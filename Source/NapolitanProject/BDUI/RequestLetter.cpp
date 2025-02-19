@@ -7,6 +7,7 @@
 #include <Runtime/LevelSequence/Public/LevelSequencePlayer.h>
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 
 void URequestLetter::NativeConstruct()
@@ -24,6 +25,8 @@ void URequestLetter::NativeConstruct()
 			UE_LOG(LogTemp, Error, TEXT("playerCharacter is nullptr. Ensure your pawn is of type ATestCharacter."));
 		}
 	}
+	
+	GI=GetGameInstance<UMyTestGameInstance>();
 }
 
 void URequestLetter::OnTicketClicked()
@@ -45,6 +48,10 @@ void URequestLetter::OnTicketClicked()
 		if(SequencePlayer)
 		{
 			SequencePlayer->Play();
+			
+			// ✅ 2. 비동기 레벨 로딩 시작
+			GI->AsyncLoadLoadLevel(MuseumLevel);
+			
 			FTimerHandle TimerHandle;
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
 			{
@@ -53,4 +60,9 @@ void URequestLetter::OnTicketClicked()
 		}
 		
 	}
+}
+
+void URequestLetter::OnLevelLoaded()
+{
+	
 }

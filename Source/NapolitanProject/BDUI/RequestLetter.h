@@ -27,11 +27,17 @@ public:
 	UFUNCTION()
 	void OnTicketClicked();
 
+	UFUNCTION()
+	void OnLevelLoaded();
+
 public:
 	UPROPERTY(EditAnywhere, Category = "Cinematic")
 	class ULevelSequence* OpeningSequence;
 
 	UPROPERTY()
 	class ATestCharacter* playerCharacter;
+
+	UPROPERTY(VisibleAnywhere)
+	class UMyTestGameInstance* GI;
 	
 };

@@ -8,6 +8,7 @@
 #include "Components/RichTextBlock.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/YJ/SoundControlActor.h"
 
 void UNPCResultWidget::NativeConstruct()
 {
@@ -16,7 +17,28 @@ void UNPCResultWidget::NativeConstruct()
 	Btn_Back->OnClicked.AddDynamic(this,&UNPCResultWidget::OnClickbackButton);
 	Btn_Next->OnClicked.AddDynamic(this,&UNPCResultWidget::OnClickfrontButton);
 	Btn_Exit->OnClicked.AddDynamic(this,&UNPCResultWidget::OnClickExitButton);
+
+	OnVisibilityChanged.AddDynamic(this,&UNPCResultWidget::HandleVisibilityChanged);
 }
+
+void UNPCResultWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
+{
+	if (InVisibility == ESlateVisibility::Visible)
+	{
+		if (SoundControlActor)
+		{
+			SoundControlActor->TextSoundChange(true);
+		}
+	}
+	else if (InVisibility == ESlateVisibility::Hidden)
+	{
+		if (SoundControlActor)
+		{
+			SoundControlActor->TextSoundChange(false);
+		}
+	}
+}
+
 
 void UNPCResultWidget::SetText_Result(const FString& str)
 {
@@ -32,6 +54,7 @@ void UNPCResultWidget::SetText_Result(const FString& str)
 	
 	GetWorld()->GetTimerManager().SetTimer(TextUpdateTimerHandle, this, &UNPCResultWidget::UpdateText, TextUpdateInterval, true);
 }
+
 
 void UNPCResultWidget::UpdateText()
 {
@@ -60,6 +83,11 @@ void UNPCResultWidget::OnClickbackButton()
 	if(curOrder<0){return;}
 	curOrder-=1;
 	TestPC->SetNPCResultText(curOrder);
+
+	if (SoundControlActor)
+	{
+		SoundControlActor->TextSoundChange(true);
+	}
 }
 
 void UNPCResultWidget::OnClickfrontButton()
@@ -68,6 +96,11 @@ void UNPCResultWidget::OnClickfrontButton()
 	curOrder+=1;
 	UE_LOG(LogTemp,Warning,TEXT("%s,curOrder : %d"),*CALLINFO,curOrder);
 	TestPC->SetNPCResultText(curOrder);
+
+	if (SoundControlActor)
+	{
+		SoundControlActor->TextSoundChange(true);
+	}
 }
 
 void UNPCResultWidget::OnClickExitButton()

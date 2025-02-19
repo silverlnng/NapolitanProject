@@ -48,6 +48,9 @@ public:
 
 	class ATestPlayerController* TestPC;
 
+	UPROPERTY()
+	class ASoundControlActor* SoundControlActor;
+	
 	UFUNCTION()
 	void OnClickbackButton();
 	UFUNCTION()
@@ -57,4 +60,7 @@ public:
 	
 	UFUNCTION()
 	void SetText_Result(const FString& str);
+
+	UFUNCTION()
+	void HandleVisibilityChanged(ESlateVisibility InVisibility);
 };
