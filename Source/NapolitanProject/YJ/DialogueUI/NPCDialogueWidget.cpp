@@ -9,7 +9,9 @@
 #include "Components/RichTextBlock.h"
 #include "Components/TextBlock.h"
 #include "Components/UniformGridPanel.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NapolitanProject.h"
+#include "NapolitanProject/YJ/SoundControlActor.h"
 
 
 void UNPCDialogueWidget::NativeConstruct()
@@ -19,13 +21,38 @@ void UNPCDialogueWidget::NativeConstruct()
 	Btn_Back->OnClicked.AddDynamic(this,&UNPCDialogueWidget::OnClickbackButton);
 	Btn_Next->OnClicked.AddDynamic(this,&UNPCDialogueWidget::OnClickfrontButton);
 	Btn_Exit->OnClicked.AddDynamic(this,&UNPCDialogueWidget::OnClickExitButton);
+
+	
+	OnVisibilityChanged.AddDynamic(this,&UNPCDialogueWidget::HandleVisibilityChanged);
 }
 
-
+void UNPCDialogueWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
+{
+	if (InVisibility == ESlateVisibility::Visible)
+	{
+		if (SoundControlActor)
+		{
+			SoundControlActor->TextSoundChange(true);
+		}
+	}
+	else if (InVisibility == ESlateVisibility::Hidden)
+	{
+		if (SoundControlActor)
+		{
+			SoundControlActor->TextSoundChange(false);
+		}
+	}
+}
 
 void UNPCDialogueWidget::OnClickbackButton()
 {
 	if(curOrder<0){return;}
+	
+	if (SoundControlActor)
+	{
+		SoundControlActor->TextSoundChange(true);
+	}
+	
 	curOrder-=1;
 	TestPC->SetNPCDialougueText(curOrder);
 }
@@ -34,8 +61,14 @@ void UNPCDialogueWidget::OnClickfrontButton()
 {
 	// 다음 ui 가 출력되도록
 	if(curOrder>MaxOrder){return;}
+	
+	if (SoundControlActor)
+	{
+		SoundControlActor->TextSoundChange(true);
+	}
+	
 	curOrder+=1;
-	UE_LOG(LogTemp,Warning,TEXT("%s,curOrder : %d"),*CALLINFO,curOrder);
+	//UE_LOG(LogTemp,Warning,TEXT("%s,curOrder : %d"),*CALLINFO,curOrder);
 	TestPC->SetNPCDialougueText(curOrder);
 }
 
@@ -73,6 +106,11 @@ void UNPCDialogueWidget::UpdateText()
 	{
 		GetWorld()->GetTimerManager().ClearTimer(TextUpdateTimerHandle);
 		// 끝나는 시점 에 특정함수를 실행할수 있도록 만들기
+
+		if (SoundControlActor)
+		{
+			SoundControlActor->TextSoundChange(false);
+		}
 		
 		return;
 	}

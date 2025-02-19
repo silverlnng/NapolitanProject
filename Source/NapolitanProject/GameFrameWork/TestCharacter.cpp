@@ -669,7 +669,7 @@ void ATestCharacter::PlaySound(USoundWave* Sound)
 {
 	if (AudioComp->IsPlaying())
 	{
-		return;
+		AudioComp->Stop();
 	}
 	if (Sound)
 	{

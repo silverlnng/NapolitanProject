@@ -27,11 +27,18 @@ public:
 	class USceneComponent* SceneComp;
 
 	UPROPERTY(EditDefaultsOnly)
-	class UAudioComponent* AudioComp1;
+	class UAudioComponent* AudioComp1; //1층-로비 배경음
 
 	UPROPERTY(EditDefaultsOnly)
-	class UAudioComponent* AudioComp2;
+	class UAudioComponent* AudioComp2; //2층 배경음
 
+	UPROPERTY(EditDefaultsOnly)
+	class UAudioComponent* TextAudioComp2;
+
+	class ATestCharacter* MainCharacter;
+	class ATestPlayerController* TestPC;
+	class APlayerHUD* PlayerHUD;
+	
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	bool IsSecondFloor =false;
 
@@ -42,5 +49,12 @@ public:
 	
 	UFUNCTION()
 	void BGSoundChange(USoundCue* Sound);
+
+	UFUNCTION()
+	void TextSoundChange(bool value);
+	
+	UPROPERTY(EditDefaultsOnly)
+	class USoundBase* textSound;
 	
 };
+
