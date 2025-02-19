@@ -5,6 +5,7 @@
 #include "Sound/SoundCue.h"
 #include "Components/AudioComponent.h"
 #include "DialogueUI/NPCDialogueWidget.h"
+#include "DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
@@ -51,6 +52,7 @@ void ASoundControlActor::BeginPlay()
 		if (PlayerHUD && PlayerHUD->NPCDialogueUI)
 		{
 			PlayerHUD->NPCDialogueUI->SoundControlActor=this;
+			PlayerHUD->NPCResultUI->SoundControlActor=this;
 		}
 	},1.0f,false);
 }
