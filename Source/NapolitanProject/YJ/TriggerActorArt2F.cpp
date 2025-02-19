@@ -164,7 +164,9 @@ void ATriggerActorArt2F::BoxCompEndOverlap( UPrimitiveComponent* OverlappedCompo
 		if (SoundControlActor)
 		{
 			SoundControlActor->AudioComp2->FadeOut(3.f,0.f);
+			// 2층의 배경음 끄고
 			SoundControlActor->AudioComp1->FadeIn(3.f,1.f);
+			// 다시 1층의 배경음을 키다
 			SoundControlActor->IsSecondFloor=false;
 		}
 

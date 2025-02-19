@@ -4,6 +4,35 @@
 #include "MonolugueWidget.h"
 
 #include "Components/RichTextBlock.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+
+
+void UMonolugueWidget::NativeConstruct()
+{
+	Super::NativeConstruct();
+	
+	TestPC=GetOwningPlayer<ATestPlayerController>();
+	if (TestPC)
+	{
+		MainCharacter =TestPC->GetPawn<ATestCharacter>();
+	}
+	
+	OnVisibilityChanged.AddDynamic(this,&UMonolugueWidget::HandleVisibilityChanged);
+	
+}
+
+void UMonolugueWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
+{
+	if (InVisibility == ESlateVisibility::Visible)
+	{
+		MainCharacter->PlaySound(MonologueSound);
+	}
+	else if (InVisibility == ESlateVisibility::Hidden)
+	{
+		MainCharacter->StopSound();
+	}
+}
 
 void UMonolugueWidget::SetText_Dialogue(const FString& str)
 {
@@ -34,11 +63,12 @@ void UMonolugueWidget::UpdateText()
 			
 			// 인덱스 증가
 			CurrentIndex++;
-
+		
 			FTimerHandle TimerHandle;
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
 			{
-				SetText_Dialogue(OutputLines[CurrentIndex]);		
+				SetText_Dialogue(OutputLines[CurrentIndex]);
+				MainCharacter->PlaySound(MonologueSound);
 			}, 1.f, false);
 		}
 		else // 맨마지막줄 출력
@@ -84,3 +114,4 @@ void UMonolugueWidget::SetOutputLines(const TArray<FString>& InputTextLines)
 		SetText_Dialogue(OutputLines[0]);
 	}
 }
+

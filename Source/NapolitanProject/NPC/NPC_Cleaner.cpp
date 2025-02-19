@@ -174,27 +174,16 @@ void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 	{
 	
 		// Idle 상태에서 목표 지점 설정
-		TArray<FVector> points = {
-			FVector(-2188.554545f, -3640.667534f, 47.877220f),
-			FVector(-1638.554545f, -3640.667534f, 47.877220f),
-			FVector(-1218.554545f, -3640.667534f, 47.877220f),
-			FVector(-1148.554545f, -3310.667534f, 47.877220f),
-			FVector(-1148.554545f, -2970.667534f, 47.877220f),
-			FVector(-1208.554545f, -2590.667534f, 47.877220f),
-			FVector(-1468.554545f, -2470.667534f, 47.877220f),
-			FVector(-1928.554545f, -2430.667534f, 47.877220f),
-			FVector(-2408.554545f, -2380.667534f, 47.877220f),
-			FVector(-1648.554545f, -2930.667534f, 47.877220f),
-			FVector(-1478.554545f, -3310.667534f, 47.877220f)
-		};
-
-
+		
 		// 마지막 방문한 위치 제외하고 랜덤으로 선택
 		if (points.Contains(LastVisitedPoint))
 		{
 			points.Remove(LastVisitedPoint);
 		}
 		randomIndex = FMath::RandRange(0, points.Num() - 1);
+
+		points.Add(LastVisitedPoint);
+		
 		TargetPoint = points[randomIndex];
 		LastVisitedPoint = TargetPoint;
 

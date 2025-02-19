@@ -85,5 +85,13 @@ public:
 
 	UFUNCTION()
 	void UIEffect(FString &str);
+
+	UPROPERTY()
+	class ASoundControlActor* SoundControlActor;
+
+	UFUNCTION()
+	void HandleVisibilityChanged(ESlateVisibility InVisibility);
 	
 };
+
+

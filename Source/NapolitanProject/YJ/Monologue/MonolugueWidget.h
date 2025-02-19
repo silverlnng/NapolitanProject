@@ -13,8 +13,12 @@ UCLASS()
 class NAPOLITANPROJECT_API UMonolugueWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
+	
+public:
+	virtual void NativeConstruct() override;
+	
 	class ATestPlayerController* TestPC;
+	class ATestCharacter* MainCharacter;
 	
 	UPROPERTY(meta=(BindWidget))
 	class URichTextBlock* Text_Monologue;
@@ -41,4 +45,11 @@ public:
 public:
 	UFUNCTION()
 	void SetOutputLines(const TArray<FString>& InputTextLines);
+
+	UFUNCTION()
+	void HandleVisibilityChanged(ESlateVisibility InVisibility);
+
+	UPROPERTY(EditDefaultsOnly)
+	class USoundWave* MonologueSound;
+	
 };
