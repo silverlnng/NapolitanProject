@@ -7,6 +7,7 @@
 #include "TestCharacter.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "Engine/AssetManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/Interact/ItemActor.h"
@@ -354,4 +355,21 @@ void UMyTestGameInstance::RestoreAttachedItems()
 			
 		}
 	}	
+}
+
+void UMyTestGameInstance::AsyncLoadLoadLevel(const TSoftObjectPtr<UWorld> Level)
+{
+	CachedLevel = Level; // ✅ 레벨을 임시 저장
+
+	// ✅ TSoftObjectPtr<UWorld> → FSoftObjectPath 변환
+	FSoftObjectPath LevelPath = Level->GetPathName();
+	// ✅ 비동기 레벨 로딩 시작
+	FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
+	Streamable.RequestAsyncLoad(LevelPath);
+}
+
+void UMyTestGameInstance::OnLevelLoaded()
+{
+	// ✅ 레벨 변경
+	UGameplayStatics::OpenLevelBySoftObjectPtr(this,CachedLevel,true); 
 }

@@ -200,5 +200,16 @@ public:
 	class UGameSaveController* GameSaveController;
 	UPROPERTY()
 	TArray<UTestSaveGame*> SaveSlotInfos;
+
+///////// 비동기 로비 레벨로드 //////
+	UFUNCTION(BlueprintCallable)
+	void AsyncLoadLoadLevel(const TSoftObjectPtr<UWorld> Level);
+	
+	// ✅ 로딩 완료 시 호출되는 함수
+	UFUNCTION()
+	void OnLevelLoaded();
+
+	UPROPERTY()
+	TSoftObjectPtr<UWorld> CachedLevel;
 };
 
