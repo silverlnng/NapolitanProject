@@ -26,11 +26,17 @@ void UMonolugueWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
 {
 	if (InVisibility == ESlateVisibility::Visible)
 	{
-		MainCharacter->PlaySound(MonologueSound);
+		if (MainCharacter)
+		{
+			MainCharacter->PlaySound(MonologueSound);
+		}
 	}
 	else if (InVisibility == ESlateVisibility::Hidden)
 	{
-		MainCharacter->StopSound();
+		if (MainCharacter)
+		{
+			MainCharacter->StopSound();
+		}
 	}
 }
 

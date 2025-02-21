@@ -28,6 +28,9 @@ public:
 	// 게임시작시 로드하기 - 게임인스턴스에서 실행시킬 것 
 	TArray<UTestSaveGame*> LoadAllSlotInfo(int32 MaxSlots);
 
+	// 가장 최근에 저장한 게임로드를 가져오는 방법
+	int32 FindLatestSaveGame();
+
 private:
 	const FString SlotPrefix = TEXT("SaveSlot_");
 };

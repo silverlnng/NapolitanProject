@@ -34,7 +34,7 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 		// 저장한 날짜 
 		FDateTime Now = FDateTime::Now();
 		SaveGameInstance->SaveTime = Now.ToString(TEXT("%Y-%m-%d %H:%M:%S"));
-
+		SaveGameInstance->DateTime=Now;
 		// 획득한 단서에 대해 저장하기
 		if (GameInstance && GameInstance->DT_Clue)
 		{
@@ -206,4 +206,39 @@ TArray<UTestSaveGame*> UGameSaveController::LoadAllSlotInfo(int32 MaxSlots)
 	}
 
 	return SlotInfos;
+}
+
+int32 UGameSaveController::FindLatestSaveGame()
+{
+	UTestSaveGame* LatestSave = nullptr;
+	int32 LatestSlotNum=0;
+	FDateTime LatestTime = FDateTime(0); // 가장 과거의 시간으로 초기화
+
+	int32 MaxSlots=3;
+	
+	for (int32 SlotIndex = 0; SlotIndex < MaxSlots; ++SlotIndex)
+	{
+		FString SlotName = FString::Printf(TEXT("SaveSlot_%d"), SlotIndex);
+		
+		if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))
+		{
+			UTestSaveGame* LoadedSave = Cast<UTestSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
+			if (LoadedSave)
+			{
+				// 가장 최근 데이터인지 비교
+				if (LoadedSave->DateTime > LatestTime)
+				{
+					LatestTime = LoadedSave->DateTime;
+					LatestSave = LoadedSave;
+				}
+			}
+		}
+	}
+	
+	if (LatestSave)
+	{
+		LatestSlotNum= LatestSave->SlotNum;
+	}
+	
+	return LatestSlotNum;
 }

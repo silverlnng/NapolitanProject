@@ -9,6 +9,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "Save/GameSaveController.h"
 
 void UDeadEndingWidget::NativeConstruct()
 {
@@ -59,7 +60,7 @@ void UDeadEndingWidget::OnRestart()
 	//UGameplayStatics::OpenLevel(GetWorld(), FName(*mapName));
 
 	// 베타에서는 그냥 처음 start자리로 가도록 하기
-	MainCharacter->TeleportTo(FVector(-1410,-2020,-656),FRotator(0,-90,0));
+	//MainCharacter->TeleportTo(FVector(-1410,-2020,-656),FRotator(0,-90,0));
 	//MainCharacter->SetActorLocation(FVector(-1410,2020,-656),false,);
 	//MainCharacter->SetActorRotation(FRotator(0,-90,0));
 	MainCharacter->bIsBeingAttacked=false;
@@ -68,6 +69,21 @@ void UDeadEndingWidget::OnRestart()
 		
 	MainCharacter->SetPlayerState(EPlayerState::Idle);
 	this->SetVisibility(ESlateVisibility::Hidden);
+
+	// 가장 최근에 저장한것을 로드하기
+
+	if (GameSaveController&&GameSaveController->FindLatestSaveGame()!=0)
+	{
+		int32 SlotNum=GameSaveController->FindLatestSaveGame();
+		GameSaveController->LoadGameFromSlot(SlotNum);
+	}
+	else
+	{
+		// 없으면 지하 처음자리에서 시작하기 
+		MainCharacter->TeleportTo(FVector(-1410,-2020,-656),FRotator(0,-90,0));
+	}
+	// 저장한것 없으면 처음 시작 .
+	
 }
 
 void UDeadEndingWidget::OnQuit()

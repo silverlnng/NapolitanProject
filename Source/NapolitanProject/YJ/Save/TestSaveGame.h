@@ -28,6 +28,9 @@ public:
 	FString SaveTime;
 
 	UPROPERTY(VisibleAnywhere, Category = "SaveData")
+	FDateTime DateTime;
+	
+	UPROPERTY(VisibleAnywhere, Category = "SaveData")
 	int SlotNum;
 	
 	// 아이템 획득,단서 획득 , npc 들간의 관계성 ,클리어 여부

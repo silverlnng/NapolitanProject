@@ -20,6 +20,12 @@ public:
 
 	class ATestPlayerController* TestPlayerController;
 	class ATestCharacter* MainCharacter;
+
+	UPROPERTY()
+	class UMyTestGameInstance* GI;
+
+	UPROPERTY()
+	class UGameSaveController* GameSaveController;
 	
 	UPROPERTY(meta=(BindWidget))
 	class URichTextBlock* RichText_Name;
