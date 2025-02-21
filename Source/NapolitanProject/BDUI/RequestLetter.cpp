@@ -62,7 +62,3 @@ void URequestLetter::OnTicketClicked()
 	}
 }
 
-void URequestLetter::OnLevelLoaded()
-{
-	
-}
