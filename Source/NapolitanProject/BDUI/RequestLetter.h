@@ -27,9 +27,6 @@ public:
 	UFUNCTION()
 	void OnTicketClicked();
 
-	UFUNCTION()
-	void OnLevelLoaded();
-
 public:
 	UPROPERTY(EditAnywhere, Category = "Cinematic")
 	class ULevelSequence* OpeningSequence;
