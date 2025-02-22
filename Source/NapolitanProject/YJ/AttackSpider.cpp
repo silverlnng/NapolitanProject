@@ -4,19 +4,22 @@
 #include "AttackSpider.h"
 
 #include "AIController.h"
+#include "AttackSpider_AnimInstance.h"
 #include "NavigationSystem.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "Perception/PawnSensingComponent.h"
 
 // Sets default values
 AAttackSpider::AAttackSpider()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	PawnSensingComp=CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
 }
 
 // 천장 여러곳에 장소두고 랜덤으로 돌아다니기 . 5초동안 있다가 다른 천장장소로 이동 (Idle)
@@ -33,6 +36,7 @@ void AAttackSpider::BeginPlay()
 	
 	AIController = Cast<AAIController>(GetController());
 	NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
+
 	
 	TestPC=GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	if (TestPC)
@@ -40,75 +44,151 @@ void AAttackSpider::BeginPlay()
 		MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	}
 
+	Anim=Cast<UAttackSpider_AnimInstance>(GetMesh()->GetAnimInstance());
+
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("MoveTarget"), TargetPoints);
+
+	MoveToNextLocation();
+	StartIdle();
+	PawnSensingComp->OnSeePawn.AddDynamic(this,&AAttackSpider::OnSeePawn);
 }
 
 // Called every frame
 void AAttackSpider::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//CheckCeilingAndGround();  // 천장 & 지상 감지
-	MoveAI();                 // AI 이동 처리
-	CheckForPlayer();  
 }
 
-
-
-void AAttackSpider::MoveAI()
+void AAttackSpider::SetAIState(EAttackSpiderState NewState)
 {
-	if (!AIController) return;
-
-	// 이동할 랜덤 위치 가져오기
-	// 이동 가능한 랜덤 위치 찾기
-	FNavLocation RandomNavLocation;
-	if (NavSystem->GetRandomReachablePointInRadius(GetActorLocation(), 5000.0f, RandomNavLocation))
+	CurrentState = NewState;
+	if (Anim)
 	{
-		FVector Destination = RandomNavLocation.Location;
-		
-		AIController->MoveToLocation(Destination);
+		Anim->CurrentState=NewState;
+	}
+	switch (CurrentState)
+	{
+	case EAttackSpiderState::Idle:
+		StartIdle();
+		break;
+	case EAttackSpiderState::MoveToNextPoint:
+		MoveToNextLocation();
+		break;
+	case EAttackSpiderState::Chase:
+		StartChasing();
+		break;
+	case EAttackSpiderState::Attack:
+		StartAttack();
+		break;
 	}
 }
 
-void AAttackSpider::CheckForPlayer()
+void AAttackSpider::StartIdle()
 {
-	
+	// 10초 후 MoveToNextLocation 실행
+	GetWorld()->GetTimerManager().SetTimer(IdleTimerHandle, this, &AAttackSpider::MoveToNextLocation, 5.0f, false);
+}
+
+void AAttackSpider::MoveToNextLocation()
+{
+	if (TargetPoints.Num() == 0) return;
+
+	int32 RandomIndex = FMath::RandRange(0, TargetPoints.Num() - 1);
+	FVector TargetLocation = TargetPoints[RandomIndex]->GetActorLocation();
+    
+	SetActorLocation(TargetLocation);
+}
+
+void AAttackSpider::StartChasing()
+{
 	if (!MainCharacter) return;
 
-	// NPC와 플레이어 사이의 거리 계산
-	float DistanceToPlayer = FVector::Dist(GetActorLocation(), MainCharacter->GetActorLocation());
+	// 이걸 animation 몽타주 쪽에서 실행하기 
+	AIController->MoveToActor(MainCharacter, 5.0f); // 플레이어를 향해 이동
 
-	// 플레이어와 NPC 사이에 디버그 라인 표시
-	// 감지 범위 안에 있는 경우 초록색, 아니면 빨간색
-	FColor DebugColor = (DistanceToPlayer <= PlayerDetectionRange) ? FColor::Emerald : FColor::White;
-	
-	DrawDebugLine(
-		GetWorld(),
-		GetActorLocation(),                   // 시작점 (NPC 위치)
-		MainCharacter->GetActorLocation(),       // 끝점 (플레이어 위치)
-		DebugColor,                          // 선 색상
-		false,                                // 지속 여부 (false면 몇 초 후 사라짐)
-		0.1f,                                 // 지속 시간
-		0,                                    // 두께 옵션
-		3.0f                                  // 선 두께
-	);
-	
+	// 0.2초마다 거리 체크 (Tick 대신 Timer 사용)
+	GetWorld()->GetTimerManager().SetTimer(ChaseCheckTimer, this, &AAttackSpider::CheckAttackRange, 0.2f, true);
+
+	// 3초 동안 플레이어를 못 보면 Idle로 변경
+	GetWorld()->GetTimerManager().SetTimer(LostSightTimerHandle, this, &AAttackSpider::HandleLostSight, 3.0f, false);
 }
 
-void AAttackSpider::AttackPlayer()
+void AAttackSpider::StartAttack()
 {
-	
-	// 플레이어 방향으로 이동
-	if (MainCharacter)
-	{
-		if (AIController)
-		{
-			AIController->MoveToActor(MainCharacter, 50.0f);  // 플레이어 근처까지 이동
-		}
-	}
-    
-	UE_LOG(LogTemp, Warning, TEXT("Attacking Player!"));
-	
-	//FTimerHandle TimerHandle_Return;
-	// 5초 후에 다시 천장으로 복귀
-	//GetWorld()->GetTimerManager().SetTimer(TimerHandle_Return, this, &AAttackSpider::ReturnToCeiling, 5.0f, false);
+	// 공격 애니메이션 실행
+	PlayAnimMontage(AttackMontage);
 }
+
+void AAttackSpider::OnSeePawn(APawn *OtherPawn)
+{
+	if (OtherPawn)
+	{
+		FString message = TEXT("Saw Actor ") + OtherPawn->GetName();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
+	}
+	
+	ATestCharacter* Player = Cast<ATestCharacter>(OtherPawn);
+	if (Player)
+	{
+		// Idle 상태의 타이머가 돌고 있다면 취소
+		GetWorld()->GetTimerManager().ClearTimer(IdleTimerHandle);
+
+		// 시야 타이머 초기화
+		GetWorld()->GetTimerManager().ClearTimer(LostSightTimerHandle); 
+		
+		// 추적 상태로 전환
+		SetAIState(EAttackSpiderState::Chase);
+	}
+}
+
+void AAttackSpider::HandleLostSight()
+{
+	// 아직도 CouldSeePawn이 false면 Idle로 변경
+	if (!PawnSensingComp->CouldSeePawn(MainCharacter))
+	{
+		SetAIState(EAttackSpiderState::Idle);
+	}
+}
+
+
+void AAttackSpider::CheckAttackRange()
+{
+	if (!MainCharacter) return;
+
+	float Distance = FVector::Distance(this->GetActorLocation(), MainCharacter->GetActorLocation());
+
+	if (Distance <= AttackRange) // 공격 범위 안이면
+	{
+		// 타이머 정지 후 공격 상태로 전환
+		GetWorld()->GetTimerManager().ClearTimer(ChaseCheckTimer);
+		SetAIState(EAttackSpiderState::Attack);
+	}
+}
+
+void AAttackSpider::MoveToActor()
+{
+	// 이걸 animation 몽타주 쪽에서 실행하기 
+	AIController->MoveToActor(MainCharacter, 5.0f);
+}
+
+
+// AttackMontage 에서 끝에서 실행 .
+void AAttackSpider::CheckAfterAttack()
+{
+	if (!MainCharacter) return;
+
+	float Distance = FVector::Distance(this->GetActorLocation(), MainCharacter->GetActorLocation());
+
+	if (Distance <= AttackRange)
+	{
+		// 다시 공격
+		StartAttack();
+	}
+	else
+	{
+		// 플레이어가 멀어졌으면 추적
+		SetAIState(EAttackSpiderState::Chase);
+	}
+}
+
 
