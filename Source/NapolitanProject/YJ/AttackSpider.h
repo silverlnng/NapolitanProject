@@ -5,7 +5,14 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "AttackSpider.generated.h"
-
+UENUM(BlueprintType)
+enum class EAttackSpiderState:uint8
+{
+	Idle,
+	ChasePlayer,
+	Attack,
+	Stop
+};
 UCLASS()
 class NAPOLITANPROJECT_API AAttackSpider : public ACharacter
 {
@@ -23,22 +30,16 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	
-	void CheckCeilingAndGround();   // 천장 & 지상 감지
-	void SwitchToCeilingMode();     // 천장 모드 전환
-	void SwitchToGroundMode();      // 지상 모드 전환
 	void MoveAI();                   // AI 이동 처리
 
 	void CheckForPlayer();
 
 	void AttackPlayer();
-
-	void ReturnToCeiling();
 	
-	UPROPERTY(EditAnywhere)
-	bool bIsOnCeiling = true;       // 현재 천장 모드 여부
-
-	UPROPERTY(EditAnywhere)
-	float TraceDistance = 1000.0f;
+	UPROPERTY(VisibleAnywhere)
+	EAttackSpiderState AttackSpiderState= EAttackSpiderState::Idle;
+	
+	
 
 	UPROPERTY(EditAnywhere)
 	float PlayerDetectionRange = 300.0f;

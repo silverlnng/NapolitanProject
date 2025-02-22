@@ -19,6 +19,13 @@ AAttackSpider::AAttackSpider()
 
 }
 
+// 천장 여러곳에 장소두고 랜덤으로 돌아다니기 . 5초동안 있다가 다른 천장장소로 이동 (Idle)
+
+// 그러다가 캐릭터 발견하면 추적- 가까우면 공격 -
+
+// 추적하다가 어느정도 멀어지면 다시 idle으로 돌아가기 
+
+
 // Called when the game starts or when spawned
 void AAttackSpider::BeginPlay()
 {
@@ -32,8 +39,7 @@ void AAttackSpider::BeginPlay()
 	{
 		MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	}
-	bIsOnCeiling=false;
-	CheckCeilingAndGround();  
+
 }
 
 // Called every frame
@@ -46,88 +52,6 @@ void AAttackSpider::Tick(float DeltaTime)
 }
 
 
-void AAttackSpider::CheckCeilingAndGround()
-{
-	FVector Start = GetActorLocation();
-    
-	// 1. 천장 감지 (위로 라인 트레이스)
-	FVector CeilingEnd = Start + FVector(0, 0, TraceDistance);
-	FHitResult CeilingHit;
-    
-	bool bHitCeiling=GetWorld()->LineTraceSingleByChannel(CeilingHit, Start, CeilingEnd, ECC_Visibility);
-	
-	// 🔹 디버그 라인 (천장 탐색용)
-	DrawDebugLine(
-		GetWorld(),
-		Start,
-		CeilingEnd,
-		bHitCeiling ? FColor::Green : FColor::Red, // 천장이 감지되면 초록, 아니면 빨강
-		false,
-		0.1f,
-		0,
-		2.0f
-	);
-	
-	if (bHitCeiling && bIsOnCeiling)
-	{
-		SwitchToCeilingMode();  // 천장 이동 모드로 전환
-		return;
-	}
-	
-
-	// 2. 지상 감지 (아래로 라인 트레이스)
-	FVector GroundEnd = Start - FVector(0, 0, TraceDistance);
-	FHitResult GroundHit;
-
-	bool bHitGround =GetWorld()->LineTraceSingleByChannel(GroundHit, Start, GroundEnd, ECC_Visibility);
-
-	DrawDebugLine(
-		GetWorld(),
-		Start,
-		GroundEnd,
-		bHitGround ? FColor::Blue : FColor::Red, // 지상이 감지되면 파랑, 아니면 빨강
-		false,
-		0.1f,
-		0,
-		2.0f
-	);
-	
-	if (bHitGround && !bIsOnCeiling)
-	{
-		SwitchToGroundMode();  // 지상 이동 모드로 전환
-	}
-}
-
-void AAttackSpider::SwitchToCeilingMode() //한번만 실행 . 
-{
-	// bIsOnCeiling = true;
-	if (bIsOnCeiling){return;}
-	// 중력 반전
-	GetCharacterMovement()->GravityScale = -1.0f;
-
-	// 천장의 표면 법선(Normal) 방향으로 NPC 회전
-	FRotator CeilingRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), GetActorLocation() + FVector(0, 0, 1));
-	SetActorRotation(FRotator(180.0f, GetActorRotation().Yaw, 0));
-	
-	bIsOnCeiling=true;
-	
-	UE_LOG(LogTemp, Warning, TEXT("%s Switched to Ceiling Mode!"),*CALLINFO);
-}
-
-void AAttackSpider::SwitchToGroundMode()
-{
-	//
-
-	// 중력 원래대로 복구
-	GetCharacterMovement()->GravityScale = 1.0f;
-
-	// 지면 방향으로 NPC 회전
-	SetActorRotation(FRotator(0.0f, GetActorRotation().Yaw, 0));
-
-	bIsOnCeiling = false;
-	
-	UE_LOG(LogTemp, Warning, TEXT("%s Switched to Ground Mode!"),*CALLINFO);
-}
 
 void AAttackSpider::MoveAI()
 {
@@ -139,13 +63,7 @@ void AAttackSpider::MoveAI()
 	if (NavSystem->GetRandomReachablePointInRadius(GetActorLocation(), 5000.0f, RandomNavLocation))
 	{
 		FVector Destination = RandomNavLocation.Location;
-
-		// 천장 모드일 때 높이 보정
-		if (bIsOnCeiling)
-		{
-			Destination.Z += 400.0f;  // 천장 높이로 조정
-		}
-
+		
 		AIController->MoveToLocation(Destination);
 	}
 }
@@ -173,24 +91,11 @@ void AAttackSpider::CheckForPlayer()
 		3.0f                                  // 선 두께
 	);
 	
-	// 감지 범위 내에 있으면 지상으로 내려감
-	if (bIsOnCeiling && DistanceToPlayer <= PlayerDetectionRange)
-	{
-		AttackPlayer();
-	}
-	
-	if (DistanceToPlayer > PlayerDetectionRange) // 멀어지면 다시 천장으로
-	{
-		SwitchToCeilingMode();
-	}
-	
 }
 
 void AAttackSpider::AttackPlayer()
 {
-	// 지상 이동 모드로 전환
-	SwitchToGroundMode();
-
+	
 	// 플레이어 방향으로 이동
 	if (MainCharacter)
 	{
@@ -207,16 +112,3 @@ void AAttackSpider::AttackPlayer()
 	//GetWorld()->GetTimerManager().SetTimer(TimerHandle_Return, this, &AAttackSpider::ReturnToCeiling, 5.0f, false);
 }
 
-void AAttackSpider::ReturnToCeiling()
-{
-	SwitchToCeilingMode();
-	bIsOnCeiling = true;
-	
-	/*if (AIController)
-	{
-		FVector CeilingTarget = GetActorLocation() + FVector(0, 0, 300.0f);
-		AIController->MoveToLocation(CeilingTarget);
-	}*/
-
-	UE_LOG(LogTemp, Warning, TEXT("Returning to Ceiling!"));
-}
