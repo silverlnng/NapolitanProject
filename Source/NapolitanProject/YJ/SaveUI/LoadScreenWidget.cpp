@@ -57,6 +57,7 @@ void ULoadScreenWidget::LoadUpdateUI(const TArray<UTestSaveGame*>& SlotInfos)
 		int index=SaveGame->SlotNum;
 		SaveSlotSwitcherList[index]->SetActiveIndex(0);
 		SaveSlotSwitcherList[index]->WBP_SavedSlot->SetText_Date(SaveGame->SaveTime);
+		SaveSlotSwitcherList[index]->WBP_SavedSlot->SetText_Loc(SaveGame->SaveLocation);
 	}
 }
 

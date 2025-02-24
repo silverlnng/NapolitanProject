@@ -264,6 +264,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void SpawnFootstepToTarget(int32 TargetIndex);
+
+	UPROPERTY(VisibleAnywhere) // 저장한 장소
+	FString SaveLocation=FString(TEXT("2층 전시관 앞"));	
 };
 
 

@@ -7,7 +7,9 @@
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "SaveUI/LoadConfirmWidget.h"
 #include "SaveUI/LoadScreenWidget.h"
+#include "SaveUI/SaveConfirmWidget.h"
 
 // Sets default values
 ACheckPoint::ACheckPoint()
@@ -62,6 +64,11 @@ void ACheckPoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	{
 		PlayerHUD->LoadScreenUI->SetVisibility(ESlateVisibility::Visible);
 
+		PlayerHUD->LoadScreenUI->SaveLocation=SaveLocation;
+
+		PlayerHUD->LoadScreenUI->SaveConfirmWidget->SaveLocation=SaveLocation;
+		PlayerHUD->LoadScreenUI->WBP_LoadConfirm->SaveLocation=SaveLocation;
+		MainCharacter->SaveLocation=SaveLocation;
 		// ui 보는 모드로 만들기
 		TestPC->SetInputMode(FInputModeGameAndUI());
 		TestPC->SetShowMouseCursor(true);

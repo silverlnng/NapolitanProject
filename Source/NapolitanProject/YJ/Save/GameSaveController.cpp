@@ -16,7 +16,7 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 	ATestPlayerController* PlayerController =Cast<ATestPlayerController>( UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	if (!PlayerController) return;
 
-	ACharacter* PlayerCharacter = Cast<ATestCharacter>(PlayerController->GetPawn());
+	ATestCharacter* PlayerCharacter = Cast<ATestCharacter>(PlayerController->GetPawn());
 	if (!PlayerCharacter) return;
 
 	UMyTestGameInstance* GameInstance = Cast<UMyTestGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
@@ -35,6 +35,10 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 		FDateTime Now = FDateTime::Now();
 		SaveGameInstance->SaveTime = Now.ToString(TEXT("%Y-%m-%d %H:%M:%S"));
 		SaveGameInstance->DateTime=Now;
+
+		// 저장한 위치
+		SaveGameInstance->SaveLocation=PlayerCharacter->SaveLocation;
+		
 		// 획득한 단서에 대해 저장하기
 		if (GameInstance && GameInstance->DT_Clue)
 		{

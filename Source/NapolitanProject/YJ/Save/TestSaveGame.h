@@ -32,6 +32,9 @@ public:
 	
 	UPROPERTY(VisibleAnywhere, Category = "SaveData")
 	int SlotNum;
+
+	UPROPERTY(VisibleAnywhere, Category = "SaveData") // 저장을 한 장소  
+	FString SaveLocation;
 	
 	// 아이템 획득,단서 획득 , npc 들간의 관계성 ,클리어 여부
 	UPROPERTY(VisibleAnywhere, Category = "SaveData")

@@ -36,6 +36,9 @@ void ASpiderMapGameModeBase::BeginPlay()
 
 		// 새로운 기능 바인딩
 		MainCharacter->OnSpecialInteraction.AddDynamic(this, &ASpiderMapGameModeBase::Interaction_OnSpiderMap);
+
+		// 총 부착시키기 
+		// MainCharacter
 		
 	}
 	if (SpiderBP)
@@ -133,5 +136,8 @@ void ASpiderMapGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 	MainCharacter->OnSpecialInteraction.Clear();
+
+	// 총 부착-해제시키기
+	// MainCharacter
 	GI->CatchSpiderNum=FString::FromInt(CatchSpiderCount);
 }
