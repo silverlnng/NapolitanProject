@@ -38,6 +38,12 @@ public:
 
 	UPROPERTY()
 	class AItemActor* SpiderItem;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<class AActor> GunBP;
+
+	UPROPERTY()
+	class AActor* Gun;
 	
 	UFUNCTION()
 	void Interaction_OnSpiderMap(AActor* Interact);
