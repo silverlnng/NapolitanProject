@@ -5,6 +5,7 @@
 
 #include "Components/BoxComponent.h"
 #include "Components/SlateWrapperTypes.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
@@ -13,6 +14,16 @@ void ADoor_2Floor::BeginPlay()
 {
 	Super::BeginPlay();
 	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ADoor_2Floor::BeginOverlap);
+	
+	GI=GetGameInstance<UMyTestGameInstance>();
+	// 청소부 만났으면 바인드해제하기
+	// QuestSlots
+	FString QuestText =FString(TEXT("머리를 찾아주기"));
+	if (GI&&GI->QuestSlots.Contains(QuestText))
+	{
+		UnBindBeginOverlap();
+	}
+	
 }
 
 

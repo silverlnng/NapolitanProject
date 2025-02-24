@@ -7,6 +7,7 @@
 #include "Components/RichTextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "Save/GameSaveController.h"
@@ -71,11 +72,20 @@ void UDeadEndingWidget::OnRestart()
 	this->SetVisibility(ESlateVisibility::Hidden);
 
 	// 가장 최근에 저장한것을 로드하기
-
-	if (GameSaveController&&GameSaveController->FindLatestSaveGame()!=0)
+	if (!GameSaveController)
+	{
+		UE_LOG(LogTemp , Warning , TEXT("%s : GameSaveController is nullptr!"),*CALLINFO);
+	}
+	
+	if (GameSaveController&&GameSaveController->FindLatestSaveGame()!=-1)
 	{
 		int32 SlotNum=GameSaveController->FindLatestSaveGame();
-		GameSaveController->LoadGameFromSlot(SlotNum);
+		UTestSaveGame* LoadedGame =GameSaveController->LoadGameFromSlot(SlotNum);
+		if (LoadedGame)
+		{
+			MainCharacter->SetActorLocation(LoadedGame->PlayerLocation);
+			MainCharacter->SetActorRotation(LoadedGame->PlayerRotation);
+		}
 	}
 	else
 	{

@@ -264,7 +264,7 @@ TArray<UTestSaveGame*> UGameSaveController::LoadAllSlotInfo(int32 MaxSlots)
 int32 UGameSaveController::FindLatestSaveGame()
 {
 	UTestSaveGame* LatestSave = nullptr;
-	int32 LatestSlotNum=0;
+	int32 LatestSlotNum=-1;
 	FDateTime LatestTime = FDateTime(0); // 가장 과거의 시간으로 초기화
 
 	int32 MaxSlots=3;
@@ -290,7 +290,7 @@ int32 UGameSaveController::FindLatestSaveGame()
 	
 	if (LatestSave)
 	{
-		LatestSlotNum= LatestSave->SlotNum;
+		return LatestSlotNum= LatestSave->SlotNum;
 	}
 	
 	return LatestSlotNum;
