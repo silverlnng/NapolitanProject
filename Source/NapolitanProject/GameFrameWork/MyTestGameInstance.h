@@ -211,5 +211,9 @@ public:
 
 	UPROPERTY()
 	TSoftObjectPtr<UWorld> CachedLevel;
+
+	UPROPERTY()
+	class UTestSaveGame* LoadedGame;
+	
 };
 

@@ -85,6 +85,9 @@ void ALevelMoveDoor::BeginOverlap2(UPrimitiveComponent* OverlappedComponent, AAc
 		auto* cha=Cast<ATestCharacter>(OtherActor);
 		if(cha)
 		{
+
+			// 이동하기전 위치를 저장해두기
+			
 			// 타이머 돌리고 
 			GI->AsyncLoadLoadLevel(MoveToLevel);
 			

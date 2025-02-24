@@ -40,6 +40,13 @@ void ATestGameModeBase::BeginPlay()
 		GetWorld()->GetTimerManager().SetTimer(GITimer,[this]()
 		{
 			GI->RestoreAttachedItems();
+
+			if (GI->LoadedGame)
+			{
+				MainCharacter->SetActorLocation(GI->LoadedGame->PlayerLocation);
+				MainCharacter->SetActorRotation(GI->LoadedGame->PlayerRotation);
+			}
+			
 		},2.0f,false);
 	}
 	

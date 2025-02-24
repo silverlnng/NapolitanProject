@@ -7,6 +7,7 @@
 #include "SaveSlotSwitcherWidget.h"
 #include "Components/Button.h"
 #include "Components/WidgetSwitcher.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/YJ/Save/GameSaveController.h"
 
 void ULoadConfirmWidget::NativeConstruct()
@@ -15,6 +16,8 @@ void ULoadConfirmWidget::NativeConstruct()
 	Btn_Yes->OnClicked.AddDynamic(this,&ULoadConfirmWidget::OnClickYes);
 	Btn_No->OnClicked.AddDynamic(this,&ULoadConfirmWidget::OnClickNo);
 	Btn_ReSave->OnClicked.AddDynamic(this,&ULoadConfirmWidget::OnClickReSave);
+	
+	GI=GetGameInstance<UMyTestGameInstance>();
 }
 
 void ULoadConfirmWidget::OnClickYes()
@@ -23,7 +26,9 @@ void ULoadConfirmWidget::OnClickYes()
 	{
 		SaveGameManager = NewObject<UGameSaveController>(this);
 	}
-	SaveGameManager->LoadGameFromSlot(SaveSlotSwitcherWidget->SlotNumber);
+	
+	GI->LoadedGame=SaveGameManager->LoadGameFromSlot(SaveSlotSwitcherWidget->SlotNumber);
+	
 	SetVisibility(ESlateVisibility::Hidden);
 }
 

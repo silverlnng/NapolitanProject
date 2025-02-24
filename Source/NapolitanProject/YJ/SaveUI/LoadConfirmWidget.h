@@ -40,6 +40,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly) 
 	FString SaveLocation=FString(TEXT("2층 전시관 앞"));
+
+	UPROPERTY(VisibleAnywhere)
+	class UMyTestGameInstance* GI;
 private:
 	UPROPERTY()
 	UGameSaveController* SaveGameManager;

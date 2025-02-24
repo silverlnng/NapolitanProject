@@ -39,6 +39,8 @@ public:
 	class ATestPlayerController* TestPC;
 	class APlayerHUD* PlayerHUD;
 	class UMyTestGameInstance* GI;
+
+	// 위치
 	
 	UFUNCTION()
 	void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
