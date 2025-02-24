@@ -42,6 +42,9 @@ void USaveConfirmWidget::OnClickYes()
 	UE_LOG(LogTemp, Warning, TEXT("포맷된 시간: %s"), *FormattedTime);
 	SaveSlotSwitcherWidget->WBP_SavedSlot->SetText_Date(FormattedTime);
 
+	// 저장한 장소에 대해서 string으로 표현하기 
+	SaveSlotSwitcherWidget->WBP_SavedSlot->SetText_Loc(SaveLocation);
+	
 	SetVisibility(ESlateVisibility::Hidden);
 }
 

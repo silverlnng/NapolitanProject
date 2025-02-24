@@ -52,5 +52,7 @@ void ULoadConfirmWidget::OnClickReSave()
 	UE_LOG(LogTemp, Warning, TEXT("포맷된 시간: %s"), *FormattedTime);
 	SaveSlotSwitcherWidget->WBP_SavedSlot->SetText_Date(FormattedTime);
 
+	SaveSlotSwitcherWidget->WBP_SavedSlot->SetText_Loc(SaveLocation);
+	
 	SetVisibility(ESlateVisibility::Hidden);
 }

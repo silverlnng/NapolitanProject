@@ -37,6 +37,9 @@ public:
 	
 	UPROPERTY(VisibleAnywhere)
 	class USaveSlotSwitcherWidget* SaveSlotSwitcherWidget;
+
+	UPROPERTY(EditDefaultsOnly) 
+	FString SaveLocation=FString(TEXT("2층 전시관 앞"));
 private:
 	UPROPERTY()
 	UGameSaveController* SaveGameManager;

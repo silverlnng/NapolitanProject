@@ -22,5 +22,36 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	UPROPERTY(EditDefaultsOnly)
+	class USceneComponent* SceneComp;
 
+	UPROPERTY(EditDefaultsOnly)
+	class UBoxComponent* BoxComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UBoxComponent* BoxComp2;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UStaticMeshComponent* StaticMeshComp;
+
+	class ATestCharacter* MainCharacter;
+	class ATestPlayerController* TestPC;
+	class APlayerHUD* PlayerHUD;
+	class UMyTestGameInstance* GI;
+	
+	UFUNCTION()
+	void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void BeginOverlap2(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	// 출력할 독백을 배열로 정의해두기
+	UPROPERTY(EditAnywhere)
+	TArray<FString> TextLines;
+public:
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> MoveToLevel;
 };

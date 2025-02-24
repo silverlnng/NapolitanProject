@@ -22,7 +22,13 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* Text_Date;
+
+	UPROPERTY(meta = (BindWidget))
+	class UTextBlock* Text_Loc;
 	
 	UFUNCTION()
 	void SetText_Date(const FString& str);
+
+	UFUNCTION()
+	void SetText_Loc(const FString& str);
 };

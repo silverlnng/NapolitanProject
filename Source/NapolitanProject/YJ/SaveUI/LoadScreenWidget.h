@@ -47,6 +47,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TMap<int32, class USaveSlotSwitcherWidget*> SaveSlotSwitcherList;
 
+	UPROPERTY(EditDefaultsOnly) // 블프에서 정의하기 
+	FString SaveLocation;
+	
 	UFUNCTION()
 	void LoadUpdateUI(const TArray<UTestSaveGame*>& SlotInfos);
 

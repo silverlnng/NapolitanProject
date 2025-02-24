@@ -39,6 +39,7 @@ public:
 	UFUNCTION()
 	void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
-
+	UPROPERTY(EditDefaultsOnly) // 블프에서 정의하기 
+	FString SaveLocation=FString(TEXT("2층 전시관 앞"));
 };
 
