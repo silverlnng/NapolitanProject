@@ -9,6 +9,14 @@
 /**
  * 
  */
+UENUM(BlueprintType)
+enum class EDetectiveMapState:uint8
+{
+	FisrtStart,
+	FirstEnding,
+	SecondEnding
+};
+
 UCLASS()
 class NAPOLITANPROJECT_API ADetectiveMapGameModeBase : public AGameModeBase
 {
@@ -25,4 +33,7 @@ public:
 
 	UPROPERTY()
 	class UMyTestGameInstance* GI;
+
+	UPROPERTY(VisibleAnywhere)
+	EDetectiveMapState DetectiveMapState= EDetectiveMapState::FisrtStart;
 };

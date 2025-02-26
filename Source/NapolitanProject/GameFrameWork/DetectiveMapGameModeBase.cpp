@@ -31,4 +31,17 @@ void ADetectiveMapGameModeBase::BeginPlay()
 		PlayerHUD->InteractUI->Border_Inven->SetVisibility(ESlateVisibility::Hidden);
 	},0.2f,false);
 
+	// state 에 따라서 구분되도록 하기
+
+	// 스폰되는 게 달라야함 . 
+	
+	switch (DetectiveMapState)
+	{
+	case EDetectiveMapState::FisrtStart:
+		break;
+	case EDetectiveMapState::FirstEnding:
+		break;
+	case EDetectiveMapState::SecondEnding:
+		break;
+	}
 }
