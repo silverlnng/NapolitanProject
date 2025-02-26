@@ -32,8 +32,10 @@ public:
 
 	void SetRichText_Name(const FString& Str) const;
 
-	UPROPERTY(meta=(BindWidget))
-	class UImage* Img_Fade;
+	/*UPROPERTY(meta=(BindWidget))
+	class UImage* Img_Fade;*/
+	UPROPERTY(meta = (BindWidgetAnim), Transient)
+	UWidgetAnimation* FadeAnim;
 
 	FTimerHandle LerpTimerHandle;
 	float ElapsedTime = 0.0f;

@@ -633,7 +633,7 @@ void ATestCharacter::DamagedToSecurity()
 	PlayerHUD->InteractUI->PlayHitAnim();
 
 	// health 체크해서 0 이하이면 사망이벤트 나오도록 해야함 
-	if (Health<=0)
+	if (Health==0)
 	{
 		SetPlayerState(EPlayerState::UI);
 		

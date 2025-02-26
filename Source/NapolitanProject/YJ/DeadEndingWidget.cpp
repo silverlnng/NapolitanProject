@@ -30,14 +30,20 @@ void UDeadEndingWidget::SetRichText_Name(const FString& Str) const
 
 void UDeadEndingWidget::StartLerpTimer()
 {
-	ElapsedTime = 0.0f;
+	// 페이드 애니 실행시키기
+	if (FadeAnim)
+	{
+		// 애니메이션 재생
+		PlayAnimation(FadeAnim);
+	}
+	//ElapsedTime = 0.0f;
 	
-	GetWorld()->GetTimerManager().SetTimer(LerpTimerHandle,this,&UDeadEndingWidget::UpdateLerp,0.01f, true);
+	//GetWorld()->GetTimerManager().SetTimer(LerpTimerHandle,this,&UDeadEndingWidget::UpdateLerp,0.01f, true);
 }
 
 void UDeadEndingWidget::UpdateLerp()
 {
-	ElapsedTime += 0.01f; // 타이머 호출 간격만큼 시간 증가
+	/*ElapsedTime += 0.01f; // 타이머 호출 간격만큼 시간 증가
 
 	// Lerp 비율 계산
 	float Alpha = FMath::Clamp(ElapsedTime / LerpDuration, 0.0f, 1.0f);
@@ -50,7 +56,7 @@ void UDeadEndingWidget::UpdateLerp()
 	if (Alpha >= 1.0f)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(LerpTimerHandle);
-	}
+	}*/
 }
 
 void UDeadEndingWidget::OnRestart()
