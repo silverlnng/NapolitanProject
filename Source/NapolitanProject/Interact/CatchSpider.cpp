@@ -94,13 +94,13 @@ void ACatchSpider::Die()
 	// 죽는 애니메이션 실행
 	Anim->bDied=true;
 	// 피격 나이아가라 실행
-	
+	GetCharacterMovement()->StopMovementImmediately();
 	// 아이템 인벤토리 창에 담아지기
 	FTimerHandle DieTimer;
 	GetWorld()->GetTimerManager().SetTimer(DieTimer,[this]()
 	{
 		Destroy();
-	},3.0f,false);
+	},2.0f,false);
 	// 3초뒤에 사라지도록 하기
 }
 

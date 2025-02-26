@@ -113,7 +113,7 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 void UEventComponent::NPCFinalEvent()
 {
 	TestPC->CallCurNPCResultEvent(9);
-	//MainCharacter->curNPC->ResultEvent(value);
+	//MainCharacter->curNPC->ResultEvent(9);
 }
 
 void UEventComponent::Event_RedDosent(FString& str,const FString& content)
@@ -340,13 +340,14 @@ void UEventComponent::Event_Oldman()
 
 void UEventComponent::Event_Butterfly_Start()
 {
-	TestPC->StartEndNPCDialougue(false);
-	TestPC->EndResult();
+	
 
 	FTimerHandle UITimer3;
 
 	GetWorld()->GetTimerManager().SetTimer(UITimer3,[this]()
 	{
+		//TestPC->StartEndNPCDialougue(false);
+		//TestPC->EndResult();
 		FString QuestText =FString(TEXT("거미버거를 만들어주기"));
 		PlayerHUD->InteractUI->AddQuestSlot(3,QuestText);
 	},8.0f,false);

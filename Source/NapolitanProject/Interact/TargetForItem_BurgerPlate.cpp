@@ -109,6 +109,7 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 			curItem->AttachToComponent(SceneComp3 , FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 
 			PlayerHUD->InventoryUI->InvenSlots[3]->SetIsEnabledBtn();
+			PlayerHUD->InventoryUI->InvenSlots[3]->Set_TextNum("");
 			PutDownitemID.Add(itemID);
 		}
 		else
@@ -181,6 +182,19 @@ void ATargetForItem_BurgerPlate::MissionCheck()
 	//바로 나비의 대사 나오도록 하기
 	GetWorld()->GetTimerManager().SetTimer(Timer1,[this]()
 	{
+
+		BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
+		
+		// 만든 버거는 사라지도록 하기
+		USceneComponent* item4  =SceneComp4->GetChildComponent(0);
+		item4->SetHiddenInGame(true);
+		USceneComponent* item1  =SceneComp1->GetChildComponent(0);
+		item1->SetHiddenInGame(true);
+		USceneComponent* item2  =SceneComp2->GetChildComponent(0);
+		item2->SetHiddenInGame(true);
+		USceneComponent* item3  =SceneComp3->GetChildComponent(0);
+		item3->SetHiddenInGame(true);
+
 		
 		// 2층문이 열리도록 하기
 		for (TActorIterator<ANPC_Butterfly> It(GetWorld(), ANPC_Butterfly::StaticClass()); It; ++It)

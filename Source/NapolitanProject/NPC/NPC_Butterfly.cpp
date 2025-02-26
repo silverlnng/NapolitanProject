@@ -38,9 +38,9 @@ void ANPC_Butterfly::ResultEvent(int32 result)
 	{
 		if (0==result)
 		{
-			State=2;
-			TestPC->StartEndNPCDialougue(true);
-			TestPC->SetNPCDialougueText(0);
+			//State=2;
+			//TestPC->StartEndNPCDialougue(true);
+			//TestPC->SetNPCDialougueText(0);
 		}
 	}
 	else if (2==State)
@@ -66,5 +66,7 @@ void ANPC_Butterfly::SpawnItems()
 	{
 		AActor* CutterItem = GetWorld()->SpawnActor<AItemActor>(CutterItemClass, SpawnTransform );
 	}
+
+	// ui 닫도록 하기 
 	
 }
