@@ -41,23 +41,32 @@ void ATargetForItem_LobbyDoor::CheckItemSuccess()
 
 	// 캐릭터와 충돌안되도록
 	StaticMeshComp->SetCollisionResponseToChannel(ECC_Pawn,ECR_Ignore);
+
+	StaticMeshComp->SetOverlayMaterial(nullptr);
 	
 	// 
 	DissolveEvent();
 
 	// 로비도어 문을 열리도록 .
 	// 도어중에 tag 달린거로 .
-	AExitDoor_Lobby* Door=nullptr;
+	/*AExitDoor_Lobby* Door=nullptr;
 	for (TActorIterator<AExitDoor_Lobby> It(GetWorld(), AExitDoor_Lobby::StaticClass()); It; ++It)
 	{
-		Door = *It;
-	}
+		Door=*It;
+		if ( Door->GetClass()==AExitDoor_Lobby::StaticClass())
+		{
+			Door = *It;
+			break;
+		}
+		else
+		{
+			Door=nullptr;
+		}
+	}*/
 	if (Door)
 	{
-		
-
 		FTimerHandle DoorTimer;
-		GetWorldTimerManager().SetTimer(DoorTimer, [this,Door]()
+		GetWorldTimerManager().SetTimer(DoorTimer, [this]()
 		{
 			Door->StartRotateDoor();
 		}, 1.8f, false);

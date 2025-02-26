@@ -5,12 +5,22 @@
 
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/NapolitanProject.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
 
 AExitDoor_Lobby::AExitDoor_Lobby()
 {
 	ExitDoor2 = CreateDefaultSubobject<UStaticMeshComponent>("ExitDoor2");
 	
 	ExitDoor2->SetupAttachment(BoxComp);
+}
+
+void AExitDoor_Lobby::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	GI =GetGameInstance<UMyTestGameInstance>();
 }
 
 
@@ -72,10 +82,43 @@ void AExitDoor_Lobby::StartRotateDoor()
 	
 	TargetYaw2 = CurrentRotation.Yaw - 90.0f;
 
+	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &AExitDoor_Lobby::OnBeginOverlap_);
 	// 타이머 설정: 문을 부드럽게 회전
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle , this , &AExitDoor_Lobby::RotateDoor , 0.01f , true);
 	
 
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle2 , this , &AExitDoor_Lobby::RotateDoor2 , 0.01f , true);
 	
+}
+
+void AExitDoor_Lobby::OnBeginOverlap_(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	// 
+	ATestCharacter* TestCharacter = Cast<ATestCharacter>(OtherActor);
+	if(TestCharacter)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s:TestCharacter OnBeginOverla "),*CALLINFO);
+		// DetectiveMapState 을 변경 해줘야함
+		if (GI)
+		{
+			GI->DetectiveMapState=EDetectiveMapState::FirstEnding;
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s:GI is null "),*CALLINFO);
+		}
+
+		// 레벨 이동후
+		if (StartLevel)
+		{
+			UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(),StartLevel,true);
+			UE_LOG(LogTemp,Warning,TEXT("AExitDoor_First:: OpenLevel"))
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s:StartLevel is null "),*CALLINFO);
+		}
+		//  레벨쪽에서 시퀀스 작동되도록함 
+	}
 }

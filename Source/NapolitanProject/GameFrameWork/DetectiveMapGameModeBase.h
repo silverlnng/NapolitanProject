@@ -36,4 +36,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	EDetectiveMapState DetectiveMapState= EDetectiveMapState::FisrtStart;
+
+	UPROPERTY(EditAnywhere, Category = "Cinematic")
+	class ULevelSequence* FirstEndingSequence;
 };

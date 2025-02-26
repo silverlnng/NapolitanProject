@@ -39,4 +39,7 @@ public:
 
 	bool bisDissolve = false;
 	float dissolveAnimValue;
+
+	UPROPERTY(EditAnywhere)
+	class AExitDoor_Lobby* Door=nullptr;
 };

@@ -16,6 +16,8 @@ class NAPOLITANPROJECT_API AExitDoor_Lobby : public AExitDoorTrue
 	
 public:
 	AExitDoor_Lobby();
+
+	virtual void BeginPlay() override;
 	
 	UPROPERTY(EditDefaultsOnly)
 	class UStaticMeshComponent* ExitDoor2;
@@ -27,4 +29,12 @@ public:
 	FTimerHandle TimerHandle2;
 
 	float TargetYaw2;
+	
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> StartLevel;
+	UPROPERTY()
+	class UMyTestGameInstance* GI;
+	
+	UFUNCTION()
+	virtual void OnBeginOverlap_(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };

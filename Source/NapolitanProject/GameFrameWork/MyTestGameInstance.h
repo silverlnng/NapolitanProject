@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "DetectiveMapGameModeBase.h"
 #include "Engine/GameInstance.h"
 #include "NapolitanProject/YJ/Save/TestSaveGame.h"
 #include "MyTestGameInstance.generated.h"
@@ -193,6 +194,10 @@ public:
 	TArray<FName> ClueDataRowNames;
 	UPROPERTY()
 	TMap<int32,FClueData> ClueMap;
+
+/////// 지금 엔딩 상황 ///////////
+	UPROPERTY(VisibleAnywhere)
+	EDetectiveMapState DetectiveMapState=EDetectiveMapState::FisrtStart;
 
 //////////// 게임 저장 //////////////
 ///

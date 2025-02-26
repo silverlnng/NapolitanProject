@@ -27,8 +27,5 @@ public:
 	virtual void RotateDoor() override;
 	virtual void RotateDoor2()override;
 	virtual void StartRotateDoor()override;
-
-	UPROPERTY(VisibleAnywhere)
-	class UMyTestGameInstance* GI;
 	
 };
