@@ -119,6 +119,10 @@ public:
 
 	UFUNCTION()
 	void ESCUIToggle(const FInputActionValue& Value);
+
+	// 테스트 용도
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	class UInputAction* IA_P;
 	
 ///////////////////////////  인벤토리 ui /////////////////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))

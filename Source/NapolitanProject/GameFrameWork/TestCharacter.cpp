@@ -190,6 +190,10 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(IA_NoteUI, ETriggerEvent::Started, this, &ATestCharacter::NoteUIToggle);
 
 		EnhancedInputComponent->BindAction(IA_Interact, ETriggerEvent::Started, this, &ATestCharacter::OnInteraction);
+
+		EnhancedInputComponent->BindAction(IA_ESC, ETriggerEvent::Started, this, &ATestCharacter::ESCUIToggle);
+
+		EnhancedInputComponent->BindAction(IA_P, ETriggerEvent::Started, this, &ATestCharacter::ESCUIToggle);
 		
 	}
 	else
