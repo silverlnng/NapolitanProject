@@ -50,7 +50,8 @@ void ADetectiveMapGameModeBase::BeginPlay()
 	case EDetectiveMapState::FirstEnding:
 
 		// 플레이어 상호작용 키 e막기
-		
+		PlayerHUD->InteractUI->SetVisibleHBox(false);
+		PlayerHUD->InteractUI->SetVisibleCrossHair(false);
 		// 1차 엔딩 시퀀스 작동되도록
 			if(FirstEndingSequence)
 			{
