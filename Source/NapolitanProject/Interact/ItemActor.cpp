@@ -115,3 +115,21 @@ void AItemActor::OnInventorySlot()
 	}
 }
 
+void AItemActor::Remove()
+{
+	int32 ItemRow =ItemID+1;
+	
+	FString ItemIDstr=FString::FromInt(ItemRow);
+	//DT 작업하기 
+	FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(FName(*ItemIDstr) , TEXT(""));
+	if (ItemData)
+	{
+		ItemData->Had=false;
+	}
+
+	if (GI->SavedItems.Contains(this->GetClass()))
+	{
+		GI->SavedItems.Remove(this->GetClass());
+	}
+}
+

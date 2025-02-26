@@ -13,7 +13,7 @@ void UAttackSpider_AnimInstance::NativeInitializeAnimation()
 
 void UAttackSpider_AnimInstance::AnimNotify_CheckAfterAttack()
 {
-	AttackSpider->CheckAttackRange();
+	AttackSpider->CheckAfterAttack();
 }
 
 void UAttackSpider_AnimInstance::AnimNotify_MoveToActor()

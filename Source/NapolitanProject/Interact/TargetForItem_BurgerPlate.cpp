@@ -94,6 +94,9 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 
 	// 인벤에서 안보이도록 작업 . 
 		PlayerHUD->InventoryUI->InvenSlots[1]->SetIsEnabledBtn();
+
+	//
+		curItem->Remove();
 		break;
 	case 3:
 
@@ -111,6 +114,7 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 			PlayerHUD->InventoryUI->InvenSlots[3]->SetIsEnabledBtn();
 			PlayerHUD->InventoryUI->InvenSlots[3]->Set_TextNum("");
 			PutDownitemID.Add(itemID);
+			curItem->Remove();
 		}
 		else
 		{
@@ -137,7 +141,7 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 
 		PlayerHUD->InventoryUI->InvenSlots[4]->SetIsEnabledBtn();
 		PutDownitemID.Add(itemID);
-
+		curItem->Remove();
 		break;
 	case 5:
 		curItem->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
@@ -153,6 +157,7 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 		}
 		PlayerHUD->InventoryUI->InvenSlots[5]->SetIsEnabledBtn();
 		PutDownitemID.Add(itemID);
+		curItem->Remove();
 		break;
 	}
 
