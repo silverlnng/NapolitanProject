@@ -51,6 +51,10 @@ void AAttackSpider::BeginPlay()
 	MoveToNextLocation();
 	StartIdle();
 	PawnSensingComp->OnSeePawn.AddDynamic(this,&AAttackSpider::OnSeePawn);
+
+	//장애물 회피
+	GetCharacterMovement()->bUseRVOAvoidance = true;
+	GetCharacterMovement()->AvoidanceConsiderationRadius = 300.0f;
 }
 
 // Called every frame
@@ -61,6 +65,10 @@ void AAttackSpider::Tick(float DeltaTime)
 
 void AAttackSpider::SetAIState(EAttackSpiderState NewState)
 {
+	
+	FString message = UEnum::GetValueAsString(NewState);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
+	
 	CurrentState = NewState;
 	if (Anim)
 	{
@@ -115,17 +123,22 @@ void AAttackSpider::StartChasing()
 
 void AAttackSpider::StartAttack()
 {
+	//잠깐 이동을 멈추고
+	GetCharacterMovement()->StopMovementImmediately();
+	
+	// 공격 중에는 감지를 비활성화해서 OnSeePawn()이 실행되지 않도록 함
+	PawnSensingComp->SetSensingUpdatesEnabled(false);
 	// 공격 애니메이션 실행
 	PlayAnimMontage(AttackMontage);
 }
 
 void AAttackSpider::OnSeePawn(APawn *OtherPawn)
 {
-	if (OtherPawn)
+	/*if (OtherPawn)
 	{
 		FString message = TEXT("Saw Actor ") + OtherPawn->GetName();
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
-	}
+	}*/
 	
 	ATestCharacter* Player = Cast<ATestCharacter>(OtherPawn);
 	if (Player)
@@ -154,15 +167,18 @@ void AAttackSpider::HandleLostSight()
 void AAttackSpider::CheckAttackRange()
 {
 	if (!MainCharacter) return;
-
+	
+	
 	float Distance = FVector::Distance(this->GetActorLocation(), MainCharacter->GetActorLocation());
 
 	if (Distance <= AttackRange) // 공격 범위 안이면
 	{
 		// 타이머 정지 후 공격 상태로 전환
 		GetWorld()->GetTimerManager().ClearTimer(ChaseCheckTimer);
+		
 		SetAIState(EAttackSpiderState::Attack);
 	}
+	
 }
 
 void AAttackSpider::MoveToActor()
@@ -176,7 +192,11 @@ void AAttackSpider::MoveToActor()
 void AAttackSpider::CheckAfterAttack()
 {
 	if (!MainCharacter) return;
-
+	
+	SetAIState(EAttackSpiderState::Chase);
+	// 공격 중에는 감지를 비활성화해서 OnSeePawn()이 실행되지 않도록 함
+	PawnSensingComp->SetSensingUpdatesEnabled(true);
+	
 	float Distance = FVector::Distance(this->GetActorLocation(), MainCharacter->GetActorLocation());
 
 	if (Distance <= AttackRange)
@@ -186,6 +206,7 @@ void AAttackSpider::CheckAfterAttack()
 	}
 	else
 	{
+		PawnSensingComp->SetSensingUpdatesEnabled(true);
 		// 플레이어가 멀어졌으면 추적
 		SetAIState(EAttackSpiderState::Chase);
 	}

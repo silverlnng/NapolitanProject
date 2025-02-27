@@ -25,6 +25,10 @@ void ACatchSpider::BeginPlay()
 	EnemyAI = Cast<AAIController>(this->GetController());
 	GetCharacterMovement()->MaxWalkSpeed = 300.f;
 	Anim=Cast<UCatchSpider_AnimInstance>(GetMesh()->GetAnimInstance());
+	
+	//장애물 회피
+	GetCharacterMovement()->bUseRVOAvoidance = true;
+	GetCharacterMovement()->AvoidanceConsiderationRadius = 300.0f;
 }
 
 // Called every frame

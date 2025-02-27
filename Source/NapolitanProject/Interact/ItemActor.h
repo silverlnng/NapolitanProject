@@ -60,5 +60,7 @@ public:
 	virtual void PutDown();
 
 	virtual void OnInventorySlot();
+
+	virtual void Remove();
 	
 };
