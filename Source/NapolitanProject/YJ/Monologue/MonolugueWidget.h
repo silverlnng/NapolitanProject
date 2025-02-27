@@ -9,6 +9,8 @@
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTimerFinished);  // 델리게이트 선언
+
 UCLASS()
 class NAPOLITANPROJECT_API UMonolugueWidget : public UUserWidget
 {
@@ -51,5 +53,13 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	class USoundWave* MonologueSound;
+
+	// 타이머 종료 시 호출되는 델리게이트
+	UPROPERTY(BlueprintAssignable, Category = "Event")
+	FOnTimerFinished OnTimerFinished;
 	
+	FTimerHandle FinalTimerHandle;
+
+	// 타이머가 끝날 때 실행할 함수
+	void FinalTimerFinished();
 };

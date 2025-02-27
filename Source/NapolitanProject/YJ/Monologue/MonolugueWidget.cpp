@@ -40,6 +40,7 @@ void UMonolugueWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
 	}
 }
 
+
 void UMonolugueWidget::SetText_Dialogue(const FString& str)
 {
 	CurrentText="";
@@ -79,12 +80,14 @@ void UMonolugueWidget::UpdateText()
 		}
 		else // 맨마지막줄 출력
 		{
-			FTimerHandle TimerHandle;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+			
+			GetWorld()->GetTimerManager().SetTimer(FinalTimerHandle, [this]()
 			{
 				SetVisibility(ESlateVisibility::Hidden);
 				// 남아있는 text 지우기
 				Text_Monologue->SetText(FText::FromString(("")));
+				
+				FinalTimerFinished();
 			}, 1.f, false);
 			return;
 		}
@@ -103,6 +106,13 @@ void UMonolugueWidget::UpdateText()
 		Text_Monologue->SetText(FText::FromString(StartTag+CurrentText+TEXT("</>")));
 	}
 }
+
+void UMonolugueWidget::FinalTimerFinished()
+{
+	// 타이머가 끝났을 때 델리게이트 호출
+	OnTimerFinished.Broadcast();
+}
+
 
 void UMonolugueWidget::SetOutputLines(const TArray<FString>& InputTextLines)
 {

@@ -28,4 +28,6 @@ public:
 	virtual void RotateDoor2()override;
 	virtual void StartRotateDoor()override;
 	
+	void JustRotateDoor();
+	
 };

@@ -22,12 +22,12 @@ void ULoadConfirmWidget::NativeConstruct()
 
 void ULoadConfirmWidget::OnClickYes()
 {
-	if (!SaveGameManager)
+	if (GI&&GI->GameSaveController)
 	{
-		SaveGameManager = NewObject<UGameSaveController>(this);
+		//SaveGameManager = NewObject<UGameSaveController>(this);
+		GI->LoadedGame=GI->GameSaveController->LoadGameFromSlot(SaveSlotSwitcherWidget->SlotNumber);
 	}
 	
-	GI->LoadedGame=SaveGameManager->LoadGameFromSlot(SaveSlotSwitcherWidget->SlotNumber);
 	
 	SetVisibility(ESlateVisibility::Hidden);
 }
@@ -39,11 +39,11 @@ void ULoadConfirmWidget::OnClickNo()
 
 void ULoadConfirmWidget::OnClickReSave()
 {
-	if (!SaveGameManager)
+	if (GI&&GI->GameSaveController)
 	{
-		SaveGameManager = NewObject<UGameSaveController>(this);
+		//SaveGameManager = NewObject<UGameSaveController>(this);
+		GI->GameSaveController->SaveGameToSlot(SaveSlotSwitcherWidget->SlotNumber);
 	}
-	SaveGameManager->SaveGameToSlot(SaveSlotSwitcherWidget->SlotNumber);
 
 	SaveSlotSwitcherWidget->SlotSwitcher->SetActiveWidgetIndex(0);
 	// 저장하는 시간 구하기

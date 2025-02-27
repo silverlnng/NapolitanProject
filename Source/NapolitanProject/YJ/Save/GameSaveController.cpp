@@ -28,8 +28,12 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 	{
 		SaveGameInstance->SlotNum=SlotIndex;
 		// 데이터 저장 (예: 플레이어 위치)
-		SaveGameInstance->PlayerLocation = PlayerCharacter->GetActorLocation(); 
-	    SaveGameInstance->PlayerRotation =PlayerCharacter->GetActorRotation();
+		//SaveGameInstance->PlayerLocation = PlayerCharacter->GetActorLocation(); 
+	   //SaveGameInstance->PlayerRotation =PlayerCharacter->GetActorRotation();
+
+		SaveGameInstance->PlayerLocation = PlayerCharacter->SaveTransform.GetLocation();
+		SaveGameInstance->PlayerRotation=PlayerCharacter->SaveTransform.GetRotation().Rotator();
+		
 		SaveGameInstance->PlayerLevel=UGameplayStatics::GetCurrentLevelName(GetWorld());
 		// 저장한 날짜 
 		FDateTime Now = FDateTime::Now();
@@ -37,7 +41,7 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 		SaveGameInstance->DateTime=Now;
 
 		// 저장한 위치
-		SaveGameInstance->SaveLocation=PlayerCharacter->SaveLocation;
+		SaveGameInstance->SaveLocation=PlayerCharacter->SaveLocationStr;
 		
 		// 획득한 단서에 대해 저장하기
 		if (GameInstance && GameInstance->DT_Clue)
@@ -147,74 +151,8 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 			
 		}
 		
-		//APlayerHUD* PlayerHUD=PlayerController->GetHUD<APlayerHUD>();
-		//PlayerHUD->UpdateClueSlotWidget();
-		// hud 를 업데이트 하기
-		
-		
-		/*ATestPlayerController* PlayerController =Cast<ATestPlayerController>( UGameplayStatics::GetPlayerController(GetWorld(), 0));
-		if (!PlayerController)
-		{
-			UE_LOG(LogTemp, Error, TEXT("PlayerController is nullptr!"));
-		}
-		if (PlayerController)
-		{
-			UE_LOG(LogTemp, Error, TEXT("PlayerController is  exist!"));
-
-			FTimerHandle TimerHandle;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&LoadedGame, this, &PlayerController]
-			{
-				ATestCharacter* PlayerCharacter = Cast<ATestCharacter>(PlayerController->GetPawn());
-
-				if (!PlayerCharacter)
-				{
-					UE_LOG(LogTemp , Error , TEXT("PlayerCharacter is nullptr!"));
-				}
-
-				if (PlayerCharacter)
-				{
-					UE_LOG(LogTemp , Warning , TEXT("%s : MyVector: %s") , *CALLINFO ,
-					       *LoadedGame->PlayerLocation.ToString());
-					PlayerCharacter->SetActorLocation(LoadedGame->PlayerLocation);
-					PlayerCharacter->SetActorRotation(LoadedGame->PlayerRotation);
-				}
-			}
-			, 1.5f, false);
-			
-			
-		}*/
-
-		/*
-		TWeakObjectPtr<UGameSaveController> WeakThis = this;
-
-		
-		FTimerHandle TimerHandle2;
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle2,[&LoadedGame,WeakThis]
-		{
-			if (WeakThis->GetWorld())
-			{
-			ATestCharacter* Player = Cast<ATestCharacter>(UGameplayStatics::GetPlayerCharacter(WeakThis->GetWorld() , 0));
-				
-				if (!Player)
-				{
-					UE_LOG(LogTemp , Warning , TEXT("PlayerCharacter is nullptr!"));
-				}
-				if (Player)
-				{
-					UE_LOG(LogTemp , Warning , TEXT("%s :MyVector: %s") , *CALLINFO ,
-					       *LoadedGame->PlayerLocation.ToString());
-					Player->SetActorLocation(LoadedGame->PlayerLocation);
-					Player->SetActorRotation(LoadedGame->PlayerRotation);
-				}
-			}
-
-		}, 1.0f, false);*/
-		
-	
-		
 		return LoadedGame;
 	}
-
 	UE_LOG(LogTemp, Warning, TEXT("Failed to load game from slot: %s"), *SlotName);
 	return nullptr;
 }

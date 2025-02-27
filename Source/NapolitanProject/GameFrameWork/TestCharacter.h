@@ -90,7 +90,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	bool curLevelISLobby=false;
 	
-/////////////////// 달리기 기능 ////////////////////////
+	/////////////////// 달리기 기능 ////////////////////////
 	float DefaultWalkSpeed;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* IA_Run;
@@ -98,7 +98,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=run)
 	float runSpeed = DefaultWalkSpeed*2.f;
 	// 특정 키를 누르면 달리기
-		// 누르고 있는 동안 && 쿨타임 내에서 
+	// 누르고 있는 동안 && 쿨타임 내에서 
 	float runCooltime =3.f;
 	bool bIsRunning;
 	bool bIsRunGageRemains;
@@ -112,7 +112,7 @@ public:
 	void UpdateRunAction(float DeltaTime);
 	void UpdateNotRunAction(float DeltaTime);
 	
-////////////////// ESC 키 기능//////////////////////////
+	////////////////// ESC 키 기능//////////////////////////
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* IA_ESC;
@@ -124,7 +124,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* IA_P;
 	
-///////////////////////////  인벤토리 ui /////////////////////////////////////
+	///////////////////////////  인벤토리 ui /////////////////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* IA_Inventory;
 
@@ -133,7 +133,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category="Game Rules")
 	bool b_IA_Inven_Allowed = true;
-/////////////////////////////  노트 ui /////////////////////////////////////
+	/////////////////////////////  노트 ui /////////////////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* IA_NoteUI;
 
@@ -158,7 +158,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	bool InteractHit =false;
 
-///////////// 지금 상호작용 대상을 알고있기
+	///////////// 지금 상호작용 대상을 알고있기
 	UPROPERTY(VisibleAnywhere)
 	AActor* Interact =nullptr;
 
@@ -213,7 +213,7 @@ public:
 	FVector TargetNeckLocation;
 	FTimerHandle MoveMeshTimerHandle;
 
-////////////////// 소리 /////////////////////////////////
+	////////////////// 소리 /////////////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* NoteUIOpenSound;
 
@@ -223,7 +223,7 @@ public:
 	UFUNCTION()
 	void EndCapsuleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-/////////////////////////2층 미션 수행 //////////////
+	/////////////////////////2층 미션 수행 //////////////
 	UPROPERTY(EditDefaultsOnly)
 	class UArrowComponent* myArrowComp;
 	UPROPERTY(EditDefaultsOnly)
@@ -258,7 +258,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* NPCEventSoundWave;
 
-/////////////// FootstepSpawnerComponent //////////////////
+	/////////////// FootstepSpawnerComponent //////////////////
 
 	UPROPERTY(VisibleAnywhere,Category = "Navigation")
 	TArray<AActor*> FootstepTargetPoints;
@@ -270,8 +270,13 @@ public:
 	void SpawnFootstepToTarget(int32 TargetIndex);
 
 	UPROPERTY(VisibleAnywhere) // 저장한 장소
-	FString SaveLocation=FString(TEXT("2층 전시관 앞"));	
+	FString SaveLocationStr=FString(TEXT("2층 전시관 앞"));
+
+	UPROPERTY(VisibleAnywhere) // 저장한 장소
+	FTransform SaveTransform;
+	
 };
+	
 
 
 

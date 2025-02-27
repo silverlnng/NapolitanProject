@@ -31,6 +31,9 @@ ACheckPoint::ACheckPoint()
 	StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	StaticMeshComp->SetCollisionResponseToAllChannels(ECR_Block);
 
+	SaveLocComp = CreateDefaultSubobject<USceneComponent>("SaveLoc");
+	SaveLocComp->SetupAttachment(RootComponent);
+	
 	//CheckpointMesh->SetCustomDepthStencilValue(CustomDepthStencilOverride);
 	//CheckpointMesh->MarkRenderStateDirty();
 
@@ -68,7 +71,8 @@ void ACheckPoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 
 		PlayerHUD->LoadScreenUI->SaveConfirmWidget->SaveLocation=SaveLocation;
 		PlayerHUD->LoadScreenUI->WBP_LoadConfirm->SaveLocation=SaveLocation;
-		MainCharacter->SaveLocation=SaveLocation;
+		MainCharacter->SaveLocationStr=SaveLocation;
+		MainCharacter->SaveTransform=SaveLocComp->GetComponentTransform();
 		// ui 보는 모드로 만들기
 		TestPC->SetInputMode(FInputModeGameAndUI());
 		TestPC->SetShowMouseCursor(true);
