@@ -70,6 +70,13 @@ public:
 	int32 NPC_ID =6;
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	int32 State = 1;
+
+public:
+	UPROPERTY()
+	class UNPC_CuratorAnim* CuratorAnim;
+
+	void SetState(ChaseStatueState newstate);
+	
 	
 };
 

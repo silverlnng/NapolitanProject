@@ -7,6 +7,7 @@
 #include "Runtime/AIModule/Classes/AIController.h"
 #include <NavigationSystem.h>
 
+#include "NPC_CuratorAnim.h"
 #include "YSEvanceUI.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
@@ -51,7 +52,8 @@ void AChaseStatue::BeginPlay()
 
 	CSCol->OnComponentBeginOverlap.AddDynamic(this, &AChaseStatue::CuratorOverlap);
 
-	//캐릭터 캐스팅
+	//캐릭터 애니메이션
+	CuratorAnim = Cast<UNPC_CuratorAnim>(GetMesh()->GetAnimInstance());
 	
 }
 
@@ -81,12 +83,17 @@ void AChaseStatue::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 void AChaseStatue::TickIdle(const float& DeltaTime)
 {
 	//이 상태일때는 무조건 대기, 플레이어가 아이템을 주었을때부터 추격을 시작함.
+	//플레이어가 안에 들어왔고, 그 안에서 자신을 바라보지 않을 때 우선은 대기 상태로 있는다.
+	FVector targetLoc = MainCharacter->GetActorLocation();
+	FVector myLoc = me->GetActorLocation();
+	FVector dirR = targetLoc - myLoc;
+	FRotator rot = dirR.Rotation();
 	
+	me->SetActorRotation(FRotator(0, rot.Yaw, 0));
 }
 
 void AChaseStatue::TickMove(const float& DeltaTime)
 {
-	//플레이어가 안에 들어왔고, 그 안에서 자신을 바라보지 않을 때 우선은 대기 상태로 있는다.
 	FVector targetLoc = MainCharacter->GetActorLocation();
 	FVector myLoc = me->GetActorLocation();
 	FVector dirR = targetLoc - myLoc;
@@ -181,9 +188,25 @@ void AChaseStatue::CuratorOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 				FString name= FString(TEXT("<Red_Big>큐레이터</>"));
 				PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
 				PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
+
+				//대기 상태로 변경 => 여기는 수정 필요
+				SetState(ChaseStatueState::Idle); 
 			}
 		}
 		
+	}
+}
+
+void AChaseStatue::SetState(ChaseStatueState newstate)
+{
+	mState = newstate;
+	if(CuratorAnim)
+	{
+		CuratorAnim->animState = mState;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("CuratorAnim이 null입니다."));
 	}
 }
 
