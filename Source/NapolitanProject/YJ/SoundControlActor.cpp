@@ -45,9 +45,12 @@ void ASoundControlActor::BeginPlay()
 		PlayerHUD =TestPC->GetHUD<APlayerHUD>();
 	}
 
+	// 안전한 포인터 사용 (현재 객체를 안전하게 참조)
+	TWeakObjectPtr<ASoundControlActor> WeakThis = this;
+
 	FTimerHandle UITimer;
 
-	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[&, WeakThis]()
 	{
 		if (PlayerHUD && PlayerHUD->NPCDialogueUI)
 		{

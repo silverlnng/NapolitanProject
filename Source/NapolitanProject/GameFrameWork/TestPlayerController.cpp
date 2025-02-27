@@ -41,9 +41,11 @@ void ATestPlayerController::BeginPlay()
 	me = Cast<ATestCharacter>(GetPawn());
 	
 	EventComponent->GI=GI;
+
+	TWeakObjectPtr<ATestPlayerController> WeakThis = this;
 	
 	FTimerHandle TimerHandle;
-	GetWorldTimerManager().SetTimer(TimerHandle,[this]()
+	GetWorldTimerManager().SetTimer(TimerHandle,[&, WeakThis]()
 	{
 		if (!PlayerHUD)
 		{
@@ -61,27 +63,7 @@ void ATestPlayerController::BeginPlay()
 			return;
 		}
 		
-		/*auto InvenSlotMap = PlayerHUD->InventoryUI->InvenSlots;
-		//먼저 모든 행단위로 가져오기  
-		
-		for (int i = 0; i < GI->itemDataRowNames.Num(); i++)
-		{
-			// DT_itemData 에서 행 찾아서 
-			FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(GI->itemDataRowNames[i] , TEXT(""));
-			if (ItemData)
-			{
-				// 인벤토리 슬롯에 썸네일 이미지 할당
-				InvenSlotMap[i]->Img_Thumnail->SetBrushFromTexture(ItemData->thumnail);
-			}
-		}*/
-
-		 // auto ClueSlotMap = PlayerHUD->NoteUI->WBP_ClueInfo->ClueSlots; 
-		
-		
-
-
 		// 유품
-		
 		SouvenirUI = PlayerHUD->NoteUI->WBP_Souvenir;
 		SouvenirUI->SouvenirBtn_BackDele.AddDynamic(this , &ATestPlayerController::SetSouvenirUICurNumber);
 		//초기값

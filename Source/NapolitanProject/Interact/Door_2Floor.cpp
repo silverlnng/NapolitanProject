@@ -21,7 +21,8 @@ void ADoor_2Floor::BeginPlay()
 	FString QuestText =FString(TEXT("머리를 찾아주기"));
 	if (GI&&GI->QuestSlots.Contains(QuestText))
 	{
-		UnBindBeginOverlap();
+		BoxComp->OnComponentBeginOverlap.Clear();
+		JustRotateDoor();
 	}
 	
 }
@@ -67,4 +68,10 @@ void ADoor_2Floor::RotateDoor2()
 void ADoor_2Floor::StartRotateDoor()
 {
 	Super::StartRotateDoor();
+}
+
+void ADoor_2Floor::JustRotateDoor()
+{
+	Super::RotateDoor2();
+	Super::RotateDoor();
 }

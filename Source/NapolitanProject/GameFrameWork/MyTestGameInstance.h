@@ -219,6 +219,25 @@ public:
 
 	UPROPERTY()
 	class UTestSaveGame* LoadedGame;
+
+///////// 레벨 이동을  "그림 문 "으로 하는경우를 체크 (문 이동 시 true, 새 게임 시작 시 false)
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	bool bLevelMoveToDoor = false;
+
+	// 플레이어의 이전 위치 저장
+	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
+	FTransform SavedPlayerTransform;
 	
+	// 플레이어 위치 저장 함수
+	UFUNCTION(BlueprintCallable)
+	void SavePlayerFTransform(FTransform NewLocation);
+
+	// 저장된 위치 반환 함수
+	UFUNCTION(BlueprintCallable)
+	FTransform GetSavedPlayerLocation() const;
+
+	// 위치 사용 여부 플래그 설정 함수
+	UFUNCTION(BlueprintCallable)
+	void SetLevelMoveToDoor(bool bUse);
 };
 

@@ -11,6 +11,7 @@
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
+#include "NapolitanProject/YJ/Save/GameSaveController.h"
 
 // Sets default values
 ALevelMoveDoor::ALevelMoveDoor()
@@ -24,11 +25,14 @@ ALevelMoveDoor::ALevelMoveDoor()
 	BoxComp->SetupAttachment(RootComponent);
 
 	
-	BoxComp2=CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent2"));
-	BoxComp2->SetupAttachment(RootComponent);
+	//BoxComp2=CreateDefaultSubobject<UBoxComponent>(TEXT("BoxComponent2"));
+	//BoxComp2->SetupAttachment(RootComponent);
 	
 	StaticMeshComp=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
 	StaticMeshComp->SetupAttachment(BoxComp);
+
+	FromLevelLocComp =CreateDefaultSubobject<USceneComponent>(TEXT("FromLevelLoc"));
+	FromLevelLocComp->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -66,13 +70,66 @@ void ALevelMoveDoor::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	if(OtherActor)
 	{
 		auto* cha=Cast<ATestCharacter>(OtherActor);
+		MainCharacter=cha;
 		if(cha)
 		{
-			PlayerHUD->MonolugueWidgetUI->SetOutputLines(TextLines);
-			PlayerHUD->MonolugueWidgetUI->SetVisibility(ESlateVisibility::Visible);
-			BoxComp2->OnComponentBeginOverlap.AddDynamic(this, &ALevelMoveDoor::BeginOverlap2);
+			
+			if (!TextLines.IsEmpty())
+			{
+				PlayerHUD->MonolugueWidgetUI->OnTimerFinished.AddDynamic(this, &ALevelMoveDoor::LevelMove);
+			
+				PlayerHUD->MonolugueWidgetUI->SetOutputLines(TextLines);
+				PlayerHUD->MonolugueWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			}
+			else
+			{
+				LevelMove();
+			}
+			
 		}
 	}
+}
+
+void ALevelMoveDoor::LevelMove()
+{
+	GI->SetLevelMoveToDoor(true);
+			
+	// + 위치 적용 플래그 설정
+	if (bMoveFromLobby) // 지금 현재레벨이 로비일때만 게임저장
+	{
+		//  지금 현재레벨이 로비일때만 이동하기전 위치를 저장해두기!!!!!!
+		if (MainCharacter)
+		{
+			MainCharacter->SaveTransform=FromLevelLocComp->GetComponentTransform();
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("MyVector: %s"), *MainCharacter->SaveTransform.GetLocation().ToString()));
+		}
+		GI->SavePlayerFTransform(FromLevelLocComp->GetComponentTransform());
+		GI->GameSaveController->SaveGameToSlot(4);
+				
+		GI->AsyncLoadLoadLevel(MoveToLevel);
+
+		//레벨 이동하기 전에 타이머를 종료하고 가야 에러가 안남 !!!!!!!!
+		if (GetWorld()->GetTimerManager().IsTimerActive(PlayerHUD->MonolugueWidgetUI->TextUpdateTimerHandle))
+		{
+			GetWorld()->GetTimerManager().ClearTimer(PlayerHUD->MonolugueWidgetUI->TextUpdateTimerHandle);
+		}
+		if (GetWorld()->GetTimerManager().IsTimerActive(PlayerHUD->MonolugueWidgetUI->FinalTimerHandle))
+		{
+			GetWorld()->GetTimerManager().ClearTimer(PlayerHUD->MonolugueWidgetUI->FinalTimerHandle);
+		}
+			
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+		{
+			UGameplayStatics::OpenLevelBySoftObjectPtr(this,MoveToLevel,true); //레벨 변경
+		}, 1.0f, false);
+	}
+	else
+	{
+		GI->GameSaveController->LoadGameFromSlot(4);
+		// 여기에 오픈레벨(로비) 가 있음
+	}
+	
 }
 
 // 더 작은 범위의 트리거 박스
@@ -85,17 +142,6 @@ void ALevelMoveDoor::BeginOverlap2(UPrimitiveComponent* OverlappedComponent, AAc
 		auto* cha=Cast<ATestCharacter>(OtherActor);
 		if(cha)
 		{
-
-			// 이동하기전 위치를 저장해두기
-			
-			// 타이머 돌리고 
-			GI->AsyncLoadLoadLevel(MoveToLevel);
-			
-			FTimerHandle TimerHandle;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
-			{
-				UGameplayStatics::OpenLevelBySoftObjectPtr(this,MoveToLevel,true); //레벨 변경
-			}, 2.0f, false);
 		}	
 	}
 	

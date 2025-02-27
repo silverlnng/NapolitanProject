@@ -374,3 +374,19 @@ void UMyTestGameInstance::OnLevelLoaded()
 	UGameplayStatics::OpenLevelBySoftObjectPtr(this,CachedLevel,true); 
 }
 
+void UMyTestGameInstance::SavePlayerFTransform(FTransform NewLocation)
+{
+	SavedPlayerTransform = NewLocation;
+	bLevelMoveToDoor = true; // 문을 통해 이동했으므로 저장된 위치 사용
+}
+
+FTransform UMyTestGameInstance::GetSavedPlayerLocation() const
+{
+	return SavedPlayerTransform;
+}
+
+void UMyTestGameInstance::SetLevelMoveToDoor(bool bUse)
+{
+	bLevelMoveToDoor = bUse; // 문을 통해 이동했으므로 저장된 위치 사용
+}
+
