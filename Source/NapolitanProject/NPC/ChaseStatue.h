@@ -9,6 +9,7 @@
 
 UENUM(BlueprintType)
 enum class ChaseStatueState : uint8 {
+	Idle,
 	Move,
 };
 
@@ -38,9 +39,11 @@ public:
 public:
 	//상태 변수
 	UPROPERTY()
-	ChaseStatueState mState = ChaseStatueState::Move;
+	ChaseStatueState mState = ChaseStatueState::Idle;
 
 	//상태 함수
+	UFUNCTION(BlueprintCallable, Category = State)
+	void TickIdle(const float& DeltaTime);
 
 	UFUNCTION(BlueprintCallable, Category = State)
 	void TickMove(const float& DeltaTime);

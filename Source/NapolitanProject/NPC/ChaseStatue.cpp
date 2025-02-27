@@ -62,8 +62,12 @@ void AChaseStatue::Tick(float DeltaTime)
 
 	switch (mState)
 	{
+	case ChaseStatueState::Idle:
+		TickIdle(DeltaTime);
+		break;
 	case ChaseStatueState::Move:
 		TickMove(DeltaTime);
+		break;
 	}
 }
 
@@ -72,6 +76,12 @@ void AChaseStatue::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AChaseStatue::TickIdle(const float& DeltaTime)
+{
+	//이 상태일때는 무조건 대기, 플레이어가 아이템을 주었을때부터 추격을 시작함.
+	
 }
 
 void AChaseStatue::TickMove(const float& DeltaTime)
