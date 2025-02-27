@@ -117,7 +117,7 @@ void ANPCDongjon::SpawnItems()
 
 		if (SouvenirActor)
 		{
-			//ItemActor->Tags.Add(FName("Item"));
+			ItemActor->Tags.Add(FName("Item"));
 			SouvenirActor->Tags.Add(FName("Souvenir"));
 			Destroy();
 		}	
