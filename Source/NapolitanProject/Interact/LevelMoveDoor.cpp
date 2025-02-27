@@ -101,7 +101,7 @@ void ALevelMoveDoor::LevelMove()
 		if (MainCharacter)
 		{
 			MainCharacter->SaveTransform=FromLevelLocComp->GetComponentTransform();
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("MyVector: %s"), *MainCharacter->SaveTransform.GetLocation().ToString()));
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("MyVector: %s"), *MainCharacter->SaveTransform.GetLocation().ToString()));
 		}
 		GI->SavePlayerFTransform(FromLevelLocComp->GetComponentTransform());
 		GI->GameSaveController->SaveGameToSlot(4);

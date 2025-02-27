@@ -68,7 +68,7 @@ FString ASouvenirActor::GetSouvenirName()
 void ASouvenirActor::OnPickup()
 {
 	StaticMeshComp->SetHiddenInGame(true);
-	
+	GI->AcquireSouvenir.Add(GetSouvenirID());
 	// 얻을때마다 갯수셀꺼여서 초기화 
 	GI->AcquireSouvenirNum=0;
 	

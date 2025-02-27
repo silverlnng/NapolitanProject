@@ -167,7 +167,7 @@ public:
 	TSet<FString> QuestSlots;
 	
 	UPROPERTY()
-	TArray<int32> AcquireSouvenir;
+	TSet<int32> AcquireSouvenir;
 
 	int32 AcquireSouvenirNum;
 	

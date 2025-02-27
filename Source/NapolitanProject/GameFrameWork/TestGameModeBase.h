@@ -27,6 +27,10 @@ public:
 
 	UPROPERTY()
 	class UMyTestGameInstance* GI;
+
+	UPROPERTY(VisibleAnywhere)
+	TMap<int32,class ANPCCharacter*> NPCArray;
+	
 private:
 	
 };

@@ -27,6 +27,7 @@
 #include "NapolitanProject/Interact/Sculpture.h"
 #include "NapolitanProject/Interact/SouvenirActor.h"
 #include "NapolitanProject/Interact/TargetForItem.h"
+#include "NapolitanProject/YJ/CheckPoint.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/YJ/ESCWidget.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
@@ -522,6 +523,15 @@ void ATestCharacter::OnInteraction()
 		{
 			curItem=ItemActor;
 			ItemActor->OnPickup();
+		}
+
+		// 저장할때
+		
+		ACheckPoint* CheckPoint =Cast<ACheckPoint>(Interact);
+		
+		if (CheckPoint)
+		{
+			CheckPoint->VisibleSaveWidget();
 		}
 
 ///////////////// 아이템을 내려놓는 대상 /////////////////////////

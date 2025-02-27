@@ -3,6 +3,7 @@
 
 #include "CheckPoint.h"
 
+#include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
@@ -28,15 +29,17 @@ ACheckPoint::ACheckPoint()
 	
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>("CheckpointMesh");
 	StaticMeshComp->SetupAttachment(SphereComp);
-	StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	StaticMeshComp->SetCollisionResponseToAllChannels(ECR_Block);
+	//StaticMeshComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	//StaticMeshComp->SetCollisionResponseToAllChannels(ECR_Block);
 
 	SaveLocComp = CreateDefaultSubobject<USceneComponent>("SaveLoc");
 	SaveLocComp->SetupAttachment(RootComponent);
-	
-	//CheckpointMesh->SetCustomDepthStencilValue(CustomDepthStencilOverride);
-	//CheckpointMesh->MarkRenderStateDirty();
 
+	
+	CapsuleComp = CreateDefaultSubobject<UCapsuleComponent>("CapsuleComponent");
+	CapsuleComp->SetupAttachment(SceneComp);
+	CapsuleComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Block);
+	
 }
 
 // Called when the game starts or when spawned
@@ -49,7 +52,7 @@ void ACheckPoint::BeginPlay()
 		MainCharacter =TestPC->GetPawn<ATestCharacter>();
 		PlayerHUD=TestPC->GetHUD<APlayerHUD>();
 	}
-	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ACheckPoint::OnSphereOverlap);
+	//SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ACheckPoint::OnSphereOverlap);
 }
 
 // Called every frame
@@ -59,8 +62,24 @@ void ACheckPoint::Tick(float DeltaTime)
 
 }
 
+void ACheckPoint::VisibleSaveWidget()
+{
+	PlayerHUD->LoadScreenUI->SetVisibility(ESlateVisibility::Visible);
+
+	PlayerHUD->LoadScreenUI->SaveLocation=SaveLocation;
+
+	PlayerHUD->LoadScreenUI->SaveConfirmWidget->SaveLocation=SaveLocation;
+	PlayerHUD->LoadScreenUI->WBP_LoadConfirm->SaveLocation=SaveLocation;
+	MainCharacter->SaveLocationStr=SaveLocation;
+	MainCharacter->SaveTransform=SaveLocComp->GetComponentTransform();
+	// ui 보는 모드로 만들기
+	TestPC->SetInputMode(FInputModeGameAndUI());
+	TestPC->SetShowMouseCursor(true);
+	MainCharacter->SetPlayerState(EPlayerState::UI);
+}
+
 void ACheckPoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	// OtherActor 플레이어면 저장 되도록 만들기
 	if (OtherActor->IsA(ATestCharacter::StaticClass()))

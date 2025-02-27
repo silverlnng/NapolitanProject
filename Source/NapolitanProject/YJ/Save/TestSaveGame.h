@@ -52,4 +52,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = "SaveData")
 	TSet<FString> QuestSlots;
+
+	UPROPERTY()
+	TSet<int32> AcquireSouvenir;
 };

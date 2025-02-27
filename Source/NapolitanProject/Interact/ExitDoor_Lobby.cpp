@@ -109,8 +109,9 @@ void AExitDoor_Lobby::OnBeginOverlap_(UPrimitiveComponent* OverlappedComponent, 
 			UE_LOG(LogTemp, Warning, TEXT("%s:GI is null "),*CALLINFO);
 		}
 
+		UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(),StartLevel,true);
 		// 레벨 이동후
-		if (StartLevel)
+		/*if (StartLevel.IsValid())
 		{
 			UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(),StartLevel,true);
 			UE_LOG(LogTemp,Warning,TEXT("AExitDoor_First:: OpenLevel"))
@@ -118,7 +119,7 @@ void AExitDoor_Lobby::OnBeginOverlap_(UPrimitiveComponent* OverlappedComponent, 
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("%s:StartLevel is null "),*CALLINFO);
-		}
+		}*/
 		//  레벨쪽에서 시퀀스 작동되도록함 
 	}
 }

@@ -39,4 +39,16 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Cinematic")
 	class ULevelSequence* FirstEndingSequence;
+
+	UPROPERTY(EditAnywhere, Category = "Cinematic")
+	class ULevelSequence* SecondEndingSequence;
+
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> StartLevel;
+	
+	UFUNCTION()
+	void OpenNextLevel();
+
+	FTimerHandle UITimer;
+	FTimerHandle UITimer2;
 };

@@ -9,6 +9,7 @@
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
 #include "Components/Border.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 
 void ADetectiveMapGameModeBase::BeginPlay()
@@ -31,6 +32,9 @@ void ADetectiveMapGameModeBase::BeginPlay()
 	GetWorld()->GetTimerManager().SetTimer(GITimer,[this]()
 	{
 		PlayerHUD->InteractUI->Border_Inven->SetVisibility(ESlateVisibility::Hidden);
+		PlayerHUD->InteractUI->SetVisibleHBox(false);
+		PlayerHUD->InteractUI->SetVisibleCrossHair(false);
+	
 	},0.2f,false);
 
 	// state 에 따라서 구분되도록 하기
@@ -46,26 +50,50 @@ void ADetectiveMapGameModeBase::BeginPlay()
 	switch (DetectiveMapState)
 	{
 	case EDetectiveMapState::FisrtStart:
+		GetWorld()->GetTimerManager().SetTimer(UITimer , [this]()
+		{
+			PlayerHUD->InteractUI->SetVisibleHBox(true);
+			PlayerHUD->InteractUI->SetVisibleCrossHair(true);
+		} , 1.f , false);
 		break;
 	case EDetectiveMapState::FirstEnding:
-
-		// 플레이어 상호작용 키 e막기
-		PlayerHUD->InteractUI->SetVisibleHBox(false);
-		PlayerHUD->InteractUI->SetVisibleCrossHair(false);
-		// 1차 엔딩 시퀀스 작동되도록
-			if(FirstEndingSequence)
+		
+	// 1차 엔딩 시퀀스 작동되도록
+		if (FirstEndingSequence)
+		{
+			ALevelSequenceActor* outActor;
+			ULevelSequencePlayer* SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(
+				GetWorld() , FirstEndingSequence , FMovieSceneSequencePlaybackSettings() , outActor);
+			if (SequencePlayer)
 			{
-				ALevelSequenceActor* outActor;
-				ULevelSequencePlayer* SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), FirstEndingSequence, FMovieSceneSequencePlaybackSettings(), outActor);
-				if(SequencePlayer)
-				{
-					SequencePlayer->Play();
-				}
+				SequencePlayer->OnFinished.AddDynamic(this, &ADetectiveMapGameModeBase::OpenNextLevel);
+				SequencePlayer->Play();
 			}
+		}
 		// 시퀀스 다끝나면 맨처음 스타트 화면으로 넘어가도록 하기
 		
 		break;
 	case EDetectiveMapState::SecondEnding:
+		
+		// 1차 엔딩 시퀀스 작동되도록
+		if(SecondEndingSequence)
+		{
+			ALevelSequenceActor* outActor;
+			ULevelSequencePlayer* SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(GetWorld(), SecondEndingSequence, FMovieSceneSequencePlaybackSettings(), outActor);
+			if(SequencePlayer)
+			{
+				// 시퀀스 종료 후 LoadNextLevel 호출
+				SequencePlayer->OnFinished.AddDynamic(this, &ADetectiveMapGameModeBase::OpenNextLevel);
+				SequencePlayer->Play();
+			}
+		}
 		break;
 	}
+}
+
+void ADetectiveMapGameModeBase::OpenNextLevel()
+{
+	
+		UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(),StartLevel,true);
+		UE_LOG(LogTemp,Warning,TEXT("DetectiveMap:: OpenLevel"))
 }

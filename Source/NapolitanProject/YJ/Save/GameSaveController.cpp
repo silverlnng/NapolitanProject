@@ -74,6 +74,11 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 			{
 				SaveGameInstance->QuestSlots=GameInstance->QuestSlots;
 			}
+
+			if (!GameInstance->AcquireSouvenir.IsEmpty())
+			{
+				SaveGameInstance->AcquireSouvenir=GameInstance->AcquireSouvenir;
+			}
 			
 		}
 
@@ -135,7 +140,9 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 				for (int32 &val:GameInstance->ClearedNPC)
 				{
 					UE_LOG(LogTemp, Warning, TEXT("GameInstance->ClearedNPC %s,%d"),*CALLINFO,val);
-				//제대로 되는지 로그로 확인하기
+					//제대로 되는지 로그로 확인하기
+
+					//그리고 클리어한 npc는 레벨에 나오지 않도록 작업해야함 . 
 				}
 			}
 
@@ -147,6 +154,11 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 			if (!LoadedGame->QuestSlots.IsEmpty())
 			{
 				GameInstance->QuestSlots=LoadedGame->QuestSlots;
+			}
+
+			if (!LoadedGame->AcquireSouvenir.IsEmpty())
+			{
+				GameInstance->AcquireSouvenir=LoadedGame->AcquireSouvenir;
 			}
 			
 		}

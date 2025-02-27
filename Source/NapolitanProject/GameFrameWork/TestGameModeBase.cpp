@@ -3,10 +3,12 @@
 
 #include "TestGameModeBase.h"
 
+#include "EngineUtils.h"
 #include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
+#include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NapolitanProject/YJ/Save/GameSaveController.h"
 #include "NapolitanProject/YJ/Save/TestSaveGame.h"
 
@@ -29,11 +31,43 @@ void ATestGameModeBase::BeginPlay()
 	MainCharacter->b_IA_Inven_Allowed = true;
 
 	PlayerHUD = PC->GetHUD<APlayerHUD>();
+	
+	// 현재 맵에 있는 npc들을 저장
+	for (TActorIterator<ANPCCharacter> It(GetWorld(), ANPCCharacter::StaticClass()); It; ++It)
+	{
+		ANPCCharacter* NPC=*It;
+		int32 key = NPC->GetNPCID();
+		NPCArray.Add(key,NPC);
+		// 로그 출력으로 확인하기
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("NPCArray: %d"),key));
+	}	
 
 	GI = GetGameInstance<UMyTestGameInstance>();
+
+	//GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
+	if (!GI->ClearedNPC.IsEmpty())
+	{
+		for (int32 key :GI->ClearedNPC)
+		{
+			if (NPCArray.Contains(key))
+			{
+				NPCArray[key]->Destroy();
+				// 어색 하면 Destroy()
+			}
+		}
+	}
+	
+	
 	if (GI)
 	{
-		GI->RestoreAttachedItems();
+		FTimerHandle RestoreAttachedItemTimer;
+
+		GetWorld()->GetTimerManager().SetTimer(RestoreAttachedItemTimer , [this]()
+		{
+			GI->RestoreAttachedItems();
+		} , 1.0f , false);
+		
+		
 
 		if (GI->bLevelMoveToDoor)
 		{
@@ -41,22 +75,22 @@ void ATestGameModeBase::BeginPlay()
 			MainCharacter->SetActorLocation(GI->GetSavedPlayerLocation().GetLocation());
 			MainCharacter->SetActorRotation(GI->GetSavedPlayerLocation().GetRotation());
 			
+			// 적용 후 다시 false로 변경 (새 게임 시작 시 영향 안 주도록)
+			GI->SetLevelMoveToDoor(false);
 		}
-		// 적용 후 다시 false로 변경 (새 게임 시작 시 영향 안 주도록)
-		GI->SetLevelMoveToDoor(false);
-	}
-	else if (GI->LoadedGame)
-	{
-		FTimerHandle GITimer;
-
-		GetWorld()->GetTimerManager().SetTimer(GITimer , [this]()
+		else if (GI->LoadedGame)
 		{
-			// GI->RestoreAttachedItems();
+			FTimerHandle GITimer;
 
-			MainCharacter->SetActorLocation(GI->LoadedGame->PlayerLocation);
-			MainCharacter->SetActorRotation(GI->LoadedGame->PlayerRotation);
-		} , 1.0f , false);
+			GetWorld()->GetTimerManager().SetTimer(GITimer , [this]()
+			{
+				MainCharacter->SetActorLocation(GI->LoadedGame->PlayerLocation);
+				MainCharacter->SetActorRotation(GI->LoadedGame->PlayerRotation);
+			
+			} , 1.0f , false);
+		}
 	}
+	
 }
 
 

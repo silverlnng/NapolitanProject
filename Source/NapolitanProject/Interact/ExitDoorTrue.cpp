@@ -42,7 +42,7 @@ void AExitDoorTrue::Tick(float DeltaTime)
 void AExitDoorTrue::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	//만약 부딪힌게 캐릭터일 경우 Frame은 아래로 내려감
+	
 	if(OtherActor)
 	{
 		if(bIsOpenDoor) // 한번만 열리도록 만든 것
