@@ -20,3 +20,8 @@ void UAttackSpider_AnimInstance::AnimNotify_MoveToActor()
 {
 	AttackSpider->MoveToActor();
 }
+
+void UAttackSpider_AnimInstance::AnimNotify_AttackMiddle()
+{
+	
+}

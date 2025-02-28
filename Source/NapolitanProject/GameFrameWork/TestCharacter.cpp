@@ -30,7 +30,11 @@
 #include "NapolitanProject/YJ/CheckPoint.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/YJ/ESCWidget.h"
+#include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
+#include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
+
+
 
 ATestCharacter::ATestCharacter()
 {
@@ -173,8 +177,8 @@ void ATestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ATestCharacter::MyJump);
+		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ATestCharacter::MyJumpCompeleted);
 
 		// Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATestCharacter::Move);
@@ -210,22 +214,43 @@ void ATestCharacter::Move(const FInputActionValue& Value)
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 	
-	
-	if (curState==EPlayerState::Talking)
-	{
-		// 대화창 ui 에서 다음, 이전 으로 넘어가도록 하기
-		if (PlayerHUD)
-		{
-			// PlayerHUD->NPCDialogueUI
-		}
-	}
-	
 	if (!bIsBeingAttacked && Controller != nullptr)
 	{
 		// add movement 
 		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
 		AddMovementInput(GetActorRightVector(), MovementVector.X);
 	}
+}
+void ATestCharacter::MyJump()
+{
+	if (curState==EPlayerState::Talking)
+	{
+		// 대화창 ui 에서 다음, 이전 으로 넘어가도록 하기
+		if (PlayerHUD)
+		{
+			if (PlayerHUD->NPCDialogueUI->IsVisible())
+			{
+				PlayerHUD->NPCDialogueUI->OnClickfrontButton();
+			}
+			else if (PlayerHUD->NPCResultUI->IsVisible())
+			{
+				PlayerHUD->NPCResultUI->OnClickfrontButton();
+			}
+		}
+	}
+	else
+	{
+		bPressedJump = true;
+		JumpKeyHoldTime = 0.0f;
+	}
+	
+}
+
+void ATestCharacter::MyJumpCompeleted()
+{
+	if (curState==EPlayerState::Talking){return;}
+	bPressedJump = false;
+	ResetJumpState();
 }
 
 void ATestCharacter::Look(const FInputActionValue& Value)

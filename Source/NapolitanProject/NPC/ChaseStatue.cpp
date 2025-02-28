@@ -222,12 +222,12 @@ void AChaseStatue::Interact()
 
 int32 AChaseStatue::GetNPCID()
 {
-	return Super::GetNPCID();
+	return NPC_ID;
 }
 
 int32 AChaseStatue::GetState()
 {
-	return Super::GetState();
+	return State;
 }
 
 void AChaseStatue::ChangeCleared()

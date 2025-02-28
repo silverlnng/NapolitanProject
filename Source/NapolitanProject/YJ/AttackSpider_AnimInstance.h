@@ -27,4 +27,8 @@ public:
 
 	UFUNCTION()
 	void AnimNotify_MoveToActor();
+	
+	UFUNCTION()
+	void AnimNotify_AttackMiddle();
+	
 };
