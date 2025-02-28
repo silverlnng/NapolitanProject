@@ -5,13 +5,11 @@
 
 #include "../GameFrameWork/TestPlayerController.h"
 #include "Camera/CameraComponent.h"
-#include "Components/Image.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "NapolitanProject/GameFrameWork/EventComponent.h"
-#include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
-#include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
+
 
 void ANPC_Docent::Tick(float DeltaSeconds)
 {
@@ -48,6 +46,7 @@ void ANPC_Docent::ResultEvent(int32 result)
 			State=2;
 			TestPC->StartEndNPCDialougue(true);
 			TestPC->SetNPCDialougueText(0);
+			
 		}
 		else if (1==result)
 		{

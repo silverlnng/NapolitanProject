@@ -85,7 +85,7 @@ void ATestPlayerController::SetUIMode(bool value)
 	}
 	else
 	{
-		SetInputMode(FInputModeUIOnly());
+		SetInputMode(FInputModeGameAndUI());
 		SetShowMouseCursor(true);
 	}
 }
@@ -194,6 +194,7 @@ void ATestPlayerController::SetNPCDialougueMaxSize()
 			break;
 		}
 	}
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("MaxOrder: %d"),PlayerHUD->NPCDialogueUI->MaxOrder));
 }
 
 // 최대값 설정해줘야함 

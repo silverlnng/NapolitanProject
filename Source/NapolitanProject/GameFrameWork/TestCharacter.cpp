@@ -20,6 +20,7 @@
 #include "../YJ/NoteUI/NoteWidget.h"
 #include "Components/ArrowComponent.h"
 #include "Components/AudioComponent.h"
+#include "Components/Button.h"
 #include "Components/CanvasPanel.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/ItemActor.h"
@@ -223,19 +224,29 @@ void ATestCharacter::Move(const FInputActionValue& Value)
 }
 void ATestCharacter::MyJump()
 {
+
 	if (curState==EPlayerState::Talking)
 	{
 		// 대화창 ui 에서 다음, 이전 으로 넘어가도록 하기
 		if (PlayerHUD)
 		{
-			if (PlayerHUD->NPCDialogueUI->IsVisible())
+			if (PlayerHUD->NPCDialogueUI->GetVisibility()==ESlateVisibility::Visible)
 			{
-				PlayerHUD->NPCDialogueUI->OnClickfrontButton();
+				if (PlayerHUD->NPCDialogueUI->Btn_Next->GetVisibility()==ESlateVisibility::Visible)
+				{
+					
+					PlayerHUD->NPCDialogueUI->OnClickfrontButton();
+				}
+				
 			}
 			else if (PlayerHUD->NPCResultUI->IsVisible())
 			{
-				PlayerHUD->NPCResultUI->OnClickfrontButton();
+				if (PlayerHUD->NPCResultUI->Btn_Next->GetVisibility()==ESlateVisibility::Visible)
+				{
+					PlayerHUD->NPCResultUI->OnClickfrontButton();
+				}
 			}
+		
 		}
 	}
 	else
@@ -367,6 +378,7 @@ void ATestCharacter::ESCUIToggle(const FInputActionValue& Value)
 void ATestCharacter::InventoryUIToggle(const FInputActionValue& Value)
 {
 	if (!b_IA_Inven_Allowed){return;}
+	if (curState==EPlayerState::Talking){return;}
 	
 	if (PlayerHUD->InventoryUI->IsVisible()) // 노트가 보이는 중 이면
 	{
@@ -406,6 +418,7 @@ void ATestCharacter::NoteUIToggle(const FInputActionValue& Value)
 {
 
 	if (!b_IA_Note_Allowed){return;}
+	if (curState==EPlayerState::Talking){return;}
 	
 	if (PlayerHUD->NoteUI->IsVisible()) // 노트가 보이는 중 이면
 	{
