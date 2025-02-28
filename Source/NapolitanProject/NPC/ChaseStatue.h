@@ -71,6 +71,16 @@ public:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	int32 State = 1;
 
+	virtual void ResultEvent(int32 result) override;
+	
+	virtual void Interact() override;
+
+	virtual int32 GetNPCID() override;
+
+	virtual int32 GetState() override;
+
+	virtual void ChangeCleared() override;
+
 public:
 	UPROPERTY()
 	class UNPC_CuratorAnim* CuratorAnim;

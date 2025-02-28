@@ -197,6 +197,44 @@ void AChaseStatue::CuratorOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	}
 }
 
+void AChaseStatue::ResultEvent(int32 result)
+{
+	//이벤트 발생
+	if(1==State)
+	{
+		//노인이 준 아이템을 보유하고 있을때 선택 가능하도록 수정
+		if(0==result)
+		{
+			//만약 플레이어가 대화를 끝냈을때 움직임을 선택
+			if(MainCharacter->curState!=EPlayerState::Talking)
+			{
+				//Move로 변경
+				SetState(ChaseStatueState::Move);
+			}
+		}
+	}
+}
+
+void AChaseStatue::Interact()
+{
+	Super::Interact();
+}
+
+int32 AChaseStatue::GetNPCID()
+{
+	return Super::GetNPCID();
+}
+
+int32 AChaseStatue::GetState()
+{
+	return Super::GetState();
+}
+
+void AChaseStatue::ChangeCleared()
+{
+	Super::ChangeCleared();
+}
+
 void AChaseStatue::SetState(ChaseStatueState newstate)
 {
 	mState = newstate;
