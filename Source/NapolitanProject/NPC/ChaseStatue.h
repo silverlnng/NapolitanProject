@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "NPCCharacter.h"
 #include "GameFramework/Character.h"
+#include "NapolitanProject/Interact/SouvenirActor.h"
 #include "ChaseStatue.generated.h"
 
 UENUM(BlueprintType)
@@ -39,7 +40,7 @@ public:
 public:
 	//상태 변수
 	UPROPERTY()
-	ChaseStatueState mState = ChaseStatueState::Idle;
+	ChaseStatueState mState;
 
 	//상태 함수
 	UFUNCTION(BlueprintCallable, Category = State)
@@ -71,6 +72,11 @@ public:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	int32 State = 1;
 
+	int32 ItemNumber = 0; //노인이 준 
+
+	bool bClear;
+
+public:
 	virtual void ResultEvent(int32 result) override;
 	
 	virtual void Interact() override;
@@ -87,6 +93,12 @@ public:
 
 	void SetState(ChaseStatueState newstate);
 	
+public:
+	//유품을 스폰하는 함수
+	void SpawnItems();
+
+	UPROPERTY(EditAnywhere, Category = "Spawn Items")
+	TSubclassOf<ASouvenirActor> SouvenirClass;
 	
 };
 

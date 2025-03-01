@@ -10,8 +10,12 @@
 #include "NPC_CuratorAnim.h"
 #include "YSEvanceUI.h"
 #include "NapolitanProject/NapolitanProject.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/Interact/SouvenirActor.h"
 #include "Navigation/PathFollowingComponent.h"
 
 
@@ -41,7 +45,8 @@ void AChaseStatue::BeginPlay()
 
 	me = this;
 
-	mState = ChaseStatueState::Move;
+	mState = ChaseStatueState::Idle;
+	UE_LOG(LogTemp, Warning, TEXT("시작 : %s"), *UEnum::GetValueAsString(mState));
 
 	ChaseAI = Cast<AAIController>(me->GetController());
 	if (!ChaseAI)
@@ -54,7 +59,8 @@ void AChaseStatue::BeginPlay()
 
 	//캐릭터 애니메이션
 	CuratorAnim = Cast<UNPC_CuratorAnim>(GetMesh()->GetAnimInstance());
-	
+
+	bClear = false;	
 }
 
 // Called every frame
@@ -62,6 +68,9 @@ void AChaseStatue::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//UE_LOG(LogTemp, Warning, TEXT("%s %s"), *UEnum::GetValueAsString(MainCharacter->curState), bClear ? TEXT("true") : TEXT("false"));
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *UEnum::GetValueAsString(mState));
+	
 	switch (mState)
 	{
 	case ChaseStatueState::Idle:
@@ -90,10 +99,25 @@ void AChaseStatue::TickIdle(const float& DeltaTime)
 	FRotator rot = dirR.Rotation();
 	
 	me->SetActorRotation(FRotator(0, rot.Yaw, 0));
+
+	//만약 플레이어가 대화를 끝냈을때 움직임을 선택
+	if(MainCharacter->curState == EPlayerState::Idle && bClear == true)
+	{
+		UE_LOG(LogTemp, Error, TEXT("모드 변경"));
+		//큐레이터 맵의 사운드가 변경
+		
+		//Move로 변경
+		FTimerHandle TimerHandle;
+		GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+		{
+			SetState(ChaseStatueState::Move); //몇초 뒤 움직임으로 변경
+		}, 4.0f, false);
+	}
 }
 
 void AChaseStatue::TickMove(const float& DeltaTime)
 {
+	
 	FVector targetLoc = MainCharacter->GetActorLocation();
 	FVector myLoc = me->GetActorLocation();
 	FVector dirR = targetLoc - myLoc;
@@ -125,38 +149,6 @@ void AChaseStatue::TickMove(const float& DeltaTime)
 		//타깃쪽으로 이동
 		ChaseAI->MoveToLocation(targetLoc);
 	}
-	// 그렇지 않다면
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("AI 작동 안함"));
-		/*//랜덤한 위치로 이동
-		auto result = ChaseAI->MoveToLocation(randomPos);
-		//목적지에 도착하면
-		if (result == EPathFollowingRequestResult::AlreadyAtGoal ||result == EPathFollowingRequestResult::Failed )
-		{
-			//새로운 랜덤 위치 가져오기
-			GetRandomPositionNavMesh(me->GetActorLocation(), 500, randomPos);
-		}*/
-		
-	}
-	
-	//UE_LOG(LogTemp,Warning,TEXT("%s,거리 :%f"),*CALLINFO,dirR.Size());
-	
-	//너무 가까이 왔을 때 사망 이벤트 발생
-	/*if (dirR.Size() <= 400.0f)
-	{
-		UE_LOG(LogTemp,Warning,TEXT("%s 거리안"),*CALLINFO);
-		// 끝나는 엔딩 위젯 나오도록 하기
-		if (PlayerHUD && PlayerHUD->DeadEndingWidgetUI && PlayerHUD->YsEvanceUserWidget)
-		{
-			UE_LOG(LogTemp,Warning,TEXT("%s 조건문안"),*CALLINFO);
-			PlayerHUD->YsEvanceUserWidget->SetVisibility(ESlateVisibility::Hidden);
-			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-			FString name= FString(TEXT("<Red_Big>큐레이터</>"));
-			PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
-			PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
-		}
-	}*/
 	
 }
 
@@ -202,16 +194,26 @@ void AChaseStatue::ResultEvent(int32 result)
 	//이벤트 발생
 	if(1==State)
 	{
-		//노인이 준 아이템을 보유하고 있을때 선택 가능하도록 수정
+		//노인이 지닌 아이템을 소유하고 있을때
 		if(0==result)
 		{
-			//만약 플레이어가 대화를 끝냈을때 움직임을 선택
-			if(MainCharacter->curState!=EPlayerState::Talking)
+			
+			//유품 관련 부분
+			/*FName NPC_IDName = FName(*FString::FromInt(NPC_ID));
+			
+			FSouvenirData* SouvenirData= GI->DT_SouvenirData->FindRow<FSouvenirData>(NPC_IDName , TEXT(""));
+			if (SouvenirData)
 			{
-				//Move로 변경
-				SetState(ChaseStatueState::Move);
+				SouvenirData->Had=true;
 			}
+			
+			TestPC->SetSouvenirUICurNumber(NPC_ID);*/
+			
+			UE_LOG(LogTemp, Warning, TEXT("큐레이터"));
+
+			bClear = true;
 		}
+		
 	}
 }
 
@@ -246,6 +248,12 @@ void AChaseStatue::SetState(ChaseStatueState newstate)
 	{
 		UE_LOG(LogTemp, Error, TEXT("CuratorAnim이 null입니다."));
 	}
+}
+
+void AChaseStatue::SpawnItems()
+{
+	//여기서는 유품 아이템이 자동으로 인벤토리에 들어오도록 해야함(추격이 있기 때문에)
+	
 }
 
 

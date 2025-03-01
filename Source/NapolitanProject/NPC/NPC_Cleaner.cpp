@@ -55,16 +55,7 @@ void ANPC_Cleaner::BeginPlay()
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	/*MobPointActor = GetWorld()->SpawnActor<AActor>(MobPointClass, GetMesh()->GetSocketTransform(TEXT("MobPoint")), SpawnParams);
-	if (MobPointActor)
-	{
-		MobPointActor->K2_AttachToComponent(GetMesh(), TEXT("MobPoint"), EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, EAttachmentRule::SnapToTarget, true);
-		MobPointActor->SetActorHiddenInGame(true);
-		UE_LOG(LogTemp, Display, TEXT("MobPointActor Attached to MobPoint"));
-	}*/
-
-
+	
 }
 
 // Called every frame

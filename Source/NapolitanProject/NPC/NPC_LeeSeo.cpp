@@ -65,6 +65,7 @@ void ANPC_LeeSeo::SpawnItem()
 	if (SouvenirActor)
 	{
 		SouvenirActor->Tags.Add(FName("Souvenir"));
+		Destroy(); //얻으면 삭제
 	}
 	
 }
