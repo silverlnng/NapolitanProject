@@ -29,6 +29,10 @@ public:
 
 	virtual int32 GetState() override;
 
+	//유품
+	UPROPERTY(EditAnywhere, Category = "Spawn Items")
+	TSubclassOf<class ASouvenir_Docent> SouvenirNoteClass;
+	
 	UPROPERTY(EditDefaultsOnly,Category=Anim)
 	class UAnimMontage* attackAnimMontage;
 

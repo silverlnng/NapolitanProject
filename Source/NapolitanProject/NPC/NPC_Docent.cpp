@@ -9,6 +9,7 @@
 #include "NapolitanProject/GameFrameWork/EventComponent.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/Interact/Souvenir_Docent.h"
 
 
 void ANPC_Docent::Tick(float DeltaSeconds)
@@ -128,13 +129,13 @@ void ANPC_Docent::ResultEvent(int32 result)
 		{
 			// 정답 . 만약 다른 선 택을 하게 되면 선택한 것에 따라 죽는다. 살아줘를 택할 시, 소년은 사라지고 그 자리에 수첩이 남는다. 
 			TestPC->StartEndNPCDialougue(false);
-
+			
 			FTimerHandle Timer;
 			GetWorldTimerManager().SetTimer(Timer,[this]()
 			{
-				SouvenirName= FString(TEXT("수첩"));
-				PlayerHUD->InteractUI->GetSouvenirEvent(SouvenirName);
-				PlayerHUD->InteractUI->PlayNoteUIEvent(true);
+				//SouvenirName= FString(TEXT("수첩"));
+				//PlayerHUD->InteractUI->GetSouvenirEvent(SouvenirName);
+				//PlayerHUD->InteractUI->PlayNoteUIEvent(true);
 
 				//몸 머터리얼 수정
 				DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1 , this);
@@ -150,36 +151,31 @@ void ANPC_Docent::ResultEvent(int32 result)
 					GetMesh()->SetMaterial(2 , DynamicMaterial3);
 					GetMesh()->SetMaterial(3 , DynamicMaterial4);
 				}
-
-				// 디졸브 이벤트 
-				//FString color ="Yellow";
-				//DissolveEvent(color);
-
-				bisDissolve = true;
 				
-			} , 2.0f , false);
+				bisDissolve = true;
+			} , 1.5f , false);
 
-			// 미술관을 탐색하자 퀘스트 발생 시키기
+			
+			// 수첩유품을 생성시키기
+			FTimerHandle UITimer2;
+
+			GetWorld()->GetTimerManager().SetTimer(UITimer2 , [this]()
+			{
+				FVector FootLocation = GetMesh()->GetSocketLocation(FName("ItemSpawn"));
+				FTransform SpawnTransform(FootLocation);
+
+				ASouvenir_Docent* SouvenirActor = GetWorld()->SpawnActor<ASouvenir_Docent>(
+					SouvenirNoteClass , SpawnTransform);
+			} , 5.5f , false);
+			
+			// 미술관을 탐색하자 퀘스트 발생 시키기 => 유품 쪽에서
 			FTimerHandle UITimer1;
 
 			GetWorld()->GetTimerManager().SetTimer(UITimer1,[this]()
 			{
-				FString QuestText =FString(TEXT("미술관을 탐색하자"));
-				PlayerHUD->InteractUI->AddQuestSlot(1,QuestText);
 				ChangeCleared(); 
 			},6.0f,false);
 
-			// ui 단서 발동시키기
-
-			FTimerHandle UITimer2;
-
-			GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
-			{
-				if (TestPC)
-				{
-					TestPC->EventComponent->Event_Docent_NoteUI();
-				} 
-			},6.0f,false);
 			
 		}
 	}

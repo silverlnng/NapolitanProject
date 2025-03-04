@@ -25,6 +25,9 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_Continue;
 
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> StartLevel;
+
 	UFUNCTION()
 	void OnClick_Exit();
 	

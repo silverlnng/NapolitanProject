@@ -4,6 +4,7 @@
 #include "ESCWidget.h"
 
 #include "Components/Button.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 void UESCWidget::NativeConstruct()
@@ -21,8 +22,10 @@ void UESCWidget::OnClick_Exit()
 
 void UESCWidget::OnClick_StartLevel()
 {
+	UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld(),StartLevel,true);
 }
 
 void UESCWidget::OnClick_Continue()
 {
+	SetVisibility(ESlateVisibility::Hidden);
 }
