@@ -166,7 +166,7 @@ void ANPC_Docent::ResultEvent(int32 result)
 
 				ASouvenir_Docent* SouvenirActor = GetWorld()->SpawnActor<ASouvenir_Docent>(
 					SouvenirNoteClass , SpawnTransform);
-			} , 4.5f , false);
+			} , 5.5f , false);
 			
 			// 미술관을 탐색하자 퀘스트 발생 시키기 => 유품 쪽에서
 			FTimerHandle UITimer1;
