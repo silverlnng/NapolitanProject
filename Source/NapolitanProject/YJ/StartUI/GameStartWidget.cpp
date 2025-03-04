@@ -18,7 +18,8 @@ void UGameStartWidget::NativeConstruct()
 	Btn_Setting->OnClicked.AddDynamic(this,&UGameStartWidget::OnClickedSetting);
 	Btn_Exit->OnClicked.AddDynamic(this,&UGameStartWidget::OnClick_Exit);
 	Btn_Achievement->OnClicked.AddDynamic(this,&UGameStartWidget::OnClick_Achievement);
-
+	
+	Btn_Achievement->SetVisibility(ESlateVisibility::Hidden);
 	SettingUI->SetVisibility(ESlateVisibility::Hidden);
 
 	WBP_LoadScreen->SetVisibility(ESlateVisibility::Hidden);
