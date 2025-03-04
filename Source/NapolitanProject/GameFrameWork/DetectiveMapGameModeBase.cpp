@@ -34,6 +34,10 @@ void ADetectiveMapGameModeBase::BeginPlay()
 		PlayerHUD->InteractUI->Border_Inven->SetVisibility(ESlateVisibility::Hidden);
 		PlayerHUD->InteractUI->SetVisibleHBox(false);
 		PlayerHUD->InteractUI->SetVisibleCrossHair(false);
+
+		//퀘스트 UI 도 안보이도록 !
+		PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
+		
 	
 	},0.2f,false);
 
