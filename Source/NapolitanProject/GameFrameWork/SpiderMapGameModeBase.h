@@ -40,10 +40,10 @@ public:
 	class AItemActor* SpiderItem;
 
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<class AActor> GunBP;
+	TSubclassOf<class ASpiderMapGunActor> GunBP;
 
 	UPROPERTY()
-	class AActor* Gun;
+	class ASpiderMapGunActor* Gun;
 	
 	UFUNCTION()
 	void Interaction_OnSpiderMap(AActor* Interact);

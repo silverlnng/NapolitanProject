@@ -230,7 +230,7 @@ public:
 
 	/////////////////////////2층 미션 수행 //////////////
 	UPROPERTY(EditDefaultsOnly)
-	class UArrowComponent* myArrowComp;
+	class UArrowComponent* leftArrowComp;
 	UPROPERTY(EditDefaultsOnly)
 	class UArrowComponent* ItemArrowComp;
 

@@ -65,11 +65,8 @@ ATestCharacter::ATestCharacter()
 	ChageCameracomp->SetupAttachment(SpringArmComp);
 	ChageCameracomp->SetRelativeLocation(FVector(-190.f, -40.f, 0.f)); // Position the camera
 	
-	//ChageCameracomp->SetRelativeLocation(FVector(0 , -40 , -20));
-	//ChageCameracomp->SetRelativeRotation(FRotator(0, 180, 0));
-
-	myArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("myArrowComp"));
-	myArrowComp->SetupAttachment(CameraComponent);
+	leftArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("myArrowComp"));
+	leftArrowComp->SetupAttachment(CameraComponent);
 
 	// 아이템 부착할 위치 잡는 용도 
 	ItemArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("ItemArrowComp"));

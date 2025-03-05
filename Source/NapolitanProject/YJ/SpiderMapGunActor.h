@@ -23,4 +23,28 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditDefaultsOnly)
+	class USceneComponent* SceneComp;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	class UStaticMeshComponent* StaticMeshComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UBoxComponent* BoxComp;
+
+	// 나이아가라
+	UPROPERTY(EditDefaultsOnly)
+	class UNiagaraComponent* NiagaraComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UAudioComponent* AudioComp;
+	
+	// 총구에서 발사
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* FireSoundWave;
+
+	UFUNCTION()
+	void Fired();
+	
 };

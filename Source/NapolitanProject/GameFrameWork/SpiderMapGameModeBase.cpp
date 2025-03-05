@@ -14,6 +14,7 @@
 #include "NapolitanProject/Interact/CatchSpider.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/YJ/SpiderMapGunActor.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 
 ASpiderMapGameModeBase::ASpiderMapGameModeBase()
@@ -39,6 +40,18 @@ void ASpiderMapGameModeBase::BeginPlay()
 
 		// 총 부착시키기 
 		// MainCharacter
+
+		if (GunBP)
+		{
+			Gun = GetWorld()->SpawnActor<ASpiderMapGunActor>(GunBP);
+		}
+		if (Gun)
+		{
+				Gun->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
+					
+				Gun->AttachToComponent(MainCharacter->leftArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+			
+		}
 		
 	}
 	if (SpiderBP)
@@ -65,9 +78,11 @@ void ASpiderMapGameModeBase::BeginPlay()
 void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)
 {
 	// 현재 거미잡이 총을 잡고있고 거미를 향해 E키를 눌렀을경우4
-	// MainCharacter->curItem->ItemID 
+	// MainCharacter->curItem->ItemID
+	Gun->Fired();
+	
 	ACatchSpider* CatchSpider =Cast<ACatchSpider>(Interact);
-		
+	
 	if (CatchSpider)
 	{
 		CatchSpider->Health--;
@@ -137,7 +152,9 @@ void ASpiderMapGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 	MainCharacter->OnSpecialInteraction.Clear();
 
-	// 총 부착-해제시키기
+
 	// MainCharacter
 	GI->CatchSpiderNum=FString::FromInt(CatchSpiderCount);
+	// 총 부착-해제시키기
+	Gun->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
 }

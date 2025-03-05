@@ -60,11 +60,6 @@ void AClueActor::Tick(float DeltaTime)
 
 void AClueActor::LookAt()
 {
-	// 캐릭터의 카메라 시점으로 이동 시켰다가 제자리로
-	FVector OriginLoc = GetActorLocation();
-	FRotator OriginRot=GetActorRotation();
-	FVector CameraLoc =MainCharacter->myArrowComp->GetComponentLocation();
-	FRotator CameraRot =MainCharacter->myArrowComp->GetComponentRotation();
 	
 	MainCharacter->SetPlayerState(EPlayerState::UI);
 	FName Clue_FName = FName(*FString::FromInt(Clue_ID));
