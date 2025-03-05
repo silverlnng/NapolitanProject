@@ -20,6 +20,8 @@ enum class EPlayerState:uint8
 // 델리게이트 선언
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSpecialInteraction, AActor*, InteractedActor);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnEnablePlayerNoise);
+
 UCLASS()
 class NAPOLITANPROJECT_API ATestCharacter : public ACharacter
 {
@@ -259,6 +261,11 @@ public:
 	UPROPERTY(EditDefaultsOnly,Category=Sound)
 	class USoundWave* HeartSound;
 
+	///거미맵에서만 걷고 뛸때 소리가 들리도록 하기 ////////
+	// 플레이어에게 소리 기능을 활성화하는 델리게이트
+	UPROPERTY(BlueprintAssignable, Category = "Noise")
+	FOnEnablePlayerNoise OnEnablePlayerNoise;
+	
 	//////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* NPCEventSoundWave;

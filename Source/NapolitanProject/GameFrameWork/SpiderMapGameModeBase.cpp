@@ -16,6 +16,7 @@
 #include "NapolitanProject/Interact/ItemActor.h"
 #include "NapolitanProject/YJ/SpiderMapGunActor.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
+#include "Perception/AISense_Hearing.h"
 
 ASpiderMapGameModeBase::ASpiderMapGameModeBase()
 {
@@ -27,8 +28,12 @@ void ASpiderMapGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	MainCharacter=Cast<ATestCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (!MainCharacter){return;}
 	PC =MainCharacter->GetController<ATestPlayerController>();
-	PlayerHUD =PC->GetHUD<APlayerHUD>();
+	if (!PC){return;}
+	PlayerHUD =PC->GetHUD<APlayerHUD>();	
+		
+	
 	
 	if (MainCharacter)
 	{
@@ -38,7 +43,9 @@ void ASpiderMapGameModeBase::BeginPlay()
 		// 새로운 기능 바인딩
 		MainCharacter->OnSpecialInteraction.AddDynamic(this, &ASpiderMapGameModeBase::Interaction_OnSpiderMap);
 
-		// 총 부착시키기 
+		MainCharacter->OnEnablePlayerNoise.AddDynamic(this,&ASpiderMapGameModeBase::MakeNoisePlayer);
+		
+		// 거미맵에서만 총 부착시키기 
 		// MainCharacter
 
 		if (GunBP)
@@ -52,6 +59,8 @@ void ASpiderMapGameModeBase::BeginPlay()
 				Gun->AttachToComponent(MainCharacter->leftArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 			
 		}
+
+		//거미맵에서만 걸을때 들리도록하기 하기
 		
 	}
 	if (SpiderBP)
@@ -147,14 +156,22 @@ void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)
 	}
 }
 
+void ASpiderMapGameModeBase::MakeNoisePlayer()
+{
+	UAISense_Hearing::ReportNoiseEvent(GetWorld(), MainCharacter->GetActorLocation(), 5.f, this, 5.0f);
+//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("플레이어의 소리 발생")));
+}
+
 void ASpiderMapGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	Super::EndPlay(EndPlayReason);
 	MainCharacter->OnSpecialInteraction.Clear();
 
+	MainCharacter->OnEnablePlayerNoise.Clear();
 
 	// MainCharacter
 	GI->CatchSpiderNum=FString::FromInt(CatchSpiderCount);
 	// 총 부착-해제시키기
 	Gun->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
 }
+

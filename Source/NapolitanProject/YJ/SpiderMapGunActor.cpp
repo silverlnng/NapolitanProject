@@ -44,7 +44,7 @@ void ASpiderMapGunActor::Tick(float DeltaTime)
 void ASpiderMapGunActor::Fired()
 {
 	// 나이아가라 실행
-
+	NiagaraComp->Activate();
 	// 조금 흔들림
 	
 	// 총사운드 실행

@@ -38,7 +38,7 @@ void ANPC_Butterfly::ResultEvent(int32 result)
 	{
 		if (0==result)
 		{
-			//State=2;
+			State=2;
 			//TestPC->StartEndNPCDialougue(true);
 			//TestPC->SetNPCDialougueText(0);
 		}

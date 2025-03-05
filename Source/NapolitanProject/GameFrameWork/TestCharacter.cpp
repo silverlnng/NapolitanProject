@@ -24,8 +24,6 @@
 #include "Components/CanvasPanel.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/ItemActor.h"
-#include "NapolitanProject/Interact/PieceActor.h"
-#include "NapolitanProject/Interact/Sculpture.h"
 #include "NapolitanProject/Interact/SouvenirActor.h"
 #include "NapolitanProject/Interact/TargetForItem.h"
 #include "NapolitanProject/YJ/CheckPoint.h"
@@ -217,6 +215,7 @@ void ATestCharacter::Move(const FInputActionValue& Value)
 		// add movement 
 		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
 		AddMovementInput(GetActorRightVector(), MovementVector.X);
+		OnEnablePlayerNoise.Broadcast();
 	}
 }
 void ATestCharacter::MyJump()
@@ -250,6 +249,7 @@ void ATestCharacter::MyJump()
 	{
 		bPressedJump = true;
 		JumpKeyHoldTime = 0.0f;
+		OnEnablePlayerNoise.Broadcast();
 	}
 	
 }
@@ -746,5 +746,3 @@ void ATestCharacter::SpawnFootstepToTarget(int32 TargetIndex)
 		FootstepSpawner->SpawnFootsteps(Vec);
 	}
 }
-
-

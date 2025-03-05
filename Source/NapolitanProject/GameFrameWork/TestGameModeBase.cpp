@@ -8,6 +8,8 @@
 #include "PlayerHUD.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
+#include "NapolitanProject/Interact/PieceActor.h"
+#include "NapolitanProject/Interact/Sculpture.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NapolitanProject/YJ/Save/GameSaveController.h"
 #include "NapolitanProject/YJ/Save/TestSaveGame.h"
@@ -54,6 +56,22 @@ void ATestGameModeBase::BeginPlay()
 				NPCArray[key]->Destroy();
 				// 어색 하면 Destroy()
 			}
+
+			if (4==key) // 경비원 npc클리어했을때 
+			{
+				// 2층의 조각상 삭제
+				for (TActorIterator<ASculpture> It(GetWorld(), ASculpture::StaticClass()); It; ++It)
+				{
+					ASculpture* Sculpture = *It;
+					Sculpture->Destroy(1);
+				}
+				for (TActorIterator<APieceActor> It(GetWorld(), APieceActor::StaticClass()); It; ++It)
+				{
+					APieceActor* Piece = *It;
+					Piece->Destroy(1);
+				}
+			}
+			
 		}
 	}
 	

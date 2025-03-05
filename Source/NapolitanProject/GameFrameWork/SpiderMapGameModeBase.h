@@ -47,5 +47,10 @@ public:
 	
 	UFUNCTION()
 	void Interaction_OnSpiderMap(AActor* Interact);
+
+	UFUNCTION()
+	void MakeNoisePlayer();
+	
 };
+
 

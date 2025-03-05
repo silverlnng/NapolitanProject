@@ -208,7 +208,7 @@ void ATargetForItem_BurgerPlate::MissionCheck()
 		}
 		if (NPC_Butterfly)
 		{
-			NPC_Butterfly->State=2;
+			NPC_Butterfly->State=3;
 			NPC_Butterfly->TargetForItem_BurgerPlate=this;
 		}
 	},3.0f,false);
