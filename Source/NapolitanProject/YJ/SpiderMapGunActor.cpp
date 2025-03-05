@@ -6,6 +6,7 @@
 #include "NiagaraComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASpiderMapGunActor::ASpiderMapGunActor()
@@ -25,6 +26,8 @@ ASpiderMapGunActor::ASpiderMapGunActor()
 
 	NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
 	NiagaraComp->SetupAttachment(StaticMeshComp);
+
+	
 }
 
 // Called when the game starts or when spawned
@@ -50,7 +53,7 @@ void ASpiderMapGunActor::Fired()
 	// 총사운드 실행
 	if (FireSoundWave)
 	{
-		AudioComp->Play();
+		UGameplayStatics::PlaySoundAtLocation(this,FireSoundWave,GetActorLocation());
 	}
 }
 

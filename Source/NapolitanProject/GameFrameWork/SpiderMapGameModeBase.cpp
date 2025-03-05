@@ -158,8 +158,13 @@ void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)
 
 void ASpiderMapGameModeBase::MakeNoisePlayer()
 {
-	UAISense_Hearing::ReportNoiseEvent(GetWorld(), MainCharacter->GetActorLocation(), 5.f, this, 5.0f);
-//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("플레이어의 소리 발생")));
+	//MainCharacter->GetActorLocation() 에서 z값만 증가시켜서
+	FVector origin=MainCharacter->GetActorLocation();
+	// 높이만 증가
+	//origin.Z+=
+	//UAISense_Hearing::ReportNoiseEvent(GetWorld(), MainCharacter->GetActorLocation(), 100.f, MainCharacter, 1000.0f);
+	MakeNoise(100.f,MainCharacter,MainCharacter->GetActorLocation(),100.f);
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("플레이어의 소리 발생")));
 }
 
 void ASpiderMapGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)

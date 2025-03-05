@@ -4,6 +4,7 @@
 #include "AttackSpiderV2.h"
 
 #include "AIController.h"
+#include "AttackSpiderAIController.h"
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SplineComponent.h"
@@ -20,31 +21,7 @@ AAttackSpiderV2::AAttackSpiderV2()
 	
 	AudioComp =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->SetupAttachment(GetCapsuleComponent());
-
-	// AIPerceptionComponent 생성
-	AIPerception = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("AIPerception"));
-
-	// 청각 감지 설정
-	HearingConfig = CreateDefaultSubobject<UAISenseConfig_Hearing>(TEXT("HearingConfig"));
-	if (HearingConfig)
-	{
-		HearingConfig->HearingRange = HearingRange;
-		HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
-		HearingConfig->DetectionByAffiliation.bDetectNeutrals = false;
-		HearingConfig->DetectionByAffiliation.bDetectFriendlies = false;
-
-
-		
-		// 🎯 감지 범위를 3D Sphere처럼 만들기
-		HearingConfig->HearingRange=FMath::Sqrt(HearingRange * HearingRange + HearingZRange * HearingZRange);
-		
-		AIPerception->ConfigureSense(*HearingConfig);
-		AIPerception->SetDominantSense(UAISense_Hearing::StaticClass());
-		
-		AIPerception->ConfigureSense(*HearingConfig);
-		AIPerception->SetDominantSense(UAISense_Hearing::StaticClass());
-		AIPerception->OnPerceptionUpdated.AddDynamic(this, &AAttackSpiderV2::OnHearNoise);
-	}
+	
 }
 
 // Called when the game starts or when spawned
@@ -52,7 +29,11 @@ void AAttackSpiderV2::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	AIController = Cast<AAIController>(GetController());
+	AIController = Cast<AAttackSpiderAIController>(GetController());
+	if (AIController)
+	{
+		//AIController->SetPerceptionComponent(*AIPerception);
+	}
 	
 	TestPC=GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	if (TestPC)
@@ -69,6 +50,9 @@ void AAttackSpiderV2::BeginPlay()
 	}
 	
 	StartMoving();
+
+	/*AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &AAttackSpiderV2::OnTargetPerceptionUpdated);
+	AIPerception->OnPerceptionUpdated.AddDynamic(this, &AAttackSpiderV2::OnHearNoise);*/
 }
 
 // Called every frame
@@ -122,11 +106,21 @@ void AAttackSpiderV2::AttackPlayer()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("공격시작")));
 }
 
+void AAttackSpiderV2::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("소리를 감지함!")));
+	if (Stimulus.Type == Stimulus.SensingSucceeded)  // 🎯 청각 감지만 체크
+	{
+		UE_LOG(LogTemp, Warning, TEXT("👂 몬스터가 소리를 들음! 위치: %s"), *Stimulus.StimulusLocation.ToString());
+		bIsMoving=false;
+	}
+}
+
 void AAttackSpiderV2::OnHearNoise(const TArray<AActor*>& Actor)
 {
 	// Actor 순회 .
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("소리를 감지함!")));
-	
+	bIsMoving=false;
 	for (auto &FoundActor  :Actor)
 	{
 		if (FoundActor->IsA(ATestCharacter::StaticClass()))

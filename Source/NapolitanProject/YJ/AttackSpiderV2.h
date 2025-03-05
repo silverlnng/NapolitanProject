@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "AttackSpiderV2.generated.h"
 
+struct FAIStimulus;
 class UAIPerceptionComponent;
 
 UCLASS()
@@ -62,7 +63,9 @@ public:
 	void OnHearNoise(const TArray<AActor*>& Actor);
 	
 	void AttackPlayer();
-
+	
+	UFUNCTION()
+	void OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus);
 	
 private:
 	UPROPERTY(EditAnywhere, Category = "Movement")

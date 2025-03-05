@@ -32,7 +32,7 @@
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
-
+#include "Perception/AISense_Hearing.h"
 
 
 ATestCharacter::ATestCharacter()
@@ -250,6 +250,7 @@ void ATestCharacter::MyJump()
 		bPressedJump = true;
 		JumpKeyHoldTime = 0.0f;
 		OnEnablePlayerNoise.Broadcast();
+		UAISense_Hearing::ReportNoiseEvent(GetWorld(), this->GetActorLocation(), 10.f, this, 5.0f);
 	}
 	
 }
