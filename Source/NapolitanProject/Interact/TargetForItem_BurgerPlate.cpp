@@ -90,7 +90,7 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 		curItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3 , ECR_Ignore);
 		MainCharacter->curItem = nullptr;
 		curItem->AttachToComponent(SceneComp2 , FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-		PutDownitemID.Add(itemID);
+		PutDownitemID.Add(curItem);
 
 	// 인벤에서 안보이도록 작업 . 
 		PlayerHUD->InventoryUI->InvenSlots[1]->SetIsEnabledBtn();
@@ -113,7 +113,7 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 
 			PlayerHUD->InventoryUI->InvenSlots[3]->SetIsEnabledBtn();
 			PlayerHUD->InventoryUI->InvenSlots[3]->Set_TextNum("");
-			PutDownitemID.Add(itemID);
+			PutDownitemID.Add(curItem);
 			curItem->Remove();
 		}
 		else
@@ -140,9 +140,10 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 		}
 
 		PlayerHUD->InventoryUI->InvenSlots[4]->SetIsEnabledBtn();
-		PutDownitemID.Add(itemID);
+		PutDownitemID.Add(curItem);
 		curItem->Remove();
 		break;
+		
 	case 5:
 		curItem->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
 		curItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3 , ECR_Ignore);
@@ -155,8 +156,9 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 		{
 			curItem->AttachToComponent(SceneComp4 , FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 		}
+		
 		PlayerHUD->InventoryUI->InvenSlots[5]->SetIsEnabledBtn();
-		PutDownitemID.Add(itemID);
+		PutDownitemID.Add(curItem);
 		curItem->Remove();
 		break;
 	}
@@ -191,17 +193,13 @@ void ATargetForItem_BurgerPlate::MissionCheck()
 		BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 		
 		// 만든 버거는 사라지도록 하기
-		USceneComponent* item4  =SceneComp4->GetChildComponent(0);
-		item4->SetHiddenInGame(true);
-		USceneComponent* item1  =SceneComp1->GetChildComponent(0);
-		item1->SetHiddenInGame(true);
-		USceneComponent* item2  =SceneComp2->GetChildComponent(0);
-		item2->SetHiddenInGame(true);
-		USceneComponent* item3  =SceneComp3->GetChildComponent(0);
-		item3->SetHiddenInGame(true);
-
+		for (AItemActor* item :PutDownitemID)
+		{
+			item->SetActorHiddenInGame(true);
+			item->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
+		}
 		
-		// 2층문이 열리도록 하기
+		// 나비의 state증가 시키기
 		for (TActorIterator<ANPC_Butterfly> It(GetWorld(), ANPC_Butterfly::StaticClass()); It; ++It)
 		{
 			NPC_Butterfly=*It;

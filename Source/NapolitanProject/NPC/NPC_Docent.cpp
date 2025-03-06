@@ -9,6 +9,7 @@
 #include "NapolitanProject/GameFrameWork/EventComponent.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/Interact/Souvenir_Docent.h"
 
 
@@ -166,13 +167,14 @@ void ANPC_Docent::ResultEvent(int32 result)
 
 				ASouvenir_Docent* SouvenirActor = GetWorld()->SpawnActor<ASouvenir_Docent>(
 					SouvenirNoteClass , SpawnTransform);
-			} , 5.5f , false);
+			} , 7.0f , false);
 			
 			// 미술관을 탐색하자 퀘스트 발생 시키기 => 유품 쪽에서
 			FTimerHandle UITimer1;
 
 			GetWorld()->GetTimerManager().SetTimer(UITimer1,[this]()
 			{
+				MainCharacter->b_IA_Note_Allowed = true;
 				ChangeCleared(); 
 			},6.0f,false);
 

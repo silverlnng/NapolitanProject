@@ -85,6 +85,10 @@ public:
 	UFUNCTION()
 	void OnClickBtn_Btn_Curator();
 
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Butterfly;
+	UFUNCTION()
+	void OnClickBtn_Btn_Butterfly();
 
 //////////////////////////////////////////////////////////////////	
 	

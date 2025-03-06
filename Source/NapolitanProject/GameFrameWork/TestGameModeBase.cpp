@@ -29,7 +29,7 @@ void ATestGameModeBase::BeginPlay()
 	PC->SetShowMouseCursor(false);
 
 	MainCharacter = Cast<ATestCharacter>(PC->GetPawn());
-	MainCharacter->b_IA_Note_Allowed = true;
+	//MainCharacter->b_IA_Note_Allowed = true; => 도슨트 클리어하고 될수있도록 하기 
 	MainCharacter->b_IA_Inven_Allowed = true;
 
 	PlayerHUD = PC->GetHUD<APlayerHUD>();
@@ -70,6 +70,10 @@ void ATestGameModeBase::BeginPlay()
 					APieceActor* Piece = *It;
 					Piece->Destroy(1);
 				}
+			}
+			if (2==key) // 도슨트
+			{
+				MainCharacter->b_IA_Note_Allowed = true;
 			}
 			
 		}

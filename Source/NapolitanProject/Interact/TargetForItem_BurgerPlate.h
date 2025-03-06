@@ -41,7 +41,7 @@ public:
 	TArray<int32> TargetItemIDArray={1,3,4,5};
 
 	UPROPERTY(VisibleAnywhere)
-	TArray<int32> PutDownitemID;
+	TArray<AItemActor*> PutDownitemID;
 	
 	void MissionCheck();
 

@@ -47,6 +47,8 @@ public:
 
 	void Event_Butterfly_Completed();
 
+	void Event_Butterfly_QuestReward();
+	
 	void UpdateText();
 
 	

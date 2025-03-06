@@ -12,7 +12,10 @@
 #include "Components/RichTextBlock.h"
 #include "NapolitanProject/Interact/Door_2Floor.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
+#include "NapolitanProject/NPC/NPCCharacter.h"
+#include "NapolitanProject/NPC/NPC_Butterfly.h"
 #include "NapolitanProject/YJ/EventWidget.h"
+#include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NPCInfoWidget.h"
 
@@ -101,12 +104,17 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 	else if (str=="ButterflyQuest")
 	{
 		Event_Butterfly_Start();
-		//GI->NPCEventManage.Add(NameKey);
+		GI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="ButterflyQuestCompleted")
 	{
 		Event_Butterfly_Completed();
-		//GI->NPCEventManage.Add(NameKey);
+		GI->NPCEventManage.Add(NameKey);
+	}
+	else if (str=="ButterflyQuestReward")
+	{
+		Event_Butterfly_QuestReward();
+		GI->NPCEventManage.Add(NameKey);
 	}
 }
 
@@ -340,19 +348,47 @@ void UEventComponent::Event_Oldman()
 
 void UEventComponent::Event_Butterfly_Start()
 {
+	PlayerHUD->NPCResultUI->SetVisibility(ESlateVisibility::Hidden);
+	PlayerHUD->NPCResultUI->curOrder=0;
+	MainCharacter->SetPlayerState(EPlayerState::UI);
+	
+	// 시간지연
+	FTimerHandle UITimer;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
+
+		PlayerHUD->NoteUI->OnClickBtn_Btn_Butterfly();
+	},2.0f,false);
+
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Butterfly(1,1);
+	},2.5f,false);
 	
 
 	FTimerHandle UITimer3;
 
 	GetWorld()->GetTimerManager().SetTimer(UITimer3,[this]()
 	{
-		//TestPC->StartEndNPCDialougue(false);
-		//TestPC->EndResult();
 		FString QuestText =FString(TEXT("거미버거를 만들어주기"));
 		PlayerHUD->InteractUI->AddQuestSlot(3,QuestText);
 	},8.0f,false);
-
 	
+	FTimerHandle UITimer4;
+	GetWorld()->GetTimerManager().SetTimer(UITimer4,[this]()
+	{
+		MainCharacter->SetPlayerState(EPlayerState::UI);
+	},6.0f,false);
+
+	ANPC_Butterfly* NPC_Butterfly= Cast<ANPC_Butterfly>(TestPC->curNPC);
+	if (NPC_Butterfly)
+	{
+		NPC_Butterfly->State=2; //현재 나비여서 state 증가시키기 
+	}
 }
 
 void UEventComponent::Event_Butterfly_Completed()
@@ -361,8 +397,42 @@ void UEventComponent::Event_Butterfly_Completed()
 	
 	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
 	{
-		PlayerHUD->InteractUI->RemoveQuestSlot("거미버거를 만들어주기");
+		FString QuestText =FString(TEXT("거미버거를 만들어주기"));
+		PlayerHUD->InteractUI->RemoveQuestSlot(QuestText);
 	},1.0f,false);
+	
+}
+
+void UEventComponent::Event_Butterfly_QuestReward()
+{
+	TestPC->StartEndNPCDialougue(false);
+	
+	// 스폰시키고
+	ANPC_Butterfly* NPC_Butterfly= Cast<ANPC_Butterfly>(TestPC->curNPC);
+	if (NPC_Butterfly)
+	{
+		NPC_Butterfly->SpawnItems();
+	}
+
+	MainCharacter->SetPlayerState(EPlayerState::UI);
+
+	// 시간지연
+	FTimerHandle UITimer;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
+
+		PlayerHUD->NoteUI->OnClickBtn_Btn_Butterfly();
+		
+	},2.0f,false);
+
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Butterfly(2,3);
+	},2.5f,false);
 	
 }
 

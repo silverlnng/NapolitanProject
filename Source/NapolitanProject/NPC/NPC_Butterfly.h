@@ -22,7 +22,7 @@ public:
 	virtual int32 GetNPCID() override;
 
 	virtual int32 GetState() override;
-
+	
 	virtual void Interact() override;
 
 	virtual void ResultEvent(int32 result) override; 

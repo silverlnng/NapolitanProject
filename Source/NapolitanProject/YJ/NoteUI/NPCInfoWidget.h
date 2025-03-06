@@ -96,8 +96,26 @@ public:
 
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher_Oldman1;
+	
+////////////////////// 나비 ///////////////////////////
 
+	UPROPERTY(meta = (BindWidget))
+	class UScrollBox* ScrollBox_Butterfly;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_Butterfly_1;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_Butterfly_2;
 
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher_Butterfly_1;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher_Butterfly_2;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher_Butterfly_3;
 	
 /////////////////////////////////////////////////////////////	
 	UFUNCTION()
@@ -114,5 +132,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void SetForcus_ScrollBox_Docent(int32 panelNum,int32 wsNum);
+	
+	UFUNCTION(BlueprintCallable)
+	void SetForcus_ScrollBox_Butterfly(int32 panelNum,int32 wsNum);
 	
 };

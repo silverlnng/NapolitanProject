@@ -156,7 +156,7 @@ public:
 	int32 traceLength=500;
 
 	UPROPERTY(BlueprintReadWrite, Category="Game Rules")
-	bool b_IA_Note_Allowed = true;
+	bool b_IA_Note_Allowed = false;
 	
 	/////////// 지금 대화하고 있는 npc 가 누구인지 기억하기
 	UPROPERTY(VisibleAnywhere)

@@ -54,12 +54,15 @@ void ADetectiveMapGameModeBase::BeginPlay()
 	switch (DetectiveMapState)
 	{
 	case EDetectiveMapState::FisrtStart:
+		// 그냥 맨처음 시작 
 		GetWorld()->GetTimerManager().SetTimer(UITimer , [this]()
 		{
+			PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Visible);
 			PlayerHUD->InteractUI->SetVisibleHBox(true);
 			PlayerHUD->InteractUI->SetVisibleCrossHair(true);
 		} , 1.f , false);
 		break;
+		
 	case EDetectiveMapState::FirstEnding:
 		
 	// 1차 엔딩 시퀀스 작동되도록
