@@ -115,7 +115,7 @@ void AAttackSpiderV2::MoveAlongSpline(float DeltaTime)
 
 	// 몬스터를 거꾸로 매달기 위해 추가 회전 적용
 	NewRotation.Pitch += 180.0f; 
-	
+	NewRotation.Yaw += 180.0f; 
 	SetActorLocationAndRotation(NewLocation, NewRotation);
 	
 }
@@ -242,10 +242,13 @@ void AAttackSpiderV2::SoundControl()
 	//
 	if (!MainCharacter || !SoundControlActor) return;
 
-	float Distance = FVector::Dist(MainCharacter->GetActorLocation(), GetActorLocation());
+	FVector SpiderVector=this->GetActorLocation();
+	SpiderVector.Z=MainCharacter->GetActorLocation().Z;
 	
-	float MinDistance = 1000.0f;  // 가까울 때 (최소 볼륨)
-	float MaxDistance = 1400.0f; // 멀어질 때 (최대 볼륨)
+	float Distance = FVector::Dist(MainCharacter->GetActorLocation(), SpiderVector);
+	
+	float MinDistance = 500.0f;  // 가까울 때 (최소 볼륨)
+	float MaxDistance = 1000.0f; // 멀어질 때 (최대 볼륨)
 
 	// 거리 비율 계산 (0 ~ 1)
 	float DistanceRatio = FMath::Clamp((Distance - MinDistance) / (MaxDistance - MinDistance), 0.0f, 1.0f);

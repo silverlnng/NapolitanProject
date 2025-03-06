@@ -3,6 +3,7 @@
 
 #include "SpiderMapGameModeBase.h"
 
+#include "EngineUtils.h"
 #include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
 #include "TestCharacter.h"
@@ -14,6 +15,7 @@
 #include "NapolitanProject/Interact/CatchSpider.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/YJ/AttackSpiderV2.h"
 #include "NapolitanProject/YJ/SpiderMapGunActor.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 #include "Perception/AISense_Hearing.h"
@@ -33,7 +35,11 @@ void ASpiderMapGameModeBase::BeginPlay()
 	if (!PC){return;}
 	PlayerHUD =PC->GetHUD<APlayerHUD>();	
 		
-	
+	for (TActorIterator<AAttackSpiderV2> It(GetWorld(), AAttackSpiderV2::StaticClass()); It; ++It)
+	{
+		AttackSpiderV2 = *It;
+		
+	}
 	
 	if (MainCharacter)
 	{
@@ -164,9 +170,9 @@ void ASpiderMapGameModeBase::MakeNoisePlayer()
 	//MainCharacter->GetActorLocation() 에서 z값만 증가시켜서
 	FVector origin=MainCharacter->GetActorLocation();
 	// 높이만 증가
-	origin.Z+=510;
+	origin.Z=AttackSpiderV2->GetActorLocation().Z;
 
-	MakeNoise(100.f,MainCharacter,origin,5.f);
+	MakeNoise(100.f,MainCharacter,origin,NoiseRange);
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("플레이어의 소리 발생")));
 }
 

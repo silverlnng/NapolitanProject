@@ -50,7 +50,15 @@ public:
 
 	UFUNCTION()
 	void MakeNoisePlayer();
-	
+
+	UPROPERTY(EditAnywhere)
+	float NoiseRange=10;
+
+	UPROPERTY(EditAnywhere)
+	float AddZ=600;
+
+	UPROPERTY()
+	class AAttackSpiderV2* AttackSpiderV2;
 };
 
 
