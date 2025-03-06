@@ -5,12 +5,13 @@
 
 #include "AIController.h"
 #include "AttackSpiderAIController.h"
+#include "AttackSpider_AnimInstance.h"
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SplineComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Hearing.h"
 
 // Sets default values
@@ -28,6 +29,8 @@ AAttackSpiderV2::AAttackSpiderV2()
 void AAttackSpiderV2::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Anim=Cast<UAttackSpider_AnimInstance>(GetMesh()->GetAnimInstance());
 	
 	AIController = Cast<AAttackSpiderAIController>(GetController());
 	if (AIController)
@@ -51,8 +54,7 @@ void AAttackSpiderV2::BeginPlay()
 	
 	StartMoving();
 
-	/*AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &AAttackSpiderV2::OnTargetPerceptionUpdated);
-	AIPerception->OnPerceptionUpdated.AddDynamic(this, &AAttackSpiderV2::OnHearNoise);*/
+
 }
 
 // Called every frame
@@ -85,6 +87,9 @@ void AAttackSpiderV2::MoveAlongSpline(float DeltaTime)
 	FVector NewLocation = CurrentSpline->GetLocationAtDistanceAlongSpline(DistanceAlongSpline, ESplineCoordinateSpace::World);
 	FRotator NewRotation = CurrentSpline->GetRotationAtDistanceAlongSpline(DistanceAlongSpline, ESplineCoordinateSpace::World);
 
+	// 몬스터를 거꾸로 매달기 위해 추가 회전 적용
+	NewRotation.Pitch += 180.0f; 
+	
 	SetActorLocationAndRotation(NewLocation, NewRotation);
 }
 
@@ -99,43 +104,79 @@ void AAttackSpiderV2::StartMoving()
 
 void AAttackSpiderV2::AttackPlayer()
 {
-	//움직임을 멈추고
-	bIsMoving=false;
-
+	
 	// 공격시작
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("공격시작")));
 }
 
-void AAttackSpiderV2::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
+void AAttackSpiderV2::DetectAndDrop()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("소리를 감지함!")));
-	if (Stimulus.Type == Stimulus.SensingSucceeded)  // 🎯 청각 감지만 체크
-	{
-		UE_LOG(LogTemp, Warning, TEXT("👂 몬스터가 소리를 들음! 위치: %s"), *Stimulus.StimulusLocation.ToString());
-		bIsMoving=false;
-	}
+	//움직임을 멈추고
+	bIsMoving=false;
+	//플레이어를 보는 방향으로 회전
+	FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(this->GetActorLocation(), MainCharacter->GetActorLocation());
+	LookAtRotation.Pitch=0;
+	SetActorRotation(LookAtRotation);
 }
 
-void AAttackSpiderV2::OnHearNoise(const TArray<AActor*>& Actor)
+void AAttackSpiderV2::StartChasing()
 {
-	// Actor 순회 .
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("소리를 감지함!")));
-	bIsMoving=false;
-	for (auto &FoundActor  :Actor)
+	// 플레이어 향해 추적
+	AIController->MoveToActor(MainCharacter, 5.0f);
+
+	// 0.2초마다 거리 체크 (Tick 대신 Timer 사용)
+	GetWorld()->GetTimerManager().SetTimer(ChaseCheckTimer, this, &AAttackSpiderV2::CheckAttackRange, 0.2f, true);
+	
+}
+void AAttackSpiderV2::StartAttack()
+{
+	// 사망이벤트 만 발생시킴
+	
+	//카메라 쉐이크 .
+}
+
+void AAttackSpiderV2::CheckAttackRange()
+{
+	Distance = FVector::Distance(this->GetActorLocation(), MainCharacter->GetActorLocation());
+
+	if (Distance <= AttackRange)
 	{
-		if (FoundActor->IsA(ATestCharacter::StaticClass()))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("플레이어의 소리를 감지함!"));
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("플레이어의 소리를 감지함!")));
-			
-			// 일정 거리 이내인지 확인
-			float Distance = FVector::Dist(GetActorLocation(), MainCharacter->GetActorLocation());
-			if (Distance <= HearingRange)
-			{
-				AttackPlayer();
-			}
-		}
+		SetAIState(EAttackSpiderV2State::Attack);
+	}
+	else
+	{
+		SetAIState(EAttackSpiderV2State::Chase);
 	}
 	
 }
+
+
+void AAttackSpiderV2::SetAIState(EAttackSpiderV2State NewState)
+{
+	FString message = UEnum::GetValueAsString(NewState);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
+	
+	CurrentState = NewState;
+	if (Anim)
+	{
+		Anim->CurrentState=NewState;
+	}
+	switch (CurrentState)
+	{
+	case EAttackSpiderV2State::Move:
+		StartMoving();
+		break;
+	case EAttackSpiderV2State::Drop:
+		DetectAndDrop();
+		break;
+	case EAttackSpiderV2State::Chase:
+		StartChasing();
+		break;
+	case EAttackSpiderV2State::Attack:
+		StartAttack();
+		break;
+	}
+}
+
+
 

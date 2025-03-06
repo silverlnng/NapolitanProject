@@ -31,6 +31,9 @@ private:
 	class UAISenseConfig_Hearing* HearingConfig;
 
 public:
+	UPROPERTY(EditAnywhere, Category = "AI")
+	float HearingRange_ = 500.0f;
+	
 	UFUNCTION()
 	void OnHearNoise(const TArray<AActor*>& Actor);
 	

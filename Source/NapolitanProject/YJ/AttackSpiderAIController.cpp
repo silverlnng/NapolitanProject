@@ -25,11 +25,10 @@ void AAttackSpiderAIController::BeginPlay()
 	
 	AttackSpider=GetPawn<AAttackSpiderV2>();
 	//AttackSpider=Cast<AAttackSpiderV2>(GetPawn());
-
 	
 	if (HearingConfig)
 	{
-		HearingConfig->HearingRange = 1000.0f;
+		HearingConfig->HearingRange = HearingRange_;
 		HearingConfig->DetectionByAffiliation.bDetectEnemies = true;
 		HearingConfig->DetectionByAffiliation.bDetectNeutrals = true;
 		HearingConfig->DetectionByAffiliation.bDetectFriendlies = true;
@@ -38,14 +37,10 @@ void AAttackSpiderAIController::BeginPlay()
 		AIPerception->SetDominantSense(UAISense_Hearing::StaticClass());
 	}
 	
+	AIPerception->SetSenseEnabled(UAISense_Hearing::StaticClass(),true);
+	
 	AIPerception->OnTargetPerceptionUpdated.AddDynamic(this, &AAttackSpiderAIController::OnTargetPerceptionUpdated);
 	
-	AIPerception->OnPerceptionUpdated.AddDynamic(this,&AAttackSpiderAIController::OnHearNoise);
-	
-	AIPerception->SetSenseEnabled(UAISense_Hearing::StaticClass(),true);
-
-	//AIPerception->SetSenseEnable
-
 }
 
 void AAttackSpiderAIController::OnTargetPerceptionUpdated(AActor* Actor, FAIStimulus Stimulus)
@@ -54,6 +49,18 @@ void AAttackSpiderAIController::OnTargetPerceptionUpdated(AActor* Actor, FAIStim
 	{
 		UE_LOG(LogTemp, Warning, TEXT("👂 몬스터(AIController)가 플레이어 소리를 감지함! 위치: %s"),
 			*Stimulus.StimulusLocation.ToString());
+		if (Actor->IsA(ATestCharacter::StaticClass()))
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("캐릭터의 소리를 감지함")));
+
+			//idle일때만 감지
+			if (AttackSpider->CurrentState==EAttackSpiderV2State::Move)
+			{
+				AttackSpider->SetAIState(EAttackSpiderV2State::Drop);
+			}
+			
+		}
+		
 	}
 	else
 	{

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AttackSpider.h"
+#include "AttackSpiderV2.h"
 #include "Animation/AnimInstance.h"
 #include "AttackSpider_AnimInstance.generated.h"
 
@@ -18,9 +19,10 @@ public:
 	// 나의 오너 폰(AEnemy)을 기억하고싶다.
 	virtual void NativeInitializeAnimation() override;
 	UPROPERTY()
-	class AAttackSpider* AttackSpider;
+	class AAttackSpiderV2* AttackSpider;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-	EAttackSpiderState CurrentState;
+	EAttackSpiderV2State CurrentState;
 
 	UFUNCTION()
 	void AnimNotify_CheckAfterAttack();
@@ -30,5 +32,7 @@ public:
 	
 	UFUNCTION()
 	void AnimNotify_AttackMiddle();
-	
+
+	UFUNCTION(BlueprintCallable)
+	void SetState(EAttackSpiderV2State State);
 };

@@ -88,12 +88,15 @@ void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)
 {
 	// 현재 거미잡이 총을 잡고있고 거미를 향해 E키를 눌렀을경우4
 	// MainCharacter->curItem->ItemID
-	Gun->Fired();
+
 	
 	ACatchSpider* CatchSpider =Cast<ACatchSpider>(Interact);
 	
 	if (CatchSpider)
 	{
+		Gun->Fired();
+		MakeNoisePlayer();
+		
 		CatchSpider->Health--;
 		if (CatchSpider->Health>0)
 		{
@@ -161,9 +164,9 @@ void ASpiderMapGameModeBase::MakeNoisePlayer()
 	//MainCharacter->GetActorLocation() 에서 z값만 증가시켜서
 	FVector origin=MainCharacter->GetActorLocation();
 	// 높이만 증가
-	//origin.Z+=
-	//UAISense_Hearing::ReportNoiseEvent(GetWorld(), MainCharacter->GetActorLocation(), 100.f, MainCharacter, 1000.0f);
-	MakeNoise(100.f,MainCharacter,MainCharacter->GetActorLocation(),100.f);
+	origin.Z+=510;
+
+	MakeNoise(100.f,MainCharacter,origin,5.f);
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("플레이어의 소리 발생")));
 }
 

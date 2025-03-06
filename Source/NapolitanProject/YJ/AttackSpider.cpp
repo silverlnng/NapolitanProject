@@ -72,7 +72,7 @@ void AAttackSpider::SetAIState(EAttackSpiderState NewState)
 	CurrentState = NewState;
 	if (Anim)
 	{
-		Anim->CurrentState=NewState;
+		//Anim->CurrentState=NewState;
 	}
 	switch (CurrentState)
 	{
