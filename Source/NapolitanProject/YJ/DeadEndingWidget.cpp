@@ -36,9 +36,7 @@ void UDeadEndingWidget::StartLerpTimer()
 		// 애니메이션 재생
 		PlayAnimation(FadeAnim);
 	}
-	//ElapsedTime = 0.0f;
 	
-	//GetWorld()->GetTimerManager().SetTimer(LerpTimerHandle,this,&UDeadEndingWidget::UpdateLerp,0.01f, true);
 }
 
 void UDeadEndingWidget::UpdateLerp()

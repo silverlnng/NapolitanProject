@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "AttackSpiderV2.generated.h"
 
+class UCameraComponent;
+
 UENUM(BlueprintType)
 enum class EAttackSpiderV2State:uint8
 {
@@ -35,11 +37,16 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class UPawnSensingComponent* PawnSensingComp;
 	
+	UPROPERTY()
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
-
+	class APlayerHUD* PlayerHUD;
+	
 	UPROPERTY(EditDefaultsOnly)
 	class UAudioComponent* AudioComp;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UAudioComponent* AudioComp2;
 	
 public:
 	void MoveAlongSpline(float DeltaTime);
@@ -78,10 +85,13 @@ public:
 	bool bIsMoving = false;
 
 	UPROPERTY(BlueprintReadWrite)
-	float Distance;
+	float toPlayerDistance;
+
+	
 	
 	class AAIController* AIController;
 
+	
 	UPROPERTY()
 	class UAttackSpider_AnimInstance* Anim;
 	
@@ -91,7 +101,39 @@ public:
 	UFUNCTION()
 	void SetAIState(EAttackSpiderV2State NewState);
 
+	UPROPERTY(EditAnywhere)
+	float SoundControlDistance=1000;
+	
+	class ASoundControlActor* SoundControlActor;
+
+	bool bIsFadingOut = false;
+	bool bIsFadingIn = false;
+	bool bAttack = false;
+	
+	UFUNCTION()
+	void SoundControl();
+	
+	
 	UPROPERTY()
 	FTimerHandle ChaseCheckTimer;
+	
+	UPROPERTY(EditDefaultsOnly)
+	class USpringArmComponent* SpringArmComp;
+
+	/** 몬스터 전용 카메라 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	UCameraComponent* MonsterCamera;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Sound")
+	float FadeTime=7.f;
+	/** 플레이어의 카메라를 몬스터 카메라로 전환하는 함수 */
+	void SwitchToMonsterCamera();
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCameraShakeBase> DeathCameraShakeClass;
+
+	UPROPERTY(EditDefaultsOnly)
+	class USoundWave* AttackSound;
+	
 };
 

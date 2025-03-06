@@ -6,10 +6,16 @@
 #include "AIController.h"
 #include "AttackSpiderAIController.h"
 #include "AttackSpider_AnimInstance.h"
+#include "DeadEndingWidget.h"
+#include "EngineUtils.h"
+#include "SoundControlActor.h"
+#include "Camera/CameraComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SplineComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "Perception/AISenseConfig_Hearing.h"
@@ -22,6 +28,13 @@ AAttackSpiderV2::AAttackSpiderV2()
 	
 	AudioComp =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->SetupAttachment(GetCapsuleComponent());
+	// 몬스터 카메라 생성 및 초기화
+	MonsterCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("MonsterCamera"));
+	MonsterCamera->SetupAttachment(RootComponent); // 루트에 부착
+	MonsterCamera->bUsePawnControlRotation = false; // 플레이어 조작 방지
+
+	AudioComp2 =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp2"));
+	AudioComp2->SetupAttachment(GetCapsuleComponent());
 	
 }
 
@@ -33,6 +46,7 @@ void AAttackSpiderV2::BeginPlay()
 	Anim=Cast<UAttackSpider_AnimInstance>(GetMesh()->GetAnimInstance());
 	
 	AIController = Cast<AAttackSpiderAIController>(GetController());
+	
 	if (AIController)
 	{
 		//AIController->SetPerceptionComponent(*AIPerception);
@@ -43,6 +57,8 @@ void AAttackSpiderV2::BeginPlay()
 	{
 		MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	}
+	
+	PlayerHUD =TestPC->GetHUD<APlayerHUD>();	
 	if (SplineActor)
 	{
 		CurrentSpline=Cast<USplineComponent>(SplineActor->GetComponentByClass(USplineComponent::StaticClass()));
@@ -54,7 +70,12 @@ void AAttackSpiderV2::BeginPlay()
 	
 	StartMoving();
 
-
+	for (TActorIterator<ASoundControlActor> It(GetWorld(), ASoundControlActor::StaticClass()); It; ++It)
+	{
+		SoundControlActor = *It;
+		SoundControlActor->IsSecondFloor=true; // 로비에서는 나오는 다른소리안들리도록 제어
+	}
+	
 }
 
 // Called every frame
@@ -66,6 +87,11 @@ void AAttackSpiderV2::Tick(float DeltaTime)
 	{
 		MoveAlongSpline(DeltaTime);
 	}
+
+	//계속해서 거리체크를 하면서 가까워지면 배경음을 감소시키기
+	//멀어지면 증가시키고
+	SoundControl();
+	
 }
 
 void AAttackSpiderV2::MoveAlongSpline(float DeltaTime)
@@ -91,6 +117,7 @@ void AAttackSpiderV2::MoveAlongSpline(float DeltaTime)
 	NewRotation.Pitch += 180.0f; 
 	
 	SetActorLocationAndRotation(NewLocation, NewRotation);
+	
 }
 
 void AAttackSpiderV2::StartMoving()
@@ -130,16 +157,48 @@ void AAttackSpiderV2::StartChasing()
 }
 void AAttackSpiderV2::StartAttack()
 {
-	// 사망이벤트 만 발생시킴
+	// 한번만 작동되도록 
+	if (bAttack){return;}
+
+	//공격소리로 바꾸기 
+
+	if (AttackSound)
+	{
+		AudioComp->SetSound(AttackSound);
+	}
 	
+	MainCharacter->SetActorHiddenInGame(true);
+	
+	// 사망이벤트 만 발생시킴
+	MainCharacter->bIsBeingAttacked=true;
 	//카메라 쉐이크 .
+	SwitchToMonsterCamera();
+	//
+	
+	//시간지연 주고 사망 UI 나오도록 
+	FTimerHandle UITimer;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		MainCharacter->SetPlayerState(EPlayerState::UI);
+		
+		if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
+		{
+			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			FString name= FString(TEXT("<Red_Big>거미 에게</>"));
+			PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
+			PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
+		}
+	},3.0f,false);
+
+	bAttack=true; // 한번만 작동되도록 제어
 }
 
 void AAttackSpiderV2::CheckAttackRange()
 {
-	Distance = FVector::Distance(this->GetActorLocation(), MainCharacter->GetActorLocation());
+	toPlayerDistance = FVector::Distance(this->GetActorLocation(), MainCharacter->GetActorLocation());
 
-	if (Distance <= AttackRange)
+	if (toPlayerDistance <= AttackRange)
 	{
 		SetAIState(EAttackSpiderV2State::Attack);
 	}
@@ -175,6 +234,54 @@ void AAttackSpiderV2::SetAIState(EAttackSpiderV2State NewState)
 	case EAttackSpiderV2State::Attack:
 		StartAttack();
 		break;
+	}
+}
+
+void AAttackSpiderV2::SoundControl()
+{
+	//
+	if (!MainCharacter || !SoundControlActor) return;
+
+	float Distance = FVector::Dist(MainCharacter->GetActorLocation(), GetActorLocation());
+	
+	float MinDistance = 1000.0f;  // 가까울 때 (최소 볼륨)
+	float MaxDistance = 1400.0f; // 멀어질 때 (최대 볼륨)
+
+	// 거리 비율 계산 (0 ~ 1)
+	float DistanceRatio = FMath::Clamp((Distance - MinDistance) / (MaxDistance - MinDistance), 0.0f, 1.0f);
+    
+	// **비선형 감소 적용 (제곱)** → 가까울수록 더 급격히 볼륨 감소
+	float NewVolume = FMath::Clamp(FMath::Pow(DistanceRatio, 2.0f), 0.1f, 1.0f);
+	
+	SoundControlActor->AudioComp1->SetVolumeMultiplier(NewVolume);
+	
+	/*MainCharacter->AudioComp->SetVolumeMultiplier(1-NewVolume);
+	
+	if (Distance < 1000.0f) // 플레이어와 가까워지면 볼륨 감소
+	{
+		MainCharacter->PlayHeartSound();
+	}
+	else if (Distance > 1000.0f) // 플레이어가 멀어지면 볼륨 증가
+	{
+		MainCharacter->StopSound();
+	}*/
+}
+
+void AAttackSpiderV2::SwitchToMonsterCamera()
+{
+	if (TestPC && MonsterCamera)
+	{
+		// 카메라 전환
+		TestPC->SetViewTargetWithBlend(this, 0.1f); // 0.5초 동안 부드럽게 전환
+
+		// 카메라 흔들기 실행
+		if (TestPC->PlayerCameraManager)
+		{
+			if (DeathCameraShakeClass)
+			{
+				TestPC->PlayerCameraManager->StartCameraShake(DeathCameraShakeClass);
+			}
+		}
 	}
 }
 
