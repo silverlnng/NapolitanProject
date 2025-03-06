@@ -97,6 +97,8 @@ public:
 	//유품을 스폰하는 함수
 	void SpawnItems();
 
+	bool bItemSpawned;
+
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<ASouvenirActor> SouvenirClass;
 	

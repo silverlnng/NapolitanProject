@@ -60,7 +60,8 @@ void AChaseStatue::BeginPlay()
 	//캐릭터 애니메이션
 	CuratorAnim = Cast<UNPC_CuratorAnim>(GetMesh()->GetAnimInstance());
 
-	bClear = false;	
+	bClear = false;
+	bItemSpawned = false;
 }
 
 // Called every frame
@@ -103,13 +104,13 @@ void AChaseStatue::TickIdle(const float& DeltaTime)
 	//만약 플레이어가 대화를 끝냈을때 움직임을 선택
 	if(MainCharacter->curState == EPlayerState::Idle && bClear == true)
 	{
-		UE_LOG(LogTemp, Error, TEXT("모드 변경"));
 		//큐레이터 맵의 사운드가 변경
 		
 		//Move로 변경
 		FTimerHandle TimerHandle;
 		GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 		{
+			UE_LOG(LogTemp, Error, TEXT("모드 변경"));
 			SetState(ChaseStatueState::Move); //몇초 뒤 움직임으로 변경
 		}, 4.0f, false);
 	}
@@ -167,11 +168,11 @@ bool AChaseStatue::GetRandomPositionNavMesh(FVector CenterLocation, float radius
 void AChaseStatue::CuratorOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor && (OtherActor != this) && OtherComp)
+	if (OtherActor)
 	{
 		auto* cha=Cast<ATestCharacter>(OtherActor);
-		//플레이어일때
-		if (cha)
+		//플레이어 + 움직이는 상태일때
+		if (cha && mState == ChaseStatueState::Move)
 		{
 			// 끝나는 엔딩 위젯 나오도록 하기
 			if (PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
@@ -197,21 +198,10 @@ void AChaseStatue::ResultEvent(int32 result)
 		//노인이 지닌 아이템을 소유하고 있을때
 		if(0==result)
 		{
-			
-			//유품 관련 부분
-			/*FName NPC_IDName = FName(*FString::FromInt(NPC_ID));
-			
-			FSouvenirData* SouvenirData= GI->DT_SouvenirData->FindRow<FSouvenirData>(NPC_IDName , TEXT(""));
-			if (SouvenirData)
-			{
-				SouvenirData->Had=true;
-			}
-			
-			TestPC->SetSouvenirUICurNumber(NPC_ID);*/
-			
-			UE_LOG(LogTemp, Warning, TEXT("큐레이터"));
+			//유품 스폰 및 회수
+			SpawnItems(); //유품 스폰 되자마자 곧바로 회수
 
-			bClear = true;
+			bClear = true; //움직임 모드로 변경
 		}
 		
 	}
@@ -253,6 +243,22 @@ void AChaseStatue::SetState(ChaseStatueState newstate)
 void AChaseStatue::SpawnItems()
 {
 	//여기서는 유품 아이템이 자동으로 인벤토리에 들어오도록 해야함(추격이 있기 때문에)
+	//아이템 스폰
+	if(bItemSpawned)
+	{
+		// 발끝 위치를 기준으로 스폰 위치 설정
+		FVector FootLocation = GetMesh()->GetSocketLocation(FName("ItemSpawn"));
+		FTransform SpawnTransform(FootLocation);
+
+		// 블루프린트에서 설정된 SouvenirClass로 스폰, 청소부는 출력하는 아이템이 없음
+		AActor* SouvenirActor = GetWorld()->SpawnActor<ASouvenirActor>(SouvenirClass, SpawnTransform );
+		if (SouvenirActor)
+		{
+			SouvenirActor->Tags.Add(FName("Souvenir"));
+		}
+	}
+
+	bItemSpawned = false; //한번만 스폰되도록
 	
 }
 
