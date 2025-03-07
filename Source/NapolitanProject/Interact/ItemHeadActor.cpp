@@ -37,7 +37,8 @@ void AItemHeadActor::OnPickup()
 	
 	GetWorld()->GetTimerManager().SetTimer(UITimer4,[this]()
 	{
-		PlayerHUD->InteractUI->RemoveQuestSlot("머리를 찾아주기");
+		FString QuestText =FString(TEXT("머리를 찾아주기"));
+		PlayerHUD->InteractUI->RemoveQuestSlot(QuestText);
 	},1.0f,false);
 
 	

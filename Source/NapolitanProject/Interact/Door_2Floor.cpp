@@ -5,6 +5,7 @@
 
 #include "Components/BoxComponent.h"
 #include "Components/SlateWrapperTypes.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
@@ -67,7 +68,25 @@ void ADoor_2Floor::RotateDoor2()
 
 void ADoor_2Floor::StartRotateDoor()
 {
-	Super::StartRotateDoor();
+	if(bIsOpenDoor) // 한번만 열리도록 만든 것
+		return;
+
+	bIsOpenDoor = true;
+	if (OpenDoorSound)
+	{
+		UGameplayStatics::PlaySound2D(GetWorld() , OpenDoorSound); // 소리 재생
+	}
+
+	// 목표 Yaw 계산 (현재 Yaw에서 90도 추가)
+	FRotator CurrentRotation = ExitDoor->GetRelativeRotation();
+	TargetYaw = CurrentRotation.Yaw + 90.0f;
+	
+	TargetYaw2 = CurrentRotation.Yaw - 90.0f;
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle , this , &ADoor_2Floor::RotateDoor , 0.01f , true);
+	
+
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle2 , this , &ADoor_2Floor::RotateDoor2 , 0.01f , true);
 }
 
 void ADoor_2Floor::JustRotateDoor()

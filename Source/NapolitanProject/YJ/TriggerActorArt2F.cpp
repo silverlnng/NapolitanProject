@@ -131,7 +131,8 @@ void ATriggerActorArt2F::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComp
 		APlayerHUD* PlayerHUD=TestPC->GetHUD<APlayerHUD>();
 		if (PlayerHUD&&PlayerHUD->InteractUI)
 		{
-			PlayerHUD->InteractUI->RemoveQuestSlot("미술관을 탐색하자");
+			FString QuestText =FString(TEXT("미술관을 탐색하자"));
+			PlayerHUD->InteractUI->RemoveQuestSlot(QuestText);
 		}
 
 		if (MainCharacter)

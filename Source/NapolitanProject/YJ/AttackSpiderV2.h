@@ -101,8 +101,10 @@ public:
 	UFUNCTION()
 	void SetAIState(EAttackSpiderV2State NewState);
 
-	UPROPERTY(EditAnywhere)
-	float SoundControlDistance=1000;
+	UPROPERTY(EditAnywhere,Category="Sound");
+	float SoundControlMinDistance=800; //최소볼륨 나올 거리
+	UPROPERTY(EditAnywhere,Category="Sound")
+	float SoundControlMaxDistance=1000; //최대볼륨나올거리 
 	
 	class ASoundControlActor* SoundControlActor;
 

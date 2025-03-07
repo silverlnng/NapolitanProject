@@ -77,5 +77,8 @@ public:
 	// 클리어하고 난뒤 상호작용 못하도록 
 	bool IsCleared=false;
 	virtual void ChangeCleared();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* MissionClearSoundWave;
 };
 
