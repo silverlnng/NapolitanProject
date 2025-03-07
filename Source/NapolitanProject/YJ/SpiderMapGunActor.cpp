@@ -27,7 +27,8 @@ ASpiderMapGunActor::ASpiderMapGunActor()
 	NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
 	NiagaraComp->SetupAttachment(StaticMeshComp);
 
-	
+	AudioComp =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	AudioComp->SetupAttachment(BoxComp);
 }
 
 // Called when the game starts or when spawned

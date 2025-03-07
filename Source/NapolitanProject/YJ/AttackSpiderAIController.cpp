@@ -57,6 +57,8 @@ void AAttackSpiderAIController::OnTargetPerceptionUpdated(AActor* Actor, FAIStim
 			if (AttackSpider->CurrentState==EAttackSpiderV2State::Move)
 			{
 				AttackSpider->SetAIState(EAttackSpiderV2State::Drop);
+
+				// 한번 소리 내기 
 			}
 			
 		}

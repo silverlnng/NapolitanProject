@@ -7,6 +7,8 @@
 #include "AITypes.h"
 #include "CatchSpider_AnimInstance.h"
 #include "NavigationSystem.h"
+#include "Components/AudioComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
@@ -15,7 +17,9 @@ ACatchSpider::ACatchSpider()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	
+	AudioComp =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
+	AudioComp->SetupAttachment(GetCapsuleComponent());
 }
 
 // Called when the game starts or when spawned

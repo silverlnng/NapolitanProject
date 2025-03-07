@@ -170,7 +170,10 @@ void ASpiderMapGameModeBase::MakeNoisePlayer()
 	//MainCharacter->GetActorLocation() 에서 z값만 증가시켜서
 	FVector origin=MainCharacter->GetActorLocation();
 	// 높이만 증가
-	origin.Z=AttackSpiderV2->GetActorLocation().Z;
+	if (AttackSpiderV2)
+	{
+		origin.Z=AttackSpiderV2->GetActorLocation().Z;
+	}
 
 	MakeNoise(100.f,MainCharacter,origin,NoiseRange);
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("플레이어의 소리 발생")));

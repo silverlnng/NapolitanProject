@@ -134,6 +134,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	class USoundWave* AttackSound;
+
+	UPROPERTY(EditDefaultsOnly)
+	class USoundWave* DetectSound;
 	
 };
 

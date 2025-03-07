@@ -46,4 +46,7 @@ public:
 
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int32 ItemID=5;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UAudioComponent* AudioComp;
 };

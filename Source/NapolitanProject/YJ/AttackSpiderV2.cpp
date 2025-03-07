@@ -138,6 +138,11 @@ void AAttackSpiderV2::AttackPlayer()
 
 void AAttackSpiderV2::DetectAndDrop()
 {
+	// 소리
+	if (DetectSound)
+	{
+		AudioComp->SetSound(DetectSound);
+	}
 	//움직임을 멈추고
 	bIsMoving=false;
 	//플레이어를 보는 방향으로 회전
@@ -258,7 +263,7 @@ void AAttackSpiderV2::SoundControl()
 	
 	SoundControlActor->AudioComp1->SetVolumeMultiplier(NewVolume);
 	
-	/*MainCharacter->AudioComp->SetVolumeMultiplier(1-NewVolume);
+	//MainCharacter->AudioComp->SetVolumeMultiplier(1-NewVolume);
 	
 	if (Distance < 1000.0f) // 플레이어와 가까워지면 볼륨 감소
 	{
@@ -267,7 +272,7 @@ void AAttackSpiderV2::SoundControl()
 	else if (Distance > 1000.0f) // 플레이어가 멀어지면 볼륨 증가
 	{
 		MainCharacter->StopSound();
-	}*/
+	}
 }
 
 void AAttackSpiderV2::SwitchToMonsterCamera()
