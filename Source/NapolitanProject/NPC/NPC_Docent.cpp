@@ -6,6 +6,7 @@
 #include "../GameFrameWork/TestPlayerController.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/EventComponent.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
@@ -178,7 +179,10 @@ void ANPC_Docent::ResultEvent(int32 result)
 				ChangeCleared(); 
 			},6.0f,false);
 
-			
+			if (MissionClearSoundWave)
+			{
+				UGameplayStatics::PlaySound2D(this, MissionClearSoundWave);
+			}
 		}
 	}
 	

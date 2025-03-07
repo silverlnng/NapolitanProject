@@ -251,15 +251,13 @@ void AAttackSpiderV2::SoundControl()
 	
 	float Distance = FVector::Dist(MainCharacter->GetActorLocation(), SpiderVector);
 	
-	float MinDistance = 500.0f;  // 가까울 때 (최소 볼륨)
-	float MaxDistance = 1000.0f; // 멀어질 때 (최대 볼륨)
-
 	// 거리 비율 계산 (0 ~ 1)
-	float DistanceRatio = FMath::Clamp((Distance - MinDistance) / (MaxDistance - MinDistance), 0.0f, 1.0f);
+	float DistanceRatio = FMath::Clamp((Distance - SoundControlMinDistance) / (SoundControlMaxDistance - SoundControlMinDistance), 0.0f, 1.0f);
     
 	// **비선형 감소 적용 (제곱)** → 가까울수록 더 급격히 볼륨 감소
 	float NewVolume = FMath::Clamp(FMath::Pow(DistanceRatio, 2.0f), 0.1f, 1.0f);
-	
+
+	// 배경음 
 	SoundControlActor->AudioComp1->SetVolumeMultiplier(NewVolume);
 	
 	//MainCharacter->AudioComp->SetVolumeMultiplier(1-NewVolume);
@@ -287,6 +285,7 @@ void AAttackSpiderV2::SwitchToMonsterCamera()
 			if (DeathCameraShakeClass)
 			{
 				TestPC->PlayerCameraManager->StartCameraShake(DeathCameraShakeClass);
+				
 			}
 		}
 	}

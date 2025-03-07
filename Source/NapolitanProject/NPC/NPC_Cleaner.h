@@ -131,9 +131,7 @@ public:
 	bool bItemSpawned = false;
 
 	//////////////////소리///////////////////////////
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
-	USoundWave* MissionClearSoundWave;
-
+	
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<ASouvenirActor> SouvenirClass;
 
