@@ -8,6 +8,7 @@
 #include "TestCharacter.h"
 #include "PlayerHUD.h"
 #include "TestPlayerController.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NapolitanProject/YJ/Save/TestSaveGame.h"
 
@@ -21,9 +22,11 @@ void ACuratorMapGameModeBase::BeginPlay()
 
 	UE_LOG(LogTemp , Warning , TEXT("Current Game Mode: %s") , *GetWorld()->GetAuthGameMode()->GetName());
 
-	PC = Cast<ATestPlayerController>(GetWorld()->GetFirstPlayerController());
-	PC->SetInputMode(FInputModeGameOnly());
-	PC->SetShowMouseCursor(false);
+	MainCharacter=Cast<ATestCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	if (!MainCharacter){return;}
+	PC =MainCharacter->GetController<ATestPlayerController>();
+	if (!PC){return;}
+	PlayerHUD =PC->GetHUD<APlayerHUD>();	
 
 	MainCharacter = Cast<ATestCharacter>(PC->GetPawn());
 	MainCharacter->b_IA_Note_Allowed = true;
@@ -67,7 +70,7 @@ void ACuratorMapGameModeBase::BeginPlay()
 		
 		
 
-		if (GI->bLevelMoveToDoor)
+		/*if (GI->bLevelMoveToDoor)
 		{
 			// 저장된 위치가 있으면 플레이어를 해당 위치로 이동
 			MainCharacter->SetActorLocation(GI->GetSavedPlayerLocation().GetLocation());
@@ -86,6 +89,6 @@ void ACuratorMapGameModeBase::BeginPlay()
 				MainCharacter->SetActorRotation(GI->LoadedGame->PlayerRotation);
 			
 			} , 1.0f , false);
-		}
+		}*/
 	}
 }
