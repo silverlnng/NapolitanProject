@@ -70,7 +70,7 @@ void AChaseStatue::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	//UE_LOG(LogTemp, Warning, TEXT("%s %s"), *UEnum::GetValueAsString(MainCharacter->curState), bClear ? TEXT("true") : TEXT("false"));
-	//UE_LOG(LogTemp, Warning, TEXT("%s"), *UEnum::GetValueAsString(mState));
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *UEnum::GetValueAsString(mState));
 	
 	switch (mState)
 	{
