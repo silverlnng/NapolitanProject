@@ -62,7 +62,7 @@ void ACuratorMapGameModeBase::BeginPlay()
 	if (GI)
 	{
 		FTimerHandle RestoreAttachedItemTimer;
-
+		//아이템 인벤토리때문에 만든 것, 저장한 아이템과 인벤토리가 맵을 넘어가도 가져갈 수 있도록
 		GetWorld()->GetTimerManager().SetTimer(RestoreAttachedItemTimer , [this]()
 		{
 			GI->RestoreAttachedItems();
