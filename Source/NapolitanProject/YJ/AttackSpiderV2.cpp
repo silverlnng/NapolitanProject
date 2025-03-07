@@ -13,12 +13,11 @@
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SplineComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "Perception/AISenseConfig_Hearing.h"
+
 
 // Sets default values
 AAttackSpiderV2::AAttackSpiderV2()
@@ -99,7 +98,7 @@ void AAttackSpiderV2::MoveAlongSpline(float DeltaTime)
 	if (!CurrentSpline) return;
 
 	// 이동 거리 증가
-	DistanceAlongSpline += MoveSpeed * DeltaTime;
+	DistanceAlongSpline += SplineMoveSpeed * DeltaTime;
 	
 	float SplineLength = CurrentSpline->GetSplineLength();
 
@@ -218,7 +217,7 @@ void AAttackSpiderV2::CheckAttackRange()
 void AAttackSpiderV2::SetAIState(EAttackSpiderV2State NewState)
 {
 	FString message = UEnum::GetValueAsString(NewState);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
 	
 	CurrentState = NewState;
 	if (Anim)

@@ -85,6 +85,12 @@ void UInteractWidget::PlayInvenUIEvent()
 	PlayAnimation(InvenImgAnim);
 }
 
+void UInteractWidget::GetItemEvent(const FString& str)
+{
+	Text_ItemName->SetText(FText::FromString(str));
+	PlayAnimation(GetItemAnim);
+}
+
 void UInteractWidget::LoadUpdateQuestSlot()
 {
 	if (GI&&!GI->QuestSlots.IsEmpty())

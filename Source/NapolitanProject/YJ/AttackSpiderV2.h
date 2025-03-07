@@ -79,7 +79,7 @@ public:
 	float AttackRange = 300.0f;
 	
 	UPROPERTY(EditAnywhere, Category = "Movement")
-	float MoveSpeed = 50.0f; // 이동 속도
+	float SplineMoveSpeed = 50.0f; // 이동 속도
 
 	float DistanceAlongSpline = 0.0f; // 현재 이동 거리
 	bool bIsMoving = false;

@@ -20,6 +20,13 @@
 void UMyTestGameInstance::Init()
 {
 	Super::Init();
+
+	// 로그 막아두기 
+	if (GEngine)
+	{
+		GEngine->bEnableOnScreenDebugMessages = false;
+	}
+	
 	DT_itemData = LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/DT/DT_Item.DT_Item'"));
 	
 	if (DT_itemData)
@@ -114,10 +121,7 @@ void UMyTestGameInstance::Init()
 	// "C:\UnrealProjects\NapolitanProject\NPC_Result.csv"
 	// "C:\UnrealProjects\NapolitanProject\NPC_Selection.csv"
 	
-	/*if (GEngine)
-	{
-		GEngine->bEnableOnScreenDebugMessages = false;
-	}*/
+	
 	
   // 저장한 게임 저장데이터가 있으면 불러오기 
 	GameSaveController = NewObject<UGameSaveController>(this);

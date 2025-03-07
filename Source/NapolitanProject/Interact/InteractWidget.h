@@ -66,6 +66,16 @@ public:
 	class UWidgetAnimation* InvenImgAnim;
 	UFUNCTION()
 	void PlayInvenUIEvent();
+
+	UPROPERTY(meta=(BindWidget))
+	class UTextBlock* Text_ItemName;
+	
+	UPROPERTY(Transient,meta=(BindWidgetAnim))
+	class UWidgetAnimation* GetItemAnim;  // 유물 얻었을때 실행할 이벤트 함수
+
+	UFUNCTION()
+	void GetItemEvent(const FString& str);
+	
 	
 //////////// 퀘스트 ui //////////////////
 

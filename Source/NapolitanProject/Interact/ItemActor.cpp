@@ -103,10 +103,15 @@ void AItemActor::OnInventorySlot()
 	}
 	// 인벤 효과 애니메이션 실행시키기 
 	PlayerHUD->InteractUI->PlayInvenUIEvent();
-
+	
+	
+	
 	int32 ItemRow =ItemID+1;
 	
 	FString ItemIDstr=FString::FromInt(ItemRow);
+
+	PlayerHUD->InteractUI->GetItemEvent(ItemIDstr); // 나중에 아이템 이름으로 바꾸기 
+	
 	//DT 작업하기 
 	FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(FName(*ItemIDstr) , TEXT(""));
 	if (ItemData)
