@@ -59,33 +59,11 @@ void ACuratorMapGameModeBase::BeginPlay()
 	if (GI)
 	{
 		FTimerHandle RestoreAttachedItemTimer;
-
+		//아이템 인벤토리때문에 만든 것, 저장한 아이템과 인벤토리가 맵을 넘어가도 가져갈 수 있도록
 		GetWorld()->GetTimerManager().SetTimer(RestoreAttachedItemTimer , [this]()
 		{
 			GI->RestoreAttachedItems();
 		} , 1.0f , false);
 		
-		
-
-		if (GI->bLevelMoveToDoor)
-		{
-			// 저장된 위치가 있으면 플레이어를 해당 위치로 이동
-			MainCharacter->SetActorLocation(GI->GetSavedPlayerLocation().GetLocation());
-			MainCharacter->SetActorRotation(GI->GetSavedPlayerLocation().GetRotation());
-			
-			// 적용 후 다시 false로 변경 (새 게임 시작 시 영향 안 주도록)
-			GI->SetLevelMoveToDoor(false);
-		}
-		else if (GI->LoadedGame)
-		{
-			FTimerHandle GITimer;
-
-			GetWorld()->GetTimerManager().SetTimer(GITimer , [this]()
-			{
-				MainCharacter->SetActorLocation(GI->LoadedGame->PlayerLocation);
-				MainCharacter->SetActorRotation(GI->LoadedGame->PlayerRotation);
-			
-			} , 1.0f , false);
-		}
 	}
 }

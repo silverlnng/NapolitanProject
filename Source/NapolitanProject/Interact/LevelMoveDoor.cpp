@@ -92,7 +92,7 @@ void ALevelMoveDoor::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 
 void ALevelMoveDoor::LevelMove()
 {
-	GI->SetLevelMoveToDoor(true);
+	GI->SetLevelMoveToDoor(true); //저장된 위치를 사용하라는 bool 변수 설정 함수
 			
 	// + 위치 적용 플래그 설정
 	if (bMoveFromLobby) // 지금 현재레벨이 로비일때만 게임저장
@@ -104,9 +104,9 @@ void ALevelMoveDoor::LevelMove()
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("MyVector: %s"), *MainCharacter->SaveTransform.GetLocation().ToString()));
 		}
 		GI->SavePlayerFTransform(FromLevelLocComp->GetComponentTransform());
-		GI->GameSaveController->SaveGameToSlot(4);
+		GI->GameSaveController->SaveGameToSlot(4); //여긴 자동저장 같은 느낌
 				
-		GI->AsyncLoadLoadLevel(MoveToLevel);
+		GI->AsyncLoadLoadLevel(MoveToLevel); //레벨 이동할때 로딩이 되도록
 
 		//레벨 이동하기 전에 타이머를 종료하고 가야 에러가 안남 !!!!!!!!
 		if (GetWorld()->GetTimerManager().IsTimerActive(PlayerHUD->MonolugueWidgetUI->TextUpdateTimerHandle))
