@@ -110,13 +110,15 @@ void AItemActor::OnInventorySlot()
 	
 	FString ItemIDstr=FString::FromInt(ItemRow);
 
-	PlayerHUD->InteractUI->GetItemEvent(ItemIDstr); // 나중에 아이템 이름으로 바꾸기 
+	
 	
 	//DT 작업하기 
 	FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(FName(*ItemIDstr) , TEXT(""));
 	if (ItemData)
 	{
 		ItemData->Had=true;
+		FString ItemName=ItemData->Name;
+		PlayerHUD->InteractUI->GetItemEvent(ItemName); // 나중에 아이템 이름으로 바꾸기 
 	}
 }
 
