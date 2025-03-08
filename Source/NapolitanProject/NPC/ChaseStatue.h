@@ -99,8 +99,14 @@ public:
 
 	bool bItemSpawned;
 
+	UPROPERTY()
+	class ASouvenirActor* SouvenirActor;
+
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<ASouvenirActor> SouvenirClass;
+
+	UPROPERTY()
+	class ASunFloorDoorToLobby* DoorToLobby;
 	
 };
 

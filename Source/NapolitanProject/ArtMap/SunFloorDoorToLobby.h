@@ -3,18 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "NapolitanProject/Interact/LevelMoveDoor.h"
-#include "SunFlowerDoor.generated.h"
+#include "SunFloorDoorToLobby.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class NAPOLITANPROJECT_API ASunFlowerDoor : public ALevelMoveDoor
+class NAPOLITANPROJECT_API ASunFloorDoorToLobby : public ALevelMoveDoor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	ASunFlowerDoor();
+
+public:
+	ASunFloorDoorToLobby();
 
 protected:
 	// Called when the game starts or when spawned
@@ -25,12 +26,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool bIsOpenKey;
-	
-public:
 	virtual void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool bOneMove;
+	
 	
 };

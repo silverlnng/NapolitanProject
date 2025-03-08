@@ -9,7 +9,9 @@
 
 #include "NPC_CuratorAnim.h"
 #include "YSEvanceUI.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NapolitanProject.h"
+#include "NapolitanProject/ArtMap/SunFloorDoorToLobby.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
@@ -62,6 +64,8 @@ void AChaseStatue::BeginPlay()
 
 	bClear = false;
 	bItemSpawned = false;
+
+	DoorToLobby = Cast<ASunFloorDoorToLobby>(UGameplayStatics::GetActorOfClass(GetWorld(), ASunFloorDoorToLobby::StaticClass()));
 }
 
 // Called every frame
@@ -198,10 +202,27 @@ void AChaseStatue::ResultEvent(int32 result)
 		//노인이 지닌 아이템을 소유하고 있을때
 		if(0==result)
 		{
-			//유품 스폰 및 회수
-			SpawnItems(); //유품 스폰 되자마자 곧바로 회수
+			
+			SpawnItems(); //유품 스폰
+
+			//유품 회수
+			SouvenirActor = Cast<ASouvenirActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ASouvenirActor::StaticClass()));
+			if(SouvenirActor)
+			{
+				SouvenirActor->OnPickup(); //유품 회수
+			}
+
+			//큐레이터 맵 사운드 변경
 
 			bClear = true; //움직임 모드로 변경
+			if(DoorToLobby)
+				DoorToLobby->bOneMove = true; //이제 큐레이터 방 나갈 수 있음
+
+			//우선 클리어 선언
+			IsCleared=true;
+			GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+			GI->ClearedNPC.Add(GetNPCID());
+			
 		}
 		
 	}
@@ -251,7 +272,7 @@ void AChaseStatue::SpawnItems()
 		FTransform SpawnTransform(FootLocation);
 
 		// 블루프린트에서 설정된 SouvenirClass로 스폰, 청소부는 출력하는 아이템이 없음
-		AActor* SouvenirActor = GetWorld()->SpawnActor<ASouvenirActor>(SouvenirClass, SpawnTransform );
+		SouvenirActor = GetWorld()->SpawnActor<ASouvenirActor>(SouvenirClass, SpawnTransform );
 		if (SouvenirActor)
 		{
 			SouvenirActor->Tags.Add(FName("Souvenir"));
@@ -259,6 +280,7 @@ void AChaseStatue::SpawnItems()
 	}
 
 	bItemSpawned = false; //한번만 스폰되도록
+	//UE_LOG()
 	
 }
 
