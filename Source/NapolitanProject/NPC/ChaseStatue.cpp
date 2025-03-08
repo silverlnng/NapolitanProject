@@ -74,7 +74,7 @@ void AChaseStatue::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	//UE_LOG(LogTemp, Warning, TEXT("%s %s"), *UEnum::GetValueAsString(MainCharacter->curState), bClear ? TEXT("true") : TEXT("false"));
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *UEnum::GetValueAsString(mState));
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *UEnum::GetValueAsString(mState));
 	
 	switch (mState)
 	{
@@ -114,7 +114,7 @@ void AChaseStatue::TickIdle(const float& DeltaTime)
 		FTimerHandle TimerHandle;
 		GetWorldTimerManager().SetTimer(TimerHandle, [this]()
 		{
-			UE_LOG(LogTemp, Error, TEXT("모드 변경"));
+			//UE_LOG(LogTemp, Error, TEXT("모드 변경"));
 			SetState(ChaseStatueState::Move); //몇초 뒤 움직임으로 변경
 		}, 4.0f, false);
 	}
@@ -202,21 +202,18 @@ void AChaseStatue::ResultEvent(int32 result)
 		//노인이 지닌 아이템을 소유하고 있을때
 		if(0==result)
 		{
+			bItemSpawned = true;
 			
-			SpawnItems(); //유품 스폰
-
-			//유품 회수
-			SouvenirActor = Cast<ASouvenirActor>(UGameplayStatics::GetActorOfClass(GetWorld(), ASouvenirActor::StaticClass()));
-			if(SouvenirActor)
-			{
-				SouvenirActor->OnPickup(); //유품 회수
-			}
-
+			SpawnItems(); //유품 스폰 및 회수
+			
 			//큐레이터 맵 사운드 변경
 
 			bClear = true; //움직임 모드로 변경
 			if(DoorToLobby)
+			{
 				DoorToLobby->bOneMove = true; //이제 큐레이터 방 나갈 수 있음
+				UE_LOG(LogTemp, Warning, TEXT("방 나갈 수 있음"));
+			}
 
 			//우선 클리어 선언
 			IsCleared=true;
@@ -275,13 +272,14 @@ void AChaseStatue::SpawnItems()
 		SouvenirActor = GetWorld()->SpawnActor<ASouvenirActor>(SouvenirClass, SpawnTransform );
 		if (SouvenirActor)
 		{
+			UE_LOG(LogTemp, Warning, TEXT("큐레이터 유품 회수"));
 			SouvenirActor->Tags.Add(FName("Souvenir"));
+			SouvenirActor->OnPickup(); //유품 회수
+			
 		}
 	}
 
 	bItemSpawned = false; //한번만 스폰되도록
-	//UE_LOG()
-	
 }
 
 
