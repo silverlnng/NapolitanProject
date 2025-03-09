@@ -25,13 +25,6 @@ AOriginEye::AOriginEye()
 	EyeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EyeMesh"));
 	EyeMesh->SetupAttachment(Arrow); //애로우 컴포넌트에 붙이기
 	
-	/*ConstructorHelpers::FObjectFinder<UStaticMesh>EyeMeshComp(TEXT("/Game/YJ/BP/SecurityMission/Eye/16_eye.16_eye'"));
-
-	if(EyeMeshComp.Succeeded())
-	{
-		EyeMesh->SetStaticMesh(EyeMeshComp.Object);
-		EyeMesh->SetupAttachment(Arrow); //애로우 컴포넌트에 붙이기
-	}*/
 }
 
 // Called when the game starts or when spawned
@@ -44,7 +37,11 @@ void AOriginEye::BeginPlay()
 	{
 		MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	}
-	
+
+	bShouldLookAtPlayer = false;
+	RandomLookInterval = 1.5f;
+	TimeSinceLastRandomLook = 0.0f;
+	RandomSpeed = FMath::RandRange(150.0f, 250.0f);
 }
 
 // Called every frame
@@ -52,26 +49,38 @@ void AOriginEye::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if(MainCharacter)
+	if (!MainCharacter) return;
+
+	FVector PlayerLocation = MainCharacter->GetActorLocation();
+	FVector EyeLocation = GetActorLocation();
+	float DistanceToPlayer = FVector::Dist(PlayerLocation, EyeLocation);
+
+	if (DistanceToPlayer <= 1200.0f)
 	{
-		//플레이어와의 방향 계산
-		FVector PlayerLocation = MainCharacter->GetActorLocation();
-		FVector ArrowLocation = GetActorLocation();
-
-		//두 위치 간의 벡터 계산 후 회전 값으로 변환
-		FRotator LookAtRotation = (PlayerLocation - ArrowLocation).Rotation();
-
-		FRotator SmoothRotation = FMath::RInterpTo(
-			Arrow->GetComponentRotation(), // 현재 회전
-			LookAtRotation,                // 목표 회전
-			DeltaTime,                     // 델타 시간
-			5.0f                           // 회전 속도
-		);
-
-		//애로우 컴포넌트 회전 업데이트
-		Arrow->SetWorldRotation(SmoothRotation);
+		bShouldLookAtPlayer = true;
 	}
-	
+	else
+	{
+		TimeSinceLastRandomLook += DeltaTime;
+		if (TimeSinceLastRandomLook >= RandomLookInterval)
+		{
+			RandomLookDirection = FRotator(FMath::RandRange(0.0f, 360.0f), FMath::RandRange(0.0f, 360.0f), FMath::RandRange(0.0f, 360.0f));
+			//RandomSpeed = FMath::RandRange(15.0f, 20.0f);
+			TimeSinceLastRandomLook = 0.0f;
+		}
+		bShouldLookAtPlayer = false;
+	}
+
+	FRotator TargetRotation = bShouldLookAtPlayer ? (PlayerLocation - EyeLocation).Rotation() : RandomLookDirection;
+    
+	FRotator SmoothRotation = FMath::RInterpTo(
+		Arrow->GetComponentRotation(),
+		TargetRotation,
+		DeltaTime,
+		2.0f
+	);
+
+	Arrow->SetWorldRotation(SmoothRotation);
 
 }
 

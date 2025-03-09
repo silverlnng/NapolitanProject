@@ -36,4 +36,11 @@ public:
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
 
+private:
+	bool bShouldLookAtPlayer;
+	FRotator RandomLookDirection;
+	float TimeSinceLastRandomLook;
+	float RandomLookInterval;
+	float RandomSpeed;
+
 };
