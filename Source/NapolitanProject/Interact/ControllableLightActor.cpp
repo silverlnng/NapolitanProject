@@ -52,7 +52,7 @@ void AControllableLightActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	RectLightIntensity = 10.f;
+	//RectLightIntensity = 10.f;
 
 	GetComponents<URectLightComponent>(RectLightArray);
 	
@@ -105,7 +105,7 @@ void AControllableLightActor::TurnOnLight(bool value)
 		// 라이트를 꺼주기 => 경비가 실행시키는 부분
 		for (URectLightComponent* RectLight :RectLightArray)
 		{
-			RectLight->SetIntensity(0);
+			RectLight->SetIntensity(10);
 		}
 		/*RectLightComp0->SetIntensity(0);
 		RectLightComp1->SetIntensity(0);

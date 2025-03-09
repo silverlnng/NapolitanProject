@@ -35,7 +35,7 @@ void AMonologueTriggerBox::BeginPlay()
 
 	CurrentIndex=0;
 
-	DrawDebugBox(
+	/*DrawDebugBox(
 	   GetWorld(),
 	   BoxComp->GetComponentLocation(),
 	   BoxComp->GetScaledBoxExtent(),
@@ -45,7 +45,7 @@ void AMonologueTriggerBox::BeginPlay()
 	   -1.0f, // 무한 지속
 	   0,     // 두께
 	   5.0f   // 선 두께
-   );
+   );*/
 }
 
 // Called every frame
