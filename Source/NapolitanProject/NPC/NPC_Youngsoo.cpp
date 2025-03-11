@@ -39,10 +39,10 @@ void ANPC_Youngsoo::BeginPlay()
 	Super::BeginPlay();
 
 	//시작 시 메쉬 숨김
-	GetMesh()->SetHiddenInGame(false);
-	//GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
-	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("NPC"));
-	Scarf->SetHiddenInGame(false);
+	GetMesh()->SetHiddenInGame(true);
+	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+	//GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("NPC"));
+	Scarf->SetHiddenInGame(true);
 
 	// playerCharacter 초기화
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();

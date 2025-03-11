@@ -6,8 +6,10 @@
 #include "../GameFrameWork/TestPlayerController.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SlateWrapperTypes.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/Interact/Souvenir_Dongjun.h"
+#include "NapolitanProject/Interact/SunFlowerKey.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 
 // Sets default values
@@ -133,11 +135,12 @@ void ANPCDongjon::ResultEvent(int32 result)
 	{
 		if(0 == result)
 		{
-			//플레이어 카메라 전환 -> 노인을 바라보도록 카메라를 다시 조정
-			
 			//“큐레이터에게 가보십시오. 분명 도움이 되리라.” 라는 대사
 			
-			// 마지막 대화 때 되도록 수정하기 
+			// 큐레이터 방으로 갈 수 있는 조건 해금
+			SunFlowerKey = Cast<ASunFlowerKey>(UGameplayStatics::GetActorOfClass(GetWorld(), ASunFlowerKey::StaticClass()));
+			if(SunFlowerKey)
+				SunFlowerKey->SetActorHiddenInGame(false);
 			
 			//머터리얼 수정
 			DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1, this);

@@ -23,6 +23,10 @@ void ASunFlowerKey::BeginPlay()
 	Super::BeginPlay();
 	
 	AttachArt = Cast<AAttachArt>(UGameplayStatics::GetActorOfClass(GetWorld(), AAttachArt::StaticClass()));
+
+	//시작할때는 안보이다가 노인 유품을 얻었을 시에만 나오도록
+	SetActorHiddenInGame(true);
+
 }
 
 // Called every frame

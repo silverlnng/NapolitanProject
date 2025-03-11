@@ -79,4 +79,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<ASouvenir_Dongjun> SouvenirClass;
 
+	class ASunFlowerKey* SunFlowerKey;
+
 };
