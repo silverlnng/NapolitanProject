@@ -104,7 +104,7 @@ void ALevelMoveDoor::LevelMove()
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("MyVector: %s"), *MainCharacter->SaveTransform.GetLocation().ToString()));
 		}
 		GI->SavePlayerFTransform(FromLevelLocComp->GetComponentTransform());
-		GI->GameSaveController->SaveGameToSlot(4); //여긴 자동저장 같은 느낌
+		GI->GameSaveController->SaveGameToSlot(3); //여긴 자동저장 같은 느낌
 				
 		GI->AsyncLoadLoadLevel(MoveToLevel); //레벨 이동할때 로딩이 되도록
 

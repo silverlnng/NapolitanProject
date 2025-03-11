@@ -217,7 +217,7 @@ int32 UGameSaveController::FindLatestSaveGame()
 	int32 LatestSlotNum=-1;
 	FDateTime LatestTime = FDateTime(0); // 가장 과거의 시간으로 초기화
 
-	int32 MaxSlots=3;
+	int32 MaxSlots=4;
 	
 	for (int32 SlotIndex = 0; SlotIndex < MaxSlots; ++SlotIndex)
 	{
