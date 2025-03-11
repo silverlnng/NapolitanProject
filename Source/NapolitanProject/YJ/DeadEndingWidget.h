@@ -54,5 +54,8 @@ public:
 	void OnRestart();
 	UFUNCTION()
 	void OnQuit();
+
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> LobbyLevel;
 	
 };

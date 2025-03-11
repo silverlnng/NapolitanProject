@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "NapolitanProject/NapolitanProject.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "Save/GameSaveController.h"
@@ -21,6 +22,8 @@ void UDeadEndingWidget::NativeConstruct()
 
 	TestPlayerController=GetOwningPlayer<ATestPlayerController>();
 	MainCharacter =TestPlayerController->GetPawn<ATestCharacter>();
+	
+	GI=GetGameInstance<UMyTestGameInstance>();
 }
 
 void UDeadEndingWidget::SetRichText_Name(const FString& Str) const
@@ -84,17 +87,22 @@ void UDeadEndingWidget::OnRestart()
 	if (GameSaveController&&GameSaveController->FindLatestSaveGame()!=-1)
 	{
 		int32 SlotNum=GameSaveController->FindLatestSaveGame();
-		UTestSaveGame* LoadedGame =GameSaveController->LoadGameFromSlot(SlotNum);
-		if (LoadedGame)
-		{
-			MainCharacter->SetActorLocation(LoadedGame->PlayerLocation);
-			MainCharacter->SetActorRotation(LoadedGame->PlayerRotation);
-		}
+		GameSaveController->LoadGameFromSlot(SlotNum);
+		//UTestSaveGame* LoadedGame =GameSaveController->LoadGameFromSlot(SlotNum);
+		// if (LoadedGame)
+		// {
+		// 	MainCharacter->SetActorLocation(LoadedGame->PlayerLocation);
+		// 	MainCharacter->SetActorRotation(LoadedGame->PlayerRotation);
+		// }
 	}
 	else
 	{
-		// 없으면 지하 처음자리에서 시작하기 
-		MainCharacter->TeleportTo(FVector(-1410,-2020,-656),FRotator(0,-90,0));
+		// 없으면 지하 처음자리에서 시작하기
+
+		// 그냥 로비레벨 열기
+		UGameplayStatics::OpenLevelBySoftObjectPtr(this,LobbyLevel,true); //레벨 변경
+		
+		//MainCharacter->TeleportTo(FVector(-1410,-2020,-656),FRotator(0,-90,0));
 	}
 	// 저장한것 없으면 처음 시작 .
 	
@@ -102,6 +110,7 @@ void UDeadEndingWidget::OnRestart()
 
 void UDeadEndingWidget::OnQuit()
 {
+	GI->SetLevelMoveToDoor(false);
 	//종료 버튼 누르면 게임 종료
 	auto* pc = GetWorld()->GetFirstPlayerController();
 	UKismetSystemLibrary::QuitGame(GetWorld(), pc, EQuitPreference::Quit, false);
