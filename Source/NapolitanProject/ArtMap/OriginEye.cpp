@@ -41,7 +41,7 @@ void AOriginEye::BeginPlay()
 	bShouldLookAtPlayer = false;
 	RandomLookInterval = 1.5f;
 	TimeSinceLastRandomLook = 0.0f;
-	RandomSpeed = FMath::RandRange(150.0f, 250.0f);
+	RandomSpeed = FMath::RandRange(180.0f, 300.0f);
 }
 
 // Called every frame
@@ -64,7 +64,7 @@ void AOriginEye::Tick(float DeltaTime)
 		TimeSinceLastRandomLook += DeltaTime;
 		if (TimeSinceLastRandomLook >= RandomLookInterval)
 		{
-			RandomLookDirection = FRotator(FMath::RandRange(0.0f, 360.0f), FMath::RandRange(0.0f, 360.0f), FMath::RandRange(0.0f, 360.0f));
+			RandomLookDirection = FRotator(FMath::RandRange(10.0f, 360.0f), FMath::RandRange(10.0f, 360.0f), 0.f);
 			//RandomSpeed = FMath::RandRange(15.0f, 20.0f);
 			TimeSinceLastRandomLook = 0.0f;
 		}
