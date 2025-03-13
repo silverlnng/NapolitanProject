@@ -89,8 +89,6 @@ void ATestGameModeBase::BeginPlay()
 			GI->RestoreAttachedItems();
 		} , 1.0f , false);
 		
-		
-
 		if (GI->bLevelMoveToDoor)
 		{
 			// 저장된 위치가 있으면 플레이어를 해당 위치로 이동
@@ -102,14 +100,21 @@ void ATestGameModeBase::BeginPlay()
 		}
 		else if (GI->LoadedGame)
 		{
+			
 			FTimerHandle GITimer;
-
 			GetWorld()->GetTimerManager().SetTimer(GITimer , [this]()
 			{
 				MainCharacter->SetActorLocation(GI->LoadedGame->PlayerLocation);
 				MainCharacter->SetActorRotation(GI->LoadedGame->PlayerRotation);
-			
 			} , 1.0f , false);
+			
+			FTimerHandle GITimer2;
+			GetWorld()->GetTimerManager().SetTimer(GITimer2 , [this]()
+			{
+				// 적용 후 다시 nullptr 변경 (새 게임 시작 시 영향 안 주도록)
+				GI->LoadedGame=nullptr;
+			} , 2.5f , false);
+
 		}
 	}
 	
