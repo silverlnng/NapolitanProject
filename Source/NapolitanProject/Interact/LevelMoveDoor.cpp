@@ -126,7 +126,7 @@ void ALevelMoveDoor::LevelMove()
 	}
 	else // 다른레벨에서 다시 로비로 돌아갈때 사용하는 것. 
 	{
-		GI->GameSaveController->LoadGameFromSlot(4);
+		GI->GameSaveController->LoadGameFromSlot(3);
 		// 여기에 오픈레벨(로비) 가 있음
 	}
 	
