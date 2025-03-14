@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "NapolitanProject/YJ/Save/TestSaveGame.h"
 #include "LoadScreenWidget.generated.h"
 
 /**
@@ -53,6 +54,13 @@ public:
 	UFUNCTION()
 	void LoadUpdateUI(const TArray<UTestSaveGame*>& SlotInfos);
 
+	UFUNCTION()
+	void HandleVisibilityChanged(ESlateVisibility InVisibility);
+
+	UPROPERTY()
+	class UGameSaveController* GameSaveController;
+	UPROPERTY()
+	TArray<UTestSaveGame*> SaveSlotInfos;
 	
 	UFUNCTION()
 	void OnClickedBtnExit();
@@ -71,3 +79,4 @@ public:
 	void OnLoadConfirm_2();
 	
 };
+
