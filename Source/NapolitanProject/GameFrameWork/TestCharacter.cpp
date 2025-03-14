@@ -7,7 +7,6 @@
 #include "../Interact/ControllableLightActor.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "FootstepSpawnerComponent.h"
 #include "../Interact/InteractWidget.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "PlayerHUD.h"
@@ -72,8 +71,7 @@ ATestCharacter::ATestCharacter()
 
 	AudioComp =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->SetupAttachment(GetCapsuleComponent());
-
-	FootstepSpawner = CreateDefaultSubobject<UFootstepSpawnerComponent>(TEXT("FootstepSpawner"));
+	
 }
 
 void ATestCharacter::BeginPlay()
@@ -92,8 +90,7 @@ void ATestCharacter::BeginPlay()
 	
 	GetCapsuleComponent()->OnComponentEndOverlap.AddDynamic(this,&ATestCharacter::EndCapsuleOverlap);
 	
-	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("FootstepTarget"), FootstepTargetPoints);
-
+	
 	
 }
 
@@ -732,17 +729,5 @@ void ATestCharacter::StopSound()
 	if (AudioComp->IsPlaying())
 	{
 		AudioComp->Stop();
-	}
-}
-
-void ATestCharacter::SpawnFootstepToTarget(int32 TargetIndex)
-{
-	if (FootstepTargetPoints.IsValidIndex(TargetIndex))
-	{
-		AActor* Target = FootstepTargetPoints[TargetIndex];
-
-		const FVector Vec=Target->GetActorLocation();
-		// 선택된 목적지로 발자국 생성
-		FootstepSpawner->SpawnFootsteps(Vec);
 	}
 }

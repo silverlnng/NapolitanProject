@@ -269,18 +269,7 @@ public:
 	//////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* NPCEventSoundWave;
-
-	/////////////// FootstepSpawnerComponent //////////////////
-
-	UPROPERTY(VisibleAnywhere,Category = "Navigation")
-	TArray<AActor*> FootstepTargetPoints;
-
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	class UFootstepSpawnerComponent* FootstepSpawner;
 	
-	UFUNCTION(BlueprintCallable)
-	void SpawnFootstepToTarget(int32 TargetIndex);
-
 	UPROPERTY(VisibleAnywhere) // 저장한 장소
 	FString SaveLocationStr=FString(TEXT("2층 전시관 앞"));
 

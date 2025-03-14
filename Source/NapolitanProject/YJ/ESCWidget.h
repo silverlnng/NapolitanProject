@@ -27,7 +27,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> StartLevel;
-
+	
+	UPROPERTY(VisibleAnywhere)
+	class UMyTestGameInstance* GI;
 	UFUNCTION()
 	void OnClick_Exit();
 	

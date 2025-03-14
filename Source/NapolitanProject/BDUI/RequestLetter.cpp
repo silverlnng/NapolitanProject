@@ -35,6 +35,9 @@ void URequestLetter::OnTicketClicked()
 	SetVisibility(ESlateVisibility::Hidden);
 
 	// 기존의 배경음은 stop 하도록 만들기 
+
+	GI->SetLevelMoveToDoor(false);
+	GI->LoadedGame=nullptr;
 	
 	if(OpeningSequence)
 	{

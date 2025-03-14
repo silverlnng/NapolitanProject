@@ -123,7 +123,7 @@ void UMyTestGameInstance::Init()
 	
 	
 	
-  // 저장한 게임 저장데이터가 있으면 불러오기 
+    // 저장한 게임 저장데이터가 있으면 불러오기  ==> 이걸 스타트화면이 불러올때마다 하기 
 	GameSaveController = NewObject<UGameSaveController>(this);
 	int32 MaxSlots = 3; // 예: 최대 슬롯 수
 	SaveSlotInfos = GameSaveController->LoadAllSlotInfo(MaxSlots);
