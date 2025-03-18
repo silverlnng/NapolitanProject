@@ -246,8 +246,6 @@ public:
 	
 	UFUNCTION()
 	void DamagedToSecurity();
-	UPROPERTY(EditAnywhere)
-	UAnimMontage* DamagedSecurityAnim;
 
 	UPROPERTY(EditDefaultsOnly)
 	class UAudioComponent* AudioComp;
