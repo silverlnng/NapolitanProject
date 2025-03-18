@@ -46,6 +46,17 @@ void ULoadScreenWidget::NativeConstruct()
 
 	SaveSlotSwitcherWidget_2->WBP_VacantSlot->Btn_SaveGame->OnClicked.AddDynamic(this,&ULoadScreenWidget::OnSaveQuestionWidgetCreate_2);
 	SaveSlotSwitcherWidget_2->WBP_SavedSlot->Btn_LoadSelectSlot->OnClicked.AddDynamic(this,&ULoadScreenWidget::OnLoadConfirm_2);
+
+	OnVisibilityChanged.AddDynamic(this,&ULoadScreenWidget::HandleVisibilityChanged);
+	GameSaveController = NewObject<UGameSaveController>(this);
+}
+void ULoadScreenWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
+{
+	if (InVisibility == ESlateVisibility::Visible)
+	{
+		SaveSlotInfos = GameSaveController->LoadAllSlotInfo(3);
+		LoadUpdateUI(SaveSlotInfos);
+	}
 }
 
 
