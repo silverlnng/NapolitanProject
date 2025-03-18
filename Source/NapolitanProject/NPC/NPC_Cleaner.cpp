@@ -63,6 +63,11 @@ void ANPC_Cleaner::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (!MainCharacter)
+	{
+		return;
+	}
+
 	//현재 상태 뜨게 하기
 	FString myState = UEnum::GetValueAsString(mState);
 	//DrawDebugString(GetWorld() , GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
@@ -159,6 +164,13 @@ void ANPC_Cleaner::ChangeCleared()
 
 void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 {
+	// 널 포인터 체크 추가
+	if (!MainCharacter)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MainCharacter is nullptr in TickIdle!"));
+		return;
+	}
+	
 	// 대기 시간 계산
 	CurrentTime += DeltaTime;
 	if (CurrentTime > IdleDelayTime)
