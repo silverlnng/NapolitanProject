@@ -11,14 +11,13 @@
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
-
 #include "NapolitanProject/Interact/CatchSpider.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interact/ItemActor.h"
 #include "NapolitanProject/YJ/AttackSpiderV2.h"
 #include "NapolitanProject/YJ/SpiderMapGunActor.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
-#include "Perception/AISense_Hearing.h"
+
 
 ASpiderMapGameModeBase::ASpiderMapGameModeBase()
 {
@@ -86,6 +85,7 @@ void ASpiderMapGameModeBase::BeginPlay()
 		GetWorld()->GetTimerManager().SetTimer(GITimer,[this]()
 		{
 			GI->RestoreAttachedItems();
+			CatchSpiderCount=FCString::Atoi(* GI->CatchSpiderNum);
 		},2.0f,false);
 	}
 }

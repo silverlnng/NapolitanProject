@@ -323,7 +323,6 @@ void UMyTestGameInstance::GetNPCSelect(const int32& NPC_ID, const int32& State, 
 void UMyTestGameInstance::SaveAttachedItems()
 {
 	ATestCharacter* MainCharacter=Cast<ATestCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	
 }
 
 void UMyTestGameInstance::RestoreAttachedItems()
@@ -394,5 +393,55 @@ void UMyTestGameInstance::SetLevelMoveToDoor(bool bUse)
 	bLevelMoveToDoor = bUse; // 문을 통해 이동했으므로 저장된 위치 사용
 
 	// 죽어서 처음레벨 가면 이거 false으로 고치기 
+}
+
+void UMyTestGameInstance::UnlockAchievement(FString AchievementId)
+{
+	/*IOnlineSubsystem* OnlineSub = Online::GetSubsystem(GetWorld());
+	if (OnlineSub)
+	{
+		IOnlineIdentityPtr Identity = OnlineSub->GetIdentityInterface();
+		if (!Identity.IsValid())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Identity interface invalid"));
+			return;
+		}
+
+		TSharedPtr<const FUniqueNetId> UserId = Identity->GetUniquePlayerId(0); // 로컬 플레이어 인덱스
+		if (!UserId.IsValid())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("User ID invalid"));
+			return;
+		}
+
+		IOnlineAchievementsPtr Achievements = OnlineSub->GetAchievementsInterface();
+		if (Achievements.IsValid())
+		{
+			// Achievements Write 객체 생성
+			FOnlineAchievementsWriteRef WriteObject = MakeShared<FOnlineAchievementsWrite>();
+			WriteObject->SetFloatStat(*AchievementId, 100.0f);  // 100% 달성 처리
+
+			// Delegate 바인딩
+			FOnAchievementsWrittenDelegate Delegate;
+			Delegate.BindLambda([UserId](const FUniqueNetId& PlayerId, bool bSuccess)
+			{
+				if (bSuccess)
+				{
+					UE_LOG(LogTemp, Log, TEXT("Achievement successfully written for %s"), *PlayerId.ToString());
+				}
+				else
+				{
+					UE_LOG(LogTemp, Warning, TEXT("Achievement write failed for %s"), *PlayerId.ToString());
+				}
+			});
+
+			// Achievements Write 호출
+			Achievements->WriteAchievements(*UserId, WriteObject, Delegate);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Achievements interface invalid"));
+		}
+	}*/
 }
 

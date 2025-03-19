@@ -7,14 +7,14 @@
 #include "../GameFrameWork/PlayerHUD.h"
 #include "../GameFrameWork/TestCharacter.h"
 #include "../GameFrameWork/TestPlayerController.h"
-#include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/Image.h"
-#include "Components/TextRenderComponent.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/BDUI/RequestLetter.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/YJ/NoteUI/ClueInfoWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
+
 
 // Sets default values
 AClueActor::AClueActor()
@@ -45,6 +45,9 @@ void AClueActor::BeginPlay()
 		PlayerHUD =TestPC->GetHUD<APlayerHUD>();
 	}
 	GI = GetGameInstance<UMyTestGameInstance>();
+
+	ClueDataRowNames=GI->DT_Clue->GetRowNames();
+	
 	if(M_Overlay)
 	{
 		StaticMeshComp->SetOverlayMaterial(M_Overlay);
@@ -83,9 +86,10 @@ void AClueActor::LookAt()
 	}
 	
 
-	//데이터 테이블에 had으로 표시
-	ClueData->Had=true;
+	
 
+	
+	
 	// tarray는 0부터 시작
 	PlayerHUD->NoteUI->WBP_ClueInfo->ClueSlots[Clue_ID-1]->SetWidgetSwitcher(1);
 	
@@ -96,8 +100,6 @@ void AClueActor::LookAt()
 	
 	PlayerHUD->InteractUI->SetRichText_Clue(*ClueContent);
 	
-	
-
 	UTexture2D* ClueImage = ClueData->ClueImage;
 	if (ClueImage)
 	{
@@ -114,6 +116,25 @@ void AClueActor::LookAt()
 	
 	// 쪽지 ui 가 나오도록 하기
 	 // 자기아이디로 데이터 테이블 읽어와서
+
+
+	//데이터 테이블에 had으로 표시
+
+	UE_LOG(LogTemp, Warning, TEXT("ClueActorCount: %d%s"),ClueActorCount,*CALLINFO);
 	
+	if (ClueData->Had){return;}
+	else
+	{
+		ClueData->Had=true;
+	
+		ClueActorCount++;
+
+		if (ClueActorCount==5)
+		{
+			GI->UnlockAchievement(TEXT("ClueCollect_ACH"));
+		}
+	}
+	
+	//여기서 10번째 면 스팀도전과제 나오도록 하기 
 	
 }

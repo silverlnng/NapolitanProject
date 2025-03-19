@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "ClueActor.generated.h"
 
+
+
 UCLASS()
 class NAPOLITANPROJECT_API AClueActor : public AActor
 {
@@ -53,6 +55,11 @@ public:
 	TSubclassOf<class URequestLetter> RequestLetterFactory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class URequestLetter* RequestLetterUI;
+	
+	UPROPERTY(VisibleAnywhere)
+	TArray<FName> ClueDataRowNames;
+
+	inline static int32 ClueActorCount=0;
 };
 
 
