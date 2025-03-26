@@ -3,16 +3,25 @@
 
 #include "NPC_Docent.h"
 
+#include "EngineUtils.h"
 #include "../GameFrameWork/TestPlayerController.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "NapolitanProject/GameFrameWork/EventComponent.h"
-#include "NapolitanProject/Interact/InteractWidget.h"
-#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/Interact/Souvenir_Docent.h"
+#include "NapolitanProject/LevelEvent/LightControlActor.h"
 
+
+void ANPC_Docent::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	for (TActorIterator<ALightControlActor> It(GetWorld(), ALightControlActor::StaticClass()); It; ++It)
+	{
+		LightControlActor = *It;
+	}
+}
 
 void ANPC_Docent::Tick(float DeltaSeconds)
 {
@@ -54,48 +63,20 @@ void ANPC_Docent::ResultEvent(int32 result)
 		else if (1==result)
 		{
 			TestPC->StartEndNPCDialougue(false);
-			/*int32 key=(NPC_ID*100)+(State*10)+result;
-			// int32 key=(NPC_ID*1000)+(State*100)+result*10;
-			PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
+			// 사망이벤트를 만들기
 
-			// 결과창이 나오도록하기 
+			// 배경음 변경하기
 			
-			TestPC->SetCurNPCResultUI(key);
-			 // TestPC-> 키전달 c
-
-			// 타이머 람다 로 PlayerHUD->NPCDialogueUI 안보이게 하고
-	
-			// 뷰전환이라면 npc 자신의 카메라를 향해
-			
-			FTimerHandle Timer;
-			GetWorldTimerManager().SetTimer(Timer,[this]()
+			// 1) 조명이벤트
+			if (LightControlActor)
 			{
-				PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Hidden);
-				//PlayAnimMontage(attackAnimMontage);
-			},3.0f,false);
+				LightControlActor->StartSineFlicker(0,2,5);
+			}
+
+			// 아래에 피흐르는 나이아가라 스폰하고 자신은 안보이도록 하기
 
 			
-			ElapsedTime = 0.0f;
 			
-			GetWorldTimerManager().SetTimer(LerpTimerHandle,this,&ANPC_Docent::UpdateLerp,0.01f, true,3.0f);
-			
-			// 메인캐릭터에게 다가오고 애니메이션 몽타주 실행
-
-			FTimerHandle EndingTimer;
-			GetWorldTimerManager().SetTimer(EndingTimer,[this]()
-			{
-				// 끝나는 엔딩 위젯 나오도록 하기
-				if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
-				{
-					PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-					name= FString(TEXT("<Red_Big>도슨트에게</>"));
-					PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
-					PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
-				}
-			
-			},8.0f,false);*/
-		
-		
 			
 		}
 		else if (2==result)

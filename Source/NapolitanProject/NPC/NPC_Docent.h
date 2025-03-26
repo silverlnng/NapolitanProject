@@ -14,6 +14,8 @@ class NAPOLITANPROJECT_API ANPC_Docent : public ANPCCharacter
 {
 	GENERATED_BODY()
 public:
+	virtual void BeginPlay() override;
+	
 	virtual void Tick(float DeltaSeconds) override;
 	
 	virtual void ResultEvent(int32 result) override;
@@ -71,7 +73,10 @@ public:
 	UMaterialInterface* DissolveMaterial3;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Dissolve")
 	UMaterialInterface* DissolveMaterial4;
-	
+
+///////// 사망이벤트 만들기
+	UPROPERTY()
+	class ALightControlActor* LightControlActor;
 };
 
 
