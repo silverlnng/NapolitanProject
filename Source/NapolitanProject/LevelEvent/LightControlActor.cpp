@@ -65,7 +65,7 @@ void ALightControlActor::StopSineFlicker()
 		for (int32 i=0; i< SelectedLights.Num(); i++)
 		{
 			ALight* Light =SelectedLights[i];
-			float BaseIntensity=SelectedLightsOriginIntensity[i];
+			BaseIntensity=SelectedLightsOriginIntensity[i];
 			if (Light && Light->GetLightComponent()&&BaseIntensity)
 			{
 				Light->GetLightComponent()->SetIntensity(BaseIntensity);
