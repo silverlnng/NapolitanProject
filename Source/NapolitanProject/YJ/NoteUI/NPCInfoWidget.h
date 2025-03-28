@@ -24,7 +24,10 @@ public:
 	
 /////////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
-	USoundWave* StickSoundWave;	
+	USoundWave* StickSoundWave;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* WriteSoundWave;	
 	
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher_;

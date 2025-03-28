@@ -55,6 +55,15 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum)
 	},1.5f,false);
 	
 
+	FTimerHandle SoundTimer;
+	GetWorld()->GetTimerManager().SetTimer(SoundTimer , [this]()
+	{
+		if (WriteSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, WriteSoundWave);
+		}	
+	} , 1.8f , false);
+
 	FTimerHandle UITimer2;
 
 	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this, wsNum]()
@@ -72,7 +81,8 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Cleaner(int32 panelNum,int32 wsNum)
 		{
 			UGameplayStatics::PlaySound2D(this, StickSoundWave);
 		}
-	},2.0f,false);
+		
+	},2.4f,false);
 	
 }
 
@@ -90,8 +100,18 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Security(int32 panelNum, int32 wsNum)
 		{
 			ScrollBox_Security->ScrollWidgetIntoView(CanvasPanel_Security2,true);
 		}
+		
 	},1.5f,false);
 
+	FTimerHandle SoundTimer;
+	GetWorld()->GetTimerManager().SetTimer(SoundTimer , [this]()
+	{
+		if (WriteSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, WriteSoundWave);
+		}	
+	} , 1.8f , false);
+	
 	FTimerHandle UITimer2;
 
 	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this, wsNum]()
@@ -107,6 +127,7 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Security(int32 panelNum, int32 wsNum)
 				Img_Head2->SetVisibility(ESlateVisibility::Visible);
 				Img_Head_BG->SetVisibility(ESlateVisibility::Visible);
 			} , 0.5f , false);		
+
 			
 		}
 		else if (wsNum==2)
@@ -117,7 +138,8 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Security(int32 panelNum, int32 wsNum)
 		{
 			UGameplayStatics::PlaySound2D(this, StickSoundWave);
 		}
-	},2.5f,false);
+		
+	},2.4f,false);
 	
 }
 
@@ -135,9 +157,20 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Oldman(int32 panelNum, int32 wsNum)
 		{
 			ScrollBox_Oldman->ScrollWidgetIntoView(CanvasPanel_Oldman2,true);
 		}
+		if (WriteSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, StickSoundWave);
+		}
 	},1.5f,false);
 	
-
+	FTimerHandle SoundTimer;
+	GetWorld()->GetTimerManager().SetTimer(SoundTimer , [this]()
+	{
+		if (WriteSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, WriteSoundWave);
+		}	
+	} , 1.8f , false);
 	FTimerHandle UITimer2;
 
 	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this, wsNum]()
@@ -154,7 +187,10 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Oldman(int32 panelNum, int32 wsNum)
 		{
 			UGameplayStatics::PlaySound2D(this, StickSoundWave);
 		}
-	},2.0f,false);
+		
+	},2.4f,false);
+
+	
 }
 
 void UNPCInfoWidget::SetForcus_ScrollBox_Docent(int32 panelNum, int32 wsNum)
@@ -172,7 +208,15 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Docent(int32 panelNum, int32 wsNum)
 			ScrollBox_Docent->ScrollWidgetIntoView(CanvasPanel_Docent2,true);
 		}
 	},1.5f,false);
-	
+
+	FTimerHandle SoundTimer;
+	GetWorld()->GetTimerManager().SetTimer(SoundTimer , [this]()
+	{
+		if (WriteSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, WriteSoundWave);
+		}	
+	} , 1.8f , false);
 
 	FTimerHandle UITimer2;
 
@@ -190,7 +234,10 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Docent(int32 panelNum, int32 wsNum)
 		{
 			UGameplayStatics::PlaySound2D(this, StickSoundWave);
 		}
-	},1.5f,false);
+		
+	},2.5f,false);
+
+	
 }
 
 void UNPCInfoWidget::SetForcus_ScrollBox_Butterfly(int32 panelNum, int32 wsNum)
@@ -210,7 +257,15 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Butterfly(int32 panelNum, int32 wsNum)
 		}
 	},1.5f,false);
 	
-
+	FTimerHandle SoundTimer;
+	GetWorld()->GetTimerManager().SetTimer(SoundTimer , [this]()
+	{
+		if (WriteSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, WriteSoundWave);
+		}	
+	} , 1.8f , false);
+	
 	FTimerHandle UITimer2;
 
 	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this, wsNum]()
@@ -228,5 +283,6 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Butterfly(int32 panelNum, int32 wsNum)
 		{
 			UGameplayStatics::PlaySound2D(this, StickSoundWave);
 		}
-	},2.0f,false);
+	},2.5f,false);
+	
 }
