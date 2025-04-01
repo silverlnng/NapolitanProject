@@ -77,6 +77,8 @@ public:
 ///////// 사망이벤트 만들기
 	UPROPERTY()
 	class ALightControlActor* LightControlActor;
+	UPROPERTY()
+	class AEventTriggerBox_Docent* EventTriggerBox_Docent;
 };
 
 

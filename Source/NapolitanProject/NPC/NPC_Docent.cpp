@@ -6,10 +6,13 @@
 #include "EngineUtils.h"
 #include "../GameFrameWork/TestPlayerController.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/Interact/Souvenir_Docent.h"
+#include "NapolitanProject/LevelEvent/EventTriggerBox_Docent.h"
 #include "NapolitanProject/LevelEvent/LightControlActor.h"
 
 
@@ -20,6 +23,11 @@ void ANPC_Docent::BeginPlay()
 	for (TActorIterator<ALightControlActor> It(GetWorld(), ALightControlActor::StaticClass()); It; ++It)
 	{
 		LightControlActor = *It;
+	}
+
+	for (TActorIterator<AEventTriggerBox_Docent> It(GetWorld(), AEventTriggerBox_Docent::StaticClass()); It; ++It)
+	{
+		EventTriggerBox_Docent = *It;
 	}
 }
 
@@ -67,13 +75,24 @@ void ANPC_Docent::ResultEvent(int32 result)
 
 			// 배경음 변경하기
 			
-			// 1) 조명이벤트
+			// 1) 조명이벤트-> 깜빡이다가 쭉 어두워지게
 			if (LightControlActor)
 			{
-				LightControlActor->StartSineFlicker(0,2,5);
+				LightControlActor->StartSineFlicker(0,2,3,5.5f);
 			}
 
-			// 아래에 피흐르는 나이아가라 스폰하고 자신은 안보이도록 하기
+			// 아래에 피흐르는 나이아가라 스폰하고 도슨트 안보이도록 하기, 상호작용 안되도록 .
+			GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+			SetActorHiddenInGame(true);
+			// NPCEventManage에 도슨트 점프스케어 1 추가
+			// 아님 트리거박스가 실행되도록 델리게이트 바인드.=> AEventTriggerBox_Docent를 월드에서 찾아야함.
+			if (EventTriggerBox_Docent)
+			{
+				EventTriggerBox_Docent->BindBeginOverlap();
+			}
+
+			// 점프스케어 용 도슨트를 활성화 시키기
+			
 
 			
 			

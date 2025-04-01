@@ -28,8 +28,12 @@ void ALightControlActor::Tick(float DeltaTime)
 
 }
 
-void ALightControlActor::StartSineFlicker(int32 StartIndex, int32 Count,int32 FlickerDuration)
+void ALightControlActor::StartSineFlicker(int32 StartIndex, int32 Count,int32 FlickerDuration,float FlickerSpeed_)
 {
+
+	// 속도도 설정하도록
+	FlickerSpeed=FlickerSpeed_;
+	
 	if (FlickerTimerHandle.IsValid())
 	{
 		GetWorldTimerManager().ClearTimer(FlickerTimerHandle);

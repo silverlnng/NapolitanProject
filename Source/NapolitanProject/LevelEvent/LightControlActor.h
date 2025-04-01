@@ -60,7 +60,7 @@ public:
 
 	// 함수 선언
 	UFUNCTION(BlueprintCallable, Category="Light Flicker")
-	void StartSineFlicker(int32 StartIndex, int32 Count,int32 FlickerDuration);
+	void StartSineFlicker(int32 StartIndex, int32 Count,int32 FlickerDuration,float FlickerSpeed_);
 
 	UFUNCTION(BlueprintCallable, Category="Light Flicker")
 	void StopSineFlicker();
