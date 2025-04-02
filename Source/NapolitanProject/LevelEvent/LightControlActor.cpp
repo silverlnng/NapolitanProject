@@ -28,11 +28,13 @@ void ALightControlActor::Tick(float DeltaTime)
 
 }
 
-void ALightControlActor::StartSineFlicker(int32 StartIndex, int32 Count,int32 FlickerDuration,float FlickerSpeed_)
+void ALightControlActor::StartSineFlicker(int32 StartIndex, int32 Count,int32 FlickerDuration_,float FlickerSpeed_,float afterIntensity_)
 {
 
+	FlickerDuration=FlickerDuration_;
 	// 속도도 설정하도록
 	FlickerSpeed=FlickerSpeed_;
+	afterIntensity=afterIntensity_;
 	
 	if (FlickerTimerHandle.IsValid())
 	{
@@ -69,14 +71,15 @@ void ALightControlActor::StopSineFlicker()
 		for (int32 i=0; i< SelectedLights.Num(); i++)
 		{
 			ALight* Light =SelectedLights[i];
-			BaseIntensity=SelectedLightsOriginIntensity[i];
-			if (Light && Light->GetLightComponent()&&BaseIntensity)
+			
+			if (Light && Light->GetLightComponent()&&afterIntensity)
 			{
-				Light->GetLightComponent()->SetIntensity(BaseIntensity);
+				Light->GetLightComponent()->SetIntensity(afterIntensity);
 			}
 		}
 	}
 }
+
 
 void ALightControlActor::UpdateFlicker()
 {

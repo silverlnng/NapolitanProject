@@ -58,13 +58,18 @@ public:
 	UPROPERTY(EditAnywhere, Category="Light Flicker")
 	float FlickerSpeed = 3.0f; // 높을수록 빠르게 깜빡임
 
+	UPROPERTY(EditAnywhere, Category="Light Flicker")
+	float FlickerDuration;
+
+	UPROPERTY(EditAnywhere, Category="Light Flicker")
+	float afterIntensity;
 	// 함수 선언
 	UFUNCTION(BlueprintCallable, Category="Light Flicker")
-	void StartSineFlicker(int32 StartIndex, int32 Count,int32 FlickerDuration,float FlickerSpeed_);
+	void StartSineFlicker(int32 StartIndex, int32 Count,int32 FlickerDuration_,float FlickerSpeed_,float afterIntensity_);
 
 	UFUNCTION(BlueprintCallable, Category="Light Flicker")
-	void StopSineFlicker();
-
+	void StopSineFlicker();// 업데이트를 끄고 원래 밝기로 돌아가는 함수
+	
 	void UpdateFlicker();
 
 };

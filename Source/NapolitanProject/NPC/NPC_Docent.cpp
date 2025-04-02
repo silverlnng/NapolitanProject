@@ -74,16 +74,31 @@ void ANPC_Docent::ResultEvent(int32 result)
 			// 사망이벤트를 만들기
 
 			// 배경음 변경하기
+			if (ScarySound)
+			{
+				UGameplayStatics::PlaySound2D(this, ScarySound);
+			}
 			
 			// 1) 조명이벤트-> 깜빡이다가 쭉 어두워지게
 			if (LightControlActor)
 			{
-				LightControlActor->StartSineFlicker(0,2,3,5.5f);
+				LightControlActor->StartSineFlicker(0,2,3,5.5f,10.f);
 			}
 
+			PlayOnce();
+			
 			// 아래에 피흐르는 나이아가라 스폰하고 도슨트 안보이도록 하기, 상호작용 안되도록 .
 			GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
-			SetActorHiddenInGame(true);
+
+			FTimerHandle HiddenTimer;
+
+			GetWorld()->GetTimerManager().SetTimer(HiddenTimer,[this]()
+			{
+				SetActorHiddenInGame(true);
+			},1.0f,false);
+			
+			
+			
 			// NPCEventManage에 도슨트 점프스케어 1 추가
 			// 아님 트리거박스가 실행되도록 델리게이트 바인드.=> AEventTriggerBox_Docent를 월드에서 찾아야함.
 			if (EventTriggerBox_Docent)
@@ -226,6 +241,14 @@ void ANPC_Docent::DissolveEvent(FString& str)
 void ANPC_Docent::ChangeCleared()
 {
 	Super::ChangeCleared();
+}
+
+void ANPC_Docent::PlayOnce()
+{
+	if (PlayGhostAnimation)
+	{
+		GetMesh()->PlayAnimation(PlayGhostAnimation, false); // false = 한 번만 실행
+	}
 }
 
 void ANPC_Docent::Interact()

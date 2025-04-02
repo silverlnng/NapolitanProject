@@ -79,6 +79,11 @@ public:
 	class ALightControlActor* LightControlActor;
 	UPROPERTY()
 	class AEventTriggerBox_Docent* EventTriggerBox_Docent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+	UAnimationAsset* PlayGhostAnimation;  // 실행할 애니메이션
+	void PlayOnce();
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class USoundWave* ScarySound;
 };
 
 

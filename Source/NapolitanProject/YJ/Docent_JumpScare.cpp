@@ -9,6 +9,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SlateWrapperTypes.h"
 #include "Components/SplineComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
@@ -131,7 +132,7 @@ void ADocent_JumpScare::StartAttack()
 
 	if (AttackSound)
 	{
-		AudioComp->SetSound(AttackSound);
+		UGameplayStatics::PlaySound2D(this, AttackSound);
 	}
 	
 	MainCharacter->SetActorHiddenInGame(true);
@@ -139,8 +140,14 @@ void ADocent_JumpScare::StartAttack()
 	// 사망이벤트 만 발생시킴
 	MainCharacter->bIsBeingAttacked=true;
 	//카메라 쉐이크 .
-	SwitchToMonsterCamera();
-	//
+
+	FTimerHandle SwitchCameraTimer;
+
+	GetWorld()->GetTimerManager().SetTimer(SwitchCameraTimer,[this]()
+	{
+		SwitchToMonsterCamera();
+	},0.2f,false);
+	
 	
 	//시간지연 주고 사망 UI 나오도록 
 	FTimerHandle UITimer;
@@ -156,7 +163,7 @@ void ADocent_JumpScare::StartAttack()
 			PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
 			PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
 		}
-	},3.0f,false);
+	},2.0f,false);
 
 	bAttack=true; // 한번만 작동되도록 제어
 }
