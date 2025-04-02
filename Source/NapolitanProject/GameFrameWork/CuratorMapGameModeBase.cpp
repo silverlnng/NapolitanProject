@@ -8,7 +8,9 @@
 #include "TestCharacter.h"
 #include "PlayerHUD.h"
 #include "TestPlayerController.h"
+#include "Components/Border.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NapolitanProject/YJ/Save/TestSaveGame.h"
 
@@ -56,6 +58,18 @@ void ACuratorMapGameModeBase::BeginPlay()
 				NPCArray[key]->Destroy();
 				// 어색 하면 Destroy()
 			}
+			if (2==key) // 도슨트
+			{
+				MainCharacter->b_IA_Note_Allowed = true;
+
+				FTimerHandle HUDTimer;
+				GetWorld()->GetTimerManager().SetTimer(HUDTimer , [this]()
+				{
+					PlayerHUD->InteractUI->Border_Note->SetVisibility(ESlateVisibility::Visible);
+				} , 1.5f , false);
+				
+			}
+			
 		}
 	}
 

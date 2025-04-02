@@ -8,6 +8,8 @@
 #include "PlayerHUD.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
+#include "Components/Border.h"
+#include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interact/PieceActor.h"
 #include "NapolitanProject/Interact/Sculpture.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
@@ -46,7 +48,8 @@ void ATestGameModeBase::BeginPlay()
 
 	GI = GetGameInstance<UMyTestGameInstance>();
 
-	//GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
+	// GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
+	
 	if (!GI->ClearedNPC.IsEmpty())
 	{
 		for (int32 key :GI->ClearedNPC)
@@ -74,6 +77,11 @@ void ATestGameModeBase::BeginPlay()
 			if (2==key) // 도슨트
 			{
 				MainCharacter->b_IA_Note_Allowed = true;
+				FTimerHandle HUDTimer;
+				GetWorld()->GetTimerManager().SetTimer(HUDTimer , [this]()
+				{
+					PlayerHUD->InteractUI->Border_Note->SetVisibility(ESlateVisibility::Visible);
+				} , 1.5f , false);
 			}
 			
 		}
