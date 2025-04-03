@@ -55,7 +55,7 @@ void AOriginEye::Tick(float DeltaTime)
 	FVector EyeLocation = GetActorLocation();
 	float DistanceToPlayer = FVector::Dist(PlayerLocation, EyeLocation);
 
-	if (DistanceToPlayer <= 1200.0f)
+	if (DistanceToPlayer <= 1100.0f)
 	{
 		bShouldLookAtPlayer = true;
 	}
@@ -64,7 +64,10 @@ void AOriginEye::Tick(float DeltaTime)
 		TimeSinceLastRandomLook += DeltaTime;
 		if (TimeSinceLastRandomLook >= RandomLookInterval)
 		{
-			RandomLookDirection = FRotator(FMath::RandRange(10.0f, 360.0f), FMath::RandRange(10.0f, 360.0f), 0.f);
+			RandomLookDirection = FRotator(
+				FMath::FRandRange(-60.0f, 60.0f),   // Pitch: -60 ~ 60도 (고개 위아래)
+			FMath::FRandRange(0.0f, 270.0f), 
+				0.0f);
 			//RandomSpeed = FMath::RandRange(15.0f, 20.0f);
 			TimeSinceLastRandomLook = 0.0f;
 		}
