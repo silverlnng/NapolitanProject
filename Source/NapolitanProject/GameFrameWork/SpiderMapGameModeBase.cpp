@@ -9,6 +9,7 @@
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
 #include "Components/ArrowComponent.h"
+#include "Components/Border.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/CatchSpider.h"
@@ -87,6 +88,23 @@ void ASpiderMapGameModeBase::BeginPlay()
 			GI->RestoreAttachedItems();
 			CatchSpiderCount=FCString::Atoi(* GI->CatchSpiderNum);
 		},2.0f,false);
+		//GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
+		if (!GI->ClearedNPC.IsEmpty())
+		{
+			for (int32 key :GI->ClearedNPC)
+			{
+				if (2==key) // 도슨트
+				{
+					MainCharacter->b_IA_Note_Allowed = true;
+					FTimerHandle HUDTimer;
+					GetWorld()->GetTimerManager().SetTimer(HUDTimer , [this]()
+					{
+						PlayerHUD->InteractUI->Border_Note->SetVisibility(ESlateVisibility::Visible);
+					} , 1.5f , false);
+				}
+			}
+		}
+		
 	}
 }
 
