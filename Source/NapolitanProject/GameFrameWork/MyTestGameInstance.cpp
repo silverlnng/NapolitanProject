@@ -85,7 +85,7 @@ void UMyTestGameInstance::Init()
 
 	if (DT_Clue)
 	{
-		UE_LOG(LogTemp, Error, TEXT("%s DT_Clue 로드성공"),*CALLINFO);
+		//UE_LOG(LogTemp, Error, TEXT("%s DT_Clue 로드성공"),*CALLINFO);
 		ClueDataRowNames=DT_Clue->GetRowNames();
 
 		for (int i = 0; i < ClueDataRowNames.Num(); i++)
@@ -100,7 +100,7 @@ void UMyTestGameInstance::Init()
 				
 				FString cluerowname=ClueDataRowNames[i].ToString();
 				
-				UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*cluerowname);
+				//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*cluerowname);
 				//UE_LOG(LogTemp,Warning,TEXT("%s,%d"),*CALLINFO,ClueData->ClueID);
 				
 			}

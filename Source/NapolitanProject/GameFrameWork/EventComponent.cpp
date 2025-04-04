@@ -376,7 +376,7 @@ void UEventComponent::Event_Butterfly_Start()
 	GetWorld()->GetTimerManager().SetTimer(UITimer3,[this]()
 	{
 		FString QuestText =FString(TEXT("거미버거를 만들어주기"));
-		PlayerHUD->InteractUI->AddQuestSlot(3,QuestText);
+		PlayerHUD->InteractUI->AddQuestSlot(4,QuestText);
 	},8.0f,false);
 	
 	FTimerHandle UITimer4;

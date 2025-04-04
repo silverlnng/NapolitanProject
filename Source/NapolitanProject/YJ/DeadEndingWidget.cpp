@@ -88,21 +88,15 @@ void UDeadEndingWidget::OnRestart()
 	{
 		int32 SlotNum=GameSaveController->FindLatestSaveGame();
 		GameSaveController->LoadGameFromSlot(SlotNum);
-		//UTestSaveGame* LoadedGame =GameSaveController->LoadGameFromSlot(SlotNum);
-		// if (LoadedGame)
-		// {
-		// 	MainCharacter->SetActorLocation(LoadedGame->PlayerLocation);
-		// 	MainCharacter->SetActorRotation(LoadedGame->PlayerRotation);
-		// }
+		UE_LOG(LogTemp , Warning , TEXT("%s : FindLatestSaveGame is: %d!"),*CALLINFO,SlotNum);
+	
 	}
 	else
 	{
 		// 없으면 지하 처음자리에서 시작하기
-
 		// 그냥 로비레벨 열기
 		UGameplayStatics::OpenLevelBySoftObjectPtr(this,LobbyLevel,true); //레벨 변경
 		
-		//MainCharacter->TeleportTo(FVector(-1410,-2020,-656),FRotator(0,-90,0));
 	}
 	// 저장한것 없으면 처음 시작 .
 	

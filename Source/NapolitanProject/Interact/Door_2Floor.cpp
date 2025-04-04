@@ -19,12 +19,21 @@ void ADoor_2Floor::BeginPlay()
 	GI=GetGameInstance<UMyTestGameInstance>();
 	// 청소부 만났으면 바인드해제하기
 	// QuestSlots
-	FString QuestText =FString(TEXT("머리를 찾아주기"));
-	if (GI&&GI->QuestSlots.Contains(QuestText))
+	
+
+	FTimerHandle LoadTimer;
+
+	GetWorld()->GetTimerManager().SetTimer(LoadTimer,[this]()
 	{
-		BoxComp->OnComponentBeginOverlap.Clear();
-		JustRotateDoor();
-	}
+		FString QuestText =FString(TEXT("머리를 찾아주기"));
+		
+		if (GI&&GI->QuestSlots.Contains(QuestText))
+		{
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("QuestSlots.Contains머리를 찾아주기")));
+			BoxComp->OnComponentBeginOverlap.Clear();
+			JustRotateDoor();
+		}
+	},0.5f,false);
 	
 }
 
@@ -91,6 +100,11 @@ void ADoor_2Floor::StartRotateDoor()
 
 void ADoor_2Floor::JustRotateDoor()
 {
-	Super::RotateDoor2();
-	Super::RotateDoor();
+	FRotator CurrentRotation2 = ExitDoor2->GetRelativeRotation();
+	TargetYaw2 = CurrentRotation2.Yaw - 90.0f;
+	ExitDoor2->SetRelativeRotation(FRotator(CurrentRotation2.Pitch, TargetYaw2, CurrentRotation2.Roll));
+	
+	FRotator CurrentRotation = ExitDoor->GetRelativeRotation();
+	TargetYaw = CurrentRotation.Yaw + 90.0f;
+	ExitDoor->SetRelativeRotation(FRotator(CurrentRotation.Pitch, TargetYaw, CurrentRotation.Roll)); 
 }

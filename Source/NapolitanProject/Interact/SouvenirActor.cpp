@@ -128,7 +128,7 @@ void ASouvenirActor::OnPickup()
 	PlayerHUD->NoteUI->SelectContent(5);
 
 /////////////////// 유물 3개 모으는 순간 
-	if (GI->AcquireSouvenirNum==3)
+	/*if (GI->AcquireSouvenirNum==3)
 	{
 		// npc 이서 방문열리는 쪽으로 화면 전환 하는 이벤트 발생시키기
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "유물3개 획득");
@@ -152,7 +152,7 @@ void ASouvenirActor::OnPickup()
 		{
 			Door->BindBeginOverlap();
 		}
-	}
+	}*/
 
 	
 	FTimerHandle SouvenirTimer2;

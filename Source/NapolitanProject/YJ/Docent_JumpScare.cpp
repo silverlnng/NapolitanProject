@@ -163,7 +163,7 @@ void ADocent_JumpScare::StartAttack()
 			PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
 			PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
 		}
-	},1.0f,false);
+	},1.5f,false);
 
 	bAttack=true; // 한번만 작동되도록 제어
 }

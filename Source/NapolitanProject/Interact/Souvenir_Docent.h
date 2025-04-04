@@ -16,7 +16,7 @@ class NAPOLITANPROJECT_API ASouvenir_Docent : public ASouvenirActor
 	
 	int32 SouvenirID=2;
 	
-	FString SouvenirName= FString(TEXT("수첩 을"));
+	FString SouvenirName= FString(TEXT("수첩"));
 	
 	virtual int32 GetSouvenirID();
 

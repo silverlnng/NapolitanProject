@@ -14,7 +14,7 @@ class NAPOLITANPROJECT_API ADoor_2Floor : public AExitDoor_Lobby
 {
 	GENERATED_BODY()
 public:
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
 	
 	void BindBeginOverlap();
 

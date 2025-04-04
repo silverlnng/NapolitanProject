@@ -40,7 +40,7 @@ void AEventTriggerBox_Docent::BeginOverlap(UPrimitiveComponent* OverlappedCompon
 
 		bHasTriggered = true; 
 		
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("EventTriggerBox_Docent::BeginOverlap")));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("EventTriggerBox_Docent::BeginOverlap")));
 		// 점프스케어용 도슨트가 걸어나오고
 		if (Docent_JumpScare)
 		{
