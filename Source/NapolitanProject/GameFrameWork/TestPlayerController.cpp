@@ -162,7 +162,9 @@ void ATestPlayerController::StartEndNPCDialougue(bool value)
 		SetNPCDialougueMaxSize();
 		
 		CameraViewChangeNPC();
-		
+
+		//자신의 캐릭터는 안보이도록
+		me->GetMesh()->SetHiddenInGame(true);
 	}
 	else // 대화 끝날때 
 	{
@@ -173,6 +175,13 @@ void ATestPlayerController::StartEndNPCDialougue(bool value)
 		// 플레이어 상태 idle으로
 		//SetViewTargetWithBlend(this,1.5f);
 		CameraViewChangePlayer();
+
+		//다시캐릭터보이게 -시간지연주고
+		FTimerHandle MeshTimer;
+		GetWorld()->GetTimerManager().SetTimer(MeshTimer,[this]()
+		{
+			me->GetMesh()->SetHiddenInGame(false);
+		},1.5f,false);
 	}
 }
 
