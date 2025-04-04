@@ -31,6 +31,20 @@ void UNPCInfoWidget::LoadUpdate(const FString& str)
 		ScrollBox_Cleaner->ScrollWidgetIntoView(CanvasPanel_Cleaner2,true);
 		WidgetSwitcher_Cleaner2->SetActiveWidgetIndex(1);
 	}
+	else if (str=="OldmanClue")
+	{
+		
+	}
+	else if (str=="ButterflyQuest")
+	{
+		WidgetSwitcher_Butterfly_1->SetActiveWidgetIndex(1);
+		WidgetSwitcher_Butterfly_2->SetActiveWidgetIndex(1);
+	}
+	else if (str=="ButterflyQuestReward")
+	{
+		WidgetSwitcher_Butterfly_3->SetActiveWidgetIndex(1);
+	}
+	
 }
 
 void UNPCInfoWidget::SelectContent(int32 idx)

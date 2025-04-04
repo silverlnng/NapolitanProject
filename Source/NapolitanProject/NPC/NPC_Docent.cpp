@@ -150,10 +150,7 @@ void ANPC_Docent::ResultEvent(int32 result)
 			FTimerHandle Timer;
 			GetWorldTimerManager().SetTimer(Timer,[this]()
 			{
-				//SouvenirName= FString(TEXT("수첩"));
-				//PlayerHUD->InteractUI->GetSouvenirEvent(SouvenirName);
-				//PlayerHUD->InteractUI->PlayNoteUIEvent(true);
-
+				
 				//몸 머터리얼 수정
 				DynamicMaterial1 = UMaterialInstanceDynamic::Create(DissolveMaterial1 , this);
 				DynamicMaterial2 = UMaterialInstanceDynamic::Create(DissolveMaterial2 , this);
@@ -185,7 +182,7 @@ void ANPC_Docent::ResultEvent(int32 result)
 					SouvenirNoteClass , SpawnTransform);
 			} , 7.0f , false);
 			
-			// 미술관을 탐색하자 퀘스트 발생 시키기 => 유품 쪽에서
+			
 			FTimerHandle UITimer1;
 
 			GetWorld()->GetTimerManager().SetTimer(UITimer1,[this]()

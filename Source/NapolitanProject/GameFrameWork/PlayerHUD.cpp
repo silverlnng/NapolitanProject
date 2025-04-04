@@ -211,9 +211,14 @@ void APlayerHUD::UpdateNPCInfoWidget()
 		for (FName &EventName:GI->NPCEventManage)
 		{
 			FString EventString = EventName.ToString();
-			
 			NoteUI->WBP_NPCInfo->LoadUpdate(EventString);
 		}
+	}
+
+	//도슨트 클리어했으면
+	if (GI->ClearedNPC.Contains(2))
+	{
+		NoteUI->WBP_NPCInfo->WidgetSwitcher_Docent1->SetActiveWidgetIndex(1);
 	}
 	
 }
