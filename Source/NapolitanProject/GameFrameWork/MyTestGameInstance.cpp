@@ -360,6 +360,11 @@ void UMyTestGameInstance::RestoreAttachedItems()
 	}	
 }
 
+void UMyTestGameInstance::LoadLevelWithLoadingScreen(FName LevelName)
+{
+	
+}
+
 void UMyTestGameInstance::AsyncLoadLoadLevel(const TSoftObjectPtr<UWorld> Level)
 {
 	CachedLevel = Level; // ✅ 레벨을 임시 저장
