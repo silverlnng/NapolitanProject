@@ -71,6 +71,9 @@ ATestCharacter::ATestCharacter()
 
 	AudioComp =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->SetupAttachment(GetCapsuleComponent());
+
+	CenterArrowComp = CreateDefaultSubobject<UArrowComponent>(TEXT("CenterArrowComp"));
+	CenterArrowComp->SetupAttachment(CameraComponent);
 	
 }
 

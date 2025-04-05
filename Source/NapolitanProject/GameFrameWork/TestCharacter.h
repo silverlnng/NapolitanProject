@@ -235,7 +235,9 @@ public:
 	class UArrowComponent* leftArrowComp;
 	UPROPERTY(EditDefaultsOnly)
 	class UArrowComponent* ItemArrowComp;
-
+	UPROPERTY(EditDefaultsOnly)
+	class UArrowComponent* CenterArrowComp;
+	
 	UPROPERTY(VisibleAnywhere)
 	class AItemActor* curItem =nullptr;
 	
