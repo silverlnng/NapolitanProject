@@ -206,6 +206,15 @@ public:
 	UPROPERTY()
 	TArray<UTestSaveGame*> SaveSlotInfos;
 
+
+/////////// 레벨전환시 자연스러운 페이드인 아웃 UI 함수 선언
+	UFUNCTION(BlueprintCallable)
+	void LoadLevelWithLoadingScreen(FName LevelName);
+	
+	// 로딩 위젯을 저장할 변수
+	UPROPERTY()
+	UUserWidget* LoadingScreenWidget;
+	
 ///////// 비동기 로비 레벨로드 //////
 	UFUNCTION(BlueprintCallable)
 	void AsyncLoadLoadLevel(const TSoftObjectPtr<UWorld> Level);
