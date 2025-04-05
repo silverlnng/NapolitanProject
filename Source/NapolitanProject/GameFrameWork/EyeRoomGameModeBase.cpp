@@ -25,7 +25,7 @@ void AEyeRoomGameModeBase::BeginPlay()
 
 	MainCharacter=Cast<ATestCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	if (!MainCharacter){return;}
-
+	MainCharacter->GetMesh()->SetWorldScale3D(FVector3d(1,1,1));
 	PC =MainCharacter->GetController<ATestPlayerController>();
 	if (!PC){return;}
 	PlayerHUD =PC->GetHUD<APlayerHUD>();	

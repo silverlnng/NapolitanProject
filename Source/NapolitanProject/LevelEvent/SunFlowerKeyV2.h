@@ -13,7 +13,9 @@ UCLASS()
 class NAPOLITANPROJECT_API ASunFlowerKeyV2 : public AItemActor
 {
 	GENERATED_BODY()
-
+	
+public:	
+	ASunFlowerKeyV2();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -30,5 +32,18 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	class AAttachArt* AttachArt;
-	
+
+	UPROPERTY(EditDefaultsOnly)
+	class USkeletalMeshComponent* SkeletalMeshComp1;
+	UPROPERTY(EditDefaultsOnly)
+	class USkeletalMeshComponent* SkeletalMeshComp2;
+	UPROPERTY(EditDefaultsOnly)
+	class USkeletalMeshComponent* SkeletalMeshComp3;
+
+	UPROPERTY(EditDefaultsOnly)
+	class USceneComponent* SceneComp2;
+
+	FTimerHandle RepeatTimerHandle;
+	FTimerHandle StopTimerHandle;
+
 };

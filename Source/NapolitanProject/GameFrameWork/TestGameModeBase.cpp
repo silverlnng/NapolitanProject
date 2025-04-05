@@ -31,6 +31,7 @@ void ATestGameModeBase::BeginPlay()
 	PC->SetShowMouseCursor(false);
 
 	MainCharacter = Cast<ATestCharacter>(PC->GetPawn());
+	MainCharacter->GetMesh()->SetWorldScale3D(FVector3d(1,1,1));
 	//MainCharacter->b_IA_Note_Allowed = true; => 도슨트 클리어하고 될수있도록 하기 
 	MainCharacter->b_IA_Inven_Allowed = true;
 
