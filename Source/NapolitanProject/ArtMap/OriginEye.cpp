@@ -55,7 +55,7 @@ void AOriginEye::Tick(float DeltaTime)
 	FVector EyeLocation = GetActorLocation();
 	float DistanceToPlayer = FVector::Dist(PlayerLocation, EyeLocation);
 
-	if (DistanceToPlayer <= 1100.0f)
+	if (DistanceToPlayer <=1100.0f)
 	{
 		bShouldLookAtPlayer = true;
 	}
@@ -85,5 +85,14 @@ void AOriginEye::Tick(float DeltaTime)
 
 	Arrow->SetWorldRotation(SmoothRotation);
 
+}
+
+void AOriginEye::SetEyeVisible(bool bVisible)
+{
+	if (EyeMesh)
+	{
+		EyeMesh->SetVisibility(bVisible, true);
+		EyeMesh->SetHiddenInGame(!bVisible, true);
+	}
 }
 
