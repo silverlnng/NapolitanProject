@@ -2,9 +2,8 @@
 
 
 #include "TriggerActorArt2F.h"
-
 #include "EngineUtils.h"
-#include "SoundControlActor.h"
+#include "NapolitanProject/YJ/SoundControlActor.h"
 #include "Components/AudioComponent.h"
 #include "Components/BoxComponent.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"

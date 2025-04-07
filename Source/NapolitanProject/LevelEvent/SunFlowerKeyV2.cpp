@@ -46,6 +46,11 @@ void ASunFlowerKeyV2::BeginPlay()
 	SkeletalMeshComp3->HideBoneByName(FName(TEXT("clavicle_r")),PBO_None);
 
 	//SkeletalMeshComp3->UnHideBoneByName()
+	BaseYaw = GetActorRotation().Yaw;
+
+	SkeletalMeshComp1->SetHiddenInGame(true);
+	SkeletalMeshComp2->SetHiddenInGame(true);
+	SkeletalMeshComp3->SetHiddenInGame(true);
 }
 
 void ASunFlowerKeyV2::Tick(float DeltaTime)
@@ -73,12 +78,42 @@ void ASunFlowerKeyV2::OnPickup()
 
 	// 카메라에 가까이 , 특정각도로, 그리고
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
+	
 	AttachToComponent(MainCharacter->CenterArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 	
-	
+	// 2초뒤에 독백대사 나오도록 하기
+	FTimerHandle MonologueTimer;
 
-	// 몇초뒤 흔들림 효과+ 팔 뻗어나오기
-	
+	GetWorld()->GetTimerManager().SetTimer(MonologueTimer , [this]()
+	{
+		
+	} , 1.0f , false);
+
+	// 2.5초뒤 흔들림 효과+ 팔 뻗어나오기 효과 연출
+	FTimerHandle effectTimer;
+
+	GetWorld()->GetTimerManager().SetTimer(effectTimer , [this]()
+	{
+		StartShake();
+
+		// 스켈레탈메쉬 보이도록 하고
+		SkeletalMeshComp1->SetHiddenInGame(false);
+		SkeletalMeshComp2->SetHiddenInGame(false);
+		SkeletalMeshComp3->SetHiddenInGame(false);
+		// 애니메이션 작동
+		
+		
+	} , 2.5f , false);
+
+	//3.5초 뒤 효과 중지하도록 하기
+	FTimerHandle effectEndTimer;
+	GetWorld()->GetTimerManager().SetTimer(effectEndTimer , [this]()
+	{
+		SkeletalMeshComp1->SetHiddenInGame(true);
+		SkeletalMeshComp2->SetHiddenInGame(true);
+		SkeletalMeshComp3->SetHiddenInGame(true);
+		
+	} , 4.0f , false);
 	
 	// 아님점프스케어 연출뒤에 Super::OnPickup 작동되도록 만들기 
 	// Super::OnPickup(); 
@@ -89,4 +124,27 @@ void ASunFlowerKeyV2::OnPickup()
 void ASunFlowerKeyV2::PutDown()
 {
 	Super::PutDown();
+}
+
+void ASunFlowerKeyV2::StartShake()
+{
+	// 타이머시작 => 흔들림효과 시작
+	GetWorldTimerManager().SetTimer(StartTimerHandle, this, &ASunFlowerKeyV2::UpdateShake, 0.1f, true);
+
+	// 타이머 중지
+	GetWorldTimerManager().SetTimer(StopTimerHandle, this, &ASunFlowerKeyV2::StopShake, 2.0f, false);
+}
+
+void ASunFlowerKeyV2::UpdateShake()
+{
+	TimeAccumulator += GetWorld()->GetTimeSeconds();
+	float AngleOffset = FMath::Sin(TimeAccumulator * SwingSpeed) * SwingAmplitude;
+
+	FRotator NewRot = FRotator(0, BaseYaw + AngleOffset, 0);
+	StaticMeshComp->SetRelativeRotation(NewRot);
+}
+
+void ASunFlowerKeyV2::StopShake()
+{
+	GetWorldTimerManager().ClearTimer(StartTimerHandle);
 }

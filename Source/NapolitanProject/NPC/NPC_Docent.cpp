@@ -12,7 +12,7 @@
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/Interact/Souvenir_Docent.h"
-#include "NapolitanProject/LevelEvent/EventTriggerBox_Docent.h"
+#include "NapolitanProject/LevelEvent/TriggerCustom/EventTriggerBox_Docent.h"
 #include "NapolitanProject/LevelEvent/LightControlActor.h"
 
 

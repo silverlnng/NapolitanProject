@@ -43,7 +43,20 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class USceneComponent* SceneComp2;
 
-	FTimerHandle RepeatTimerHandle;
+	FTimerHandle StartTimerHandle;
 	FTimerHandle StopTimerHandle;
+	FTimerHandle MonologueTimerHandle;
 
+	void StartShake();
+	void UpdateShake();
+	void StopShake();
+
+/////////////흔들림 효과 //////////////////
+	UPROPERTY(EditAnywhere)
+	float SwingAmplitude = 30.f; // 최대 회전각
+	UPROPERTY(EditAnywhere)
+	float SwingSpeed = 10.f; // 빠르게 흔들기
+	UPROPERTY(EditAnywhere)
+	float TimeAccumulator = 0.f;
+	float BaseYaw = 0.f;
 };
