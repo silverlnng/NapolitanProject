@@ -483,14 +483,18 @@ void ATestCharacter::SphereTraceFromCamera()
 	 );
 
 	// 디버그용으로 트레이스 구체를 그립니다
-	FColor TraceColor = InteractHit ? FColor::Red : FColor::Green;
+	//FColor TraceColor = InteractHit ? FColor::Red : FColor::Green;
 	//DrawDebugLine(GetWorld(), TraceStart, TraceEnd, TraceColor, false, 2.0f, 0, 2.0f);
 	//DrawDebugSphere(GetWorld(), TraceStart, SphereRadius, 12, TraceColor, false, 2.0f);
 	
 	if (InteractHit && curState==EPlayerState::Idle) //  이중조건 && interact 중이 아닐때로 만들기  
 	{
 		//DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, SphereRadius, 12, TraceColor, false, 2.0f);
-
+		if (HitResult.GetActor()->ActorHasTag(FName(TEXT("wall"))))
+		{
+			InteractHit=false;
+			return;
+		}
 		Interact =HitResult.GetActor();
 		PlayerHUD->InteractUI->SetVisibleHBox(true);
 		
