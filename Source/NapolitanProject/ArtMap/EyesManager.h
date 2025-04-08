@@ -28,7 +28,10 @@ public:
 	class UBoxComponent* TriggerBox;
 
 	UPROPERTY(EditAnywhere, Category="Gimmick|Config")
-	float TotalTime = 60.0f; // 4분, 제한시간
+	float TotalTime = 60.0f; // 눈동자가 나오는 시간
+
+	UPROPERTY(EditAnywhere, Category="Gimmick|Config")
+	float EndTime = 240.0f; // 4분, 제한시간
 
 public:
 	UPROPERTY()
