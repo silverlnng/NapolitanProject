@@ -36,6 +36,8 @@ public:
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
 
+	void SetEyeVisible(bool bVisible); //눈을 보이게 하는 함수
+
 private:
 	bool bShouldLookAtPlayer;
 	FRotator RandomLookDirection;
