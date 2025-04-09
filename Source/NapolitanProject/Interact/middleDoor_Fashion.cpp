@@ -3,8 +3,11 @@
 
 #include "middleDoor_Fashion.h"
 #include "Components/BoxComponent.h"
+#include "Components/SlateWrapperTypes.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
+#include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
 
 class ATestCharacter;
 // Sets default values
@@ -100,16 +103,31 @@ void AmiddleDoor_Fashion::StartRotateDoor()
 	
 }
 
+void AmiddleDoor_Fashion::DoorOpen()
+{
+	if (bIsKeyHad)
+	{
+		StartRotateDoor(); // 열쇠가 있을 때만 문 열림
+	}
+	else
+	{
+		//열쇠가 없을 경우 독백 문자 출력
+		FString NoEnter =FString(TEXT("<Monologue>문이 닫혀있다... 열쇠 구멍이 있는걸 보니 열쇠가 있으면 열 수 있을 것같다."));
+		MainCharacter->PlayerHUD->MonolugueWidgetUI->SetVisibility(ESlateVisibility::Visible);
+		MainCharacter->PlayerHUD->MonolugueWidgetUI->SetText_Dialogue(NoEnter);
+	}
+}
+
 void AmiddleDoor_Fashion::OnBeginOverlap_(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+                                          UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	ATestCharacter* TestCharacter = Cast<ATestCharacter>(OtherActor);
 
 	//문과 부딪히는것이 플레이어일때, 그리고 열쇠를 가지고 있을때 문이 열림
-	if(TestCharacter && bIsKeyHad)
+	/*if(TestCharacter && bIsKeyHad)
 	{
 		StartRotateDoor(); //문 열림
-	}
+	}*/
 	
 }
 

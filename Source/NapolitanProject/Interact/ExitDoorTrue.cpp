@@ -7,19 +7,26 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
+#include "../GameFrameWork/PlayerHUD.h"
 
 // Sets default values
 AExitDoorTrue::AExitDoorTrue()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	SceneComp =CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
+	SetRootComponent(SceneComp);
 	
 	BoxComp = CreateDefaultSubobject<UBoxComponent>("BoxComp");
 	BoxComp->SetupAttachment(RootComponent);
 
 	ExitDoor = CreateDefaultSubobject<UStaticMeshComponent>("ExitDoor");
-	//ConstructorHelpers::FObjectFinder<UStaticMeshComponent>(TEXT("/Game/Museum/Meshes/SM_MetalDoors_01.SM_MetalDoors_01'"));
 	ExitDoor->SetupAttachment(BoxComp);
+
+	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Block);
 	
 
 }
@@ -29,7 +36,13 @@ void AExitDoorTrue::BeginPlay()
 {
 	Super::BeginPlay();
 
-	 // BoxComp->OnComponentBeginOverlap.AddDynamic(this, &AExitDoorTrue::OnBeginOverlap);
+	TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
+	if (TestPC)
+	{
+		MainCharacter =TestPC->GetPawn<ATestCharacter>();
+		PlayerHUD=TestPC->GetHUD<APlayerHUD>();
+	}
+	GI =GetGameInstance<UMyTestGameInstance>();
 }
 
 // Called every frame
@@ -43,7 +56,7 @@ void AExitDoorTrue::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	
-	if(OtherActor)
+	/*if(OtherActor)
 	{
 		if(bIsOpenDoor) // 한번만 열리도록 만든 것
 			return;
@@ -64,8 +77,9 @@ void AExitDoorTrue::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 			// 타이머 설정: 문을 부드럽게 회전
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AExitDoorTrue::RotateDoor, 0.01f, true);
 		}
-	}
+	}*/
 }
+
 
 void AExitDoorTrue::RotateDoor()
 {
@@ -86,4 +100,26 @@ void AExitDoorTrue::RotateDoor()
 		ExitDoor->SetRelativeRotation(FRotator(CurrentRotation.Pitch, TargetYaw, CurrentRotation.Roll)); // 정확히 목표 각도로 설정
 		GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	}
+}
+
+void AExitDoorTrue::DoorOpen()
+{
+	//상호작용 키(E키)를 눌렀을 경우 호출
+	
+	if(bIsOpenDoor) // 한번만 열리도록 만든 것
+		return;
+		
+	bIsOpenDoor = true;
+	if (OpenDoorSound)
+	{
+		UGameplayStatics::PlaySound2D(GetWorld(), OpenDoorSound); // 소리 재생
+	}
+			
+	// 목표 Yaw 계산 (현재 Yaw에서 90도 추가)
+	FRotator CurrentRotation = ExitDoor->GetRelativeRotation();
+	TargetYaw = CurrentRotation.Yaw + 90.0f;
+
+	// 타이머 설정: 문을 부드럽게 회전
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AExitDoorTrue::RotateDoor, 0.01f, true);
+
 }

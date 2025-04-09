@@ -25,19 +25,37 @@ public:
 	
 public:
 	UPROPERTY(EditDefaultsOnly)
+	class USceneComponent* SceneComp;
+	
+	UPROPERTY(EditDefaultsOnly)
 	class UStaticMeshComponent* ExitDoor; //문
 
 	UPROPERTY(EditDefaultsOnly)
 	class UBoxComponent* BoxComp; //충돌체
 
-public:
-
-	UFUNCTION()
-	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
 	UPROPERTY(EditAnywhere)
 	class USoundBase* OpenDoorSound; //문이 열리는 소리
 
+public:
+	class ATestCharacter* MainCharacter;
+	
+	class ATestPlayerController* TestPC;
+	
+	UPROPERTY(VisibleAnywhere)
+	class APlayerHUD* PlayerHUD;
+
+	UPROPERTY(VisibleAnywhere)
+	class UMyTestGameInstance* GI;
+
+public:
+	UFUNCTION()
+	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	virtual void DoorOpen();
+
+
+public:
 	FTimerHandle TimerHandle;
 
 	virtual void RotateDoor();

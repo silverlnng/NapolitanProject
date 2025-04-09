@@ -22,7 +22,9 @@
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/Interact/ExitDoorTrue.h"
 #include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/Interact/middleDoor_Fashion.h"
 #include "NapolitanProject/Interact/SouvenirActor.h"
 #include "NapolitanProject/Interact/TargetForItem.h"
 #include "NapolitanProject/YJ/CheckPoint.h"
@@ -568,6 +570,16 @@ void ATestCharacter::OnInteraction()
 		{
 			CheckPoint->VisibleSaveWidget();
 		}
+
+		//문 근처에 다가가면 E가 뜨고 -> E를 눌러서 열기
+		
+		AExitDoorTrue* Door = Cast<AExitDoorTrue>(Interact);
+		if (Door)
+		{
+			Door->DoorOpen(); //문을 여는 함수
+		}
+		
+		
 
 ///////////////// 아이템을 내려놓는 대상 /////////////////////////
 
