@@ -3,18 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ExitDoorTrue.h"
-#include "GameFramework/Actor.h"
-#include "FashionDoor.generated.h"
+#include "NapolitanProject/Interact/ExitDoorTrue.h"
+#include "EyesDoor.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
-class NAPOLITANPROJECT_API AFashionDoor : public AExitDoorTrue
+class NAPOLITANPROJECT_API AEyesDoor : public AExitDoorTrue
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	AFashionDoor();
+public:
+	AEyesDoor();
 
 protected:
 	// Called when the game starts or when spawned
@@ -26,6 +26,16 @@ public:
 
 public:
 	virtual void RotateDoor() override;
+
+	virtual void DoorOpen() override;
+
+public:
+	
+	bool GetDoorOpen; //문을 여는 변수, true일때 열린다.
+
+
+public:
+
 	
 	
 };

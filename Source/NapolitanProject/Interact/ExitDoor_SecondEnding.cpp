@@ -19,7 +19,7 @@ void AExitDoor_SecondEnding::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GI =GetGameInstance<UMyTestGameInstance>();
+	//GI =GetGameInstance<UMyTestGameInstance>();
 	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &AExitDoor_SecondEnding::OnBeginOverlap1);
 }
 

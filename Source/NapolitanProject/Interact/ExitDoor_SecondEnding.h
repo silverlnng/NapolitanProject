@@ -28,8 +28,6 @@ class NAPOLITANPROJECT_API AExitDoor_SecondEnding : public AExitDoorTrue
 
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> DetectiveLevel;
-	UPROPERTY()
-	class UMyTestGameInstance* GI;
 
 	UPROPERTY(EditDefaultsOnly)
 	class UBoxComponent* BoxComp2; // 문 안쪽에 설치할 트리거 

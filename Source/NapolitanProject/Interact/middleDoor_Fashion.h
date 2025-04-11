@@ -29,8 +29,10 @@ public:
 	class UStaticMeshComponent* ExitDoor2; //문이 두개라 두개 필요함
 	
 	virtual void RotateDoor() override;
-	virtual void RotateDoor2();
-	virtual void StartRotateDoor();
+	void RotateDoor2();
+	void StartRotateDoor();
+
+	virtual void DoorOpen() override;	
 
 public:
 	FTimerHandle TimerHandle2;

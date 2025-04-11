@@ -16,7 +16,7 @@ void ADoor_2Floor::BeginPlay()
 	Super::BeginPlay();
 	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ADoor_2Floor::BeginOverlap);
 	
-	GI=GetGameInstance<UMyTestGameInstance>();
+	//GI=GetGameInstance<UMyTestGameInstance>();
 	// 청소부 만났으면 바인드해제하기
 	// QuestSlots
 	
@@ -54,13 +54,13 @@ void ADoor_2Floor::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 	if(OtherActor)
 	{
 		
-		ATestCharacter* MainCharacter = Cast<ATestCharacter>(OtherActor);
-		if (MainCharacter)
+		auto* Player = Cast<ATestCharacter>(OtherActor);
+		if (Player)
 		//퀘스트 있는지 검사
 		{
 			FString NoEnter =FString(TEXT("<Monologue>2층 전시관은 닫혀있어서 갈수없다"));
-			MainCharacter->PlayerHUD->MonolugueWidgetUI->SetVisibility(ESlateVisibility::Visible);
-			MainCharacter->PlayerHUD->MonolugueWidgetUI->SetText_Dialogue(NoEnter);
+			Player->PlayerHUD->MonolugueWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			Player->PlayerHUD->MonolugueWidgetUI->SetText_Dialogue(NoEnter);
 		}
 	}
 }

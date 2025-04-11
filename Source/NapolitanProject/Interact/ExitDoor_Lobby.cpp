@@ -20,7 +20,7 @@ void AExitDoor_Lobby::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	GI =GetGameInstance<UMyTestGameInstance>();
+	//GI =GetGameInstance<UMyTestGameInstance>();
 }
 
 
