@@ -54,6 +54,11 @@ void ANPC_LeeSeo::ChangeCleared()
 	Super::ChangeCleared();
 }
 
+void ANPC_LeeSeo::SwitchToMonsterCamera()
+{
+	
+}
+
 void ANPC_LeeSeo::SpawnItem()
 {
 	// 그림 앞의 위치를 기준으로 스폰 위치 설정
@@ -82,37 +87,32 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 			ChangeCleared();
 			UGameplayStatics::PlaySound2D(GetWorld(), ScreamSound); //소리 지르기
 
-			//그와 동시에 불빛이 흔들림
+			SpawnItem(); //아이템 스폰
 
-			//이서가 180도 회전
-			FRotator NewRotation = GetActorRotation();
-			NewRotation.Roll = 180.0f;
-			SetActorRotation(NewRotation);
+			//그와 동시에 불빛이 흔들림
 
 			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
 			{
+				//천천히 돌면서 달림
 				
-				//FVector ForwardDirection = GetActorForwardVector(); // 캐릭터의 전방 벡터
-				//FVector LaunchVelocity = ForwardDirection * 600.0f; // 속도 조절 (600 = 이동 속도)
-				//LaunchCharacter(LaunchVelocity, true, false); // X, Y 방향 이동 가능. Z(점프)는 비활성화
-
 				//앞으로 달리는 듯한 애니메이션 몽타주 재생 -> 점프스케어
 				
 			}, 1.0f, false);
 
 			
-			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
+			/*GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
 			{
 				SpawnItem();
-			}, 4.0f, false);
+			}, 4.0f, false);*/
 		}
 		else if( 1 == result)
 		{
 			//1-2. 그림을 찢어선 안돼 => 맵에서 갑자기 소름 돋는 노래 재생.
 			UGameplayStatics::PlaySound2D(GetWorld(), LSJump);
 			
-			//대사창 5초 뒤 사라지고 그와 동시에 전구가 깜빡거림
+			//전구가 깜빡거림
 
+			//깜빡거림과 동시에 이서가 돌아봄
 			
 			//이서 1초 사라졌다가 달려오는 점프 스케어 발동
 			FTimerHandle TimeHandle;
@@ -131,8 +131,8 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 				
 			}, 3.0f, false);
 
-			//점프 스케어 후 사라짐
-			GetMesh()->SetHiddenInGame(false);
+			//점프 스케어
+			
 			
 		}
 		else if( 2 == result)

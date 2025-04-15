@@ -55,9 +55,6 @@ public:
 	//이서 점프스케어 시 재생되는 사운드
 	UPROPERTY(EditAnywhere)
 	class USoundBase* LSJump;
-	
-	//유품을 스폰하는 함수
-	void SpawnItem();
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<ASouvenirActor> SouvenirClass;
@@ -70,6 +67,24 @@ public:
 	bool bJumpSquare = false;
 
 	FTimerHandle JumpSquareTimerHandle;
+	
+public:
+	//유품을 스폰하는 함수
+	void SpawnItem();
+
+public:
+	//플레이어의 카메라를 몬스터 카메라로 전환하는 함수 
+	void SwitchToMonsterCamera();
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCameraShakeBase> DeathCameraShakeClass; //카메라 쉐이크
+
+	UPROPERTY(EditDefaultsOnly)
+	class UNPC_LeeSeoAnimInstance* Anim;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class USoundWave* AttackSound;
+
 	
 	
 };
