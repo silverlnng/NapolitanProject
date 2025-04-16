@@ -107,7 +107,7 @@ void ADocent_JumpScare::SwitchToMonsterCamera()
 	if (TestPC && MonsterCamera)
 	{
 		// 카메라 전환
-		TestPC->SetViewTargetWithBlend(this, 0.1f); // 0.5초 동안 부드럽게 전환
+		TestPC->SetViewTargetWithBlend(this, 0.01f); // 0.5초 동안 부드럽게 전환
 
 		// 카메라 흔들기 실행
 		if (TestPC->PlayerCameraManager)
