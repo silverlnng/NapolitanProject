@@ -3,14 +3,22 @@
 
 #include "NPC_LeeSeo.h"
 
+#include "NPC_LeeSeoAnimInstance.h"
+#include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
 // Sets default values
 ANPC_LeeSeo::ANPC_LeeSeo()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	// 몬스터 카메라 생성 및 초기화
+	MonsterCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("MonsterCamera"));
+	MonsterCamera->SetupAttachment(GetMesh(),FName(TEXT("HeadSocket"))); // 루트에 부착
+	MonsterCamera->bUsePawnControlRotation = false; // 플레이어 조작 방지
 
 }
 
@@ -56,14 +64,29 @@ void ANPC_LeeSeo::ChangeCleared()
 
 void ANPC_LeeSeo::SwitchToMonsterCamera()
 {
+	//이서의 점프스케어 카메라로 변경되는 함수
+	if(TestPC && MonsterCamera)
+	{
+		//카메라 전환
+		TestPC->SetViewTargetWithBlend(this, 0.1f); // 0.5초 동안 부드럽게 전환
+
+		// 카메라 흔들기 실행
+		if (TestPC->PlayerCameraManager)
+		{
+			if (DeathCameraShakeClass)
+			{
+				TestPC->PlayerCameraManager->StartCameraShake(DeathCameraShakeClass);
+				
+			}
+		}
+	}
 	
 }
 
 void ANPC_LeeSeo::SpawnItem()
 {
 	// 그림 앞의 위치를 기준으로 스폰 위치 설정
-	AActor* LeeseoPointActor = UGameplayStatics::GetActorOfClass(GetWorld(), LeeseoPoint);
-	FVector SpawnLocation =  LeeseoPointActor->GetActorLocation();
+	FVector SpawnLocation = GetMesh()->GetSocketLocation(FName("ItemSpawn"));;
 	FTransform SpawnTransform(SpawnLocation);
 
 	AActor* SouvenirActor = GetWorld()->SpawnActor<ASouvenirActor>(SouvenirClass, SpawnTransform );
@@ -87,27 +110,29 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 			ChangeCleared();
 			UGameplayStatics::PlaySound2D(GetWorld(), ScreamSound); //소리 지르기
 
-			SpawnItem(); //아이템 스폰
+			//TestPC->StartEndNPCDialougue(false); //결과 메세지 생성
+			
 
-			//그와 동시에 불빛이 흔들림
+			//그와 동시에 불빛이 흔들림 => 길게 재생
 
 			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
 			{
 				//천천히 돌면서 달림
+				Anim->PlayJumpSkareMontage1();
 				
 				//앞으로 달리는 듯한 애니메이션 몽타주 재생 -> 점프스케어
 				
 			}, 1.0f, false);
 
 			
-			/*GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
+			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
 			{
 				SpawnItem();
-			}, 4.0f, false);*/
+			}, 4.0f, false);
 		}
 		else if( 1 == result)
 		{
-			//1-2. 그림을 찢어선 안돼 => 맵에서 갑자기 소름 돋는 노래 재생.
+			//1-2. 그림을 찢어선 안돼 => 맵에서 갑자기 소름 돋는 노래 재생. => 사망
 			UGameplayStatics::PlaySound2D(GetWorld(), LSJump);
 			
 			//전구가 깜빡거림
@@ -137,6 +162,12 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 		}
 		else if( 2 == result)
 		{
+			//여자를 달래본다. "괜찮으십니까?" => 사망
+		}
+		else if( 3 == result)
+		{
+			//도망친다 여기로 변경
+
 			//1-3. 도망친다 => 맵에서 갑자기 소름 돋는 노래 재생.
 			UGameplayStatics::PlaySound2D(GetWorld(), LSJump);
 			

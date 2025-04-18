@@ -85,6 +85,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	class USoundWave* AttackSound;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	UCameraComponent* MonsterCamera; //점프스케어 카메라 - 사망 시 사용 
+
 	
 	
 };
