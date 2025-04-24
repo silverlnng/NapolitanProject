@@ -78,8 +78,9 @@ public:
 	
 private:
 	FVector InitialMoveDirection;
-	bool bIsMovingForward = true;
+	bool bIsMovingForward = false;
 	bool bIsChasing = false;
+	bool bAttackRangeIn=false;
 	FTimerHandle StopMoveTimerHandle;
 
 	class ATestPlayerController* TestPC;

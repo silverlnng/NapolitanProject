@@ -114,7 +114,14 @@ void AJumpScare_Picture::CheckAttackRange()
 
 	if (toPlayerDistance <= AttackRange)
 	{
-		// 다른애니메이션( 공격애니메이션을) 실행
+		if (bAttackRangeIn)
+		{
+			return;
+		}
+		bAttackRangeIn = true; // 한번만 작동시키도록
+		// 캐릭터 쪽으로 움직이면서 
+		StartChasingTarget();
+		// 다른애니메이션( 공격애니메이션을) 실행 ==> 오직한번만실행.
 		PlayAttackAnimMontage();
 		// 점프스케어
 		StartAttack();
@@ -141,7 +148,15 @@ void AJumpScare_Picture::StartAttack()
 	// 사망이벤트 만 발생시킴
 	TargetCharacter->bIsBeingAttacked=true;
 	//카메라 쉐이크 .
-	SwitchToMonsterCamera();
+
+	// 시간지연을 주고 
+	FTimerHandle delayTimer;
+
+	GetWorld()->GetTimerManager().SetTimer(delayTimer,[this]()
+	{
+		SwitchToMonsterCamera();
+	},1.5f,false);
+	
 }
 
 void AJumpScare_Picture::SwitchToMonsterCamera()
@@ -165,11 +180,12 @@ void AJumpScare_Picture::SwitchToMonsterCamera()
 
 void AJumpScare_Picture::PlayBasicAnimMontage()
 {
+	
+	//PlayAnimMontage(basicAnimMontage);
 	if (basicAnimMontage)
 	{
-		PlayAnimMontage(basicAnimMontage);
+		GetMesh()->PlayAnimation(basicAnimMontage,true);
 	}
-
 	// 앞으로 움직임 시작
 	bIsMovingForward=true;
 	
@@ -180,7 +196,10 @@ void AJumpScare_Picture::PlayAttackAnimMontage()
 {
 	if (attackAnimMontage)
 	{
-		PlayAnimMontage(attackAnimMontage);
+		GetMesh()->PlayAnimation(attackAnimMontage,false);
+		//PlayAnimMontage(attackAnimMontage);
+
+		// attackAnimMontage를 달리기+ 점프공격 으로 바꾸기 !!! 
 	}
 }
 
