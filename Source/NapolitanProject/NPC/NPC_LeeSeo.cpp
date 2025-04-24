@@ -3,12 +3,16 @@
 
 #include "NPC_LeeSeo.h"
 
+#include "EngineUtils.h"
 #include "NPC_LeeSeoAnimInstance.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/LevelEvent/LightControlActor.h"
 
+class ALightControlActor;
 // Sets default values
 ANPC_LeeSeo::ANPC_LeeSeo()
 {
@@ -26,7 +30,13 @@ ANPC_LeeSeo::ANPC_LeeSeo()
 void ANPC_LeeSeo::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	for (TActorIterator<ALightControlActor> It(GetWorld(), ALightControlActor::StaticClass()); It; ++It)
+	{
+		LightControlActor = *It;
+	}
+
+	Anim = Cast<UNPC_LeeSeoAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 // Called every frame
@@ -111,24 +121,32 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 			UGameplayStatics::PlaySound2D(GetWorld(), ScreamSound); //소리 지르기
 
 			//TestPC->StartEndNPCDialougue(false); //결과 메세지 생성
-			
 
 			//그와 동시에 불빛이 흔들림 => 길게 재생
+			// 1) 조명이벤트-> 깜빡이다가 쭉 어두워지게
+			if (LightControlActor)
+			{
+				//StartIndex : ManagedLights 배열에서 어디서부터 시작할지 인덱스. / Count : StartIndex부터 몇 개의 라이트를 깜빡이게 할지 개수.
+				//FlickerDuration_ :  깜빡임이 지속되는 시간(초). / FlickerSpeed_ : 수치가 높을수록 깜빡임이 빠름. / afterIntensity_ : 깜빡임이 끝난 뒤 라이트 밝기를 얼마로 맞출지.
+				LightControlActor->StartSineFlicker(0,3,3,10.f,4.f);
+			}
 
-			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
+			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle1, [this]()
 			{
 				//천천히 돌면서 달림
-				Anim->PlayJumpSkareMontage1();
+				if(Anim)
+				{
+					Anim->PlayJumpSkareMontage1();
+				}
 				
 				//앞으로 달리는 듯한 애니메이션 몽타주 재생 -> 점프스케어
-				
-			}, 1.0f, false);
 
+				SpawnItem(); //아이템 스폰
+				
+			}, 2.0f, false);
+
+			GetWorldTimerManager().ClearTimer(JumpSquareTimerHandle1);
 			
-			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
-			{
-				SpawnItem();
-			}, 4.0f, false);
 		}
 		else if( 1 == result)
 		{
@@ -148,13 +166,17 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 				GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
 			}, 2.0f, false);
 
-			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
+			GetWorldTimerManager().ClearTimer(TimeHandle);
+
+			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle2, [this]()
 			{
 				GetMesh()->SetHiddenInGame(true);
 				
 				//앞으로 달리는 애니메이션 재생 : 칼 등의 요소 들고 달리기
 				
 			}, 3.0f, false);
+
+			GetWorldTimerManager().ClearTimer(JumpSquareTimerHandle2);
 
 			//점프 스케어
 			
@@ -174,15 +196,17 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 			//전구가 깜빡거림
 
 			//이서 1초 사라졌다가 달려오는 점프 스케어 발동
-			FTimerHandle TimeHandle;
-			GetWorldTimerManager().SetTimer(TimeHandle, [this]()
+			FTimerHandle TimeHandle1;
+			GetWorldTimerManager().SetTimer(TimeHandle1, [this]()
 			{
 				//일시적으로 안보이게 하기
 				GetMesh()->SetHiddenInGame(false);
 				GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
 			}, 2.0f, false);
 
-			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle, [this]()
+			GetWorldTimerManager().ClearTimer(TimeHandle1);
+
+			GetWorldTimerManager().SetTimer(JumpSquareTimerHandle3, [this]()
 			{
 				GetMesh()->SetHiddenInGame(true);
 				
@@ -190,6 +214,8 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 				
 			}, 3.0f, false);
 
+			GetWorldTimerManager().ClearTimer(JumpSquareTimerHandle3);
+			
 			//점프 스케어 후 사라짐
 			GetMesh()->SetHiddenInGame(false);
 

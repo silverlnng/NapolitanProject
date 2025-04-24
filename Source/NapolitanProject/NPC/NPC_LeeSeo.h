@@ -66,12 +66,15 @@ public:
 	//점프스퀘어 발동 변수
 	bool bJumpSquare = false;
 
-	FTimerHandle JumpSquareTimerHandle;
+	FTimerHandle JumpSquareTimerHandle1;
+	FTimerHandle JumpSquareTimerHandle2;
+	FTimerHandle JumpSquareTimerHandle3;
 	
 public:
 	//유품을 스폰하는 함수
 	void SpawnItem();
 
+	//사망 이벤트 생성
 public:
 	//플레이어의 카메라를 몬스터 카메라로 전환하는 함수 
 	void SwitchToMonsterCamera();
@@ -88,6 +91,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* MonsterCamera; //점프스케어 카메라 - 사망 시 사용 
 
-	
+	UPROPERTY()
+	class ALightControlActor* LightControlActor; //라이트 컨트롤
 	
 };

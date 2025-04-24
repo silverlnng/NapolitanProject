@@ -15,5 +15,8 @@ void UNPC_LeeSeoAnimInstance::NativeInitializeAnimation()
 
 void UNPC_LeeSeoAnimInstance::PlayJumpSkareMontage1()
 {
-	Montage_Play(LeeSeo_JumpSkareMontage1); //몽타주 플레이
+	if (!Montage_IsPlaying(LeeSeo_JumpSkareMontage1))
+	{
+		Montage_Play(LeeSeo_JumpSkareMontage1); //몽타주 플레이
+	}
 }
