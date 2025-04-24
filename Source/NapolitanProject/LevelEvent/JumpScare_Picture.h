@@ -27,8 +27,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	class UCameraComponent* MonsterCamera;
 	
-	UPROPERTY(EditDefaultsOnly)
-	class USceneCaptureComponent2D* SceneCaptureComponent2D;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -52,6 +50,11 @@ public:
 	class USoundWave* AttackSound;
 	
 	bool bAttack = false;
+
+	void PlayBasicAnimMontage();
+
+	void PlayAttackAnimMontage();
+	
 	/** 플레이어의 카메라를 몬스터 카메라로 전환하는 함수 */
 	void SwitchToMonsterCamera();
 	
@@ -62,14 +65,19 @@ public:
 	float toPlayerDistance;
 	UPROPERTY(EditAnywhere)
 	float AttackRange = 300.0f;
+
+	UPROPERTY(EditAnywhere)
+	float InitialMoveDuration=5.0f;
 	
     UPROPERTY(EditAnywhere)
 	float MoveSpeed = 5.0f;
 	UPROPERTY(EditAnywhere)
-	float MoveTowardTargetSpeed = 100.0f;
+	float MoveTowardTargetSpeed = 5.0f;
+
+	
+	
 private:
 	FVector InitialMoveDirection;
-	
 	bool bIsMovingForward = true;
 	bool bIsChasing = false;
 	FTimerHandle StopMoveTimerHandle;
@@ -77,4 +85,14 @@ private:
 	class ATestPlayerController* TestPC;
 	UPROPERTY(EditAnywhere, Category = "Target")
 	class ATestCharacter* TargetCharacter; // 플레이어 캐릭터
+
+	// 애니메이션 몽타주
+	UPROPERTY(EditDefaultsOnly,Category=Anim)
+	class UAnimMontage* attackAnimMontage;
+
+	UPROPERTY(EditDefaultsOnly,Category=Anim)
+	class UAnimMontage* basicAnimMontage;
+
+	
+	
 };

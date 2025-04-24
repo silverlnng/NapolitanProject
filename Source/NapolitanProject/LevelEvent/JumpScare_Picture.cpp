@@ -2,7 +2,6 @@
 
 
 #include "JumpScare_Picture.h"
-
 #include "Camera/CameraComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -25,8 +24,6 @@ AJumpScare_Picture::AJumpScare_Picture()
 	AudioComp =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->SetupAttachment(GetCapsuleComponent());
 	
-	SceneCaptureComponent2D=CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCaptureComp"));
-	SceneCaptureComponent2D->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -36,14 +33,20 @@ void AJumpScare_Picture::BeginPlay()
 	// 앞으로 이동할 방향 저장
 	InitialMoveDirection = GetActorForwardVector().GetSafeNormal();
 
-	// 3초 후에 정지 및 추적 시작
-	GetWorldTimerManager().SetTimer(StopMoveTimerHandle, this, &AJumpScare_Picture::StopInitialForwardMovement, 3.0f, false);
 
 	TestPC=GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	if (TestPC)
 	{
 		TargetCharacter =TestPC->GetPawn<ATestCharacter>();
 	}
+
+
+	// 수정. 정지하다가 캐릭터가 범위안으로 들어오면. 그때 작동. 
+
+	// 손으로 인사하듯 제스처하다가 . 갑자기 튀어나오기 . 
+	
+	// 3초 후에 정지 및 추적 시작
+	//GetWorldTimerManager().SetTimer(StopMoveTimerHandle, this, &AJumpScare_Picture::StopInitialForwardMovement, InitialMoveDuration, false);
 }
 
 // Called every frame
@@ -72,15 +75,17 @@ void AJumpScare_Picture::MovetoForward()
 {
 	// 앞으로 걷다가
 	AddMovementInput(GetActorForwardVector());
-	// 끝나면 그림밖으로 점프
-	
-	// 그리고 캐릭터 추격
 }
 
 void AJumpScare_Picture::StopInitialForwardMovement()
 {
 	bIsMovingForward = false;
-	StartChasingTarget();
+	//StartChasingTarget();
+
+	// 멈추고 서있는 애니메이션 실행.
+	
+	// 거리체크를 시작
+	GetWorld()->GetTimerManager().SetTimer(ChaseCheckTimer, this, &AJumpScare_Picture::CheckAttackRange, 0.2f, true);
 }
 
 void AJumpScare_Picture::StartChasingTarget()
@@ -98,7 +103,7 @@ void AJumpScare_Picture::MoveTowardTarget(float DeltaTime)
 	//캐릭터를 향해 오는 속도는 빠르게
 	// 0.2초마다 거리 체크 (Tick 대신 Timer 사용)
 	
-	GetWorld()->GetTimerManager().SetTimer(ChaseCheckTimer, this, &AJumpScare_Picture::CheckAttackRange, 0.2f, true);
+	//GetWorld()->GetTimerManager().SetTimer(ChaseCheckTimer, this, &AJumpScare_Picture::CheckAttackRange, 0.2f, true);
 	
 	//그리고 잡히면 점프스케어로 변경
 }
@@ -109,11 +114,8 @@ void AJumpScare_Picture::CheckAttackRange()
 
 	if (toPlayerDistance <= AttackRange)
 	{
-		// 움직임 멈추고, 
-		bIsChasing = false;
-
 		// 다른애니메이션( 공격애니메이션을) 실행
-		
+		PlayAttackAnimMontage();
 		// 점프스케어
 		StartAttack();
 	}
@@ -124,6 +126,9 @@ void AJumpScare_Picture::StartAttack()
 	// 한번만 작동되도록 
 	if (bAttack){return;}
 
+
+	// 콜리전 세팅을 바꾸기 (그림에서 통과되도록)
+	
 	//공격소리로 바꾸기 
 
 	if (AttackSound)
@@ -155,6 +160,27 @@ void AJumpScare_Picture::SwitchToMonsterCamera()
 				
 			}
 		}
+	}
+}
+
+void AJumpScare_Picture::PlayBasicAnimMontage()
+{
+	if (basicAnimMontage)
+	{
+		PlayAnimMontage(basicAnimMontage);
+	}
+
+	// 앞으로 움직임 시작
+	bIsMovingForward=true;
+	
+	GetWorldTimerManager().SetTimer(StopMoveTimerHandle, this, &AJumpScare_Picture::StopInitialForwardMovement, InitialMoveDuration, false);
+}
+
+void AJumpScare_Picture::PlayAttackAnimMontage()
+{
+	if (attackAnimMontage)
+	{
+		PlayAnimMontage(attackAnimMontage);
 	}
 }
 
