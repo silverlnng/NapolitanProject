@@ -155,7 +155,7 @@ void AJumpScare_Picture::StartAttack()
 	GetWorld()->GetTimerManager().SetTimer(delayTimer,[this]()
 	{
 		SwitchToMonsterCamera();
-	},1.5f,false);
+	},SwitchToMonsterCameraDelay,false);
 	
 }
 

@@ -73,7 +73,8 @@ public:
 	float MoveSpeed = 5.0f;
 	UPROPERTY(EditAnywhere)
 	float MoveTowardTargetSpeed = 5.0f;
-
+	UPROPERTY(EditAnywhere)
+	float SwitchToMonsterCameraDelay = 2.5f;
 	
 	
 private:
