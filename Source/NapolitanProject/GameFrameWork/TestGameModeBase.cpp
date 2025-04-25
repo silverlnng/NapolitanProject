@@ -21,6 +21,14 @@ ATestGameModeBase::ATestGameModeBase()
 	
 }
 
+void ATestGameModeBase::StartPlay()
+{
+	Super::StartPlay();
+	//GI = GetGameInstance<UMyTestGameInstance>();
+	//GI->LoadingScreenWidget
+	
+}
+
 void ATestGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -36,7 +44,7 @@ void ATestGameModeBase::BeginPlay()
 	MainCharacter->b_IA_Inven_Allowed = true;
 
 	PlayerHUD = PC->GetHUD<APlayerHUD>();
-	
+	GI = GetGameInstance<UMyTestGameInstance>();
 	// 현재 맵에 있는 npc들을 저장
 	for (TActorIterator<ANPCCharacter> It(GetWorld(), ANPCCharacter::StaticClass()); It; ++It)
 	{
@@ -47,7 +55,7 @@ void ATestGameModeBase::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("NPCArray: %d"),key));
 	}	
 
-	GI = GetGameInstance<UMyTestGameInstance>();
+	
 
 	// GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
 	

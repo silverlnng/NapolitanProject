@@ -120,7 +120,17 @@ void UMyTestGameInstance::Init()
 	// "C:\UnrealProjects\NapolitanProject\NPC_Dialogue.csv"
 	// "C:\UnrealProjects\NapolitanProject\NPC_Result.csv"
 	// "C:\UnrealProjects\NapolitanProject\NPC_Selection.csv"
-	
+
+	// 로딩 위젯을 만들어두기 
+	if (LoadingScreenWidget)
+	{
+		//LoadingScreenWidget = CreateWidget<UFadeUserWidget>(this, FadeWidgetClass);
+		///if (FadeWidget)
+		{
+			// 초기 설정만 해두고, Viewport엔 아직 추가 안 함
+		}
+	}
+
 	
 	
     // 저장한 게임 저장데이터가 있으면 불러오기  ==> 이걸 스타트화면이 불러올때마다 하기 

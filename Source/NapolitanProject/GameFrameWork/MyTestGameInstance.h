@@ -212,8 +212,14 @@ public:
 	void LoadLevelWithLoadingScreen(FName LevelName);
 	
 	// 로딩 위젯을 저장할 변수
-	UPROPERTY()
+	//UPROPERTY()
 	UUserWidget* LoadingScreenWidget;
+
+	//UPROPERTY()
+	//UFadeUserWidget* FadeWidget;
+
+	//UPROPERTY(EditDefaultsOnly)
+	//TSubclassOf<UFadeUserWidget> FadeWidgetClass;
 	
 ///////// 비동기 로비 레벨로드 //////
 	UFUNCTION(BlueprintCallable)

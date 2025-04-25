@@ -98,6 +98,7 @@ private:
 	UPROPERTY(EditDefaultsOnly,Category=Anim)
 	class UAnimMontage* basicAnimMontage;
 
-	
+	UPROPERTY(EditDefaultsOnly,Category=Anim)
+    	class UAnimMontage* JumpAnimMontage;
 	
 };

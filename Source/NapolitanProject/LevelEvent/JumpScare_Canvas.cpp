@@ -99,6 +99,7 @@ void AJumpScare_Canvas::OnBeginOverlap3(UPrimitiveComponent* OverlappedComponent
 		if (JumpScarePicture_Character)
 		{
 			// 앞으로 이동 
+			JumpScarePicture_Character->MoveSpeed*=3;
 			JumpScarePicture_Character->bIsMovingForward =true;
 			// 다른애니메이션( 공격애니메이션을) 실행 ==> 오직한번만실행.
 			JumpScarePicture_Character->PlayRunAnimMontage();
@@ -122,6 +123,8 @@ void AJumpScare_Canvas::OnBeginOverlap2(UPrimitiveComponent* OverlappedComponent
 		bHasTriggered2 = true; // 한번만 작동시키도록
 
 		JumpScarePicture_Character->bIsMovingForward =false;
+
+		//JumpScarePicture_Character->StartChasingTarget();
 		
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "JumpScare_Canvas::OnBeginOverlap2");
 		

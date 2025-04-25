@@ -212,8 +212,9 @@ void AJumpScare_Picture::PlayJumpAttackAnimMontage()
 {
 	if (AnimInstance&&attackAnimMontage)
 	{
-		AnimInstance->Montage_Play(attackAnimMontage);
-		AnimInstance->Montage_JumpToSection(FName("Jump"), attackAnimMontage);
+		GetMesh()->PlayAnimation(JumpAnimMontage, true);
+		//AnimInstance->Montage_Play(JumpAnimMontage);
+		//AnimInstance->Montage_JumpToSection(FName("Jump"), attackAnimMontage);
 		// attackAnimMontage를 달리기+ 점프공격 으로 바꾸기 !!! 
 	}
 }

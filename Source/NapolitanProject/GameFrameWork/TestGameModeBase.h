@@ -17,7 +17,10 @@ class NAPOLITANPROJECT_API ATestGameModeBase : public AGameModeBase
 public:
 	ATestGameModeBase();
 
+	virtual void StartPlay() override;
+	
 	virtual void BeginPlay() override;
+
 	
 	class ATestPlayerController* PC;
 		
