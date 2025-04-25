@@ -40,6 +40,7 @@ void AJumpScare_Picture::BeginPlay()
 		TargetCharacter =TestPC->GetPawn<ATestCharacter>();
 	}
 
+	AnimInstance = GetMesh()->GetAnimInstance();
 
 	// 수정. 정지하다가 캐릭터가 범위안으로 들어오면. 그때 작동. 
 
@@ -85,7 +86,7 @@ void AJumpScare_Picture::StopInitialForwardMovement()
 	// 멈추고 서있는 애니메이션 실행.
 	
 	// 거리체크를 시작
-	GetWorld()->GetTimerManager().SetTimer(ChaseCheckTimer, this, &AJumpScare_Picture::CheckAttackRange, 0.2f, true);
+	//GetWorld()->GetTimerManager().SetTimer(ChaseCheckTimer, this, &AJumpScare_Picture::CheckAttackRange, 0.2f, true);
 }
 
 void AJumpScare_Picture::StartChasingTarget()
@@ -122,9 +123,9 @@ void AJumpScare_Picture::CheckAttackRange()
 		// 캐릭터 쪽으로 움직이면서 
 		StartChasingTarget();
 		// 다른애니메이션( 공격애니메이션을) 실행 ==> 오직한번만실행.
-		PlayAttackAnimMontage();
+		PlayRunAnimMontage();
 		// 점프스케어
-		StartAttack();
+		//StartAttack();
 	}
 }
 
@@ -182,9 +183,10 @@ void AJumpScare_Picture::PlayBasicAnimMontage()
 {
 	
 	//PlayAnimMontage(basicAnimMontage);
-	if (basicAnimMontage)
+	
+	if (AnimInstance&&basicAnimMontage)
 	{
-		GetMesh()->PlayAnimation(basicAnimMontage,true);
+		AnimInstance->Montage_Play(basicAnimMontage);
 	}
 	// 앞으로 움직임 시작
 	bIsMovingForward=true;
@@ -192,13 +194,26 @@ void AJumpScare_Picture::PlayBasicAnimMontage()
 	GetWorldTimerManager().SetTimer(StopMoveTimerHandle, this, &AJumpScare_Picture::StopInitialForwardMovement, InitialMoveDuration, false);
 }
 
-void AJumpScare_Picture::PlayAttackAnimMontage()
+void AJumpScare_Picture::PlayRunAnimMontage()
 {
-	if (attackAnimMontage)
+	if (!AnimInstance)
 	{
-		GetMesh()->PlayAnimation(attackAnimMontage,false);
-		//PlayAnimMontage(attackAnimMontage);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "AnimInstance is null");
+	}
+	
+	if (AnimInstance&&attackAnimMontage)
+	{
+		AnimInstance->Montage_Play(attackAnimMontage);
+		AnimInstance->Montage_JumpToSection(FName("Run"), attackAnimMontage);
+	}
+}
 
+void AJumpScare_Picture::PlayJumpAttackAnimMontage()
+{
+	if (AnimInstance&&attackAnimMontage)
+	{
+		AnimInstance->Montage_Play(attackAnimMontage);
+		AnimInstance->Montage_JumpToSection(FName("Jump"), attackAnimMontage);
 		// attackAnimMontage를 달리기+ 점프공격 으로 바꾸기 !!! 
 	}
 }

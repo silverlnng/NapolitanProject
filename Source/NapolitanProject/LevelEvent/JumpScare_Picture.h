@@ -53,7 +53,9 @@ public:
 
 	void PlayBasicAnimMontage();
 
-	void PlayAttackAnimMontage();
+	void PlayRunAnimMontage();
+
+	void PlayJumpAttackAnimMontage();
 	
 	/** 플레이어의 카메라를 몬스터 카메라로 전환하는 함수 */
 	void SwitchToMonsterCamera();
@@ -75,11 +77,12 @@ public:
 	float MoveTowardTargetSpeed = 5.0f;
 	UPROPERTY(EditAnywhere)
 	float SwitchToMonsterCameraDelay = 2.5f;
+
+	UAnimInstance* AnimInstance;
 	
-	
+	bool bIsMovingForward = false;
 private:
 	FVector InitialMoveDirection;
-	bool bIsMovingForward = false;
 	bool bIsChasing = false;
 	bool bAttackRangeIn=false;
 	FTimerHandle StopMoveTimerHandle;
