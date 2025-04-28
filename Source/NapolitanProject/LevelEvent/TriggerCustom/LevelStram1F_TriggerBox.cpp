@@ -32,6 +32,28 @@ void ALevelStram1F_TriggerBox::BeginOverlap(UPrimitiveComponent* OverlappedCompo
 		
 		FLatentActionInfo LatentAction;
 		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyLevel,true,true,LatentAction);
+
+		// 시간지연을 주고
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+		{
+			FLatentActionInfo LatentAction;
+			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),CorriderLevel,true,true,LatentAction);
+		}, 2.0f, false);
+
+		FTimerHandle TimerHandle2;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [this]()
+		{
+			FLatentActionInfo LatentAction;
+			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom1Level,true,true,LatentAction);
+		}, 6.0f, false);
+
+		FTimerHandle TimerHandle3;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle3, [this]()
+		{
+			FLatentActionInfo LatentAction;
+			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom2Level,true,true,LatentAction);
+		}, 8.0f, false);
 		
 		
 	}	
