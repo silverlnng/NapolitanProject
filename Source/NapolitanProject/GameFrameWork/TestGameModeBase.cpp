@@ -9,10 +9,12 @@
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
 #include "Components/Border.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interact/PieceActor.h"
 #include "NapolitanProject/Interact/Sculpture.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
+#include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 #include "NapolitanProject/YJ/Save/GameSaveController.h"
 #include "NapolitanProject/YJ/Save/TestSaveGame.h"
 
@@ -55,7 +57,14 @@ void ATestGameModeBase::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("NPCArray: %d"),key));
 	}	
 
-	
+	for (TActorIterator<AItemActor> It(GetWorld(), AItemActor::StaticClass()); It; ++It)
+	{
+		AItemActor* Item=*It;
+		int32 key = Item->ItemID;
+		ItemActorArray.Add(key,Item);
+		// 로그 출력으로 확인하기
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("ItemActorArray: %d"),key));
+	}	
 
 	// GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
 	
@@ -100,17 +109,77 @@ void ATestGameModeBase::BeginPlay()
 	if (GI)
 	{
 		FTimerHandle RestoreAttachedItemTimer;
-
 		GetWorld()->GetTimerManager().SetTimer(RestoreAttachedItemTimer , [this]()
 		{
 			GI->RestoreAttachedItems();
+			// 아이템을 인벤토리에  복구하는 작업
 		} , 1.0f , false);
+
+
+		FTimerHandle RestoreItemTimer;
+		GetWorld()->GetTimerManager().SetTimer(RestoreItemTimer , [this]()
+		{
+			if (PlayerHUD->InventoryUI->InvenSlots[4]->MyItem) // MyItem이 있으면 획득했었다는 의미
+			{
+			 // 빵 아이템 hidden 처리
+				//BreadItem4->SetActorHiddenInGame(true);
+				if (ItemActorArray.Contains(4))
+				{
+					ItemActorArray[4]->SetActorHiddenInGame(true);
+				}
+			}
+			
+			if (PlayerHUD->InventoryUI->InvenSlots[5]->MyItem) // MyItem이 있으면 획득했었다는 의미
+			{
+				 // 빵 아이템 hidden 처리
+				//BreadItem5->SetActorHiddenInGame(true);
+				if (ItemActorArray.Contains(5))
+				{
+					ItemActorArray[5]->SetActorHiddenInGame(true);
+				}
+			}
+			
+		} , 1.5f , false);
+		
+		
 		
 		if (GI->bLevelMoveToDoor)
 		{
 			// 저장된 위치가 있으면 플레이어를 해당 위치로 이동
 			MainCharacter->SetActorLocation(GI->GetSavedPlayerLocation().GetLocation());
 			MainCharacter->SetActorRotation(GI->GetSavedPlayerLocation().GetRotation());
+
+			// 이거 에 따라서 레벨 로드-언로드 필요..
+			// 여기에 서브레벨로 나누었던것도 로드를 해야함.
+			FTimerHandle TimerHandle;
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				FLatentActionInfo LatentAction;
+				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom2Level,true,true,LatentAction);
+				FLatentActionInfo LatentAction1;
+				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),CorriderLevel,true,true,LatentAction1);
+				FLatentActionInfo LatentAction2;
+				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom1Level,true,true,LatentAction2);
+			
+			}, 0.5f, false);
+
+			FTimerHandle TimerHandle2;
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [this]()
+			{
+				FLatentActionInfo LatentAction1;
+				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),CorriderLevel,true,true,LatentAction1);
+				FLatentActionInfo LatentAction2;
+				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom1Level,true,true,LatentAction2);
+			
+			}, 1.5f, false);
+
+			FTimerHandle TimerHandle3;
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle3, [this]()
+			{
+				FLatentActionInfo LatentAction2;
+				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom1Level,true,true,LatentAction2);
+			}, 2.0f, false);
+			
 			
 			// 적용 후 다시 false로 변경 (새 게임 시작 시 영향 안 주도록)
 			GI->SetLevelMoveToDoor(false);

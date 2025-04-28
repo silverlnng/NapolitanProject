@@ -95,7 +95,7 @@ void ALevelMoveDoor::LevelMove()
 	GI->SetLevelMoveToDoor(true); //저장된 위치를 사용하라는 bool 변수 설정 함수
 			
 	// + 위치 적용 플래그 설정
-	if (bMoveFromLobby) // 지금 현재레벨이 로비일때만 게임저장
+	if (bMoveFromLobby) // 지금 현재레벨이 로비일때만 게임저장= 로비에서 다른레벨로 넘어갈때 실행하는것
 	{
 		//  지금 현재레벨이 로비일때만 이동하기전 위치를 저장해두기!!!!!!
 		if (MainCharacter)
@@ -128,6 +128,18 @@ void ALevelMoveDoor::LevelMove()
 	{
 		GI->GameSaveController->LoadGameFromSlot(3);
 		// 여기에 오픈레벨(로비) 가 있음
+
+		/*// 여기에 서브레벨로 나누었던것도 로드를 해야함.
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+		{
+			FLatentActionInfo LatentAction;
+			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom2Level,true,true,LatentAction);
+			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),CorriderLevel,true,true,LatentAction);
+			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom1Level,true,true,LatentAction);
+			
+		}, 3.5f, false);*/
+		
 	}
 	
 }

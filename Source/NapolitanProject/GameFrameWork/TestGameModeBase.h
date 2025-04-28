@@ -33,7 +33,22 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	TMap<int32,class ANPCCharacter*> NPCArray;
+
+	UPROPERTY(VisibleAnywhere)
+	TMap<int32,class AItemActor*> ItemActorArray;
+	UPROPERTY(EditInstanceOnly)
+	class AItemActor* BreadItem4;
+	UPROPERTY(EditInstanceOnly)
+	class AItemActor* BreadItem5;
 	
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> CorriderLevel;
+	
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> LobbyRoom1Level;
+
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> LobbyRoom2Level;
 private:
 	
 };

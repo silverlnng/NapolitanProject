@@ -22,10 +22,10 @@ void UMyTestGameInstance::Init()
 	Super::Init();
 
 	// 로그 막아두기 
-	if (GEngine)
+	/*if (GEngine)
 	{
 		GEngine->bEnableOnScreenDebugMessages = false;
-	}
+	}*/
 	
 	DT_itemData = LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/DT/DT_Item.DT_Item'"));
 	
@@ -364,6 +364,7 @@ void UMyTestGameInstance::RestoreAttachedItems()
 				{
 					PlayerHUD->InventoryUI->InvenSlots[3]->Set_TextNum(CatchSpiderNum);
 				}
+				// 이미 빵그림을 가졌으면 월드에 있는 빵은 hidden 처리를 하기  
 			}
 			
 		}
