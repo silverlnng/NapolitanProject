@@ -63,4 +63,5 @@ public:
 
 	virtual void Remove();
 	
+	virtual int32 GetItemID();
 };

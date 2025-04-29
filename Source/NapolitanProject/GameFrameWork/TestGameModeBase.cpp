@@ -10,6 +10,7 @@
 #include "TestPlayerController.h"
 #include "Components/Border.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interact/PieceActor.h"
 #include "NapolitanProject/Interact/Sculpture.h"
@@ -57,14 +58,7 @@ void ATestGameModeBase::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("NPCArray: %d"),key));
 	}	
 
-	for (TActorIterator<AItemActor> It(GetWorld(), AItemActor::StaticClass()); It; ++It)
-	{
-		AItemActor* Item=*It;
-		int32 key = Item->ItemID;
-		ItemActorArray.Add(key,Item);
-		// 로그 출력으로 확인하기
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("ItemActorArray: %d"),key));
-	}	
+
 
 	// GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
 	
@@ -105,6 +99,15 @@ void ATestGameModeBase::BeginPlay()
 		}
 	}
 	
+	for (TActorIterator<AItemActor> It(GetWorld()); It; ++It)
+	{
+		AItemActor* Item=*It;
+		int32 key = Item->GetItemID();
+		ItemActorArray.Add(key,Item);
+		// 로그 출력으로 확인하기
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("ItemActorArray: %d"),key));
+		UE_LOG(LogTemp, Error, TEXT("%s ItemActorArray: %d"),*CALLINFO,key);
+	}
 	
 	if (GI)
 	{
@@ -119,7 +122,8 @@ void ATestGameModeBase::BeginPlay()
 		FTimerHandle RestoreItemTimer;
 		GetWorld()->GetTimerManager().SetTimer(RestoreItemTimer , [this]()
 		{
-			if (PlayerHUD->InventoryUI->InvenSlots[4]->MyItem) // MyItem이 있으면 획득했었다는 의미
+			AItemActor* Item4 =PlayerHUD->InventoryUI->InvenSlots[4]->MyItem;
+			if (Item4) // MyItem이 있으면 획득했었다는 의미
 			{
 			 // 빵 아이템 hidden 처리
 				//BreadItem4->SetActorHiddenInGame(true);
@@ -127,9 +131,11 @@ void ATestGameModeBase::BeginPlay()
 				{
 					ItemActorArray[4]->SetActorHiddenInGame(true);
 				}
+				
 			}
 			
-			if (PlayerHUD->InventoryUI->InvenSlots[5]->MyItem) // MyItem이 있으면 획득했었다는 의미
+			AItemActor* Item5 =PlayerHUD->InventoryUI->InvenSlots[4]->MyItem;
+			if (Item5) // MyItem이 있으면 획득했었다는 의미
 			{
 				 // 빵 아이템 hidden 처리
 				//BreadItem5->SetActorHiddenInGame(true);
@@ -137,6 +143,7 @@ void ATestGameModeBase::BeginPlay()
 				{
 					ItemActorArray[5]->SetActorHiddenInGame(true);
 				}
+				
 			}
 			
 		} , 1.5f , false);

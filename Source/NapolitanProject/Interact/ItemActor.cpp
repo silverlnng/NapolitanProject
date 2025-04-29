@@ -140,3 +140,8 @@ void AItemActor::Remove()
 	}
 }
 
+int32 AItemActor::GetItemID()
+{
+	return ItemID;
+}
+
