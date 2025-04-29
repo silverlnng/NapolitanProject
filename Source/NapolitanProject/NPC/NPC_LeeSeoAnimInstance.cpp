@@ -20,3 +20,8 @@ void UNPC_LeeSeoAnimInstance::PlayJumpSkareMontage1()
 		Montage_Play(LeeSeo_JumpSkareMontage1); //몽타주 플레이
 	}
 }
+
+void UNPC_LeeSeoAnimInstance::JumpToSection(const FString& SectionName)
+{
+	Montage_JumpToSection((*SectionName), LeeSeo_JumpSkareMontage1);
+}
