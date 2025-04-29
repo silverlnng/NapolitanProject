@@ -36,6 +36,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	TMap<int32,class AItemActor*> ItemActorArray;
+
 	UPROPERTY(EditInstanceOnly)
 	class AItemActor* BreadItem4;
 	UPROPERTY(EditInstanceOnly)
