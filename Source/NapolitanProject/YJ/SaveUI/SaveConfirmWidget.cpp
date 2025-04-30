@@ -15,6 +15,8 @@ void USaveConfirmWidget::NativeConstruct()
 	//버튼에
 	Btn_Yes->OnClicked.AddDynamic(this,&USaveConfirmWidget::OnClickYes);
 	Btn_No->OnClicked.AddDynamic(this,&USaveConfirmWidget::OnClickNo);
+
+	OnVisibilityChanged.AddDynamic(this,&USaveConfirmWidget::HandleVisibilityChanged);
 }
 
 void USaveConfirmWidget::OnClickYes()
@@ -51,5 +53,18 @@ void USaveConfirmWidget::OnClickYes()
 void USaveConfirmWidget::OnClickNo()
 {
 	SetVisibility(ESlateVisibility::Hidden);
+}
+
+void USaveConfirmWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
+{
+	// 이거 보이면 뒤에 슬롯들 클릭 안되도록 막아야함 .
+	if (InVisibility == ESlateVisibility::Visible)
+	{
+		SlotClickProtection.Broadcast(true);
+	}
+	else if (InVisibility == ESlateVisibility::Hidden)
+	{
+		SlotClickProtection.Broadcast(false);
+	}
 }
 

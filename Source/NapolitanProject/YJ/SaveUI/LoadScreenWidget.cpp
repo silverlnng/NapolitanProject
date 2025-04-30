@@ -51,6 +51,7 @@ void ULoadScreenWidget::NativeConstruct()
 	GameSaveController = NewObject<UGameSaveController>(this);
 
 	WBP_LoadConfirm->SlotClickProtection.AddDynamic(this, &ULoadScreenWidget::SlotClickProtection);
+	SaveConfirmWidget->SlotClickProtection.AddDynamic(this, &ULoadScreenWidget::SlotClickProtection);
 }
 
 void ULoadScreenWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)

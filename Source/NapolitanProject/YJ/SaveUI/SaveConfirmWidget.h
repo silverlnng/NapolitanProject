@@ -10,6 +10,8 @@
 /**
  * 
  */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSlotClickProtection_,bool,val);
+
 UCLASS()
 class NAPOLITANPROJECT_API USaveConfirmWidget : public UUserWidget
 {
@@ -37,6 +39,10 @@ public:
 	
 	UFUNCTION()
 	void OnClickNo();
+	UPROPERTY()
+	FSlotClickProtection_ SlotClickProtection;
+	UFUNCTION()
+	void HandleVisibilityChanged(ESlateVisibility InVisibility);
 private:
 	UPROPERTY()
 	UGameSaveController* SaveGameManager;
