@@ -24,4 +24,5 @@ void UNPC_LeeSeoAnimInstance::PlayJumpSkareMontage1()
 void UNPC_LeeSeoAnimInstance::JumpToSection(const FString& SectionName)
 {
 	Montage_JumpToSection((*SectionName), LeeSeo_JumpSkareMontage1);
+	UE_LOG(LogTemp, Display, TEXT("JumpToSection: %s"), *SectionName);
 }
