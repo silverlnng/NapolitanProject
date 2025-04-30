@@ -60,11 +60,11 @@ void USaveConfirmWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
 	// 이거 보이면 뒤에 슬롯들 클릭 안되도록 막아야함 .
 	if (InVisibility == ESlateVisibility::Visible)
 	{
-		SlotClickProtection.Broadcast(true);
+		SlotClickProtection_.Broadcast(true);
 	}
 	else if (InVisibility == ESlateVisibility::Hidden)
 	{
-		SlotClickProtection.Broadcast(false);
+		SlotClickProtection_.Broadcast(false);
 	}
 }
 

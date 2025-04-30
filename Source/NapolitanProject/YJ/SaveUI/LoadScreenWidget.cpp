@@ -51,7 +51,7 @@ void ULoadScreenWidget::NativeConstruct()
 	GameSaveController = NewObject<UGameSaveController>(this);
 
 	WBP_LoadConfirm->SlotClickProtection.AddDynamic(this, &ULoadScreenWidget::SlotClickProtection);
-	SaveConfirmWidget->SlotClickProtection.AddDynamic(this, &ULoadScreenWidget::SlotClickProtection);
+	SaveConfirmWidget->SlotClickProtection_.AddDynamic(this, &ULoadScreenWidget::SlotClickProtection);
 }
 
 void ULoadScreenWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
@@ -153,6 +153,7 @@ void ULoadScreenWidget::SlotClickProtection(bool val)
 		for (auto& i : SaveSlotSwitcherList)
 		{
 			i.Value->WBP_SavedSlot->Btn_LoadSelectSlot->SetIsEnabled(false);
+			i.Value->WBP_VacantSlot->Btn_SaveGame->SetIsEnabled(false);
 		}
 	}
 	else
@@ -160,7 +161,10 @@ void ULoadScreenWidget::SlotClickProtection(bool val)
 		for (auto& i : SaveSlotSwitcherList)
 		{
 			i.Value->WBP_SavedSlot->Btn_LoadSelectSlot->SetIsEnabled(true);
+			i.Value->WBP_VacantSlot->Btn_SaveGame->SetIsEnabled(true);
 		}
 	}
 	
 }
+
+

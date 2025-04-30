@@ -40,7 +40,7 @@ public:
 	UFUNCTION()
 	void OnClickNo();
 	UPROPERTY()
-	FSlotClickProtection_ SlotClickProtection;
+	FSlotClickProtection_ SlotClickProtection_;
 	UFUNCTION()
 	void HandleVisibilityChanged(ESlateVisibility InVisibility);
 private:
