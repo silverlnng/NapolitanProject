@@ -66,4 +66,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	class USoundWave* AttackSound;
+
+	UPROPERTY(EditAnywhere)
+	FString description=FString(TEXT("도슨트에게 먹혔다"));
 };

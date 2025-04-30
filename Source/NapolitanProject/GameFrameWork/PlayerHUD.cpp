@@ -83,7 +83,7 @@ void APlayerHUD::BeginPlay()
 	DeadEndingWidgetUI=CreateWidget<UDeadEndingWidget>(GetWorld(),DeadEndingWidgetFactory);
 	if (DeadEndingWidgetUI)
 	{
-		DeadEndingWidgetUI->AddToViewport();
+		DeadEndingWidgetUI->AddToViewport(3);
 		DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Hidden);
 		DeadEndingWidgetUI->GI=GI;
 		if (GI&&GI->GameSaveController)
@@ -176,13 +176,15 @@ void APlayerHUD::BeginPlay()
 			// 로그 출력으로 확인하기
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Find AllPostProcessVolume")));
 			
-			UMaterialInterface* BaseMaterial = Cast<UMaterialInterface>(AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object);
+			//UMaterialInterface* BaseMaterial = Cast<UMaterialInterface>(AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object);
 			
 			if (BaseMaterial)
 			{
 				// 동적 인스턴스 생성
 				PostProcessVignetteMatDynamic = UMaterialInstanceDynamic::Create(BaseMaterial, this);
-				AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = PostProcessVignetteMatDynamic;
+
+				// 동적으로 넣어주는걸 마지막에 하기 
+				//AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = PostProcessVignetteMatDynamic;
 			}
 			
 			if (PostProcessVignetteMatDynamic)
@@ -251,7 +253,7 @@ void APlayerHUD::UpdateNPCInfoWidget()
 void APlayerHUD::PlayDeadVignetteEffect()
 {
 	if (!PostProcessVignetteMatDynamic){return;}
-	
+	AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = PostProcessVignetteMatDynamic;
 	CurrentStrength = 0.0f;
 	GetWorld()->GetTimerManager().SetTimer(
 		VignetteTimerHandle,

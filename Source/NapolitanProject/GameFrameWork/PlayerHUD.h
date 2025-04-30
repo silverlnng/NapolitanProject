@@ -70,6 +70,8 @@ public:
 	// DeadEnd 에서 postprocess 효과 조절해야함
 	UPROPERTY()
 	class APostProcessVolume* AllPostProcessVolume;
+	UPROPERTY(EditDefaultsOnly,Category = VignetteEffect) // 블프에서 할당하기, 
+	UMaterialInterface* BaseMaterial;
 	UPROPERTY()
 	class UMaterialInstanceDynamic* PostProcessVignetteMatDynamic;
 	UFUNCTION()

@@ -5,6 +5,7 @@
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/RichTextBlock.h"
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "NapolitanProject/NapolitanProject.h"
@@ -24,11 +25,45 @@ void UDeadEndingWidget::NativeConstruct()
 	MainCharacter =TestPlayerController->GetPawn<ATestCharacter>();
 	
 	GI=GetGameInstance<UMyTestGameInstance>();
+	
+	IMG_BG->SetVisibility(ESlateVisibility::Hidden);
+	TextBlock_description->SetText(FText::FromString(TEXT("")));
+	RichText_Name->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UDeadEndingWidget::SetRichText_Name(const FString& Str) const
 {
 	RichText_Name->SetText(FText::FromString(Str));
+}
+
+void UDeadEndingWidget::SetTextBlock_description(const FString& Str)
+{
+	IMG_BG->SetVisibility(ESlateVisibility::Visible);
+	CurrentText=FString(TEXT(""));
+	FullText=Str;
+	
+	GetWorld()->GetTimerManager().SetTimer(TextUpdateTimerHandle, this, &UDeadEndingWidget::UpdateText, TextUpdateInterval, true);
+}
+
+void UDeadEndingWidget::UpdateText()
+{
+	// 전체 텍스트의 끝까지 도달하면 타이머 중지
+	if (CurrentText.Len() >= FullText.Len())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(TextUpdateTimerHandle);
+		// 끝나는 시점 에 특정함수를 실행할수 있도록 만들기
+		
+		return;
+	}
+	
+	// 한 글자씩 추가
+	CurrentText += FullText.Mid(CurrentText.Len(), 1);
+	
+	// TextBlock에 적용
+	if (TextBlock_description)
+	{
+		TextBlock_description->SetText(FText::FromString(CurrentText));
+	}
 }
 
 void UDeadEndingWidget::StartLerpTimer()

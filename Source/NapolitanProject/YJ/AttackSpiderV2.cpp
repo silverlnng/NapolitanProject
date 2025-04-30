@@ -10,6 +10,7 @@
 #include "EngineUtils.h"
 #include "SoundControlActor.h"
 #include "Camera/CameraComponent.h"
+#include "Components/ArrowComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SplineComponent.h"
@@ -172,14 +173,23 @@ void AAttackSpiderV2::StartAttack()
 	}
 	
 	MainCharacter->SetActorHiddenInGame(true);
-	
+	// 플레이어이의 총안보이도록 하기
+	TArray<AActor*> AttachedActors;
+	MainCharacter->GetAttachedActors(AttachedActors);
+	for (AActor* ChildActor : AttachedActors)
+	{
+		if (ChildActor)
+		{
+			ChildActor->SetActorHiddenInGame(true);
+		}
+	}
 	// 사망이벤트 만 발생시킴
 	MainCharacter->bIsBeingAttacked=true;
 	//카메라 쉐이크 .
 	SwitchToMonsterCamera();
-	//
+	
+	// 사망 비네트 효과 
 	FTimerHandle UITimer2;
-
 	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
 	{
 		if (PlayerHUD )
@@ -187,7 +197,7 @@ void AAttackSpiderV2::StartAttack()
 		
 			PlayerHUD->PlayDeadVignetteEffect();
 		}
-	},2.0f,false);
+	},2.5f,false);
 	//시간지연 주고 사망 UI 나오도록 
 	FTimerHandle UITimer;
 
@@ -198,6 +208,7 @@ void AAttackSpiderV2::StartAttack()
 		if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
 		{
 			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
 			//FString name= FString(TEXT("<Red_Big>거미 에게</>"));
 			//PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
 			//PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
@@ -289,6 +300,7 @@ void AAttackSpiderV2::SwitchToMonsterCamera()
 		// 카메라 전환
 		TestPC->SetViewTargetWithBlend(this, 0.1f); // 0.5초 동안 부드럽게 전환
 
+		
 		// 카메라 흔들기 실행
 		if (TestPC->PlayerCameraManager)
 		{
