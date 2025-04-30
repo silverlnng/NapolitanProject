@@ -178,7 +178,16 @@ void AAttackSpiderV2::StartAttack()
 	//카메라 쉐이크 .
 	SwitchToMonsterCamera();
 	//
-	
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		if (PlayerHUD )
+		{
+		
+			PlayerHUD->PlayDeadVignetteEffect();
+		}
+	},2.0f,false);
 	//시간지연 주고 사망 UI 나오도록 
 	FTimerHandle UITimer;
 
@@ -189,9 +198,10 @@ void AAttackSpiderV2::StartAttack()
 		if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
 		{
 			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-			FString name= FString(TEXT("<Red_Big>거미 에게</>"));
-			PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
-			PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
+			//FString name= FString(TEXT("<Red_Big>거미 에게</>"));
+			//PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
+			//PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
+			//PlayerHUD->PlayDeadVignetteEffect();
 		}
 	},3.0f,false);
 

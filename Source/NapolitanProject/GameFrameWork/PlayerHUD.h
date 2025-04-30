@@ -67,6 +67,27 @@ public:
 	class UDeadEndingWidget* DeadEndingWidgetUI;
 
 
+	// DeadEnd 에서 postprocess 효과 조절해야함
+	UPROPERTY()
+	class APostProcessVolume* AllPostProcessVolume;
+	UPROPERTY()
+	class UMaterialInstanceDynamic* PostProcessVignetteMatDynamic;
+	UFUNCTION()
+	void PlayDeadVignetteEffect();
+	UFUNCTION()
+	void UpdateVignetteStrength();
+	
+	UPROPERTY(EditDefaultsOnly, Category = VignetteEffect)
+	float CurrentStrength = 0.0f;
+	UPROPERTY(EditDefaultsOnly, Category = VignetteEffect)
+	float TargetStrength = 200.0f;
+	UPROPERTY(EditDefaultsOnly, Category = VignetteEffect)
+	float LerpStep = 2.0f;        // 한 틱마다 얼마나 증가할지
+	UPROPERTY(EditDefaultsOnly, Category = VignetteEffect)
+	float TimerInterval = 0.01f;  // 0.01초마다 업데이트
+	
+	FTimerHandle VignetteTimerHandle;
+	
 	//단서
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<class UClueSlotWidget> ClueSlotWidgetFactory;
@@ -93,4 +114,6 @@ public:
 
 	UFUNCTION()
 	void UpdateNPCInfoWidget();
+
+
 };
