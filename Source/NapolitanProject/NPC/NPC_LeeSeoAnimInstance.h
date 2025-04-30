@@ -27,6 +27,9 @@ public:
 	UFUNCTION()
 	void PlayJumpSkareMontage1();
 
+	UFUNCTION()
+	void JumpToSection(const FString& SectionName);
+
 	
 	
 	

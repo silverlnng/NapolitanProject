@@ -92,6 +92,6 @@ public:
 	UCameraComponent* MonsterCamera; //점프스케어 카메라 - 사망 시 사용 
 
 	UPROPERTY()
-	class ALightControlActor* LightControlActor; //라이트 컨트롤
+	class ASequentialLightController* LightControlReference;
 	
 };
