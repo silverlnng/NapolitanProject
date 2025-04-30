@@ -77,6 +77,8 @@ public:
 	void OnLoadConfirm_1();
 	UFUNCTION()
 	void OnLoadConfirm_2();
-	
+
+	UFUNCTION()
+	void SlotClickProtection(bool val);
 };
 

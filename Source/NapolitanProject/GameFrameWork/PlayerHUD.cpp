@@ -193,6 +193,9 @@ void APlayerHUD::BeginPlay()
 			}
 		}
 	}
+
+	// 레벨로드시 비네트 효과
+	PlayLevelLoadVignetteEffect();
 }
 
 void APlayerHUD::CreateYSEvance()
@@ -255,6 +258,7 @@ void APlayerHUD::PlayDeadVignetteEffect()
 	if (!PostProcessVignetteMatDynamic){return;}
 	AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = PostProcessVignetteMatDynamic;
 	CurrentStrength = 0.0f;
+	TargetStrength=200.0f;
 	GetWorld()->GetTimerManager().SetTimer(
 		VignetteTimerHandle,
 		this,
@@ -275,5 +279,35 @@ void APlayerHUD::UpdateVignetteStrength()
 	if (CurrentStrength >= TargetStrength)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(VignetteTimerHandle);
+		AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = nullptr;
+	}
+}
+
+void APlayerHUD::PlayLevelLoadVignetteEffect()
+{
+	if (!PostProcessVignetteMatDynamic){return;}
+	
+	PostProcessVignetteMatDynamic->SetScalarParameterValue("Vignette_Strength", Levelload_CurrentStrength);
+	AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = PostProcessVignetteMatDynamic;
+	GetWorld()->GetTimerManager().SetTimer(
+		VignetteTimerHandle,
+		this,
+		&APlayerHUD::UpdateMinusVignetteStrength,
+		TimerInterval,
+		true
+	);
+}
+
+void APlayerHUD::UpdateMinusVignetteStrength()
+{
+	if (!PostProcessVignetteMatDynamic) return;
+
+	Levelload_CurrentStrength = FMath::Max(Levelload_CurrentStrength - Levelload_LerpStep, Levelload_TargetStrength);
+	PostProcessVignetteMatDynamic->SetScalarParameterValue("Vignette_Strength", Levelload_CurrentStrength);
+	
+	if (Levelload_CurrentStrength <= Levelload_TargetStrength)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(VignetteTimerHandle);
+		AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = nullptr;
 	}
 }

@@ -10,6 +10,7 @@
 #include "../YJ/NoteUI/NoteWidget.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
@@ -71,6 +72,12 @@ void AItemActor::OnPickup() // 아이템을 레벨에서 처음한번 잡을때.
 	MainCharacter->curItem=nullptr;
 
 	GI->SavedItems.Add(this->GetClass());
+
+	// 사운드 재생시키기 
+	if (ItemSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, ItemSoundWave);
+	}
 }
 
 void AItemActor::Use()

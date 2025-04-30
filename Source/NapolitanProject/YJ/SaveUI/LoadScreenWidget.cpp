@@ -49,7 +49,10 @@ void ULoadScreenWidget::NativeConstruct()
 
 	OnVisibilityChanged.AddDynamic(this,&ULoadScreenWidget::HandleVisibilityChanged);
 	GameSaveController = NewObject<UGameSaveController>(this);
+
+	WBP_LoadConfirm->SlotClickProtection.AddDynamic(this, &ULoadScreenWidget::SlotClickProtection);
 }
+
 void ULoadScreenWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
 {
 	if (InVisibility == ESlateVisibility::Visible)
@@ -140,4 +143,23 @@ void ULoadScreenWidget::OnLoadConfirm_2()
 	WBP_LoadConfirm->SetVisibility(ESlateVisibility::Visible);
 	// 클릭한 슬롯 넘버를 parent 넘버로 지정하기 
 	WBP_LoadConfirm->SaveSlotSwitcherWidget = SaveSlotSwitcherWidget_2;
+}
+
+void ULoadScreenWidget::SlotClickProtection(bool val)
+{
+	if (val)
+	{
+		for (auto& i : SaveSlotSwitcherList)
+		{
+			i.Value->WBP_SavedSlot->Btn_LoadSelectSlot->SetIsEnabled(false);
+		}
+	}
+	else
+	{
+		for (auto& i : SaveSlotSwitcherList)
+		{
+			i.Value->WBP_SavedSlot->Btn_LoadSelectSlot->SetIsEnabled(true);
+		}
+	}
+	
 }

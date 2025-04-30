@@ -198,9 +198,9 @@ void AAttackSpiderV2::StartAttack()
 			PlayerHUD->PlayDeadVignetteEffect();
 		}
 	},2.5f,false);
+	
 	//시간지연 주고 사망 UI 나오도록 
 	FTimerHandle UITimer;
-
 	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
 	{
 		MainCharacter->SetPlayerState(EPlayerState::UI);
@@ -209,10 +209,7 @@ void AAttackSpiderV2::StartAttack()
 		{
 			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
 			PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
-			//FString name= FString(TEXT("<Red_Big>거미 에게</>"));
-			//PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
-			//PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
-			//PlayerHUD->PlayDeadVignetteEffect();
+			
 		}
 	},3.0f,false);
 

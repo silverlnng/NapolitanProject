@@ -10,6 +10,9 @@
 /**
  * 
  */
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSlotClickProtection,bool,val);
+
 UCLASS()
 class NAPOLITANPROJECT_API ULoadConfirmWidget : public UUserWidget
 {
@@ -43,6 +46,11 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class UMyTestGameInstance* GI;
+	UFUNCTION()
+	void HandleVisibilityChanged(ESlateVisibility InVisibility);
+	
+	UPROPERTY()
+	FSlotClickProtection SlotClickProtection;
 private:
 	UPROPERTY()
 	UGameSaveController* SaveGameManager;

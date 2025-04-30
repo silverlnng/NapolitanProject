@@ -78,6 +78,10 @@ public:
 	void PlayDeadVignetteEffect();
 	UFUNCTION()
 	void UpdateVignetteStrength();
+	UFUNCTION()
+	void PlayLevelLoadVignetteEffect();
+	UFUNCTION()
+	void UpdateMinusVignetteStrength();
 	
 	UPROPERTY(EditDefaultsOnly, Category = VignetteEffect)
 	float CurrentStrength = 0.0f;
@@ -89,6 +93,16 @@ public:
 	float TimerInterval = 0.01f;  // 0.01초마다 업데이트
 	
 	FTimerHandle VignetteTimerHandle;
+
+		
+	UPROPERTY(EditDefaultsOnly, Category = VignetteEffect)
+	float Levelload_CurrentStrength = 200.0f;
+	UPROPERTY(EditDefaultsOnly, Category = VignetteEffect)
+	float Levelload_TargetStrength = 0.0f;
+	UPROPERTY(EditDefaultsOnly, Category = VignetteEffect)
+	float Levelload_LerpStep = 10.0f;        // 한 틱마다 얼마나 증가할지
+	UPROPERTY(EditDefaultsOnly, Category = VignetteEffect)
+	float Levelload_TimerInterval = 0.01f; 
 	
 	//단서
 	UPROPERTY(EditDefaultsOnly)

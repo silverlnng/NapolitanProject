@@ -42,6 +42,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	class UMaterialInterface* M_Overlay;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* ItemSoundWave;
 	
 //////언리얼 데이터 테이블 읽어오기 	//////////////////////////////////////////////////////////
 	

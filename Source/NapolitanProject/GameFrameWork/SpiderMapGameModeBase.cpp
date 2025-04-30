@@ -34,7 +34,8 @@ void ASpiderMapGameModeBase::BeginPlay()
 	PC =MainCharacter->GetController<ATestPlayerController>();
 	if (!PC){return;}
 	PlayerHUD =PC->GetHUD<APlayerHUD>();
-
+	
+	
 	MainCharacter->GetMesh()->SetWorldScale3D(FVector3d(1,1,1));
 		
 	for (TActorIterator<AAttackSpiderV2> It(GetWorld(), AAttackSpiderV2::StaticClass()); It; ++It)

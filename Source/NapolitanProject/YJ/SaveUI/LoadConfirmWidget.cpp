@@ -18,6 +18,7 @@ void ULoadConfirmWidget::NativeConstruct()
 	Btn_ReSave->OnClicked.AddDynamic(this,&ULoadConfirmWidget::OnClickReSave);
 	
 	GI=GetGameInstance<UMyTestGameInstance>();
+	OnVisibilityChanged.AddDynamic(this,&ULoadConfirmWidget::HandleVisibilityChanged);
 }
 
 void ULoadConfirmWidget::OnClickYes()
@@ -60,4 +61,17 @@ void ULoadConfirmWidget::OnClickReSave()
 	SaveSlotSwitcherWidget->WBP_SavedSlot->SetText_Loc(SaveLocation);
 	
 	SetVisibility(ESlateVisibility::Hidden);
+}
+
+void ULoadConfirmWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
+{
+	// 이거 보이면 뒤에 슬롯들 클릭 안되도록 막아야함 .
+	if (InVisibility == ESlateVisibility::Visible)
+	{
+		SlotClickProtection.Broadcast(true);
+	}
+	else if (InVisibility == ESlateVisibility::Hidden)
+	{
+		SlotClickProtection.Broadcast(false);
+	}
 }
