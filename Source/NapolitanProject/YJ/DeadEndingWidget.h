@@ -32,6 +32,22 @@ public:
 
 	void SetRichText_Name(const FString& Str) const;
 
+////////////////////////////// 새롭게 사망 글 적기//////////////////	
+	UPROPERTY(meta=(BindWidget))
+	class UTextBlock* TextBlock_description;
+
+	void SetTextBlock_description(const FString& Str);
+
+	FString CurrentText;
+	FString FullText;
+	UPROPERTY(EditAnywhere)
+	float  TextUpdateInterval = 0.1f;
+	FTimerHandle TextUpdateTimerHandle;
+
+	//// 한글자씩 업데이트 효과
+	void UpdateText();
+////////////////////////////////////////////////////////////////////////////
+
 	/*UPROPERTY(meta=(BindWidget))
 	class UImage* Img_Fade;*/
 	UPROPERTY(meta = (BindWidgetAnim), Transient)
@@ -54,6 +70,9 @@ public:
 	void OnRestart();
 	UFUNCTION()
 	void OnQuit();
+
+	UPROPERTY(meta=(BindWidget))
+	class UImage* IMG_BG;
 
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> LobbyLevel;

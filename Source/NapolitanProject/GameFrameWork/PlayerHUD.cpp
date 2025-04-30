@@ -3,6 +3,7 @@
 
 #include "PlayerHUD.h"
 
+#include "EngineUtils.h"
 #include "MyTestGameInstance.h"
 #include "../YJ/DeadEndingWidget.h"
 #include "../Interact/InteractWidget.h"
@@ -82,7 +83,7 @@ void APlayerHUD::BeginPlay()
 	DeadEndingWidgetUI=CreateWidget<UDeadEndingWidget>(GetWorld(),DeadEndingWidgetFactory);
 	if (DeadEndingWidgetUI)
 	{
-		DeadEndingWidgetUI->AddToViewport();
+		DeadEndingWidgetUI->AddToViewport(3);
 		DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Hidden);
 		DeadEndingWidgetUI->GI=GI;
 		if (GI&&GI->GameSaveController)
@@ -165,7 +166,33 @@ void APlayerHUD::BeginPlay()
 			}
 		}
 	}*/
-	
+	for (TActorIterator<APostProcessVolume> It(GetWorld(), APostProcessVolume::StaticClass()); It; ++It)
+	{
+		APostProcessVolume* PP=*It;
+
+		if (PP->ActorHasTag(FName(TEXT("VignetteEffect"))))
+		{
+			AllPostProcessVolume=PP;
+			// 로그 출력으로 확인하기
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Find AllPostProcessVolume")));
+			
+			//UMaterialInterface* BaseMaterial = Cast<UMaterialInterface>(AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object);
+			
+			if (BaseMaterial)
+			{
+				// 동적 인스턴스 생성
+				PostProcessVignetteMatDynamic = UMaterialInstanceDynamic::Create(BaseMaterial, this);
+
+				// 동적으로 넣어주는걸 마지막에 하기 
+				//AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = PostProcessVignetteMatDynamic;
+			}
+			
+			if (PostProcessVignetteMatDynamic)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("PostProcessVignetteMatDynamic Exist")));
+			}
+		}
+	}
 }
 
 void APlayerHUD::CreateYSEvance()
@@ -221,4 +248,32 @@ void APlayerHUD::UpdateNPCInfoWidget()
 		NoteUI->WBP_NPCInfo->WidgetSwitcher_Docent1->SetActiveWidgetIndex(1);
 	}
 	
+}
+
+void APlayerHUD::PlayDeadVignetteEffect()
+{
+	if (!PostProcessVignetteMatDynamic){return;}
+	AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = PostProcessVignetteMatDynamic;
+	CurrentStrength = 0.0f;
+	GetWorld()->GetTimerManager().SetTimer(
+		VignetteTimerHandle,
+		this,
+		&APlayerHUD::UpdateVignetteStrength,
+		TimerInterval,
+		true
+	);
+	
+}
+
+void APlayerHUD::UpdateVignetteStrength()
+{
+	if (!PostProcessVignetteMatDynamic) return;
+
+	CurrentStrength = FMath::Min(CurrentStrength + LerpStep, TargetStrength);
+	PostProcessVignetteMatDynamic->SetScalarParameterValue("Vignette_Strength", CurrentStrength);
+	
+	if (CurrentStrength >= TargetStrength)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(VignetteTimerHandle);
+	}
 }

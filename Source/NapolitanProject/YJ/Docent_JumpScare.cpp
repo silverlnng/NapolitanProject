@@ -146,12 +146,21 @@ void ADocent_JumpScare::StartAttack()
 	GetWorld()->GetTimerManager().SetTimer(SwitchCameraTimer,[this]()
 	{
 		SwitchToMonsterCamera();
-	},0.2f,false);
+	},0.75f,false);
+
 	
+	FTimerHandle UITimer2;
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		if (PlayerHUD )
+		{
+		
+			PlayerHUD->PlayDeadVignetteEffect();
+		}
+	},2.5f,false);
 	
 	//시간지연 주고 사망 UI 나오도록 
 	FTimerHandle UITimer;
-
 	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
 	{
 		MainCharacter->SetPlayerState(EPlayerState::UI);
@@ -159,11 +168,12 @@ void ADocent_JumpScare::StartAttack()
 		if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
 		{
 			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-			FString name= FString(TEXT("<Red_Big>도슨트 에게</>"));
+			PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
+			/*FString name= FString(TEXT("<Red_Big>도슨트 에게</>"));
 			PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
-			PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
+			PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();*/
 		}
-	},1.5f,false);
+	},3.5f,false);
 
 	bAttack=true; // 한번만 작동되도록 제어
 }

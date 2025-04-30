@@ -76,6 +76,9 @@ private:
 
 public:
 	UPROPERTY(EditAnywhere)
+	FString description=FString(TEXT("거미왕에게 당했다"));
+	
+	UPROPERTY(EditAnywhere)
 	float AttackRange = 300.0f;
 	
 	UPROPERTY(EditAnywhere, Category = "Movement")
