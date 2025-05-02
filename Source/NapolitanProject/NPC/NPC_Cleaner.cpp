@@ -152,8 +152,11 @@ int32 ANPC_Cleaner::GetState()
 		State =1;
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "State =1");
 	}
+	else // 클리어 했으면 
+	{
+		State =2;
+	}
 	
-	// 버튼눌렀으면 3으로 변경해야함 
 	return State;
 }
 

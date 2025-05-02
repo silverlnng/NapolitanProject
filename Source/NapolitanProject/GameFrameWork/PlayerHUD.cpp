@@ -10,12 +10,16 @@
 #include "../YJ/DialogueUI/NPCDialogueWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "NYS_Choice.h"
+#include "TestCharacter.h"
+#include "TestPlayerController.h"
 #include "YSEvanceUI.h"
 #include "../YJ/NoteUI/NoteWidget.h"
 #include "Components/Button.h"
+#include "Components/CanvasPanel.h"
 #include "Components/Image.h"
 #include "Components/ScrollBox.h"
 #include "Components/WidgetSwitcher.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/YJ/ESCWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
@@ -33,6 +37,9 @@ void APlayerHUD::BeginPlay()
 	
 	GI =GetGameInstance<UMyTestGameInstance>();
 	
+	PC=Cast<ATestPlayerController>(GetOwningPlayerController());
+	MainCharacter=PC->GetPawn<ATestCharacter>();
+	
 	UESC_UI =CreateWidget<UESCWidget>(GetWorld(),UESCWidgetFactory);
 	if (UESC_UI)
 	{
@@ -45,6 +52,7 @@ void APlayerHUD::BeginPlay()
 	{
 		NoteUI->AddToViewport(2);
 		NoteUI->SetVisibility(ESlateVisibility::Hidden);
+		NoteUI->Btn_Close->OnClicked.AddDynamic(this,&APlayerHUD::OnClickBtn_NoteClose);
 	}
 
 	// 초반에 slot 을 생성해주기
@@ -54,6 +62,7 @@ void APlayerHUD::BeginPlay()
 		InventoryUI->AddToViewport(1);
 		InventoryUI->SetVisibility(ESlateVisibility::Hidden);
 		InventoryUI->GI=GI;
+		InventoryUI->Btn_Close->OnClicked.AddDynamic(this,&APlayerHUD::OnClickBtn_InventoryClose);
 	}
 	
 	NPCDialogueUI =CreateWidget<UNPCDialogueWidget>(GetWorld(),NPCDialogueWidgetFactory);
@@ -147,25 +156,7 @@ void APlayerHUD::BeginPlay()
 		// 진행하고 있던 퀘스트 목록을 받아서 로드하고 업데이트하기 
 		InteractUI->LoadUpdateQuestSlot();
 	}
-
-
-	/*
-	if (InventoryUI) //InventoryUI 초기화 작업
-	{
-		auto InvenSlotMap = InventoryUI->InvenSlots;
-		//먼저 모든 행단위로 가져오기  
-
-		for (int i = 0; i < GI->itemDataRowNames.Num(); i++)
-		{
-			// DT_itemData 에서 행 찾아서 
-			FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(GI->itemDataRowNames[i] , TEXT(""));
-			if (ItemData)
-			{
-				// 인벤토리 슬롯에 썸네일 이미지 할당
-				InvenSlotMap[i]->Img_Thumnail->SetBrushFromTexture(ItemData->thumnail);
-			}
-		}
-	}*/
+	
 	for (TActorIterator<APostProcessVolume> It(GetWorld(), APostProcessVolume::StaticClass()); It; ++It)
 	{
 		APostProcessVolume* PP=*It;
@@ -196,6 +187,50 @@ void APlayerHUD::BeginPlay()
 
 	// 레벨로드시 비네트 효과
 	PlayLevelLoadVignetteEffect();
+}
+
+void APlayerHUD::OnClickBtn_NoteClose()
+{
+	NoteUI->SetVisibility(ESlateVisibility::Hidden); // 노트를 닫아라
+		
+	if (InteractUI->CanvasPanel_Clue->GetVisibility() == ESlateVisibility::Visible)
+	{
+		return;
+	}
+	
+	if (!PC){return;}
+	
+	PC->SetInputMode(FInputModeGameOnly());
+	PC->SetShowMouseCursor(false);
+	MainCharacter->SetPlayerState(EPlayerState::Idle);
+	
+	if (CloseSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, CloseSoundWave);
+	}
+}
+
+void APlayerHUD::OnClickBtn_InventoryClose()
+{
+	
+	InventoryUI->SetVisibility(ESlateVisibility::Hidden); // Inventory를 닫아라
+
+	//Inventory 초기화 작업
+	InventoryUI->WhenClosed();
+	
+	if (InteractUI->CanvasPanel_Clue->GetVisibility() == ESlateVisibility::Visible)
+	{
+		return;
+	}
+	
+	PC->SetInputMode(FInputModeGameOnly());
+	PC->SetShowMouseCursor(false);
+	MainCharacter->SetPlayerState(EPlayerState::Idle);
+	
+	if (InvenCloseSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, InvenCloseSoundWave);
+	}
 }
 
 void APlayerHUD::CreateYSEvance()

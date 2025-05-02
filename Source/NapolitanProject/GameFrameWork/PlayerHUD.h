@@ -18,12 +18,21 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class UMyTestGameInstance* GI;
+	
+	class ATestPlayerController* PC;
+
+	class ATestCharacter* MainCharacter;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
 	TSubclassOf<class UNoteWidget> NoteWidgetFactory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UNoteWidget* NoteUI;
+	UFUNCTION()
+	void OnClickBtn_NoteClose();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* CloseSoundWave;
+	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
 	TSubclassOf<class UNPCDialogueWidget> NPCDialogueWidgetFactory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
@@ -48,6 +57,12 @@ public:
 	TSubclassOf<class UInventoryWidget> InventoryFactory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UInventoryWidget* InventoryUI;
+
+	UFUNCTION()
+	void OnClickBtn_InventoryClose();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* InvenCloseSoundWave;
 	
 	//===========
 	//사망 UI 생김

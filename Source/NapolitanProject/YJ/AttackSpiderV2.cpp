@@ -73,7 +73,7 @@ void AAttackSpiderV2::BeginPlay()
 	for (TActorIterator<ASoundControlActor> It(GetWorld(), ASoundControlActor::StaticClass()); It; ++It)
 	{
 		SoundControlActor = *It;
-		SoundControlActor->IsSecondFloor=true; // 로비에서는 나오는 다른소리안들리도록 제어
+		SoundControlActor->bInLobby=false; // 로비에서는 나오는 다른소리안들리도록 제어
 	}
 	
 }

@@ -8,6 +8,7 @@
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/SlateWrapperTypes.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/NPC/NPC_Cleaner.h"
@@ -27,11 +28,12 @@ void AItemHeadActor::OnPickup()
 {
 	CleanerNextState();
 	
-	// Super::OnPickup(); 머리 아이템은 인벤작업을 안할것.
-	
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 	AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-	
+
+
+	OnInventorySlot(); // 인벤작업
+	GI->SavedItems.Add(this->GetClass());
 	
 	FTimerHandle UITimer4;
 	
@@ -40,8 +42,6 @@ void AItemHeadActor::OnPickup()
 		FString QuestText =FString(TEXT("머리를 찾아주기"));
 		PlayerHUD->InteractUI->RemoveQuestSlot(QuestText);
 	},1.0f,false);
-
-	
 	
 
 	FTimerHandle UITimer3;
@@ -66,5 +66,7 @@ void AItemHeadActor::CleanerNextState()
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("NPC_Cleaner next state"));
 		NPC_Cleaner->State=2;
+
+		// NPC_Cleaner가 다음 스테이트로 넘어간걸 게임저장을 해야함 
 	}
 }

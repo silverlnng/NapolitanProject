@@ -20,14 +20,14 @@ void ADoor_2Floor::BeginPlay()
 	// 청소부 만났으면 바인드해제하기
 	// QuestSlots
 	
-
+	// 게임로드할때 사용 "머리를 찾아주기" , 또는 ""
 	FTimerHandle LoadTimer;
-
 	GetWorld()->GetTimerManager().SetTimer(LoadTimer,[this]()
 	{
 		FString QuestText =FString(TEXT("머리를 찾아주기"));
+		FString QuestText2 =FString(TEXT("머리를 가져다 주자"));
 		
-		if (GI&&GI->QuestSlots.Contains(QuestText))
+		if (GI&&(GI->QuestSlots.Contains(QuestText)||GI->QuestSlots.Contains(QuestText2)))
 		{
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("QuestSlots.Contains머리를 찾아주기")));
 			BoxComp->OnComponentBeginOverlap.Clear();

@@ -92,6 +92,8 @@ void UNoteWidget::OnClickBtn_Escape()
 	}
 }
 
+
+
 void UNoteWidget::OnClickBtn_Btn_Docent()
 {
 	SelectContent(1);

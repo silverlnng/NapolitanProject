@@ -117,6 +117,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* ClickSoundWave;
 	
-	
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Close;
+
 };
 
