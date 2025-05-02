@@ -21,8 +21,10 @@ void UNPC_LeeSeoAnimInstance::PlayJumpSkareMontage1()
 	}
 }
 
-void UNPC_LeeSeoAnimInstance::JumpToSection(const FString& SectionName)
+void UNPC_LeeSeoAnimInstance::PlayJumpSkareMontage2()
 {
-	Montage_JumpToSection((*SectionName), LeeSeo_JumpSkareMontage1);
-	UE_LOG(LogTemp, Display, TEXT("JumpToSection: %s"), *SectionName);
+	if (!Montage_IsPlaying(LeeSeo_JumpSkareMontage2))
+	{
+		Montage_Play(LeeSeo_JumpSkareMontage2); //몽타주 플레이
+	}
 }

@@ -71,6 +71,9 @@ public:
 	//유품을 스폰하는 함수
 	void SpawnItem();
 
+	//BoxCollision 제거
+	void RemoveBPBoxCollision();
+
 	//사망 이벤트 생성
 public:
 	//플레이어의 카메라를 몬스터 카메라로 전환하는 함수 
@@ -94,5 +97,13 @@ public:
 	//사망용 스크립트
 	UPROPERTY(EditAnywhere)
 	FString description=FString(TEXT("금발 소녀에게 사망했다"));
+
+	//이동 관련 변수
+	bool bShouldMove = false; //움직일지 말지 정하는것
+	float MoveTimeRemaining = 0.0f; //달리는 시간 감소
+	float MoveSpeed = 1.0f; // 이동 입력 강도 (1.0이 기본)
+
+	//이동 시작 함수
+	void StartMovingForward(float Duration, float Speed);
 	
 };

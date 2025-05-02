@@ -49,10 +49,21 @@ void ANPC_LeeSeo::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if(bJumpSquare)
+	// 이동 로직
+	if (bShouldMove && MoveTimeRemaining > 0.0f)
 	{
-		//점프 스케어
-		
+		// 앞으로 이동 입력
+		AddMovementInput(GetActorForwardVector(), MoveSpeed);
+        
+		// 남은 시간 감소
+		MoveTimeRemaining -= DeltaTime;
+        
+		// 이동 종료 확인
+		if (MoveTimeRemaining <= 0.0f)
+		{
+			bShouldMove = false;
+			UE_LOG(LogTemp, Warning, TEXT("Movement completed"));
+		}
 	}
 
 }
@@ -100,6 +111,13 @@ void ANPC_LeeSeo::SwitchToMonsterCamera()
 	
 }
 
+void ANPC_LeeSeo::StartMovingForward(float Duration, float Speed)
+{
+	bShouldMove = true;
+	MoveTimeRemaining = Duration;
+	MoveSpeed = Speed;
+}
+
 void ANPC_LeeSeo::SpawnItem()
 {
 	// 그림 앞의 위치를 기준으로 스폰 위치 설정
@@ -113,6 +131,40 @@ void ANPC_LeeSeo::SpawnItem()
 		Destroy(); //얻으면 삭제
 	}
 	
+}
+
+void ANPC_LeeSeo::RemoveBPBoxCollision()
+{
+	// 현재 월드에서 BP_BoxCollision 태그나 이름을 가진 모든 액터 찾기
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("BP_BoxCollision"), FoundActors);
+    
+	// 만약 태그로 찾지 못했다면 이름으로 시도
+	if (FoundActors.Num() == 0)
+	{
+		TArray<AActor*> AllActors;
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AActor::StaticClass(), AllActors);
+        
+		for (AActor* Actor : AllActors)
+		{
+			if (Actor && Actor->GetName().Contains("BP_BoxCollision"))
+			{
+				FoundActors.Add(Actor);
+			}
+		}
+	}
+    
+	// 찾은 모든 액터 제거
+	for (AActor* Actor : FoundActors)
+	{
+		if (Actor)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Removing BP_BoxCollision: %s"), *Actor->GetName());
+			Actor->Destroy();
+		}
+	}
+    
+	UE_LOG(LogTemp, Warning, TEXT("Removed %d BP_BoxCollision actors"), FoundActors.Num());
 }
 
 void ANPC_LeeSeo::ResultEvent(int32 result)
@@ -135,7 +187,11 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 			// 1) 조명이벤트-> 깜빡이다가 쭉 어두워지게
 			if (LightControlReference)
 			{
-				LightControlReference->StartLightOffSequence();
+				// 순차적으로 불이 꺼지는 효과
+				LightControlReference->StartLightOffSequence(1.0f);
+				
+				// 모든 불이 꺼진 후 2초 후에 갑자기 다시 켜짐
+				//LightControlReference->StartSuddenLightOnSequence(2.0f);
 
 				//천천히 돌면서 달림
 				if(Anim)
@@ -147,15 +203,44 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 				FTimerHandle JumpSquareTimerHandle1;
 				GetWorldTimerManager().SetTimer(JumpSquareTimerHandle1, [this]()
 				{
-					Anim->JumpToSection("Jump1");
+					
+					//맵에 설치되어있던 BP_BoxCollision을 찾아서 제거
+					RemoveBPBoxCollision();
 
+					// Yaw(Z축)에 20도 더하기
+					AddActorLocalRotation(FRotator(0.0f, 20.0f, 0.0f));
+
+					// 지속적인 이동 시작 (2초 동안)
+					StartMovingForward(2.0f, 1.0f);
+					
+					if(Anim)
+					{
+						Anim->PlayJumpSkareMontage2();
+						UE_LOG(LogTemp, Warning, TEXT("Playing jump scare montage2"));
+					}
+					
+					
 					FTimerHandle FTimerLee;
 					GetWorldTimerManager().SetTimer(FTimerLee, [this]()
 					{
-						// 아이템 스폰 로그
-						SpawnItem(); //아이템 스폰
 						
-					},2.0f, false);
+						// 모든 불을 즉시 끄기
+						LightControlReference->TurnOffAllLightsImmediately();
+
+						// 갑자기 모든 불을 켜기 (지정된 시간 후에)
+						LightControlReference->StartSuddenLightOnSequence(1.0f); // 1초 후에 모든 불이 켜짐
+
+						FTimerHandle TimerLee;
+						GetWorldTimerManager().SetTimer(TimerLee, [this]()
+						{
+							//메쉬 아예 사라짐
+							GetMesh()->SetHiddenInGame(false);
+							
+							// 아이템 스폰 로그
+							SpawnItem(); //아이템 스폰
+						}, 1.0f, false);
+						
+					},4.0f, false);
 					
 				}, 3.0f, false);
 				

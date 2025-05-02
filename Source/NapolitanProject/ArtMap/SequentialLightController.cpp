@@ -13,6 +13,8 @@ ASequentialLightController::ASequentialLightController()
     IntervalBetweenLights = 1.0f;
     CurrentLightIndex = 0;
     bSequenceActive = false;
+    FlickerDuration = 0.5f;
+    FlickerIntensity = 0.5f;
 }
 
 // 게임 시작 시 호출
@@ -28,8 +30,9 @@ void ASequentialLightController::Tick(float DeltaTime)
 }
 
 // 조명 끄기 시퀀스 시작
-void ASequentialLightController::StartLightOffSequence()
+void ASequentialLightController::StartLightOffSequence(float Interval)
 {
+    //UE_LOG(LogTemp, Warning, TEXT("StartLightOffSequence with interval: %f"), Interval);
     // 이미 진행 중이면 리턴
     if (bSequenceActive)
         return;
@@ -38,10 +41,11 @@ void ASequentialLightController::StartLightOffSequence()
     if (LightActors.Num() == 0)
         return;
     
+    // 간격 설정
+    IntervalBetweenLights = Interval;
+    
     // 모든 조명 먼저 켜기
     ResetAllLights();
-
-    UE_LOG(LogTemp, Warning, TEXT("Light1"));
     
     // 시퀀스 활성화
     bSequenceActive = true;
@@ -51,7 +55,23 @@ void ASequentialLightController::StartLightOffSequence()
     
     // 첫 번째 조명 끄기
     TurnOffNextLight();
-    UE_LOG(LogTemp, Warning, TEXT("Light2"));
+}
+
+// 조명 켜기 시퀀스 시작 (갑자기 모두 켜기)
+void ASequentialLightController::StartSuddenLightOnSequence(float DelayBeforeTurnOn)
+{
+    // 이미 모든 조명이 꺼져 있어야 함
+    // 원하는 경우 먼저 모든 조명을 끌 수 있음
+    TurnOffAllLightsImmediately();
+    
+    // 지정된 시간 후 모든 조명을 갑자기 켜기
+    GetWorld()->GetTimerManager().SetTimer(
+        SuddenLightOnTimerHandle,
+        this,
+        &ASequentialLightController::SuddenlyTurnOnAllLights,
+        DelayBeforeTurnOn,
+        false
+    );
 }
 
 // 다음 조명 끄기
@@ -95,25 +115,60 @@ void ASequentialLightController::TurnOffNextLight()
 void ASequentialLightController::TurnOffLight(AActor* LightActor)
 {
     if (!LightActor)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("LightActor is null"));
         return;
+    }
         
-    // SpotLight 컴포넌트 찾기
-    USpotLightComponent* SpotLight = LightActor->FindComponentByClass<USpotLightComponent>();
-    if (SpotLight)
+    // 범용적인 처리: 모든 조명 컴포넌트를 찾아서 처리
+    TArray<ULightComponent*> LightComponents;
+    LightActor->GetComponents<ULightComponent>(LightComponents);
+    
+    if (LightComponents.Num() > 0)
     {
-        SpotLight->SetVisibility(false);
+        for (ULightComponent* Light : LightComponents)
+        {
+            if (Light)
+            {
+                Light->SetVisibility(false);
+                UE_LOG(LogTemp, Warning, TEXT("Turned off light: %s"), *Light->GetName());
+            }
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("No light components found in actor: %s"), *LightActor->GetName());
+    }
+}
+
+// 조명 켜기 함수
+void ASequentialLightController::TurnOnLight(AActor* LightActor)
+{
+    if (!LightActor)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("LightActor is null"));
         return;
     }
     
-    // PointLight 컴포넌트 찾기
-    UPointLightComponent* PointLight = LightActor->FindComponentByClass<UPointLightComponent>();
-    if (PointLight)
-    {
-        PointLight->SetVisibility(false);
-        return;
-    }
+    // 범용적인 처리: 모든 조명 컴포넌트를 찾아서 처리
+    TArray<ULightComponent*> LightComponents;
+    LightActor->GetComponents<ULightComponent>(LightComponents);
     
-    // 다른 조명 컴포넌트도 필요하다면 여기에 추가
+    if (LightComponents.Num() > 0)
+    {
+        for (ULightComponent* Light : LightComponents)
+        {
+            if (Light)
+            {
+                Light->SetVisibility(true);
+                UE_LOG(LogTemp, Warning, TEXT("Turned on light: %s"), *Light->GetName());
+            }
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("No light components found in actor: %s"), *LightActor->GetName());
+    }
 }
 
 // 모든 조명 다시 켜기
@@ -124,24 +179,47 @@ void ASequentialLightController::ResetAllLights()
         if (!LightActor)
             continue;
             
-        // SpotLight 컴포넌트 찾기
-        USpotLightComponent* SpotLight = LightActor->FindComponentByClass<USpotLightComponent>();
-        if (SpotLight)
-        {
-            SpotLight->SetVisibility(true);
-            continue;
-        }
-        
-        // PointLight 컴포넌트 찾기
-        UPointLightComponent* PointLight = LightActor->FindComponentByClass<UPointLightComponent>();
-        if (PointLight)
-        {
-            PointLight->SetVisibility(true);
-            continue;
-        }
+        TurnOnLight(LightActor);
     }
     
     // 시퀀스 상태 초기화
     bSequenceActive = false;
     CurrentLightIndex = 0;
+}
+
+// 모든 조명 즉시 끄기
+void ASequentialLightController::TurnOffAllLightsImmediately()
+{
+    for (AActor* LightActor : LightActors)
+    {
+        if (!LightActor)
+            continue;
+            
+        TurnOffLight(LightActor);
+    }
+    
+    // 시퀀스 상태 초기화
+    bSequenceActive = false;
+    CurrentLightIndex = 0;
+}
+
+// 모든 조명 즉시 켜기
+void ASequentialLightController::TurnOnAllLightsImmediately()
+{
+    for (AActor* LightActor : LightActors)
+    {
+        if (!LightActor)
+            continue;
+            
+        TurnOnLight(LightActor);
+    }
+}
+
+// 갑자기 모든 조명 켜기 (효과 추가)
+void ASequentialLightController::SuddenlyTurnOnAllLights()
+{
+    // 모든 조명 켜기
+    TurnOnAllLightsImmediately();
+    
+    UE_LOG(LogTemp, Warning, TEXT("All lights turned on suddenly"));
 }
