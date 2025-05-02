@@ -69,7 +69,21 @@ void ASoundControlActor::Tick(float DeltaTime)
 void ASoundControlActor::BGSoundChange(USoundCue* Sound)
 {
 	USoundBase* SoundBase_ = Sound;
-	AudioComp1->SetSound(SoundBase_);
+	bInLobby=false;
+	AudioComp1->FadeOut(7.f , 0.f);
+	// AudioComp2 에 다른 음원으로 교체한뒤
+	AudioComp2->SetSound(SoundBase_);
+
+	AudioComp2->FadeIn(14.f , 1.f);
+}
+
+void ASoundControlActor::SoundChangeOriginLobby()
+{
+	AudioComp2->FadeOut(3.f , 0.f);
+	// 2층의 배경음 끄고
+	AudioComp1->FadeIn(3.f , 1.f);
+	// 다시 1층의 배경음을 키다
+	bInLobby = true;
 }
 
 void ASoundControlActor::TextSoundChange(bool value)

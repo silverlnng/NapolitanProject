@@ -107,7 +107,7 @@ void ATriggerActorArt2F::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComp
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "BoxCompBeginOverlap");
 		//CheckSide();
 
-		SoundControlActor->IsSecondFloor=true;
+		SoundControlActor->bInLobby=false;
 		// 타이머로 불끄고 배경음 달라지게 하기
 		if (SoundControlActor)
 		{
@@ -167,7 +167,7 @@ void ATriggerActorArt2F::BoxCompEndOverlap( UPrimitiveComponent* OverlappedCompo
 			// 2층의 배경음 끄고
 			SoundControlActor->AudioComp1->FadeIn(3.f,1.f);
 			// 다시 1층의 배경음을 키다
-			SoundControlActor->IsSecondFloor=false;
+			SoundControlActor->bInLobby=true;
 		}
 
 		if (MainCharacter)

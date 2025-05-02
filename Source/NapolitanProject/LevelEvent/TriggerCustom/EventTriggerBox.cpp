@@ -55,5 +55,16 @@ void AEventTriggerBox::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 	
 }
 
+void AEventTriggerBox::BindEndOverlap()
+{
+	BoxComp->OnComponentEndOverlap.AddDynamic(this, &AEventTriggerBox::EndOverlap);
+}
+
+void AEventTriggerBox::EndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+                                  UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	
+}
+
 
 

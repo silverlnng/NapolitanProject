@@ -40,15 +40,20 @@ public:
 	class APlayerHUD* PlayerHUD;
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
-	bool IsSecondFloor =false;
+	bool bInLobby =true;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditDefaultsOnly,Category=SoundCue)
 	class USoundCue* whiteNoise;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditDefaultsOnly,Category=SoundCue)
 	class USoundCue* SecondFloor;
+	UPROPERTY(EditDefaultsOnly,Category=SoundCue)
+	class USoundCue* LobbyRoom;
 	
 	UFUNCTION()
 	void BGSoundChange(USoundCue* Sound);
+
+	UFUNCTION()
+	void SoundChangeOriginLobby();
 
 	UFUNCTION()
 	void TextSoundChange(bool value);
