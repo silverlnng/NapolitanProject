@@ -66,9 +66,6 @@ public:
 	//점프스퀘어 발동 변수
 	bool bJumpSquare = false;
 
-	FTimerHandle JumpSquareTimerHandle1;
-	FTimerHandle JumpSquareTimerHandle2;
-	FTimerHandle JumpSquareTimerHandle3;
 	
 public:
 	//유품을 스폰하는 함수
@@ -93,5 +90,9 @@ public:
 
 	UPROPERTY()
 	class ASequentialLightController* LightControlReference;
+
+	//사망용 스크립트
+	UPROPERTY(EditAnywhere)
+	FString description=FString(TEXT("금발 소녀에게 사망했다"));
 	
 };

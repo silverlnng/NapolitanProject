@@ -10,8 +10,11 @@
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/ArtMap/SequentialLightController.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/LevelEvent/LightControlActor.h"
+#include "NapolitanProject/YJ/DeadEndingWidget.h"
 
 class ALightControlActor;
 // Sets default values
@@ -119,12 +122,15 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 	{
 		if(0 == result)
 		{
+
+			ChangeCleared();
+			
 			//귀를 막고 외친다. "너는 거짓말쟁이야" => 유품 획득
 			//소녀가 비명을 지른다. -> 점프스퀘어 발동 후 사라짐 그림앞에 유품 스폰
 			UGameplayStatics::PlaySound2D(GetWorld(), ScreamSound); //소리 지르기
 
 			TestPC->StartEndNPCDialougue(false); //결과 메세지 생성
-
+			
 			//그와 동시에 불빛이 흔들림 => 길게 재생
 			// 1) 조명이벤트-> 깜빡이다가 쭉 어두워지게
 			if (LightControlReference)
@@ -137,17 +143,17 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 					UE_LOG(LogTemp, Warning, TEXT("Playing jump scare montage"));
 					Anim->PlayJumpSkareMontage1();
 				}
-    
+
+				FTimerHandle JumpSquareTimerHandle1;
 				GetWorldTimerManager().SetTimer(JumpSquareTimerHandle1, [this]()
 				{
 					Anim->JumpToSection("Jump1");
 
-					GetWorldTimerManager().SetTimer(JumpSquareTimerHandle2, [this]()
+					FTimerHandle FTimerLee;
+					GetWorldTimerManager().SetTimer(FTimerLee, [this]()
 					{
 						// 아이템 스폰 로그
 						SpawnItem(); //아이템 스폰
-
-						ChangeCleared();
 						
 					},2.0f, false);
 					
@@ -161,6 +167,10 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 			UE_LOG(LogTemp, Warning, TEXT("Processing result 1"));
 			//1-2. 그림을 찢어선 안돼 => 맵에서 갑자기 소름 돋는 노래 재생. => 사망
 			UGameplayStatics::PlaySound2D(GetWorld(), LSJump);
+
+			TestPC->StartEndNPCDialougue(false); //결과 메세지 생성
+
+			ChangeCleared();
 			
 			//전구가 깜빡거림
 
@@ -175,6 +185,7 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 				GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
 
 				// 2초 후에 다음 단계 실행
+				FTimerHandle JumpSquareTimerHandle2;
 				GetWorldTimerManager().SetTimer(JumpSquareTimerHandle2, [this]()
 				{
 					GetMesh()->SetHiddenInGame(true);
@@ -187,9 +198,33 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 					
 					//점프 스케어 카메라 전환
 					SwitchToMonsterCamera();
+
+					//사망 엔딩 UI
+					FTimerHandle UITimer2;
+					GetWorldTimerManager().SetTimer(UITimer2, [this]()
+					{
+						if(PlayerHUD)
+						{
+							PlayerHUD->PlayDeadVignetteEffect();
+						}
+					},2.5f, false);
+
+					//시간 지연 주고 사망 UI 나오도록
+					FTimerHandle UITimer;
+					GetWorldTimerManager().SetTimer(UITimer, [this]()
+					{
+						MainCharacter->SetPlayerState(EPlayerState::UI);
+
+						if(PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
+						{
+							PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+							PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
+						}
+					},3.0f,false);
 					
-				}, 2.0f, false);
-			}, 2.0f, false);
+					
+				}, 2.0f, false); //메쉬보이고 죽이러 애니메이션 달려옴
+			}, 2.0f, false); //메쉬 일시적으로 안보이게 하기
 		}
 		else if(2 == result)
 		{
@@ -215,6 +250,7 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 				GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
 
 				// 2초 후에 다음 단계 실행
+				FTimerHandle JumpSquareTimerHandle3;
 				GetWorldTimerManager().SetTimer(JumpSquareTimerHandle3, [this]()
 				{
 					GetMesh()->SetHiddenInGame(true);
@@ -231,9 +267,5 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 				}, 2.0f, false);
 			}, 2.0f, false);
 		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("State is not 1, current State: %d"), State);
 	}
 }
