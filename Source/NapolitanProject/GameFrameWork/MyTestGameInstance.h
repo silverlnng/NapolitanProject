@@ -199,8 +199,8 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	EDetectiveMapState DetectiveMapState=EDetectiveMapState::FisrtStart;
 
-//////////// 게임 저장 //////////////
-///
+//////////// 게임 저장 /////////////////////
+
 	UPROPERTY()
 	class UGameSaveController* GameSaveController;
 	UPROPERTY()
@@ -234,7 +234,14 @@ public:
 
 	UPROPERTY()
 	class UTestSaveGame* LoadedGame;
+	
+	UPROPERTY()
+	bool IsFromLoad=false;
 
+	UPROPERTY()
+	class UTestSaveGame* LoadedSessionInfo;
+	
+	
 ///////// 레벨 이동을  "그림 문 "으로 하는경우를 체크 (문 이동 시 true, 새 게임 시작 시 false)
 	UPROPERTY(BlueprintReadWrite, VisibleAnywhere)
 	bool bLevelMoveToDoor = false;

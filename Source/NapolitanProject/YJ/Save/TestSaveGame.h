@@ -55,4 +55,7 @@ public:
 
 	UPROPERTY()
 	TSet<int32> AcquireSouvenir;
+
+	UPROPERTY()
+	TArray<TSubclassOf<class AItemActor>> SavedItems;
 };

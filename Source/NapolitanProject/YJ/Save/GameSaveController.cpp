@@ -79,7 +79,13 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 			{
 				SaveGameInstance->AcquireSouvenir=GameInstance->AcquireSouvenir;
 			}
+
+			if (!GameInstance->SavedItems.IsEmpty())
+			{
+				SaveGameInstance->SavedItems=GameInstance->SavedItems;
+			}
 			
+			GameInstance->IsFromLoad=false;
 		}
 
 		// 슬롯에 저장
@@ -160,8 +166,16 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 			{
 				GameInstance->AcquireSouvenir=LoadedGame->AcquireSouvenir;
 			}
+
+			if (!LoadedGame->SavedItems.IsEmpty())
+			{
+				GameInstance->SavedItems=LoadedGame->SavedItems;
+			}
 			
 		}
+
+		GameInstance->IsFromLoad=true;
+		GameInstance->LoadedSessionInfo=LoadedGame; // 불러온게 뭔지 저장을 해두기 
 		
 		return LoadedGame;
 	}

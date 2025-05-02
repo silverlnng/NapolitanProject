@@ -14,7 +14,10 @@ class NAPOLITANPROJECT_API ATargetForItem_BurgerPlate : public ATargetForItem
 {
 	GENERATED_BODY()
 	ATargetForItem_BurgerPlate();
-public:	
+public:
+	
+	virtual void BeginPlay() override;
+	
 	UPROPERTY(EditDefaultsOnly)
 	class USceneComponent* SceneComp1;
 	UPROPERTY(EditDefaultsOnly)
@@ -47,6 +50,7 @@ public:
 
 	class ANPC_Butterfly* NPC_Butterfly=nullptr;
 	
+	class UMyTestGameInstance* GI;
 public:	
 	//////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")

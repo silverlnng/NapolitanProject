@@ -11,6 +11,7 @@
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NapolitanProject.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
@@ -34,6 +35,13 @@ ATargetForItem_BurgerPlate::ATargetForItem_BurgerPlate()
 
 	NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>(TEXT("NiagaraComp"));
 	NiagaraComp->SetupAttachment(StaticMeshComp);
+}
+
+void ATargetForItem_BurgerPlate::BeginPlay()
+{
+	Super::BeginPlay();
+
+	GI =GetGameInstance<UMyTestGameInstance>();
 }
 
 void ATargetForItem_BurgerPlate::CheckItem(class AItemActor* curItem)
@@ -82,6 +90,8 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 {
 	FString SpiderNum;
 	int IntSpiderNum;
+
+	FTimerHandle delaytimer;
 	switch (itemID)
 	{
 	case 1:
@@ -94,10 +104,19 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 
 	// 인벤에서 안보이도록 작업 . 
 		PlayerHUD->InventoryUI->InvenSlots[1]->SetIsEnabledBtn();
-
-	//
-		curItem->Remove();
+		
+		// GI->SavedItems 에서도 제거를 해야함 ,
+		if (curItem &&GI&&GI->SavedItems.Contains(curItem->GetClass()))
+		{
+			GI->SavedItems.Remove(curItem->GetClass());
+		}
+		
+		GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
+		{
+			curItem->Remove();
+		},0.5f,false);
 		break;
+		
 	case 3:
 
 		// 거미는 갯수도 비교해야함 .
@@ -114,7 +133,17 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 			PlayerHUD->InventoryUI->InvenSlots[3]->SetIsEnabledBtn();
 			PlayerHUD->InventoryUI->InvenSlots[3]->Set_TextNum("");
 			PutDownitemID.Add(curItem);
-			curItem->Remove();
+		
+			// GI->SavedItems 에서도 제거를 해야함 ,
+			if (curItem &&GI&&GI->SavedItems.Contains(curItem->GetClass()))
+			{
+				GI->SavedItems.Remove(curItem->GetClass());
+			}
+			
+			GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
+			{
+				curItem->Remove();
+			},0.5f,false);
 		}
 		else
 		{
@@ -141,7 +170,18 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 
 		PlayerHUD->InventoryUI->InvenSlots[4]->SetIsEnabledBtn();
 		PutDownitemID.Add(curItem);
-		curItem->Remove();
+
+		// GI->SavedItems 에서도 제거를 해야함 ,
+		if (curItem &&GI&&GI->SavedItems.Contains(curItem->GetClass()))
+		{
+			GI->SavedItems.Remove(curItem->GetClass());
+		}
+		
+		GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
+		{
+			curItem->Remove();
+		},0.5f,false);
+		
 		break;
 		
 	case 5:
@@ -159,10 +199,21 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 		
 		PlayerHUD->InventoryUI->InvenSlots[5]->SetIsEnabledBtn();
 		PutDownitemID.Add(curItem);
-		curItem->Remove();
+
+		// GI->SavedItems 에서도 제거를 해야함 ,
+		if (curItem &&GI&&GI->SavedItems.Contains(curItem->GetClass()))
+		{
+			GI->SavedItems.Remove(curItem->GetClass());
+		}
+		
+		GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
+		{
+			curItem->Remove();
+		},0.5f,false);
+		
 		break;
 	}
-
+	
 	// 미션체크 확인하기 
 	if (PutDownitemID.Num()==4)
 	{

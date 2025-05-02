@@ -21,6 +21,7 @@ void AItemHeadActor::BeginPlay()
 	for (TActorIterator<ANPC_Cleaner> It(GetWorld(), ANPC_Cleaner::StaticClass()); It; ++It)
 	{
 		NPC_Cleaner = *It;
+		NPC_Cleaner->ItemHead=this;
 	}
 }
 

@@ -98,14 +98,7 @@ void UDeadEndingWidget::UpdateLerp()
 void UDeadEndingWidget::OnRestart()
 {
 	//재시작 버튼을 누르면 현재 레벨을 다시 시작하고 싶다.
-	//FString mapName = UGameplayStatics::GetCurrentLevelName(GetWorld());
-
-	//UGameplayStatics::OpenLevel(GetWorld(), FName(*mapName));
-
-	// 베타에서는 그냥 처음 start자리로 가도록 하기
-	//MainCharacter->TeleportTo(FVector(-1410,-2020,-656),FRotator(0,-90,0));
-	//MainCharacter->SetActorLocation(FVector(-1410,2020,-656),false,);
-	//MainCharacter->SetActorRotation(FRotator(0,-90,0));
+	
 	MainCharacter->bIsBeingAttacked=false;
 	
 	MainCharacter->StopSound();
@@ -118,22 +111,37 @@ void UDeadEndingWidget::OnRestart()
 	{
 		UE_LOG(LogTemp , Warning , TEXT("%s : GameSaveController is nullptr!"),*CALLINFO);
 	}
-	
-	if (GameSaveController&&GameSaveController->FindLatestSaveGame()!=-1)
+
+
+	// IsFromLoad true 이면 불러온것을 로드함
+	if (GI->IsFromLoad)
 	{
-		int32 SlotNum=GameSaveController->FindLatestSaveGame();
-		GameSaveController->LoadGameFromSlot(SlotNum);
-		UE_LOG(LogTemp , Warning , TEXT("%s : FindLatestSaveGame is: %d!"),*CALLINFO,SlotNum);
-	
+		if (GI->LoadedSessionInfo)
+		{
+			int SlotNum=GI->LoadedSessionInfo->SlotNum;
+			GI->LoadedGame=GI->GameSaveController->LoadGameFromSlot(SlotNum);
+		}
 	}
-	else
+	else // 레벨 이동,로드플레이가 아닌경우, 로드 프레이중 한번이라도 저장한게 있는경우.  
 	{
-		// 없으면 지하 처음자리에서 시작하기
-		// 그냥 로비레벨 열기
-		UGameplayStatics::OpenLevelBySoftObjectPtr(this,LobbyLevel,true); //레벨 변경
+		if (GameSaveController&&GameSaveController->FindLatestSaveGame()!=-1)
+		{
+			int32 SlotNum=GameSaveController->FindLatestSaveGame(); //최근껄 로드 
+			GI->LoadedGame=GameSaveController->LoadGameFromSlot(SlotNum);
+			UE_LOG(LogTemp , Warning , TEXT("%s : FindLatestSaveGame is: %d!"),*CALLINFO,SlotNum);
+	
+		}
+		else
+		{
+			// 없으면 지하 처음자리에서 시작하기
+			// 그냥 로비레벨 열기
+			UGameplayStatics::OpenLevelBySoftObjectPtr(this,LobbyLevel,true); //레벨 변경
 		
+		}
+		// 저장한것 없으면 처음 시작 .
 	}
-	// 저장한것 없으면 처음 시작 .
+	
+	
 	
 }
 

@@ -58,7 +58,8 @@ public:
 	virtual void ChangeCleared() override; //사라지고 난 뒤 클리어
 
 public:
-
+	UPROPERTY(EditDefaultsOnly,Category=Item)
+	class AItemActor* ItemHead;
 	//머리
 	UPROPERTY(EditDefaultsOnly,Category=Item)
 	class UStaticMeshComponent* HeadStaticMesh;

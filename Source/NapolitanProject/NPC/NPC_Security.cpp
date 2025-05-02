@@ -276,7 +276,7 @@ void ANPC_Security::TickPatrol(const float& DeltaTime)
 		}
 		
 	}
-	else
+	else 	// 만약 목적지가 길 위에 없으면 
 	{
 		EPathFollowingRequestResult::Type result = EnemyAI->MoveToLocation(PatrolPoint);
 		// 만약 도착했다면 다시 랜덤한 위치를 정하고싶다.
@@ -286,16 +286,7 @@ void ANPC_Security::TickPatrol(const float& DeltaTime)
 			SetPatrolPoint(GetActorLocation() , PatrolPointRadius , PatrolPoint);
 		}
 	}
-	/*else
-	{
-		EPathFollowingRequestResult::Type result = EnemyAI->MoveToLocation(PatrolPoint);
-		// 만약 도착했다면 다시 랜덤한 위치를 정하고싶다.
-		if ( result == EPathFollowingRequestResult::AlreadyAtGoal ||
-			result == EPathFollowingRequestResult::Failed )
-		{
-			SetPatrolPoint(GetActorLocation() , PatrolPointRadius , PatrolPoint);
-		}
-	}*/
+	
 }
 
 void ANPC_Security::TickTurnOff(const float& DeltaTime)

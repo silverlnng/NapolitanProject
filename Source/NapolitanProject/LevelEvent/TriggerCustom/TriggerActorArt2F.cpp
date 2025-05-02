@@ -107,10 +107,10 @@ void ATriggerActorArt2F::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComp
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "BoxCompBeginOverlap");
 		//CheckSide();
 
-		SoundControlActor->bInLobby=false;
 		// 타이머로 불끄고 배경음 달라지게 하기
 		if (SoundControlActor)
 		{
+			SoundControlActor->bInLobby=false;
 			SoundControlActor->AudioComp1->FadeOut(7.f , 0.f);
 			//SoundControlActor->AudioComp2->Play();
 			SoundControlActor->AudioComp2->FadeIn(14.f , 1.f);

@@ -377,6 +377,12 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 			bIsResult = true;
 			
 			HeadStaticMesh->SetHiddenInGame(false); //머리를 보이게 함
+
+			// 이제 사용한 머리는 SavedItems 에서 제거해야함
+			if (ItemHead && GI->SavedItems.Contains(ItemHead->GetClass()))
+			{
+				GI->SavedItems.Remove(ItemHead->GetClass());
+			}
 			
 			// 스크립트 출력
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");

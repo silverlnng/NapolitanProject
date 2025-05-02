@@ -184,7 +184,7 @@ void ATestGameModeBase::BeginPlay()
 			// 적용 후 다시 false로 변경 (새 게임 시작 시 영향 안 주도록)
 			GI->SetLevelMoveToDoor(false);
 		}
-		else if (GI->LoadedGame)
+		else if (GI->LoadedGame) // 로드플레이 중 이다
 		{
 			
 			FTimerHandle GITimer;
