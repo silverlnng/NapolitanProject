@@ -57,6 +57,12 @@ public:
 	TSubclassOf<class UInventoryWidget> InventoryFactory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UInventoryWidget* InventoryUI;
+
+	UFUNCTION()
+	void OnClickBtn_InventoryClose();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* InvenCloseSoundWave;
 	
 	//===========
 	//사망 UI 생김

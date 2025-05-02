@@ -62,6 +62,7 @@ void APlayerHUD::BeginPlay()
 		InventoryUI->AddToViewport(1);
 		InventoryUI->SetVisibility(ESlateVisibility::Hidden);
 		InventoryUI->GI=GI;
+		InventoryUI->Btn_Close->OnClicked.AddDynamic(this,&APlayerHUD::OnClickBtn_InventoryClose);
 	}
 	
 	NPCDialogueUI =CreateWidget<UNPCDialogueWidget>(GetWorld(),NPCDialogueWidgetFactory);
@@ -206,6 +207,29 @@ void APlayerHUD::OnClickBtn_NoteClose()
 	if (CloseSoundWave)
 	{
 		UGameplayStatics::PlaySound2D(this, CloseSoundWave);
+	}
+}
+
+void APlayerHUD::OnClickBtn_InventoryClose()
+{
+	
+	InventoryUI->SetVisibility(ESlateVisibility::Hidden); // Inventory를 닫아라
+
+	//Inventory 초기화 작업
+	InventoryUI->WhenClosed();
+	
+	if (InteractUI->CanvasPanel_Clue->GetVisibility() == ESlateVisibility::Visible)
+	{
+		return;
+	}
+	
+	PC->SetInputMode(FInputModeGameOnly());
+	PC->SetShowMouseCursor(false);
+	MainCharacter->SetPlayerState(EPlayerState::Idle);
+	
+	if (InvenCloseSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, InvenCloseSoundWave);
 	}
 }
 

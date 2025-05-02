@@ -48,6 +48,7 @@ void ATestGameModeBase::BeginPlay()
 
 	PlayerHUD = PC->GetHUD<APlayerHUD>();
 	GI = GetGameInstance<UMyTestGameInstance>();
+	
 	// 현재 맵에 있는 npc들을 저장
 	for (TActorIterator<ANPCCharacter> It(GetWorld(), ANPCCharacter::StaticClass()); It; ++It)
 	{
@@ -57,8 +58,7 @@ void ATestGameModeBase::BeginPlay()
 		// 로그 출력으로 확인하기
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("NPCArray: %d"),key));
 	}	
-
-
+	
 
 	// GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
 	
@@ -125,7 +125,7 @@ void ATestGameModeBase::BeginPlay()
 			AItemActor* Item4 =PlayerHUD->InventoryUI->InvenSlots[4]->MyItem;
 			if (Item4) // MyItem이 있으면 획득했었다는 의미
 			{
-			 // 빵 아이템 hidden 처리
+				 // 빵 아이템 hidden 처리
 				//BreadItem4->SetActorHiddenInGame(true);
 				if (ItemActorArray.Contains(4))
 				{
@@ -145,6 +145,7 @@ void ATestGameModeBase::BeginPlay()
 				}
 				
 			}
+			
 			
 		} , 1.5f , false);
 		

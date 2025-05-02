@@ -51,5 +51,7 @@ public:
 
 	UFUNCTION()
 	void WhenClosed();
-	
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Close;
 };
