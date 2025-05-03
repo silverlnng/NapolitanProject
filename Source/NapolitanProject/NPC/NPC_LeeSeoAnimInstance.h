@@ -24,11 +24,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
 	class UAnimMontage* LeeSeo_JumpSkareMontage1;
 
+	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
+	class UAnimMontage* LeeSeo_JumpSkareMontage2;
+
 	UFUNCTION()
 	void PlayJumpSkareMontage1();
 
 	UFUNCTION()
-	void JumpToSection(const FString& SectionName);
+	void PlayJumpSkareMontage2();
 
 	
 	
