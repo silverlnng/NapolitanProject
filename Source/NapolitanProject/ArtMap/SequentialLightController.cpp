@@ -57,6 +57,39 @@ void ASequentialLightController::StartLightOffSequence(float Interval)
     TurnOffNextLight();
 }
 
+// 조명 끄기 시퀀스 시작 (간격 조절 가능)
+void ASequentialLightController::StartSequentialLightOffWithInterval(float Interval)
+{
+    // 이미 진행 중이면 리턴
+    if (bSequenceActive)
+        return;
+        
+    // 조명이 없으면 리턴
+    if (LightActors.Num() == 0)
+        return;
+    
+    // 간격 설정
+    IntervalBetweenLights = Interval;
+    
+    // 모든 조명 먼저 켜기
+    ResetAllLights();
+    
+    // 시퀀스 활성화
+    bSequenceActive = true;
+    
+    // 첫 번째 조명부터 시작
+    CurrentLightIndex = 0;
+    
+    // 첫 번째 조명 끄기 타이머 설정
+    GetWorld()->GetTimerManager().SetTimer(
+        LightOffTimerHandle,
+        this,
+        &ASequentialLightController::TurnOffNextLight,
+        IntervalBetweenLights,
+        false
+    );
+}
+
 // 조명 켜기 시퀀스 시작 (갑자기 모두 켜기)
 void ASequentialLightController::StartSuddenLightOnSequence(float DelayBeforeTurnOn)
 {
@@ -72,6 +105,33 @@ void ASequentialLightController::StartSuddenLightOnSequence(float DelayBeforeTur
         DelayBeforeTurnOn,
         false
     );
+}
+
+// 조명 하나씩 켜기 시퀀스 시작
+void ASequentialLightController::StartSequentialLightOnSequence(float Interval)
+{
+    // 이미 진행 중이면 리턴
+    if (bSequenceActive)
+        return;
+        
+    // 조명이 없으면 리턴
+    if (LightActors.Num() == 0)
+        return;
+    
+    // 모든 조명 먼저 끄기
+    TurnOffAllLightsImmediately();
+    
+    // 간격 설정
+    IntervalBetweenLights = Interval;
+    
+    // 시퀀스 활성화
+    bSequenceActive = true;
+    
+    // 첫 번째 조명부터 시작
+    CurrentLightIndex = 0;
+    
+    // 첫 번째 조명 켜기
+    TurnOnNextLight();
 }
 
 // 다음 조명 끄기
@@ -107,6 +167,43 @@ void ASequentialLightController::TurnOffNextLight()
     else
     {
         // 모든 조명을 끈 후 시퀀스 종료
+        bSequenceActive = false;
+    }
+}
+
+// 다음 조명 켜기
+void ASequentialLightController::TurnOnNextLight()
+{
+    // 모든 조명 처리 완료 확인
+    if (CurrentLightIndex >= LightActors.Num())
+    {
+        bSequenceActive = false;
+        return;
+    }
+    
+    // 현재 인덱스의 조명 켜기
+    if (LightActors[CurrentLightIndex])
+    {
+        TurnOnLight(LightActors[CurrentLightIndex]);
+    }
+    
+    // 다음 인덱스로 이동
+    CurrentLightIndex++;
+    
+    // 다음 조명 켜기 예약 (타이머 사용)
+    if (CurrentLightIndex < LightActors.Num())
+    {
+        GetWorld()->GetTimerManager().SetTimer(
+            LightOnTimerHandle,
+            this,
+            &ASequentialLightController::TurnOnNextLight,
+            IntervalBetweenLights,
+            false
+        );
+    }
+    else
+    {
+        // 모든 조명을 켠 후 시퀀스 종료
         bSequenceActive = false;
     }
 }

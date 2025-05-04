@@ -118,6 +118,7 @@ void ANPC_LeeSeo::StartMovingForward(float Duration, float Speed)
 	MoveSpeed = Speed;
 }
 
+
 void ANPC_LeeSeo::SpawnItem()
 {
 	// 그림 앞의 위치를 기준으로 스폰 위치 설정
@@ -166,6 +167,7 @@ void ANPC_LeeSeo::RemoveBPBoxCollision()
     
 	UE_LOG(LogTemp, Warning, TEXT("Removed %d BP_BoxCollision actors"), FoundActors.Num());
 }
+
 
 void ANPC_LeeSeo::ResultEvent(int32 result)
 {

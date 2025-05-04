@@ -105,5 +105,6 @@ public:
 
 	//이동 시작 함수
 	void StartMovingForward(float Duration, float Speed);
+
 	
 };

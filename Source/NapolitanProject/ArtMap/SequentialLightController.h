@@ -91,4 +91,21 @@ private:
     // 깜빡임 효과를 위한 변수들
     FTimerHandle FlickerTimerHandle;
     float OriginalIntensity;
+
+    // SequentialLightController.h에 추가할 내용
+public:
+    // 조명 순차적으로 끄기 (간격 조절 가능)
+    UFUNCTION(BlueprintCallable, Category = "Light Control")
+    void StartSequentialLightOffWithInterval(float Interval);
+    
+    // 조명 하나씩 켜기 시퀀스 시작
+    UFUNCTION(BlueprintCallable, Category = "Light Control")
+    void StartSequentialLightOnSequence(float Interval);
+    
+    // 다음 조명 켜기
+    void TurnOnNextLight();
+    
+private:
+    // 타이머 핸들 추가
+    FTimerHandle LightOnTimerHandle;
 };
