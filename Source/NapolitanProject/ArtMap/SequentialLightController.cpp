@@ -32,30 +32,28 @@ void ASequentialLightController::Tick(float DeltaTime)
 // 조명 끄기 시퀀스 시작
 void ASequentialLightController::StartLightOffSequence(float Interval)
 {
-    //UE_LOG(LogTemp, Warning, TEXT("StartLightOffSequence with interval: %f"), Interval);
-    // 이미 진행 중이면 리턴
-    if (bSequenceActive)
+    if (bSequenceActive || LightActors.Num() == 0)
         return;
-        
-    // 조명이 없으면 리턴
-    if (LightActors.Num() == 0)
-        return;
-    
-    // 간격 설정
+
+    // 🔹 타이머가 이미 설정되어 있으면 제거 (중복 방지)
+    GetWorld()->GetTimerManager().ClearTimer(LightOffTimerHandle);
+
     IntervalBetweenLights = Interval;
-    
-    // 모든 조명 먼저 켜기
-    ResetAllLights();
-    
-    // 시퀀스 활성화
+
+    ResetAllLights(); // 모든 라이트 켜고 시작
     bSequenceActive = true;
-    
-    // 첫 번째 조명부터 시작
     CurrentLightIndex = 0;
-    
-    // 첫 번째 조명 끄기
-    TurnOffNextLight();
+
+    // 🔹 첫 라이트 끄기 예약 (즉시 실행 아님!)
+    GetWorld()->GetTimerManager().SetTimer(
+        LightOffTimerHandle,
+        this,
+        &ASequentialLightController::TurnOffNextLight,
+        IntervalBetweenLights,
+        false
+    );
 }
+
 
 // 조명 끄기 시퀀스 시작 (간격 조절 가능)
 void ASequentialLightController::StartSequentialLightOffWithInterval(float Interval)
@@ -137,22 +135,25 @@ void ASequentialLightController::StartSequentialLightOnSequence(float Interval)
 // 다음 조명 끄기
 void ASequentialLightController::TurnOffNextLight()
 {
+    // 타이머 클리어: 재귀 예약 전에 중복 방지
+    GetWorld()->GetTimerManager().ClearTimer(LightOffTimerHandle);
+
     // 모든 조명 처리 완료 확인
     if (CurrentLightIndex >= LightActors.Num())
     {
         bSequenceActive = false;
         return;
     }
-    
+
     // 현재 인덱스의 조명 끄기
     if (LightActors[CurrentLightIndex])
     {
         TurnOffLight(LightActors[CurrentLightIndex]);
     }
-    
+
     // 다음 인덱스로 이동
     CurrentLightIndex++;
-    
+
     // 다음 조명 끄기 예약 (타이머 사용)
     if (CurrentLightIndex < LightActors.Num())
     {
@@ -166,10 +167,11 @@ void ASequentialLightController::TurnOffNextLight()
     }
     else
     {
-        // 모든 조명을 끈 후 시퀀스 종료
+        // 마지막 조명까지 끄고 시퀀스 종료
         bSequenceActive = false;
     }
 }
+
 
 // 다음 조명 켜기
 void ASequentialLightController::TurnOnNextLight()

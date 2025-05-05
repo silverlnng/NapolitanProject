@@ -160,12 +160,10 @@ void ANPC_LeeSeo::RemoveBPBoxCollision()
 	{
 		if (Actor)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Removing BP_BoxCollision: %s"), *Actor->GetName());
 			Actor->Destroy();
 		}
 	}
-    
-	UE_LOG(LogTemp, Warning, TEXT("Removed %d BP_BoxCollision actors"), FoundActors.Num());
+	
 }
 
 
@@ -317,6 +315,8 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Processing result 2"));
 			//여자를 달래본다. "괜찮으십니까?" => 사망
+
+			
 		}
 		else if(3 == result)
 		{
