@@ -120,6 +120,35 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UWidgetSwitcher* WidgetSwitcher_Butterfly_3;
 	
+//////////////// 큐레이터 ///////////////////////////	
+	UPROPERTY(meta = (BindWidget))
+	class UScrollBox* ScrollBox_Curator;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_Curator_1;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_Curator_2;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher_Curator_1;
+
+//////////////////////// 큐레이터 ///////////////////////////	
+	UPROPERTY(meta = (BindWidget))
+	class UScrollBox* ScrollBox_LeeSeo;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_LeeSeo_1;
+	
+	UPROPERTY(meta = (BindWidget))
+	class UCanvasPanel* CanvasPanel_LeeSeo_2;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher_LeeSeo_1;
+
+	UPROPERTY(meta = (BindWidget))
+	class UWidgetSwitcher* WidgetSwitcher_LeeSeo_2;
+	
 /////////////////////////////////////////////////////////////	
 	UFUNCTION()
 	void SelectContent(int32 idx);
@@ -138,5 +167,12 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void SetForcus_ScrollBox_Butterfly(int32 panelNum,int32 wsNum);
+
+	UFUNCTION(BlueprintCallable)
+	void SetForcus_ScrollBox_Curator(int32 panelNum,int32 wsNum);
+	// SetForcus_ScrollBox_Curator(2,1) => 두번째 캔버스로 이동시키고 위젯스위처_1 첫번째
 	
+	UFUNCTION(BlueprintCallable)
+	void SetForcus_ScrollBox_LeeSeo(int32 panelNum,int32 wsNum);
+	// SetForcus_ScrollBox_LeeSeo(1,1) (2,2) 
 };
