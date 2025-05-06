@@ -48,6 +48,12 @@ public:
 	void Event_Butterfly_Completed();
 
 	void Event_Butterfly_QuestReward();
+
+	void Event_LeeSeo_FirstUI();
+
+	void Event_LeeSeo_SecondUI();
+
+	void Event_Curator_Completed();
 	
 	void UpdateText();
 

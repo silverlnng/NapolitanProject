@@ -116,6 +116,21 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 		Event_Butterfly_QuestReward();
 		GI->NPCEventManage.Add(NameKey);
 	}
+	else if (str=="LeeSeoFirstUI")
+	{
+		Event_LeeSeo_FirstUI();
+		GI->NPCEventManage.Add(NameKey);
+	}
+	else if (str=="LeeSeoSecondUI")
+	{
+		Event_LeeSeo_SecondUI();
+		GI->NPCEventManage.Add(NameKey);
+	}
+	else if (str=="CuratorCompleted")
+	{
+		Event_Curator_Completed();
+		GI->NPCEventManage.Add(NameKey);
+	}
 }
 
 void UEventComponent::NPCFinalEvent()
@@ -435,6 +450,82 @@ void UEventComponent::Event_Butterfly_QuestReward()
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Butterfly(2,3);
 	},2.5f,false);
 	
+}
+
+void UEventComponent::Event_LeeSeo_FirstUI()
+{
+	TestPC->StartEndNPCDialougue(false);
+	
+	MainCharacter->SetPlayerState(EPlayerState::UI);
+
+	// 시간지연
+	FTimerHandle UITimer;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
+
+		PlayerHUD->NoteUI->OnClickBtn_Btn_Girl();
+		
+	},2.0f,false);
+
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_LeeSeo(1,1);
+	},2.5f,false);
+}
+
+void UEventComponent::Event_LeeSeo_SecondUI()
+{
+	TestPC->StartEndNPCDialougue(false);
+	
+	MainCharacter->SetPlayerState(EPlayerState::UI);
+
+	// 시간지연
+	FTimerHandle UITimer;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
+
+		PlayerHUD->NoteUI->OnClickBtn_Btn_Girl();
+		
+	},2.0f,false);
+
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_LeeSeo(2,2);
+	},2.5f,false);
+}
+
+
+void UEventComponent::Event_Curator_Completed()
+{
+	TestPC->StartEndNPCDialougue(false);
+	
+	MainCharacter->SetPlayerState(EPlayerState::UI);
+
+	// 시간지연
+	FTimerHandle UITimer;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
+
+		PlayerHUD->NoteUI->OnClickBtn_Btn_Curator();
+		
+	},2.0f,false);
+
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Curator(2,2);
+	},2.5f,false);
 }
 
 void UEventComponent::UpdateText()

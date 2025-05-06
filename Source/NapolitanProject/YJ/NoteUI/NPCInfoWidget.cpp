@@ -300,3 +300,97 @@ void UNPCInfoWidget::SetForcus_ScrollBox_Butterfly(int32 panelNum, int32 wsNum)
 	},2.5f,false);
 	
 }
+
+// SetForcus_ScrollBox_Curator(2,1) => 두번째 캔버스로 이동시키고 위젯스위처_1 첫번째
+
+void UNPCInfoWidget::SetForcus_ScrollBox_Curator(int32 panelNum, int32 wsNum)
+{
+	// ScrollWidgetIntoView 는 스크롤 박스 안에있는 위젯 중 매개변수안에 넣은 위젯으로 애니메이션 효과를 줌
+	FTimerHandle UITimer1;
+	GetWorld()->GetTimerManager().SetTimer(UITimer1,[this, panelNum]()
+	{
+		if (panelNum==1) // 스크롤이 첫번째 위젯쪽으로 이동 
+		{
+			ScrollBox_Curator->ScrollWidgetIntoView(CanvasPanel_Curator_1,true);
+		}
+		else if (panelNum==2) // 스크롤이 두번째 위젯쪽으로 이동 
+		{
+			ScrollBox_Curator->ScrollWidgetIntoView(CanvasPanel_Curator_2,true);
+		}
+	},1.5f,false);
+
+	FTimerHandle SoundTimer;
+	GetWorld()->GetTimerManager().SetTimer(SoundTimer , [this]()
+	{
+		if (WriteSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, WriteSoundWave);
+		}	
+	} , 1.8f , false);
+
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this, wsNum]()
+	{
+		if (wsNum==1) // WidgetSwitcher 에서 맨처음 물음표(0) 값-> 두번째 ui (1) 으로 나오게 함
+		{
+			WidgetSwitcher_Curator_1->SetActiveWidgetIndex(1);
+		}
+		else if (wsNum==2)
+		{
+			
+		}
+		if (StickSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, StickSoundWave);
+		}
+		
+	},2.5f,false);
+}
+
+// SetForcus_ScrollBox_LeeSeo(1,1) (2,2) 
+
+void UNPCInfoWidget::SetForcus_ScrollBox_LeeSeo(int32 panelNum, int32 wsNum)
+{
+	// ScrollWidgetIntoView 는 스크롤 박스 안에있는 위젯 중 매개변수안에 넣은 위젯으로 애니메이션 효과를 줌
+	FTimerHandle UITimer1;
+	GetWorld()->GetTimerManager().SetTimer(UITimer1,[this, panelNum]()
+	{
+		if (panelNum==1) // 스크롤이 첫번째 위젯쪽으로 이동 
+		{
+			ScrollBox_LeeSeo->ScrollWidgetIntoView(CanvasPanel_LeeSeo_1,true);
+		}
+		else if (panelNum==2) // 스크롤이 두번째 위젯쪽으로 이동 
+		{
+			ScrollBox_LeeSeo->ScrollWidgetIntoView(CanvasPanel_LeeSeo_2,true);
+		}
+	},1.5f,false);
+
+	FTimerHandle SoundTimer;
+	GetWorld()->GetTimerManager().SetTimer(SoundTimer , [this]()
+	{
+		if (WriteSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, WriteSoundWave);
+		}	
+	} , 1.8f , false);
+
+	FTimerHandle UITimer2;
+
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this, wsNum]()
+	{
+		if (wsNum==1) // WidgetSwitcher 에서 맨처음 물음표(0) 값-> 두번째 ui (1) 으로 나오게 함
+		{
+			WidgetSwitcher_LeeSeo_1->SetActiveWidgetIndex(1);
+		}
+		else if (wsNum==2)
+		{
+			WidgetSwitcher_LeeSeo_2->SetActiveWidgetIndex(1);
+		}
+		if (StickSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, StickSoundWave);
+		}
+		
+	},2.5f,false);
+}
