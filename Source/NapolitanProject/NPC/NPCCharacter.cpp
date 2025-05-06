@@ -36,7 +36,7 @@ void ANPCCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	 TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
+	TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	if (TestPC)
 	{
 	 MainCharacter =TestPC->GetPawn<ATestCharacter>();
