@@ -190,7 +190,9 @@ public:
 
 	//////////// 김영수 위대한 빨간 등대 선택시 1-3
 public:
-
+	UPROPERTY(EditDefaultsOnly)
+	class USpringArmComponent* SpringArmComp2;
+	
 	// 전환용 카메라 부착해주기 
 	UPROPERTY(EditDefaultsOnly)
 	class USpringArmComponent* SpringArmComp;

@@ -43,14 +43,17 @@ ATestCharacter::ATestCharacter()
 	
 	GetMesh()->bCastDynamicShadow = false;
 	GetMesh()->CastShadow = false;
+
+	//충돌설정용 스프링암
+	SpringArmComp2 = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp2"));
+	SpringArmComp2->SetupAttachment(GetMesh(),"head");
 	
 	// Create a CameraComponent	
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
-	CameraComponent->SetupAttachment(GetMesh(),"head");
+	CameraComponent->SetupAttachment(SpringArmComp2);
 	CameraComponent->SetRelativeLocation(FVector(-10.f, 0.f, 60.f)); // Position the camera
 	CameraComponent->bUsePawnControlRotation = true;
-	//CameraComponent->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, FName("HeadSocket"));
-
+	
 	PrimaryActorTick.bCanEverTick = true;
 	
 	// 스프링암을 생성해서 루트에 붙이고싶다.
