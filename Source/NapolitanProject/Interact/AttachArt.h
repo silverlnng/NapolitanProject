@@ -24,6 +24,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
+	class ATestCharacter* MainCharacter;
+	class ATestPlayerController* TestPC;
+	class APlayerHUD* PlayerHUD;
+
+public:
 	UPROPERTY(EditDefaultsOnly)
 	class USceneComponent* SceneComp;
 
@@ -48,5 +53,8 @@ public:
 	
 public:
 	bool bIsOverlapping; // 영역안에 플레이어가 계속 있는지 확인
+
+	UPROPERTY(EditAnywhere)
+	class USoundBase* DoorOpenSound;
 	
 };

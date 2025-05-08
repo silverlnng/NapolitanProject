@@ -8,7 +8,10 @@
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/ArtMap/SunFlowerDoor.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
 
 // Sets default values
 AAttachArt::AAttachArt()
@@ -39,6 +42,13 @@ void AAttachArt::BeginPlay()
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AAttachArt::BeginOverlap);
 	StaticMeshComp->SetHiddenInGame(true); //그림 숨기기
 	bIsOverlapping = false;
+
+	TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
+	if (TestPC)
+	{
+		MainCharacter =TestPC->GetPawn<ATestCharacter>();
+		PlayerHUD =TestPC->GetHUD<APlayerHUD>();
+	}
 	
 }
 
@@ -76,6 +86,19 @@ void AAttachArt::Tick(float DeltaTime)
 				StaticMeshComp->SetHiddenInGame(false);
 				CuratorDoorOpen();
 				bIsOverlapping = false;
+
+				//문 열리는 소리, 2.0은 소리를 2배로 키움
+				UGameplayStatics::PlaySound2D(GetWorld(), DoorOpenSound, 2.0f);
+
+				FTimerHandle TimerHandle;
+				GetWorldTimerManager().SetTimer(TimerHandle, [this]()
+				{
+					//독백
+					FString NoEnter =FString(TEXT("<Monologue>...문이 열리는 소리가 들렸어. 내부를 잘 살펴봐야겠군."));
+					MainCharacter->PlayerHUD->MonolugueWidgetUI->SetVisibility(ESlateVisibility::Visible);
+					MainCharacter->PlayerHUD->MonolugueWidgetUI->SetText_Dialogue(NoEnter);
+				},2.0f, false);
+				
 			}
 		}
 	}
@@ -111,8 +134,8 @@ void AAttachArt::CuratorDoorOpen()
 			SunFlowerDoor->bIsOpenKey = true;
 
 			// 문 열림 상태 확인 로그
-			UE_LOG(LogTemp, Warning, TEXT("SunFlowerDoor is open"));
-			UE_LOG(LogTemp, Warning, TEXT("bIsOpenKey: %s"), SunFlowerDoor->bIsOpenKey ? TEXT("True") : TEXT("False"));
+			//UE_LOG(LogTemp, Warning, TEXT("SunFlowerDoor is open"));
+			//UE_LOG(LogTemp, Warning, TEXT("bIsOpenKey: %s"), SunFlowerDoor->bIsOpenKey ? TEXT("True") : TEXT("False"));
 			
 		}
 	}
