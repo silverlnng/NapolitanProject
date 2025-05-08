@@ -23,7 +23,11 @@ AJumpScare_Picture::AJumpScare_Picture()
 
 	AudioComp =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->SetupAttachment(GetCapsuleComponent());
-	
+
+	AttachedStaticMeshComponent=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("AttachedStaticMeshComp"));
+	AttachedStaticMeshComponent->SetupAttachment(GetMesh(),FName(TEXT("hand_rSocket"))); // 루트에 부착
+	PaintingCanvasStaticMeshComponent=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CanvasStaticMeshComp"));
+	PaintingCanvasStaticMeshComponent->SetupAttachment(GetCapsuleComponent());
 }
 
 // Called when the game starts or when spawned
@@ -48,6 +52,8 @@ void AJumpScare_Picture::BeginPlay()
 	
 	// 3초 후에 정지 및 추적 시작
 	//GetWorldTimerManager().SetTimer(StopMoveTimerHandle, this, &AJumpScare_Picture::StopInitialForwardMovement, InitialMoveDuration, false);
+	
+	AttachedStaticMeshComponent->SetHiddenInGame(true);
 }
 
 // Called every frame
@@ -189,9 +195,37 @@ void AJumpScare_Picture::PlayBasicAnimMontage()
 		AnimInstance->Montage_Play(basicAnimMontage);
 	}
 	// 앞으로 움직임 시작
-	bIsMovingForward=true;
+	//bIsMovingForward=true;
 	
-	GetWorldTimerManager().SetTimer(StopMoveTimerHandle, this, &AJumpScare_Picture::StopInitialForwardMovement, InitialMoveDuration, false);
+	//GetWorldTimerManager().SetTimer(StopMoveTimerHandle, this, &AJumpScare_Picture::StopInitialForwardMovement, InitialMoveDuration, false);
+}
+
+void AJumpScare_Picture::PlayPaintAnimMontage()
+{
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "PlayPaintAnimMontage");
+	
+
+	// 시간 지연을 주고 회전
+	FRotator CurrentRotation = GetActorRotation();
+
+	// Yaw 값을 -90도 감소 (왼쪽으로 회전) 
+	CurrentRotation.Yaw -= 90.0f;
+
+	// 새로운 회전값 설정
+	SetActorRotation(CurrentRotation);
+
+	// 붓 아이템을 보이도록 하기 
+	AttachedStaticMeshComponent->SetHiddenInGame(false);
+
+	// 그림 메쉬 보이도록 하기 
+
+	
+	BlueprintImplementableEventPlayPaintAnim();
+
+	// 페인트 애니가 끝나고 다시 회전 시키기
+
+	
+	
 }
 
 void AJumpScare_Picture::PlayRunAnimMontage()

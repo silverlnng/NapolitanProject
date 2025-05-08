@@ -58,7 +58,9 @@ public:
 	void StartJumpScare();
 
 	UPROPERTY(EditInstanceOnly)
-	class AJumpScare_Picture* JumpScarePicture_Character;
+	class AJumpScare_Picture* LeeSeoPicture_Cha_Older;
+	UPROPERTY(EditInstanceOnly)
+	class AJumpScare_Picture* LeeSeoPicture_Cha_Younger;
 	// 이벤트가 한 번만 실행되도록 제어하는 플래그
 	bool bHasTriggered2=false;
 };
