@@ -59,10 +59,16 @@ public:
 	bool bAttack = false;
 
 	UFUNCTION(BlueprintCallable)
-	void PlayBasicAnimMontage();
+	virtual void PlayBasicAnimMontage();
 
 	UFUNCTION(BlueprintCallable)
-	void PlayPaintAnimMontage();
+	virtual void PlayPaintAnimMontage();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void PaintAnimEnd();
+	
+	UPROPERTY(EditDefaultsOnly,Category=Anim)
+	class UAnimMontage* PaintAnimMontage;
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void BlueprintImplementableEventPlayPaintAnim();
@@ -115,6 +121,7 @@ private:
 	class UAnimMontage* basicAnimMontage;
 
 	UPROPERTY(EditDefaultsOnly,Category=Anim)
-    	class UAnimMontage* JumpAnimMontage;
+	class UAnimMontage* JumpAnimMontage;
+
 	
 };

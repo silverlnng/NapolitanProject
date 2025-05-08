@@ -35,7 +35,7 @@ void AJumpScare_Picture::BeginPlay()
 {
 	Super::BeginPlay();
 	// 앞으로 이동할 방향 저장
-	InitialMoveDirection = GetActorForwardVector().GetSafeNormal();
+	//InitialMoveDirection = GetActorForwardVector().GetSafeNormal();
 
 
 	TestPC=GetWorld()->GetFirstPlayerController<ATestPlayerController>();
@@ -46,14 +46,10 @@ void AJumpScare_Picture::BeginPlay()
 
 	AnimInstance = GetMesh()->GetAnimInstance();
 
-	// 수정. 정지하다가 캐릭터가 범위안으로 들어오면. 그때 작동. 
-
-	// 손으로 인사하듯 제스처하다가 . 갑자기 튀어나오기 . 
-	
-	// 3초 후에 정지 및 추적 시작
-	//GetWorldTimerManager().SetTimer(StopMoveTimerHandle, this, &AJumpScare_Picture::StopInitialForwardMovement, InitialMoveDuration, false);
 	
 	AttachedStaticMeshComponent->SetHiddenInGame(true);
+	PaintingCanvasStaticMeshComponent->SetHiddenInGame(true);
+	
 }
 
 // Called every frame
@@ -61,14 +57,14 @@ void AJumpScare_Picture::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	if (bIsMovingForward)
+	/*if (bIsMovingForward)
 	{
 		AddMovementInput(InitialMoveDirection, MoveSpeed * DeltaTime);
 	}
 	else if (bIsChasing && TargetCharacter)
 	{
 		MoveTowardTarget(DeltaTime);
-	}
+	}*/
 }
 
 // Called to bind functionality to input
@@ -204,7 +200,6 @@ void AJumpScare_Picture::PlayPaintAnimMontage()
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "PlayPaintAnimMontage");
 	
-
 	// 시간 지연을 주고 회전
 	FRotator CurrentRotation = GetActorRotation();
 
@@ -225,6 +220,11 @@ void AJumpScare_Picture::PlayPaintAnimMontage()
 	// 페인트 애니가 끝나고 다시 회전 시키기
 
 	
+	
+}
+
+void AJumpScare_Picture::PaintAnimEnd()
+{
 	
 }
 

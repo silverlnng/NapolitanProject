@@ -47,6 +47,12 @@ void AJumpScare_Canvas::BeginPlay()
 
 	//canvas mesh  의 mat 이 사용하는 캔버스 렌더타겟을 SceneCaptureComp의 렌더타겟으로
 	
+
+	FTimerHandle NextAnimTimer1;
+	GetWorld()->GetTimerManager().SetTimer(NextAnimTimer1,[this]()
+	{
+		SceneCaptureComponent2D->CaptureScene();
+	},1.5f,false);
 }
 
 // Called every frame
