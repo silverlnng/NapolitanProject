@@ -26,6 +26,13 @@ public:
 	/** 몬스터 전용 카메라 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	class UCameraComponent* MonsterCamera;
+
+	// 붓 메쉬를 소켓에 부착시키기
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* AttachedStaticMeshComponent;
+
+	UPROPERTY(EditDefaultsOnly)
+	UStaticMeshComponent* PaintingCanvasStaticMeshComponent;
 	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -51,8 +58,21 @@ public:
 	
 	bool bAttack = false;
 
-	void PlayBasicAnimMontage();
+	UFUNCTION(BlueprintCallable)
+	virtual void PlayBasicAnimMontage();
 
+	UFUNCTION(BlueprintCallable)
+	virtual void PlayPaintAnimMontage();
+
+	UFUNCTION(BlueprintCallable)
+	virtual void PaintAnimEnd();
+	
+	UPROPERTY(EditDefaultsOnly,Category=Anim)
+	class UAnimMontage* PaintAnimMontage;
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void BlueprintImplementableEventPlayPaintAnim();
+	
 	void PlayRunAnimMontage();
 
 	void PlayJumpAttackAnimMontage();
@@ -91,6 +111,8 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Target")
 	class ATestCharacter* TargetCharacter; // 플레이어 캐릭터
 
+	
+
 	// 애니메이션 몽타주
 	UPROPERTY(EditDefaultsOnly,Category=Anim)
 	class UAnimMontage* attackAnimMontage;
@@ -99,6 +121,7 @@ private:
 	class UAnimMontage* basicAnimMontage;
 
 	UPROPERTY(EditDefaultsOnly,Category=Anim)
-    	class UAnimMontage* JumpAnimMontage;
+	class UAnimMontage* JumpAnimMontage;
+
 	
 };
