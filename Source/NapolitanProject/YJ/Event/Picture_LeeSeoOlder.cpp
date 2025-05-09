@@ -3,14 +3,34 @@
 
 #include "Picture_LeeSeoOlder.h"
 
+APicture_LeeSeoOlder::APicture_LeeSeoOlder()
+{
+	parentMeshComponent1 =CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("parentMeshComp1"));
+	parentMeshComponent1->SetupAttachment(RootComponent);
+}
+
+void APicture_LeeSeoOlder::BeginPlay()
+{
+	Super::BeginPlay();
+	parentMeshComponent1->SetHiddenInGame(true);
+}
+
 void APicture_LeeSeoOlder::PlayBasicAnimMontage()
 {
 	Super::PlayBasicAnimMontage();
 	
 }
 
+void APicture_LeeSeoOlder::PlaySittingAnimMontage()
+{
+	Super::PlaySittingAnimMontage();
+	parentMeshComponent1->SetHiddenInGame(false);
+}
+
 void APicture_LeeSeoOlder::PlayPaintAnimMontage()
 {
+	parentMeshComponent1->SetHiddenInGame(true);
+	
 	FRotator CurrentRotation = GetActorRotation();
 
 	// Yaw 값을 -90도 감소 (오른쪽으로 회전) 
@@ -41,7 +61,7 @@ void APicture_LeeSeoOlder::PlayPaintAnimMontage()
 	GetWorld()->GetTimerManager().SetTimer(NextAnimTimer1,[this]()
 	{
 		PaintAnimEnd();
-	},5.5f,false);
+	},7.5f,false);
 }
 
 void APicture_LeeSeoOlder::PaintAnimEnd()

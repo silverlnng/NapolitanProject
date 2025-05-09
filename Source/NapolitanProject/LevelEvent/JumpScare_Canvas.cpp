@@ -149,11 +149,11 @@ void AJumpScare_Canvas::OnBeginOverlap2(UPrimitiveComponent* OverlappedComponent
 
 		if (LeeSeoPicture_Cha_Older)
 		{
-			LeeSeoPicture_Cha_Older->PlayPaintAnimMontage();
+			LeeSeoPicture_Cha_Older->PlaySittingAnimMontage();
 		}
 		if (LeeSeoPicture_Cha_Younger)
 		{
-			LeeSeoPicture_Cha_Younger->PlayPaintAnimMontage();
+			LeeSeoPicture_Cha_Younger->PlaySittingAnimMontage();
 		}
 	}	
 }
