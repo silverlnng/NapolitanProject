@@ -79,7 +79,7 @@ void APicture_Zombie::Tick(float DeltaTime)
 	{
 		//
 		ZombieStart();
-	},3.5f,false);
+	},5.0f,false);
 
 	
 }

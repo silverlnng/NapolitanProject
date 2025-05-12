@@ -62,7 +62,8 @@ public:
 	FTimerHandle RotationTimer;
 
 	float StartYaw = 0.f;
-	float TargetYaw = 180.f;
+	UPROPERTY(EditAnywhere,Category="RotationTimer")
+	float TargetYaw = 90.f;
 	float StartPitch = 0.f;
 	float TargetPitch = 0.f;
 	float RotElapsedTime = 0.f;
