@@ -40,7 +40,49 @@ public:
 	
 	void DropEffect();
 
+	void ZombieStart();
+
+	void UpdateCapsuleGrowth();
 	
+	FTimerHandle CapsuleGrowTimer;
+
+	float StartHeight;
+	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
+	float TargetHeight = 40.f;
+	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
+	float Duration = 2.0f;
+	float ElapsedTime = 0.0f;
+	float TimerInterval = 0.02f; // 50fps 정도
+
+	void ChasePlayer();
+
+	void UpdateRotationStart();
+	void UpdateRotation();
+	
+	FTimerHandle RotationTimer;
+
+	float StartYaw = 0.f;
+	float TargetYaw = 180.f;
+	float StartPitch = 0.f;
+	float TargetPitch = 0.f;
+	float RotElapsedTime = 0.f;
+	UPROPERTY(EditAnywhere,Category="RotationTimer")
+	float TotalTime = 2.0f; // 2초 동안 회전
+	float RotTimerInterval = 0.02f;
+	FRotator InitialRotation;
+
+	void StartMovingForward();
+
+	bool bHasStartedMoving = false;
+	
+	FTimerHandle MoveForwardTimer;
+
+	FVector MoveDirection; // 이동 방향
+	UPROPERTY(EditAnywhere,Category="MoveForwardTimer")
+	float MoveSpeed = 300.f; // 1초당 300cm (3m)
+	float MoveInterval = 0.02f; // 50 FPS 정도
+
+	void MoveForwardStep();
 };
 
 
