@@ -7,6 +7,7 @@
 #include "Runtime/AIModule/Classes/AIController.h"
 #include <NavigationSystem.h>
 
+#include "EngineUtils.h"
 #include "NPC_CuratorAnim.h"
 #include "YSEvanceUI.h"
 #include "Kismet/GameplayStatics.h"
@@ -18,6 +19,7 @@
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/ItemActor.h"
 #include "NapolitanProject/Interact/SouvenirActor.h"
+#include "NapolitanProject/LevelEvent/LightControlActor.h"
 #include "Navigation/PathFollowingComponent.h"
 
 
@@ -66,6 +68,11 @@ void AChaseStatue::BeginPlay()
 	bItemSpawned = false;
 
 	DoorToLobby = Cast<ASunFloorDoorToLobby>(UGameplayStatics::GetActorOfClass(GetWorld(), ASunFloorDoorToLobby::StaticClass()));
+
+	for (TActorIterator<ALightControlActor> It(GetWorld(), ALightControlActor::StaticClass()); It; ++It)
+	{
+		LightControlActor = *It;
+	}
 }
 
 // Called every frame
@@ -280,6 +287,15 @@ void AChaseStatue::SpawnItems()
 	}
 
 	bItemSpawned = false; //한번만 스폰되도록
+}
+
+void AChaseStatue::LightEffect()
+{
+	if (LightControlActor)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("LightControlActor")));
+		LightControlActor->StartSineFlicker(0,1,1.5f,25.f,4408.f);
+	}
 }
 
 

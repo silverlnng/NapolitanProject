@@ -108,5 +108,9 @@ public:
 	UPROPERTY()
 	class ASunFloorDoorToLobby* DoorToLobby;
 	
+	UPROPERTY()
+	class ALightControlActor* LightControlActor;
+
+	void LightEffect();
 };
 
