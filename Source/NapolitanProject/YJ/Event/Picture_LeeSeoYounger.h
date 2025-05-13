@@ -15,8 +15,12 @@ class NAPOLITANPROJECT_API APicture_LeeSeoYounger : public AJumpScare_Picture
 	GENERATED_BODY()
 
 	APicture_LeeSeoYounger();
+
+	virtual void BeginPlay() override;
 	
 	virtual void PlayBasicAnimMontage() override;
+	
+	virtual void PlaySittingAnimMontage()override;
 	
 	virtual void PlayPaintAnimMontage()override;
 	

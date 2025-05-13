@@ -12,6 +12,7 @@
 #include "Components/RichTextBlock.h"
 #include "NapolitanProject/Interact/Door_2Floor.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
+#include "NapolitanProject/NPC/ChaseStatue.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NapolitanProject/NPC/NPC_Butterfly.h"
 #include "NapolitanProject/YJ/EventWidget.h"
@@ -125,6 +126,13 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 	{
 		Event_LeeSeo_SecondUI();
 		GI->NPCEventManage.Add(NameKey);
+	}
+	else if (str=="CuratorLightEffect")
+	{
+		//
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Event_Curator_LightEffect")));
+		Event_Curator_LightEffect();
+		// 조명 깜빡임 효과를 주기 
 	}
 	else if (str=="CuratorCompleted")
 	{
@@ -500,6 +508,22 @@ void UEventComponent::Event_LeeSeo_SecondUI()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_LeeSeo(2,2);
 	},2.5f,false);
+}
+
+void UEventComponent::Event_Curator_LightEffect()
+{
+	// 조명 깜빡임 효과를 주기
+	AChaseStatue* Curator=nullptr;
+	if (TestPC->curNPC)
+	{
+		Curator=Cast<AChaseStatue>(TestPC->curNPC);
+		if (Curator)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Curator->LightEffect")));
+			Curator->LightEffect();
+		}
+	}
+	
 }
 
 

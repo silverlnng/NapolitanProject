@@ -62,6 +62,9 @@ public:
 	virtual void PlayBasicAnimMontage();
 
 	UFUNCTION(BlueprintCallable)
+	virtual void PlaySittingAnimMontage();
+	
+	UFUNCTION(BlueprintCallable)
 	virtual void PlayPaintAnimMontage();
 
 	UFUNCTION(BlueprintCallable)
@@ -123,5 +126,7 @@ private:
 	UPROPERTY(EditDefaultsOnly,Category=Anim)
 	class UAnimMontage* JumpAnimMontage;
 
+	UPROPERTY(EditDefaultsOnly,Category=Anim)
+	class UAnimMontage* SitAnimMontage;
 	
 };

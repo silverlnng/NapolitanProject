@@ -53,6 +53,8 @@ public:
 
 	void Event_LeeSeo_SecondUI();
 
+	void Event_Curator_LightEffect();
+	
 	void Event_Curator_Completed();
 	
 	void UpdateText();

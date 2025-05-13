@@ -196,6 +196,20 @@ void AJumpScare_Picture::PlayBasicAnimMontage()
 	//GetWorldTimerManager().SetTimer(StopMoveTimerHandle, this, &AJumpScare_Picture::StopInitialForwardMovement, InitialMoveDuration, false);
 }
 
+void AJumpScare_Picture::PlaySittingAnimMontage()
+{
+	if (AnimInstance&&SitAnimMontage)
+	{
+		AnimInstance->Montage_Play(SitAnimMontage);
+	}
+
+	FTimerHandle NextAnimTimer1;
+	GetWorld()->GetTimerManager().SetTimer(NextAnimTimer1,[this]()
+	{
+		PlayPaintAnimMontage();
+	},5.5f,false);
+}
+
 void AJumpScare_Picture::PlayPaintAnimMontage()
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "PlayPaintAnimMontage");

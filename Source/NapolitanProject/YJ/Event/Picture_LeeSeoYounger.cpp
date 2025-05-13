@@ -8,8 +8,16 @@ APicture_LeeSeoYounger::APicture_LeeSeoYounger()
 	parentMeshComponent1 =CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("parentMeshComp1"));
 	parentMeshComponent1->SetupAttachment(RootComponent);
 
-	parentMeshComponent1 =CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("parentMeshComp12"));
-	parentMeshComponent1->SetupAttachment(RootComponent);
+	parentMeshComponent2 =CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("parentMeshComp2"));
+	parentMeshComponent2->SetupAttachment(RootComponent);
+}
+
+void APicture_LeeSeoYounger::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	parentMeshComponent1->SetHiddenInGame(true);
+	parentMeshComponent2->SetHiddenInGame(true);
 }
 
 void APicture_LeeSeoYounger::PlayBasicAnimMontage()
@@ -17,8 +25,19 @@ void APicture_LeeSeoYounger::PlayBasicAnimMontage()
 	Super::PlayBasicAnimMontage();
 }
 
+void APicture_LeeSeoYounger::PlaySittingAnimMontage()
+{
+	Super::PlaySittingAnimMontage();
+	parentMeshComponent1->SetHiddenInGame(false);
+	//parentMeshComponent2->SetHiddenInGame(false);
+}
+
 void APicture_LeeSeoYounger::PlayPaintAnimMontage()
 {
+
+	parentMeshComponent1->SetHiddenInGame(true);
+	parentMeshComponent2->SetHiddenInGame(true);
+	
 	FRotator CurrentRotation = GetActorRotation();
 
 	// Yaw 값을 -90도 감소 (오른쪽으로 회전) 
@@ -44,7 +63,7 @@ void APicture_LeeSeoYounger::PlayPaintAnimMontage()
 	GetWorld()->GetTimerManager().SetTimer(NextAnimTimer1,[this]()
 	{
 		PaintAnimEnd();
-	},5.5f,false);
+	},7.5f,false);
 }
 
 void APicture_LeeSeoYounger::PaintAnimEnd()
@@ -63,11 +82,12 @@ void APicture_LeeSeoYounger::PaintAnimEnd()
 	// 동생그림은 칭찬 받는 걸
 
 	// 그리고 비웃도록 
-
+	parentMeshComponent1->SetHiddenInGame(false);
+	parentMeshComponent2->SetHiddenInGame(false);
 	
 		
-
-
+	parentMeshComponent1->PlayAnimation(ClapAnimMontage,true);
+	parentMeshComponent2->PlayAnimation(ClapAnimMontage,true);
 	
 
 	// 다음 애니메이션 실행 
