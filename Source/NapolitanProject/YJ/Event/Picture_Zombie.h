@@ -37,9 +37,12 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	class USkeletalMeshComponent* SkeletalMeshComp1;
+	
+	UPROPERTY(EditDefaultsOnly)
+	class UCapsuleComponent* HeadSocketCapsuleComp;
 
 	UPROPERTY(EditDefaultsOnly)
-	class UCapsuleComponent* SkCapsuleComp;
+	class UCapsuleComponent* SpineSocketCapsuleComp;
 	
 	void DropEffect();
 
@@ -49,6 +52,7 @@ public:
 	
 	FTimerHandle CapsuleGrowTimer;
 
+	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
 	float StartHeight;
 	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
 	float TargetHeight = 40.f;
@@ -56,6 +60,16 @@ public:
 	float Duration = 2.0f;
 	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
 	float SkCapsuleTargetLoc = 175.f;
+	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
+	float TargetYrot=0;
+	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
+	float TargetXrot=0;
+	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
+	float TargetZrot=90;
+
+	float OriginXRot=0;
+	float OriginYRot=0;
+	float OriginZRot=0;
 	
 	float ElapsedTime = 0.0f;
 	float TimerInterval = 0.02f; // 50fps 정도

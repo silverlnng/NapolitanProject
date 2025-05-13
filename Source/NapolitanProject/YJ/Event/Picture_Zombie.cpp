@@ -27,12 +27,15 @@ APicture_Zombie::APicture_Zombie()
 	
 	CapsuleComp=CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComp"));
 	CapsuleComp->SetupAttachment(StaticMeshComp);
-
-	SkCapsuleComp=CreateDefaultSubobject<UCapsuleComponent>(TEXT("SkCapsuleComp"));
-	SkCapsuleComp->SetupAttachment(StaticMeshComp);
-
+	
 	SkeletalMeshComp1=CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalMeshComp1"));
-	SkeletalMeshComp1->SetupAttachment(SkCapsuleComp);
+	SkeletalMeshComp1->SetupAttachment(BoxComp);
+	
+	HeadSocketCapsuleComp=CreateDefaultSubobject<UCapsuleComponent>(TEXT("HeadCapsuleComp"));
+	HeadSocketCapsuleComp->SetupAttachment(SkeletalMeshComp1,FName(TEXT("HeadSocket")));
+
+	SpineSocketCapsuleComp=CreateDefaultSubobject<UCapsuleComponent>(TEXT("SpineCapsuleComp"));
+	SpineSocketCapsuleComp->SetupAttachment(SkeletalMeshComp1,FName(TEXT("Spine2Socket")));
 }
 
 // Called when the game starts or when spawned
@@ -52,7 +55,7 @@ void APicture_Zombie::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	/*FVector Location = CapsuleComp->GetComponentLocation();
+	FVector Location = CapsuleComp->GetComponentLocation();
 	float HalfHeight = CapsuleComp->GetUnscaledCapsuleHalfHeight();
 	float Radius = CapsuleComp->GetUnscaledCapsuleRadius();
 	FRotator Rotation = CapsuleComp->GetComponentRotation();
@@ -68,7 +71,7 @@ void APicture_Zombie::Tick(float DeltaTime)
 		-1.f,        // 지속 시간 (-1이면 한 프레임)
 		0,           // Depth Priority
 		1.f          // 두께
-	);*/
+	);
 }
 
  void APicture_Zombie::DropEffect()
@@ -81,6 +84,7 @@ void APicture_Zombie::Tick(float DeltaTime)
 	FTimerHandle nextTimer;
 	GetWorld()->GetTimerManager().SetTimer(nextTimer,[this]()
 	{
+		//BoxComp->SetSimulatePhysics(false);
 		ZombieStart();
 	},5.0f,false);
 
@@ -91,8 +95,12 @@ void APicture_Zombie::ZombieStart()
 {
 	// 콜리전이 설정되도록
 	//BoxComp->SetSimulatePhysics(false);
-	BoxComp->SetCenterOfMass(FVector3d(0,0,-10));
+	//BoxComp->SetCenterOfMass(FVector3d(0,0,-10));
+
+	//BoxComp->SetConstraintMode( )
+	
 	SkeletalMeshComp1->SetHiddenInGame(false);
+	
 	CapsuleComp->SetSimulatePhysics(true);
 	// 애니메이션 실행
 	CapsuleComp->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
@@ -101,6 +109,10 @@ void APicture_Zombie::ZombieStart()
 	//SkCapsuleComp->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	//SkCapsuleComp->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
 
+	OriginXRot=GetActorRotation().Roll;
+	OriginYRot=GetActorRotation().Pitch;
+	OriginZRot=GetActorRotation().Yaw;
+	
 	GetWorldTimerManager().SetTimer(
 	  CapsuleGrowTimer,
 	  this,
@@ -116,22 +128,26 @@ void APicture_Zombie::UpdateCapsuleGrowth()
 	ElapsedTime += TimerInterval;
 
 	float Alpha = FMath::Clamp(ElapsedTime / Duration, 0.f, 1.f);
-	float NewHeight = FMath::Lerp(StartHeight, TargetHeight, Alpha);
+	float NewHeight = FMath::Lerp(OriginYRot, TargetHeight, Alpha);
 
 	CapsuleComp->SetCapsuleHalfHeight(NewHeight);
 
+	float NewYRot = FMath::Lerp(OriginYRot, TargetYrot, Alpha);
+	float NewXRot = FMath::Lerp(OriginXRot, TargetXrot, Alpha);
+	float NewZRot = FMath::Lerp(OriginZRot, TargetZrot, Alpha);
+	
+	//SetActorRotation(FRotator(NewYRot,NewZRot,NewXRot));
+	
 	//float NewZLoc = FMath::Lerp(0, SkCapsuleTargetLoc, Alpha);
 
-	// 여기서 SkCapsuleComp의 z 값이동도 0에서 175으로 서서히 되도록 조절하기 
-	//SkCapsuleComp->SetRelativeLocation(FVector(0,0,NewZLoc));
 	
 	if (Alpha >= 1.0f)
 	{
 		GetWorldTimerManager().ClearTimer(CapsuleGrowTimer);
 		CapsuleComp->SetCapsuleHalfHeight(TargetHeight); // 보정
-
-		//SkCapsuleComp->SetRelativeLocation(FVector(0,0,SkCapsuleTargetLoc));
 		
+		
+		//SetActorRotation(FRotator(TargetYrot,TargetZrot,TargetXrot));
 		
 		BoxComp->SetSimulatePhysics(false);
 	
