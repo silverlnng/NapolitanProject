@@ -108,43 +108,34 @@ void ANPC_Docent::ResultEvent(int32 result)
 
 			// 점프스케어 용 도슨트를 활성화 시키기
 			
-
-			
-			
-			
 		}
 		else if (2==result)
 		{
 			TestPC->StartEndNPCDialougue(false);
 		}
 	}
-	else if (2==State) //
+	else if (2==State)
 	{
 		if (0==result)
 		{
 			// 퀴즈에 대한 답 정의
-			// 불태워죽인다
+			// 먹을 것을 준다.
 			TestPC->StartEndNPCDialougue(false);
 			
 		}
 		else if (1==result)
 		{
-			// 찔러죽인다
+			// 밖으로 나가자고 한다.
 			TestPC->StartEndNPCDialougue(false);
 		}
 		else if (2==result)
 		{
-			// 삶아죽인다
+			// 동정심을 표한다.
 			TestPC->StartEndNPCDialougue(false);
 		}
 		else if (3==result)
 		{
-			// 튀겨죽인다
-			TestPC->StartEndNPCDialougue(false);
-		}
-		else if (4==result)
-		{
-			// 정답 . 만약 다른 선 택을 하게 되면 선택한 것에 따라 죽는다. 살아줘를 택할 시, 소년은 사라지고 그 자리에 수첩이 남는다. 
+			// 정답 . 만약 다른 선 택을 하게 되면 선택한 것에 따라 죽는다. 
 			TestPC->StartEndNPCDialougue(false);
 			
 			FTimerHandle Timer;

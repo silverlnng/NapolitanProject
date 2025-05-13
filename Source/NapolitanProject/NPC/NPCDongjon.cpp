@@ -192,7 +192,7 @@ void ANPCDongjon::ResultEvent(int32 result)
 				
 				ChangeCleared(); //NPC 클리어
 				
-			}, 4.0f, false);
+			}, 6.5f, false);
 			
 		}
 	}
