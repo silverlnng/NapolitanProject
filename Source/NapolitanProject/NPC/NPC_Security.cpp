@@ -27,7 +27,7 @@ ANPC_Security::ANPC_Security()
 	PawnSensingComp=CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComp"));
 	
 	SpringArmComp2 = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp2"));
-	SpringArmComp2->SetupAttachment(GetMesh(),"head");
+	SpringArmComp2->SetupAttachment(GetMesh(),FName(TEXT("head")));
 
 	// 카메라를 생성해서 스프링암에 붙이고싶다.
 	CameraComp2 = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp2"));
@@ -36,7 +36,7 @@ ANPC_Security::ANPC_Security()
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 
 	HeadStaticMesh=CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HeadStaticMeshComp"));
-	HeadStaticMesh->SetupAttachment(GetMesh(),"LeftHandMiddle3Socket");
+	HeadStaticMesh->SetupAttachment(GetMesh(),FName(TEXT("LeftHandMiddle3Socket")));
 
 	AudioComp =CreateDefaultSubobject<UAudioComponent>(TEXT("AudioComp"));
 	AudioComp->SetupAttachment(GetCapsuleComponent());
@@ -104,7 +104,7 @@ void ANPC_Security::Tick(float DeltaSeconds)
 
 	// 지금 자기상태 출력하도록 만들기
 	FString myState = UEnum::GetValueAsString(SecurityState);
-	//DrawDebugString(GetWorld() ,GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
+	DrawDebugString(GetWorld() ,GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
 	
 	// 캐릭터와의 거리도 계산  ==> 일정거리 이상 멀어지면 다시 가까운 라이트를 켜야함
 	AllLightTurnOff=true;
@@ -226,6 +226,7 @@ void ANPC_Security::OnSeePawn(APawn *OtherPawn)
 void ANPC_Security::TickChasePlayer(const float& DeltaTime)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "TickChasePlayer");
+	
 	if (EnemyAI&&Target)
 	{
 		EnemyAI->MoveToLocation(Target->GetActorLocation());
@@ -240,6 +241,10 @@ void ANPC_Security::TickChasePlayer(const float& DeltaTime)
 			SetState(ESecurityState::Attack);
 		}
 		
+	}
+	else
+	{
+		SetState(ESecurityState::Patrol);
 	}
 }
 
@@ -294,41 +299,9 @@ void ANPC_Security::TickTurnOff(const float& DeltaTime)
 
 	if (EnemyAI&&NearLight)
 	{
-		GetCharacterMovement()->MaxWalkSpeed=500.f;
+		GetCharacterMovement()->MaxWalkSpeed=650.f;
 		// 여기서 알아서 장애물 회피해서 이동해야함 
 		EnemyAI->MoveToLocation(NearLight->SphereComp->GetComponentLocation(),0);
-		//UE_LOG(LogTemp, Warning, TEXT("NearLight: %s"), *NearLight->GetActorLocation().ToString());
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "TickTurnOff");
-
-		/*FVector destinataion = NearLight->GetActorLocation();
-
-		auto* ns = UNavigationSystemV1::GetNavigationSystem(GetWorld());
-	
-		FAIMoveRequest MoveRequest;
-		MoveRequest.SetGoalLocation(destinataion);
-		MoveRequest.SetAcceptanceRadius(50);
-
-		FPathFindingQuery Query;
-		EnemyAI->BuildPathfindingQuery(MoveRequest , Query);
-		FPathFindingResult r = ns->FindPathSync(Query);
-		// 만약 목적지가 길 위에있다면
-		if (r.Result == ENavigationQueryResult::Success)
-		{
-			// 목적지를 향해서 이동하고싶다.
-			EnemyAI->MoveToLocation(destinataion);
-		}
-		else
-		{
-			// 랜덤한 위치를 정해서 
-			// 그곳으로 이동하고
-			EPathFollowingRequestResult::Type result = EnemyAI->MoveToLocation(PatrolPoint);
-			// 만약 도착했다면 다시 랜덤한 위치를 정하고싶다.
-			if ( result == EPathFollowingRequestResult::AlreadyAtGoal ||
-				result == EPathFollowingRequestResult::Failed )
-			{
-				SetPatrolPoint(destinataion , PatrolPointRadius , PatrolPoint);
-			}
-		}*/
 	}
 }
 
@@ -372,22 +345,32 @@ void ANPC_Security::OnMyAttackMiddle()
 		// 플레이어에게 데미지를 입히고싶다.
 		MainCharacter->DamagedToSecurity();
 	}
+	else
+	{
+		// 이동상태로 전이하고싶다.==> 이게 어색함 .앞에 캐릭터있는데도 다른곳으로 갈때 있음 시야각에 있음 무조건 캐릭터 다시 채이스하도록
+		Target=MainCha;
+		SetState(ESecurityState::ChasePlayer);
+	}
 }
 
 void ANPC_Security::OnMyAttackEnd()
 {
 	// 거리체크
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString(TEXT("OnMyAttackEnd")));
 	if (!Target){return;}
 	float dist = GetDistanceTo(Target);
 	if ( dist <= AttackDistance) {
+
+		//다시 공격 애니메이션을 실행
 		// 플레이어에게 데미지를 입히고싶다.
 		Anim->bAttack = true;
 		// 
-		//UE_LOG(LogTemp , Warning , TEXT("Enemy -> Player에게 Damage"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString(TEXT("dist <= AttackDistance")));
 	}
 	// 그렇지 않다면 
 	else {
 		// 이동상태로 전이하고싶다.
+		Target=MainCha;
 		SetState(ESecurityState::ChasePlayer);
 	}
 }

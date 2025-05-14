@@ -16,6 +16,7 @@ void UNPC_Security_AnimInstance::AnimNotify_AttackStart()
 	if (NPCSecurity)
 	{
 		NPCSecurity->OnMyAttackStart();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString(TEXT("AnimNotify_AttackStart")));
 		//UE_LOG(LogTemp , Warning , TEXT("AnimNotify_AttackStart"));
 	}
 	
@@ -34,6 +35,7 @@ void UNPC_Security_AnimInstance::AnimNotify_AttackEnd()
 	if (NPCSecurity)
 	{
 		NPCSecurity->OnMyAttackEnd();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString(TEXT("AnimNotify_AttackEnd")));
 	}
 }
 
