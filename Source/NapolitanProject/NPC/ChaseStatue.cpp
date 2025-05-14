@@ -213,13 +213,33 @@ void AChaseStatue::ResultEvent(int32 result)
 			
 			SpawnItems(); //유품 스폰 및 회수
 			
+			TestPC->StartEndNPCDialougue(true);
+			//State=2; // 다음 state으로 넘어간다음
+			//TestPC->SetNPCDialougueText(0); // npc 대본에서 다시 시작
+			
+		}
+	}
+	else if(2==State)
+	{
+		if(0==result)
+		{
+			State=3; // 다음 state으로 넘어간다음
+			TestPC->StartEndNPCDialougue(true);
+			TestPC->SetNPCDialougueText(0); // npc 대본에서 다시 시작
+		}
+	}
+	else if(3==State)
+	{
+		//노인이 지닌 아이템을 소유하고 있을때
+		if(0==result)
+		{
 			//큐레이터 맵 사운드 변경
 
 			bClear = true; //움직임 모드로 변경
 			if(DoorToLobby)
 			{
 				DoorToLobby->bOneMove = true; //이제 큐레이터 방 나갈 수 있음
-				UE_LOG(LogTemp, Warning, TEXT("방 나갈 수 있음"));
+				//UE_LOG(LogTemp, Warning, TEXT("방 나갈 수 있음"));
 			}
 
 			//우선 클리어 선언
@@ -228,8 +248,8 @@ void AChaseStatue::ResultEvent(int32 result)
 			GI->ClearedNPC.Add(GetNPCID());
 			
 		}
-		
 	}
+	
 }
 
 void AChaseStatue::Interact()
