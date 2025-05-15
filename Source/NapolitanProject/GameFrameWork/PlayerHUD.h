@@ -89,6 +89,12 @@ public:
 	UMaterialInterface* BaseMaterial;
 	UPROPERTY()
 	class UMaterialInstanceDynamic* PostProcessVignetteMatDynamic;
+
+	UPROPERTY(EditDefaultsOnly,Category = VignetteEffect) // 블프에서 할당하기, 
+	UMaterialInterface* RedVignetteMaterial;
+	UPROPERTY()
+	class UMaterialInstanceDynamic* RedVignetteMatDynamic;
+	
 	UFUNCTION()
 	void PlayDeadVignetteEffect();
 	UFUNCTION()
@@ -97,6 +103,11 @@ public:
 	void PlayLevelLoadVignetteEffect();
 	UFUNCTION()
 	void UpdateMinusVignetteStrength();
+
+	UFUNCTION()
+	void PlayDamagedVignetteEffect();
+	UFUNCTION()
+	void UpdateRedVignetteStrength();
 	
 	UPROPERTY(EditDefaultsOnly, Category = VignetteEffect)
 	float CurrentStrength = 0.0f;
@@ -117,7 +128,18 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = VignetteEffect)
 	float Levelload_LerpStep = 10.0f;        // 한 틱마다 얼마나 증가할지
 	UPROPERTY(EditDefaultsOnly, Category = VignetteEffect)
-	float Levelload_TimerInterval = 0.01f; 
+	float Levelload_TimerInterval = 0.01f;
+
+	UPROPERTY(EditDefaultsOnly, Category = RedVignetteEffect)
+	float RedVignette_CurrentStrength = 2.3f;
+	UPROPERTY(EditDefaultsOnly, Category = RedVignetteEffect)
+	float RedVignette_TargetStrength = 0.0f;
+	UPROPERTY(EditDefaultsOnly, Category = RedVignetteEffect)
+	float RedVignette_LerpStep = 0.7f;        // 한 틱마다 얼마나 증가할지
+	UPROPERTY(EditDefaultsOnly, Category = RedVignetteEffect)
+	float RedVignette_TimerInterval = 0.01f; 
+
+	FTimerHandle RedVignetteTimerHandle;
 	
 	//단서
 	UPROPERTY(EditDefaultsOnly)

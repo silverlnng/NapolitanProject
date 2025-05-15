@@ -173,9 +173,13 @@ void APlayerHUD::BeginPlay()
 			{
 				// 동적 인스턴스 생성
 				PostProcessVignetteMatDynamic = UMaterialInstanceDynamic::Create(BaseMaterial, this);
-
-				// 동적으로 넣어주는걸 마지막에 하기 
-				//AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = PostProcessVignetteMatDynamic;
+				
+			}
+			if (RedVignetteMaterial)
+			{
+				// 동적 인스턴스 생성
+				RedVignetteMatDynamic = UMaterialInstanceDynamic::Create(RedVignetteMaterial, this);
+				
 			}
 			
 			if (PostProcessVignetteMatDynamic)
@@ -321,7 +325,7 @@ void APlayerHUD::UpdateVignetteStrength()
 void APlayerHUD::PlayLevelLoadVignetteEffect()
 {
 	if (!PostProcessVignetteMatDynamic){return;}
-	
+	if (!AllPostProcessVolume){return;}
 	PostProcessVignetteMatDynamic->SetScalarParameterValue("Vignette_Strength", Levelload_CurrentStrength);
 	AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = PostProcessVignetteMatDynamic;
 	GetWorld()->GetTimerManager().SetTimer(
@@ -343,6 +347,38 @@ void APlayerHUD::UpdateMinusVignetteStrength()
 	if (Levelload_CurrentStrength <= Levelload_TargetStrength)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(VignetteTimerHandle);
+		AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = nullptr;
+	}
+}
+
+void APlayerHUD::PlayDamagedVignetteEffect()
+{
+	if (!RedVignetteMatDynamic){return;}
+	RedVignette_CurrentStrength=2.3f;
+	RedVignetteMatDynamic->SetScalarParameterValue("Vignette_Strength", RedVignette_CurrentStrength);
+	
+	AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = RedVignetteMatDynamic;
+	
+	GetWorld()->GetTimerManager().SetTimer(
+		RedVignetteTimerHandle,
+		this,
+		&APlayerHUD::UpdateRedVignetteStrength,
+		RedVignette_TimerInterval,
+		true
+	);
+}
+
+void APlayerHUD::UpdateRedVignetteStrength()
+{
+	if (!PostProcessVignetteMatDynamic) return;
+
+	RedVignette_CurrentStrength = FMath::Max(RedVignette_CurrentStrength - RedVignette_LerpStep, RedVignette_TargetStrength);
+	
+	RedVignetteMatDynamic->SetScalarParameterValue("Vignette_Strength", RedVignette_CurrentStrength);
+	
+	if (RedVignette_CurrentStrength <= RedVignette_TargetStrength)
+	{
+		GetWorld()->GetTimerManager().ClearTimer(RedVignetteTimerHandle);
 		AllPostProcessVolume->Settings.WeightedBlendables.Array[0].Object = nullptr;
 	}
 }

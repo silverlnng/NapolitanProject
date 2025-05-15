@@ -364,7 +364,7 @@ void ANPC_Security::OnMyAttackEnd()
 		//다시 공격 애니메이션을 실행
 		// 플레이어에게 데미지를 입히고싶다.
 		Anim->bAttack = true;
-		// 
+		
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString(TEXT("dist <= AttackDistance")));
 	}
 	// 그렇지 않다면 

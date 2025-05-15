@@ -263,6 +263,9 @@ public:
 	UPROPERTY(EditDefaultsOnly,Category=Sound)
 	class USoundWave* HeartSound;
 
+	UPROPERTY(EditDefaultsOnly,Category=Sound)
+	class USoundWave* DamagedSound;
+
 	///거미맵에서만 걷고 뛸때 소리가 들리도록 하기 ////////
 	// 플레이어에게 소리 기능을 활성화하는 델리게이트
 	UPROPERTY(BlueprintAssignable, Category = "Noise")

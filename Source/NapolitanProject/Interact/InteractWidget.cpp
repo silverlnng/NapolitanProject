@@ -57,6 +57,8 @@ void UInteractWidget::SetVisibleHBox(bool value)
 void UInteractWidget::PlayHitAnim()
 {
 	PlayAnimation(HitAnim);
+	// 비네트 효과로 변경하기
+	
 }
 
 void UInteractWidget::GetSouvenirEvent(const FString& str)

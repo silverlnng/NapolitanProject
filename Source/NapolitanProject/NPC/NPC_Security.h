@@ -138,7 +138,6 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	class UAudioComponent* AudioComp;
-
 	
 };
 
