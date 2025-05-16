@@ -2,11 +2,12 @@
 
 
 #include "Picture_Zombie.h"
-
-#include "LevelSequencePlayer.h"
-#include "MovieSceneSequencePlaybackSettings.h"
+#include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
 // Sets default values
 APicture_Zombie::APicture_Zombie()
@@ -36,6 +37,10 @@ APicture_Zombie::APicture_Zombie()
 
 	SpineSocketCapsuleComp=CreateDefaultSubobject<UCapsuleComponent>(TEXT("SpineCapsuleComp"));
 	SpineSocketCapsuleComp->SetupAttachment(SkeletalMeshComp1,FName(TEXT("Spine2Socket")));
+
+	MonsterCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("MonsterCamera"));
+	MonsterCamera->SetupAttachment(SkeletalMeshComp1,FName(TEXT("HeadSocket"))); // 루트에 부착
+	MonsterCamera->bUsePawnControlRotation = false; // 플레이어 조작 방지
 }
 
 // Called when the game starts or when spawned
@@ -48,6 +53,16 @@ void APicture_Zombie::BeginPlay()
 	SkeletalMeshComp1->SetHiddenInGame(true);
 	SkeletalMeshComp1->HideBoneByName(FName(TEXT("RightUpLeg")),PBO_None);
 	SkeletalMeshComp1->HideBoneByName(FName(TEXT("LeftUpLeg")),PBO_None);
+
+
+	
+	TestPC=GetWorld()->GetFirstPlayerController<ATestPlayerController>();
+	if (TestPC)
+	{
+		MainCharacter =TestPC->GetPawn<ATestCharacter>();
+	}
+	
+	PlayerHUD =TestPC->GetHUD<APlayerHUD>();
 }
 
 // Called every frame
@@ -86,7 +101,7 @@ void APicture_Zombie::Tick(float DeltaTime)
 	{
 		//BoxComp->SetSimulatePhysics(false);
 		ZombieStart();
-	},5.0f,false);
+	},4.0f,false);
 
 	
 }
@@ -106,12 +121,6 @@ void APicture_Zombie::ZombieStart()
 	CapsuleComp->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
 	CapsuleComp->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
 
-	//SkCapsuleComp->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block);
-	//SkCapsuleComp->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Block);
-
-	OriginXRot=GetActorRotation().Roll;
-	OriginYRot=GetActorRotation().Pitch;
-	OriginZRot=GetActorRotation().Yaw;
 	
 	GetWorldTimerManager().SetTimer(
 	  CapsuleGrowTimer,
@@ -132,14 +141,6 @@ void APicture_Zombie::UpdateCapsuleGrowth()
 
 	CapsuleComp->SetCapsuleHalfHeight(NewHeight);
 
-	float NewYRot = FMath::Lerp(OriginYRot, TargetYrot, Alpha);
-	float NewXRot = FMath::Lerp(OriginXRot, TargetXrot, Alpha);
-	float NewZRot = FMath::Lerp(OriginZRot, TargetZrot, Alpha);
-	
-	//SetActorRotation(FRotator(NewYRot,NewZRot,NewXRot));
-	
-	//float NewZLoc = FMath::Lerp(0, SkCapsuleTargetLoc, Alpha);
-
 	
 	if (Alpha >= 1.0f)
 	{
@@ -153,10 +154,17 @@ void APicture_Zombie::UpdateCapsuleGrowth()
 	
 		CapsuleComp->SetSimulatePhysics(false);
 		CapsuleComp->SetCollisionResponseToAllChannels(ECR_Ignore);
-		
-		
+		InitialRotation = GetActorRotation();
+		StartPitch=InitialRotation.Pitch;
+		SetActorRotation(FRotator(TargetPitch,TargetYaw,InitialRotation.Roll));
 		// 다음함수 진행
-		UpdateRotationStart();
+		//UpdateRotationStart();
+
+		if (!bHasStartedMoving)
+		{
+			bHasStartedMoving = true;
+			StartMovingForward();
+		}
 	}
 }
 
@@ -221,10 +229,59 @@ void APicture_Zombie::StartMovingForward()
 void APicture_Zombie::MoveForwardStep()
 {
 	UE_LOG(LogTemp, Warning, TEXT("MoveForwardStep called!"));
+	
+	// === 거리 체크 먼저 ===
+	float Distance = FVector::Dist(GetActorLocation(), MainCharacter->GetActorLocation());
+	
+	if (!bHasTriggered && Distance <= TriggerDistance)
+	{
+		bHasTriggered = true;
+		// ✅ 타이머 멈춤 → 이동 정지
+		GetWorldTimerManager().ClearTimer(MoveForwardTimer);
+		MainCharacter->SetActorHiddenInGame(true);
+	
+		// 사망이벤트 만 발생시킴
+		MainCharacter->bIsBeingAttacked=true;
+		// ✅ 이벤트 발생
+		TriggerScareEvent();
+		return; // 이동도 하지 않음!
+	}
+
+	// === 이동 ===
 	FVector CurrentLocation = GetActorLocation();
 	FVector DeltaMove = MoveDirection * MoveSpeed * MoveInterval;
+	
+	SetActorLocation(GetActorLocation() + DeltaMove);
+	
+}
 
-	SetActorLocation(CurrentLocation + DeltaMove);
+void APicture_Zombie::TriggerScareEvent()
+{
+	FTimerHandle SwitchCameraTimer;
+
+	GetWorld()->GetTimerManager().SetTimer(SwitchCameraTimer,[this]()
+	{
+	},0.75f,false);
+	SwitchToMonsterCamera();
+	FTimerHandle UITimer2;
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		if (PlayerHUD )
+		{
+		
+			PlayerHUD->PlayDeadVignetteEffect();
+		}
+	},2.5f,false);
+}
+
+void APicture_Zombie::SwitchToMonsterCamera()
+{
+	if (TestPC && MonsterCamera)
+	{
+		// 카메라 전환
+		TestPC->SetViewTargetWithBlend(this, 0.01f); // 0.5초 동안 부드럽게 전환
+		
+	}
 }
 
 

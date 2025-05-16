@@ -43,6 +43,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	class UCapsuleComponent* SpineSocketCapsuleComp;
+
+	/** 몬스터 전용 카메라 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	class UCameraComponent* MonsterCamera;
 	
 	void DropEffect();
 
@@ -58,18 +62,9 @@ public:
 	float TargetHeight = 40.f;
 	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
 	float Duration = 2.0f;
-	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
-	float SkCapsuleTargetLoc = 175.f;
-	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
-	float TargetYrot=0;
-	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
-	float TargetXrot=0;
-	UPROPERTY(EditAnywhere,Category="CapsuleGrowTimer")
-	float TargetZrot=90;
-
-	float OriginXRot=0;
+	
 	float OriginYRot=0;
-	float OriginZRot=0;
+	
 	
 	float ElapsedTime = 0.0f;
 	float TimerInterval = 0.02f; // 50fps 정도
@@ -104,6 +99,19 @@ public:
 	float MoveInterval = 0.02f; // 50 FPS 정도
 
 	void MoveForwardStep();
+
+	UPROPERTY()
+	class ATestCharacter* MainCharacter;
+	class ATestPlayerController* TestPC;
+	class APlayerHUD* PlayerHUD;
+	
+	UPROPERTY(EditAnywhere,Category="MoveForwardTimer")
+	float TriggerDistance = 200.f;
+	bool bHasTriggered = false;
+
+	void TriggerScareEvent();
+	void SwitchToMonsterCamera();
+	
 };
 
 

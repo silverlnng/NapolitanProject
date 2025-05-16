@@ -79,14 +79,14 @@ public:
 	ATestCharacter* MainCha;
 
 	UPROPERTY(EditAnywhere,Category=Speed)
-	float PatrolSpeed;
+	float PatrolSpeed=300.f;
 	UPROPERTY(EditAnywhere,Category=Speed)
-	float ChaseSpeed;
+	float ChaseSpeed=500.f;
+	UPROPERTY(EditAnywhere,Category=Speed)
+	float TurnOffSpeed=400.f;
 	
 	UFUNCTION()
 	void OnSeePawn(APawn *OtherPawn);
-
-
 	
 	void TickChasePlayer(const float& DeltaTime);
 	void TickPatrol(const float& DeltaTime);
