@@ -213,9 +213,9 @@ void AChaseStatue::ResultEvent(int32 result)
 			
 			SpawnItems(); //유품 스폰 및 회수
 			
-			TestPC->StartEndNPCDialougue(true);
 			State=2; // 다음 state으로 넘어간다음
 			TestPC->SetNPCDialougueText(0); // npc 대본에서 다시 시작
+			TestPC->StartEndNPCDialougue(true);
 			
 		}
 	}
@@ -224,8 +224,8 @@ void AChaseStatue::ResultEvent(int32 result)
 		if(0==result)
 		{
 			State=3; // 다음 state으로 넘어간다음
-			TestPC->StartEndNPCDialougue(true);
 			TestPC->SetNPCDialougueText(0); // npc 대본에서 다시 시작
+			TestPC->StartEndNPCDialougue(true);
 		}
 	}
 	else if(3==State)

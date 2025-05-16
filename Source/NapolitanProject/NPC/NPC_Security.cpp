@@ -341,7 +341,7 @@ void ANPC_Security::OnMyAttackMiddle()
 {
 	if (!Target){return;}
 	float dist = GetDistanceTo(Target);
-	if ( dist <= AttackDistance) {
+	if ( dist <= DamagedDistance) {
 		// 플레이어에게 데미지를 입히고싶다.
 		MainCharacter->DamagedToSecurity();
 	}
@@ -359,7 +359,7 @@ void ANPC_Security::OnMyAttackEnd()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString(TEXT("OnMyAttackEnd")));
 	if (!Target){return;}
 	float dist = GetDistanceTo(Target);
-	if ( dist <= AttackDistance) {
+	if ( dist <= DamagedDistance) {
 
 		//다시 공격 애니메이션을 실행
 		// 플레이어에게 데미지를 입히고싶다.

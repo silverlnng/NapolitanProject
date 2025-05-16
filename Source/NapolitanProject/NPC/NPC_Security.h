@@ -84,7 +84,11 @@ public:
 	float ChaseSpeed=500.f;
 	UPROPERTY(EditAnywhere,Category=Speed)
 	float TurnOffSpeed=400.f;
-	
+	UPROPERTY(EditAnywhere,Category=Attack)
+	float DamagedDistance = 240;
+	// 공격 가능거리
+	UPROPERTY(EditAnywhere,Category=Attack)
+	float AttackDistance = 200;
 	UFUNCTION()
 	void OnSeePawn(APawn *OtherPawn);
 	
@@ -101,8 +105,7 @@ public:
 	FVector PatrolPoint;
 	float PatrolPointRadius = 700;
 
-	// 공격 가능거리
-	float AttackDistance = 150;
+	
 
 	// 내위치에서 반경 5미터
 	bool SetPatrolPoint(FVector origin, float radius, FVector& dest);
