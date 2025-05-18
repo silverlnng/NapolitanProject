@@ -118,6 +118,91 @@ void ANPC_LeeSeo::StartMovingForward(float Duration, float Speed)
 	MoveSpeed = Speed;
 }
 
+void ANPC_LeeSeo::ExecuteJumpScareSequence()
+{
+	// 1초 후: 일시적으로 안보이게 하기
+	FTimerHandle Step1TimerHandle;
+	GetWorldTimerManager().SetTimer(Step1TimerHandle, this, &ANPC_LeeSeo::HideMesh, 2.5f, false);
+}
+
+void ANPC_LeeSeo::HideMesh()
+{
+	UE_LOG(LogTemp, Warning, TEXT("HideMesh"));
+	GetMesh()->SetHiddenInGame(true);
+    
+	// 2초 후: 다시 보이게 하고 달리는 애니메이션
+	FTimerHandle Step2TimerHandle;
+	GetWorldTimerManager().SetTimer(Step2TimerHandle, this, &ANPC_LeeSeo::RunAnim, 2.0f, false);
+}
+
+void ANPC_LeeSeo::RunAnim()
+{
+	UE_LOG(LogTemp, Warning, TEXT("RunAnim"));
+	GetMesh()->SetHiddenInGame(false);
+
+	// Yaw(Z축)에 20도 더하기
+	AddActorLocalRotation(FRotator(0.0f, 20.0f, 0.0f));
+
+	// 지속적인 이동 시작 (2초 동안)
+	StartMovingForward(2.0f, 1.0f);
+    
+	//앞으로 달리는 애니메이션 재생 : 칼 등의 요소 들고 달리기
+	if(Anim)
+	{
+		Anim->PlayJumpSkareMontage2();
+	}
+    
+	// 1초 후: 카메라 전환 및 공격 애니메이션
+	FTimerHandle Step3TimerHandle;
+	GetWorldTimerManager().SetTimer(Step3TimerHandle, this, &ANPC_LeeSeo::AttackScare, 2.0f, false);
+}
+
+void ANPC_LeeSeo::AttackScare()
+{
+
+	UE_LOG(LogTemp, Warning, TEXT("AttackScare"));
+	//점프 스케어 카메라 전환
+	SwitchToMonsterCamera();
+    
+	// 2.0초 후: 사망 UI 표시
+	FTimerHandle Step4TimerHandle;
+	GetWorldTimerManager().SetTimer(Step4TimerHandle, this, &ANPC_LeeSeo::CreateDieUI, 2.0f, false);
+}
+
+void ANPC_LeeSeo::CreateDieUI()
+{
+	//칼로 찌르는 몽타주 재생
+	if(Anim)
+	{
+		Anim->PlayJumpSkareMontage3();
+	}
+	
+	FTimerHandle UITimer2;
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		if (PlayerHUD )
+		{
+		
+			PlayerHUD->PlayDeadVignetteEffect();
+			UE_LOG(LogTemp, Warning, TEXT("CreateDieUI1"));
+		}
+	},2.5f,false);
+	
+	//시간 지연 주고 사망 UI 나오도록
+	FTimerHandle UITimer;
+	GetWorldTimerManager().SetTimer(UITimer, [this]()
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CreateDieUI2"));
+		MainCharacter->SetPlayerState(EPlayerState::UI);
+
+		if(PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
+		{
+			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
+		}
+	},2.0f,false); //사망
+}
+
 
 void ANPC_LeeSeo::SpawnItem()
 {
@@ -196,7 +281,6 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 				//천천히 돌면서 달림
 				if(Anim)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("Playing jump scare montage"));
 					Anim->PlayJumpSkareMontage1();
 				}
 
@@ -250,7 +334,7 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 		else if(1 == result)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Processing result 1"));
-			//1-2. 그림을 찢어선 안돼 => 맵에서 갑자기 소름 돋는 노래 재생. => 사망
+			//1-2. 그림을 찢어선 안돼 => 낄낄 웃는 소리 재생. => 사망
 			UGameplayStatics::PlaySound2D(GetWorld(), LSJump);
 
 			TestPC->StartEndNPCDialougue(false); //결과 메세지 생성
@@ -260,61 +344,19 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 			//전구가 깜빡거림
 
 			//깜빡거림과 동시에 이서가 돌아봄
-			
-			//이서 1초 사라졌다가 달려오는 점프 스케어 발동
-			FTimerHandle TimeHandle;
-			GetWorldTimerManager().SetTimer(TimeHandle, [this]()
+			if(Anim)
 			{
-				//일시적으로 안보이게 하기
-				GetMesh()->SetHiddenInGame(false);
-				GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+				Anim->PlayJumpSkareMontage1();
+			}
 
-				// 2초 후에 다음 단계 실행
-				FTimerHandle JumpSquareTimerHandle2;
-				GetWorldTimerManager().SetTimer(JumpSquareTimerHandle2, [this]()
-				{
-					GetMesh()->SetHiddenInGame(true);
-					
-					//앞으로 달리는 애니메이션 재생 : 칼 등의 요소 들고 달리기
-					if(Anim)
-					{
-						Anim->PlayJumpSkareMontage1();
-					}
-					
-					//점프 스케어 카메라 전환
-					SwitchToMonsterCamera();
-
-					//사망 엔딩 UI
-					FTimerHandle UITimer2;
-					GetWorldTimerManager().SetTimer(UITimer2, [this]()
-					{
-						if(PlayerHUD)
-						{
-							PlayerHUD->PlayDeadVignetteEffect();
-						}
-					},2.5f, false);
-
-					//시간 지연 주고 사망 UI 나오도록
-					FTimerHandle UITimer;
-					GetWorldTimerManager().SetTimer(UITimer, [this]()
-					{
-						MainCharacter->SetPlayerState(EPlayerState::UI);
-
-						if(PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
-						{
-							PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-							PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
-						}
-					},3.0f,false);
-					
-					
-				}, 2.0f, false); //메쉬보이고 죽이러 애니메이션 달려옴
-			}, 2.0f, false); //메쉬 일시적으로 안보이게 하기
+			//모든 타이머를 순차적으로 실행하는 함수 구현
+			ExecuteJumpScareSequence();
+			
 		}
 		else if(2 == result)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Processing result 2"));
-			//여자를 달래본다. "괜찮으십니까?" => 사망
+			//소녀를 달래본다. "괜찮으십니까?" => 사망
 
 			
 		}
