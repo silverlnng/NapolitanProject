@@ -46,7 +46,7 @@ ATestCharacter::ATestCharacter()
 
 	//충돌설정용 스프링암
 	SpringArmComp2 = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp2"));
-	SpringArmComp2->SetupAttachment(GetMesh(),"head");
+	SpringArmComp2->SetupAttachment(GetMesh(),FName(TEXT("head")));
 	
 	// Create a CameraComponent	
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("FirstPersonCamera"));
@@ -268,6 +268,7 @@ void ATestCharacter::MyJumpCompeleted()
 
 void ATestCharacter::Look(const FInputActionValue& Value)
 {
+	
 	// input is a Vector2D
 	FVector2D LookAxisVector = Value.Get<FVector2D>()*LookSpeed;
 
@@ -757,5 +758,14 @@ void ATestCharacter::StopSound()
 	if (AudioComp->IsPlaying())
 	{
 		AudioComp->Stop();
+	}
+}
+
+void ATestCharacter::PlayGetUpAnimMontage()
+{
+	if (GetUp)
+	{
+		GetMesh()->PlayAnimation(GetUp,false);
+		//PlayAnimMontage(GetUp);
 	}
 }

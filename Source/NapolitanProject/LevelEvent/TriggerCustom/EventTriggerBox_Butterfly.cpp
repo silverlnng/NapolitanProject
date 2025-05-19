@@ -36,6 +36,9 @@ void AEventTriggerBox_Butterfly::BeginOverlap(UPrimitiveComponent* OverlappedCom
 		bHasTriggered = true;
 
 		// 이때부터 복도의 좀비 캐릭터 실행되도록 하기
-		Picture_Zombie->DropEffect();
+		if (Picture_Zombie)
+		{
+			Picture_Zombie->DropEffect();
+		}
 	}	
 }

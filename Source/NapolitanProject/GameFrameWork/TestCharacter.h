@@ -280,6 +280,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere) // 저장한 장소
 	FTransform SaveTransform;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UAnimMontage* GetUp;
+	
+	UFUNCTION()
+	void PlayGetUpAnimMontage();
 	
 };
 	
