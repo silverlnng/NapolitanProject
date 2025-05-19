@@ -129,6 +129,9 @@ void ANPC_LeeSeo::HideMesh()
 {
 	UE_LOG(LogTemp, Warning, TEXT("HideMesh"));
 	GetMesh()->SetHiddenInGame(true);
+
+	// Yaw(Z축)에 20도 더하기
+	AddActorLocalRotation(FRotator(0.0f, 20.0f, 0.0f));
     
 	// 2초 후: 다시 보이게 하고 달리는 애니메이션
 	FTimerHandle Step2TimerHandle;
@@ -137,11 +140,11 @@ void ANPC_LeeSeo::HideMesh()
 
 void ANPC_LeeSeo::RunAnim()
 {
+	//맵에 설치되어있던 BP_BoxCollision을 찾아서 제거
+	RemoveBPBoxCollision();
+	
 	UE_LOG(LogTemp, Warning, TEXT("RunAnim"));
 	GetMesh()->SetHiddenInGame(false);
-
-	// Yaw(Z축)에 20도 더하기
-	AddActorLocalRotation(FRotator(0.0f, 20.0f, 0.0f));
 
 	// 지속적인 이동 시작 (2초 동안)
 	StartMovingForward(2.0f, 1.0f);
@@ -160,22 +163,29 @@ void ANPC_LeeSeo::RunAnim()
 void ANPC_LeeSeo::AttackScare()
 {
 
-	UE_LOG(LogTemp, Warning, TEXT("AttackScare"));
-	//점프 스케어 카메라 전환
-	SwitchToMonsterCamera();
-    
-	// 2.0초 후: 사망 UI 표시
-	FTimerHandle Step4TimerHandle;
-	GetWorldTimerManager().SetTimer(Step4TimerHandle, this, &ANPC_LeeSeo::CreateDieUI, 2.0f, false);
-}
-
-void ANPC_LeeSeo::CreateDieUI()
-{
 	//칼로 찌르는 몽타주 재생
 	if(Anim)
 	{
 		Anim->PlayJumpSkareMontage3();
 	}
+
+	UE_LOG(LogTemp, Warning, TEXT("AttackScare"));
+	
+
+	FTimerHandle CameraTimer;
+	GetWorld()->GetTimerManager().SetTimer(CameraTimer,[this]()
+	{
+		//점프 스케어 카메라 전환
+		SwitchToMonsterCamera();
+	},0.75f,false);
+    
+	// 2.0초 후: 사망 UI 표시
+	FTimerHandle Step4TimerHandle;
+	GetWorldTimerManager().SetTimer(Step4TimerHandle, this, &ANPC_LeeSeo::CreateDieUI, 0.75f, false);
+}
+
+void ANPC_LeeSeo::CreateDieUI()
+{
 	
 	FTimerHandle UITimer2;
 	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
