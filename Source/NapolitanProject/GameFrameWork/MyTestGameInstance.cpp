@@ -22,10 +22,10 @@ void UMyTestGameInstance::Init()
 	Super::Init();
 
 	// 로그 막아두기 
-	/*if (GEngine)
+	if (GEngine)
 	{
 		GEngine->bEnableOnScreenDebugMessages = false;
-	}*/
+	}
 	
 	DT_itemData = LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/DT/DT_Item.DT_Item'"));
 	

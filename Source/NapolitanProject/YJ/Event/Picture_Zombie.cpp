@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
@@ -263,6 +264,7 @@ void APicture_Zombie::TriggerScareEvent()
 	{
 	},0.75f,false);
 	SwitchToMonsterCamera();
+	
 	FTimerHandle UITimer2;
 	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
 	{
@@ -272,6 +274,12 @@ void APicture_Zombie::TriggerScareEvent()
 			PlayerHUD->PlayDeadVignetteEffect();
 		}
 	},2.5f,false);
+
+	FTimerHandle UITimer3;
+	GetWorld()->GetTimerManager().SetTimer(UITimer3,[this]()
+	{
+		Restart();
+	},4.0f,false);
 }
 
 void APicture_Zombie::SwitchToMonsterCamera()
@@ -282,6 +290,57 @@ void APicture_Zombie::SwitchToMonsterCamera()
 		TestPC->SetViewTargetWithBlend(this, 0.01f); // 0.5초 동안 부드럽게 전환
 		
 	}
+}
+
+void APicture_Zombie::Restart()
+{
+	// 카메라 다시 플레이어 쪽으로 전환 
+	MainCharacter->SetActorHiddenInGame(false);
+	
+	if (TestPC && MonsterCamera)
+	{
+		// 카메라 전환
+		MainCharacter->ChageCameracomp->Deactivate();
+		MainCharacter->CameraComponent->bUsePawnControlRotation = false;
+		TestPC->SetViewTargetWithBlend(MainCharacter, 0.01f); // 0.5초 동안 부드럽게 전환
+		MainCharacter->SpringArmComp2->TickComponent(0.f, LEVELTICK_All, nullptr);
+		MainCharacter->CameraComponent->UpdateComponentToWorld();
+	}
+	// 안보이도록 숨기기
+	SetActorHiddenInGame(true);
+	
+	// 카메라가 바닥에 쓰러진듯 있다가 다시 플레이어위치쪽으로 오도록 만들기
+	MainCharacter->PlayGetUpAnimMontage();
+	MainCharacter->SpringArmComp2->UpdateComponentToWorld();
+	MainCharacter->CameraComponent->UpdateComponentToWorld();
+	
+	FTimerHandle UITimer3;
+	GetWorld()->GetTimerManager().SetTimer(UITimer3,[this]()
+	{
+		// 비네트 효과 사라지고
+		if (PlayerHUD )
+		{
+			PlayerHUD->PlayLevelLoadVignetteEffect();
+		}
+	},1.0f,false);
+	
+	
+	// 사망이벤트 만 발생시킴
+	
+
+	
+	FTimerHandle UITimer4;
+	GetWorld()->GetTimerManager().SetTimer(UITimer4,[this]()
+	{
+		MainCharacter->bIsBeingAttacked=false;
+		MainCharacter->CameraComponent->bUsePawnControlRotation = true;
+	},2.0f,false);
+	
+	FTimerHandle UITimer5;
+	GetWorld()->GetTimerManager().SetTimer(UITimer5,[this]()
+	{
+		this->Destroy();
+	},8.0f,false);
 }
 
 
