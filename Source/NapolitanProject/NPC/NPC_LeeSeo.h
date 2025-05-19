@@ -52,7 +52,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	class USoundBase* LSSound;
 
-	//이서 점프스케어 시 재생되는 사운드
+	//이서 점프스케어 시 낄낄 웃는 사운드
 	UPROPERTY(EditAnywhere)
 	class USoundBase* LSJump;
 
@@ -105,6 +105,24 @@ public:
 
 	//이동 시작 함수
 	void StartMovingForward(float Duration, float Speed);
+
+	//점프스케어 함수들
+public:
+	
+	//모든 타이머를 순차적으로 실행하는 함수 구현
+	void ExecuteJumpScareSequence();
+
+	//캐릭터 숨기는 함수
+	void HideMesh();
+
+	//달려오는 애니메이션
+	void RunAnim();
+
+	//카메라 전환 및 공격 애니메이션
+	void AttackScare();
+
+	//사망 UI 표시 함수
+	void CreateDieUI();
 
 	
 };
