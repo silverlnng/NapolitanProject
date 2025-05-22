@@ -124,5 +124,7 @@ public:
 	//사망 UI 표시 함수
 	void CreateDieUI();
 
+	void SetActorViewTarget(UCameraComponent* TargetCamera);
+
 	
 };

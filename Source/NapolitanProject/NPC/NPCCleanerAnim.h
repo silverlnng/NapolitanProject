@@ -26,7 +26,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = FSM)
 	CleanerState animState;
 
-	//BDHammerThrow 몽타주
+	//몽타주
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
 	class UAnimMontage* CleaningMontage;
 
