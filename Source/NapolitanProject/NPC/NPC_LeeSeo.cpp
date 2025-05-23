@@ -28,6 +28,15 @@ ANPC_LeeSeo::ANPC_LeeSeo()
 	MonsterCamera->SetupAttachment(GetMesh(),FName(TEXT("HeadSocket"))); // 루트에 부착
 	MonsterCamera->bUsePawnControlRotation = false; // 플레이어 조작 방지
 
+	Knife = CreateDefaultSubobject<USceneComponent>(TEXT("Knife"));
+	Knife->SetupAttachment(GetMesh(),FName(TEXT("KnifeSocket")));
+	
+	Knifeblade = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Knifeblade"));
+	Knifeblade->SetupAttachment(Knife);
+	KnifeHandle =  CreateDefaultSubobject<UStaticMeshComponent>(TEXT("KnifeHandle"));
+	KnifeHandle->SetupAttachment(Knife);
+	
+	
 }
 
 // Called when the game starts or when spawned
@@ -41,6 +50,8 @@ void ANPC_LeeSeo::BeginPlay()
 	}
 
 	Anim = Cast<UNPC_LeeSeoAnimInstance>(GetMesh()->GetAnimInstance());
+
+	HideKnife(true);
 	
 }
 
@@ -138,7 +149,7 @@ void ANPC_LeeSeo::SwitchToMonsterCamera()
 			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
 			PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
 		}
-	},2.5f,false); //사망
+	},2.2f,false); //사망
 	
 }
 
@@ -161,6 +172,9 @@ void ANPC_LeeSeo::HideMesh()
 	UE_LOG(LogTemp, Warning, TEXT("HideMesh"));
 	GetMesh()->SetHiddenInGame(true);
 
+	// 순차적으로 불이 꺼지는 효과
+	LightControlReference->StartLightOffSequence(1.0f);
+
 	// Yaw(Z축)에 20도 더하기
 	AddActorLocalRotation(FRotator(0.0f, 20.0f, 0.0f));
     
@@ -175,10 +189,13 @@ void ANPC_LeeSeo::RunAnim()
 	RemoveBPBoxCollision();
 	
 	UE_LOG(LogTemp, Warning, TEXT("RunAnim"));
+	
 	GetMesh()->SetHiddenInGame(false);
 
 	// 지속적인 이동 시작 (2초 동안)
 	StartMovingForward(0.5f, 1.0f);
+
+	HideKnife(false);
     
 	//앞으로 달리는 애니메이션 재생 : 칼 등의 요소 들고 달리기
 	if(Anim)
@@ -259,6 +276,12 @@ void ANPC_LeeSeo::SetActorViewTarget(UCameraComponent* TargetCamera)
 		// MonsterCamera만 활성화
 		TargetCamera->SetActive(true);
 	}
+}
+
+void ANPC_LeeSeo::HideKnife(bool IsSee)
+{
+	Knifeblade->SetHiddenInGame(IsSee);
+	KnifeHandle->SetHiddenInGame(IsSee);
 }
 
 
