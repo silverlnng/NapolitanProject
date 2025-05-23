@@ -303,6 +303,8 @@ int32 ATestPlayerController::SetNPCResultMaxSize(int32 selectedAnswer)
 		
 	int32 FindKey =(npcID*1000)+(npcState*100)+selectedAnswer*10;
 	
+	UE_LOG(LogTemp,Warning,TEXT("%s NPCResult FindKey :%d"),*CALLINFO,FindKey);
+	
 	for (int i=FindKey ; i<(FindKey+10); i++)
 	{
 		if (GI->NPCResultMap.Contains(i))
