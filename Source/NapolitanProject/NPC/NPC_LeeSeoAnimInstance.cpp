@@ -42,3 +42,8 @@ void UNPC_LeeSeoAnimInstance::AnimNotify_SwitchCamera()
 	//카메라 바꾸는 노티파이
 	LeeSeo->SwitchToMonsterCamera();
 }
+
+void UNPC_LeeSeoAnimInstance::AnimNotify_KnifeSound()
+{
+	LeeSeo->KnifeSound(); //칼로 찌르는 소리 호출
+}

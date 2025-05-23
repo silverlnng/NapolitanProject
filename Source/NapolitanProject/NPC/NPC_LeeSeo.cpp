@@ -131,7 +131,6 @@ void ANPC_LeeSeo::SwitchToMonsterCamera()
 	{
 		if (PlayerHUD )
 		{
-		
 			PlayerHUD->PlayDeadVignetteEffect();
 			UE_LOG(LogTemp, Warning, TEXT("CreateDieUI1"));
 		}
@@ -223,6 +222,7 @@ void ANPC_LeeSeo::AttackScare()
 	{
 		//점프 스케어 카메라 전환
 		SwitchToMonsterCamera();
+		//UGameplayStatics::PlaySound2D(GetWorld(), KnifeStabbingSound);
 	},0.75f,false);
 	
     
@@ -332,6 +332,11 @@ void ANPC_LeeSeo::RemoveBPBoxCollision()
 	
 }
 
+void ANPC_LeeSeo::KnifeSound()
+{
+	UGameplayStatics::PlaySound2D(GetWorld(), KnifeStabbingSound);
+}
+
 
 void ANPC_LeeSeo::ResultEvent(int32 result)
 {
@@ -416,7 +421,7 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Processing result 1"));
 			//1-2. 그림을 찢어선 안돼 => 낄낄 웃는 소리 재생. => 사망
-			UGameplayStatics::PlaySound2D(GetWorld(), LSJump);
+			UGameplayStatics::PlaySound2D(GetWorld(), LSJumpSkareSound);
 
 			TestPC->StartEndNPCDialougue(false); //결과 메세지 생성
 
@@ -447,7 +452,7 @@ void ANPC_LeeSeo::ResultEvent(int32 result)
 			//도망친다 여기로 변경
 
 			//1-3. 도망친다 => 맵에서 갑자기 소름 돋는 노래 재생.
-			UGameplayStatics::PlaySound2D(GetWorld(), LSJump);
+			UGameplayStatics::PlaySound2D(GetWorld(), LSJumpSkareSound);
 			
 			//전구가 깜빡거림
 

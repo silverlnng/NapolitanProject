@@ -54,7 +54,11 @@ public:
 
 	//이서 점프스케어 시 낄낄 웃는 사운드
 	UPROPERTY(EditAnywhere)
-	class USoundBase* LSJump;
+	class USoundBase* LSJumpSkareSound;
+
+	//칼에 찔리는 소리
+	UPROPERTY(EditAnywhere)
+	class USoundBase* KnifeStabbingSound;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<ASouvenirActor> SouvenirClass;
@@ -73,6 +77,9 @@ public:
 
 	//BoxCollision 제거
 	void RemoveBPBoxCollision();
+
+	//노래 재생
+	void KnifeSound();
 
 	//사망 이벤트 생성
 public:
