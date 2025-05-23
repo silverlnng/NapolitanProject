@@ -39,7 +39,8 @@ public:
 	UFUNCTION()
 	void PlayJumpSkareMontage3();
 
-	
+	UFUNCTION()
+	void AnimNotify_SwitchCamera();
 	
 	
 };

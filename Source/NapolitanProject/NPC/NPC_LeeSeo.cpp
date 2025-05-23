@@ -95,8 +95,14 @@ void ANPC_LeeSeo::SwitchToMonsterCamera()
 	//이서의 점프스케어 카메라로 변경되는 함수
 	if(TestPC && MonsterCamera)
 	{
-		//카메라 전환
-		TestPC->SetViewTargetWithBlend(this, 0.1f); // 0.5초 동안 부드럽게 전환
+		// 1. 먼저 이 액터를 ViewTarget으로 설정
+		TestPC->SetViewTargetWithBlend(this, 0.01f);
+            
+		// 2. 그 다음 액터의 활성 카메라를 MonsterCamera로 변경
+		SetActorViewTarget(MonsterCamera);
+
+		//3. 플레이어 메쉬 숨기기
+		MainCharacter->GetMesh()->SetHiddenInGame(true);
 
 		// 카메라 흔들기 실행
 		if (TestPC->PlayerCameraManager)
@@ -108,6 +114,31 @@ void ANPC_LeeSeo::SwitchToMonsterCamera()
 			}
 		}
 	}
+
+	FTimerHandle UITimer2;
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		if (PlayerHUD )
+		{
+		
+			PlayerHUD->PlayDeadVignetteEffect();
+			UE_LOG(LogTemp, Warning, TEXT("CreateDieUI1"));
+		}
+	},1.5f,false);
+	
+	//시간 지연 주고 사망 UI 나오도록
+	FTimerHandle UITimer;
+	GetWorldTimerManager().SetTimer(UITimer, [this]()
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CreateDieUI2"));
+		MainCharacter->SetPlayerState(EPlayerState::UI);
+
+		if(PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
+		{
+			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
+		}
+	},2.5f,false); //사망
 	
 }
 
@@ -147,7 +178,7 @@ void ANPC_LeeSeo::RunAnim()
 	GetMesh()->SetHiddenInGame(false);
 
 	// 지속적인 이동 시작 (2초 동안)
-	StartMovingForward(2.0f, 1.0f);
+	StartMovingForward(0.5f, 1.0f);
     
 	//앞으로 달리는 애니메이션 재생 : 칼 등의 요소 들고 달리기
 	if(Anim)
@@ -157,7 +188,7 @@ void ANPC_LeeSeo::RunAnim()
     
 	// 1초 후: 카메라 전환 및 공격 애니메이션
 	FTimerHandle Step3TimerHandle;
-	GetWorldTimerManager().SetTimer(Step3TimerHandle, this, &ANPC_LeeSeo::AttackScare, 2.0f, false);
+	GetWorldTimerManager().SetTimer(Step3TimerHandle, this, &ANPC_LeeSeo::AttackScare, 0.5f, false);
 }
 
 void ANPC_LeeSeo::AttackScare()
@@ -167,10 +198,8 @@ void ANPC_LeeSeo::AttackScare()
 	if(Anim)
 	{
 		Anim->PlayJumpSkareMontage3();
+		UE_LOG(LogTemp, Warning, TEXT("PlayJumpSkareMontage3"));
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("AttackScare"));
-	
 
 	FTimerHandle CameraTimer;
 	GetWorld()->GetTimerManager().SetTimer(CameraTimer,[this]()
@@ -178,10 +207,11 @@ void ANPC_LeeSeo::AttackScare()
 		//점프 스케어 카메라 전환
 		SwitchToMonsterCamera();
 	},0.75f,false);
+	
     
 	// 2.0초 후: 사망 UI 표시
-	FTimerHandle Step4TimerHandle;
-	GetWorldTimerManager().SetTimer(Step4TimerHandle, this, &ANPC_LeeSeo::CreateDieUI, 0.75f, false);
+	//FTimerHandle Step4TimerHandle;
+	//GetWorldTimerManager().SetTimer(Step4TimerHandle, this, &ANPC_LeeSeo::CreateDieUI, 2.0f, false);
 }
 
 void ANPC_LeeSeo::CreateDieUI()
@@ -210,7 +240,25 @@ void ANPC_LeeSeo::CreateDieUI()
 			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
 			PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
 		}
-	},2.0f,false); //사망
+	},3.5f,false); //사망
+}
+
+void ANPC_LeeSeo::SetActorViewTarget(UCameraComponent* TargetCamera)
+{
+	if (TargetCamera)
+	{
+		// 다른 카메라들 비활성화
+		TArray<UCameraComponent*> CameraComponents;
+		GetComponents<UCameraComponent>(CameraComponents);
+        
+		for (UCameraComponent* Camera : CameraComponents)
+		{
+			Camera->SetActive(false);
+		}
+        
+		// MonsterCamera만 활성화
+		TargetCamera->SetActive(true);
+	}
 }
 
 

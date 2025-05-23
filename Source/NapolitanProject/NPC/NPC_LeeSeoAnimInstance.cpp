@@ -31,8 +31,14 @@ void UNPC_LeeSeoAnimInstance::PlayJumpSkareMontage2()
 
 void UNPC_LeeSeoAnimInstance::PlayJumpSkareMontage3()
 {
-	if (!Montage_IsPlaying(LeeSeo_JumpSkareMontage2))
+	if (!Montage_IsPlaying(LeeSeo_JumpSkareMontage3))
 	{
 		Montage_Play(LeeSeo_JumpSkareMontage3); //몽타주 플레이
 	}
+}
+
+void UNPC_LeeSeoAnimInstance::AnimNotify_SwitchCamera()
+{
+	//카메라 바꾸는 노티파이
+	LeeSeo->SwitchToMonsterCamera();
 }
