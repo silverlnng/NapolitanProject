@@ -28,8 +28,8 @@ ANPC_Youngsoo::ANPC_Youngsoo()
 	Scarf = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("scarf"));
 	//ConstructorHelpers::FObjectFinder<UStaticMesh>(TEXT("/Script/Engine.StaticMesh'/Game/Bada/Asset/Youngsoo/Scarf.Scarf'"));
 	
-	Scarf->SetupAttachment(GetMesh());
-	Scarf->SetRelativeLocationAndRotation(FVector(4.f, 1.f,110.f),FRotator(90, 0, 110));
+	Scarf->SetupAttachment(GetMesh(), FName(TEXT("neck_01Socket")));
+	//Scarf->SetRelativeLocationAndRotation(FVector(4.f, 1.f,110.f),FRotator(90, 0, 110));
 	//(X=2.000000,Y=1.000000,Z=1.500000)
 }
 
@@ -39,10 +39,10 @@ void ANPC_Youngsoo::BeginPlay()
 	Super::BeginPlay();
 
 	//시작 시 메쉬 숨김
-	//GetMesh()->SetHiddenInGame(true);
+	GetMesh()->SetHiddenInGame(false);
 	//GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("NPC"));
-	Scarf->SetHiddenInGame(true);
+	Scarf->SetHiddenInGame(false);
 
 	// playerCharacter 초기화
 	APlayerController* PC = GetWorld()->GetFirstPlayerController();

@@ -54,7 +54,11 @@ public:
 
 	//이서 점프스케어 시 낄낄 웃는 사운드
 	UPROPERTY(EditAnywhere)
-	class USoundBase* LSJump;
+	class USoundBase* LSJumpSkareSound;
+
+	//칼에 찔리는 소리
+	UPROPERTY(EditAnywhere)
+	class USoundBase* KnifeStabbingSound;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn Items")
 	TSubclassOf<ASouvenirActor> SouvenirClass;
@@ -74,10 +78,11 @@ public:
 	//BoxCollision 제거
 	void RemoveBPBoxCollision();
 
+	//노래 재생
+	void KnifeSound();
+
 	//사망 이벤트 생성
 public:
-	//플레이어의 카메라를 몬스터 카메라로 전환하는 함수 
-	void SwitchToMonsterCamera();
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UCameraShakeBase> DeathCameraShakeClass; //카메라 쉐이크
@@ -94,6 +99,15 @@ public:
 	UPROPERTY()
 	class ASequentialLightController* LightControlReference;
 
+	UPROPERTY(EditDefaultsOnly)
+	class UStaticMeshComponent* KnifeHandle;
+
+	UPROPERTY(EditDefaultsOnly)
+	class UStaticMeshComponent* Knifeblade;
+
+	UPROPERTY(EditDefaultsOnly)
+	class USceneComponent* Knife;
+
 	//사망용 스크립트
 	UPROPERTY(EditAnywhere)
 	FString description=FString(TEXT("금발 소녀에게 사망했다"));
@@ -108,6 +122,9 @@ public:
 
 	//점프스케어 함수들
 public:
+
+	//플레이어의 카메라를 몬스터 카메라로 전환하는 함수 
+	void SwitchToMonsterCamera();
 	
 	//모든 타이머를 순차적으로 실행하는 함수 구현
 	void ExecuteJumpScareSequence();
@@ -126,5 +143,8 @@ public:
 
 	void SetActorViewTarget(UCameraComponent* TargetCamera);
 
+	void HideKnife(bool IsSee);
+	
+	
 	
 };

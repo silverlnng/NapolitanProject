@@ -41,6 +41,9 @@ public:
 
 	UFUNCTION()
 	void AnimNotify_SwitchCamera();
+
+	UFUNCTION()
+	void AnimNotify_KnifeSound();
 	
 	
 };
