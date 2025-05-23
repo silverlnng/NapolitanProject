@@ -39,9 +39,9 @@ void ANPC_Youngsoo::BeginPlay()
 	Super::BeginPlay();
 
 	//시작 시 메쉬 숨김
-	GetMesh()->SetHiddenInGame(true);
-	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
-	//GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("NPC"));
+	//GetMesh()->SetHiddenInGame(true);
+	//GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("NPC"));
 	Scarf->SetHiddenInGame(true);
 
 	// playerCharacter 초기화
@@ -202,7 +202,7 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 		else
 		{
 			//"위대한 빨간 등대를 부수자" 선택 후
-			
+			MainCharacter->GetMesh()->SetHiddenInGame(true);
 			TestPC->CameraViewChangePlayer();
 			//위대한 빨간 등대를 부수자 -> 카메라 시점 변경 및 플레이어 얼굴을 클로즈 업
 			MainCharacter->AdjustCameraPosition(); //시점 변경
