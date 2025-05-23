@@ -353,12 +353,13 @@ void UMyTestGameInstance::RestoreAttachedItems()
 			NewItem->AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
 			
 			NewItem->SetActorHiddenInGame(true); // 인벤에 넣을 아이템은 일단 안보이도록
-			
+			UE_LOG(LogTemp,Warning,TEXT("%s Load ItemID :%d"),*CALLINFO,NewItem->ItemID);
 			if (PlayerHUD)
 			{
 				if (PlayerHUD->InventoryUI->InvenSlots.Contains(NewItem->ItemID))
 				{
 					PlayerHUD->InventoryUI->InvenSlots[NewItem->ItemID]->MyItem=NewItem;
+					PlayerHUD->InventoryUI->InvenSlots[NewItem->ItemID]->OnItemAcquired();
 				}
 				if (NewItem->ItemID==3) // 거미일때만
 				{

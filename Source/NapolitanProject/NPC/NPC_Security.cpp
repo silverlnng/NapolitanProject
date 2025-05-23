@@ -97,14 +97,15 @@ void ANPC_Security::Tick(float DeltaSeconds)
 	
 	if (SecurityState==ESecurityState::Stop)
 	{
+		MainCharacter->StopSound();
 		EnemyAI->StopMovement();
 		TickAllStop(DeltaSeconds);
 		return;
 	}
 
 	// 지금 자기상태 출력하도록 만들기
-	FString myState = UEnum::GetValueAsString(SecurityState);
-	DrawDebugString(GetWorld() ,GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
+	//FString myState = UEnum::GetValueAsString(SecurityState);
+	//DrawDebugString(GetWorld() ,GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
 	
 	// 캐릭터와의 거리도 계산  ==> 일정거리 이상 멀어지면 다시 가까운 라이트를 켜야함
 	AllLightTurnOff=true;
