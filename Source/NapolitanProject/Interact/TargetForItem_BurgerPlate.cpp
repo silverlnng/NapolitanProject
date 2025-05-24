@@ -111,10 +111,10 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 			GI->SavedItems.Remove(curItem->GetClass());
 		}
 		
-		GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
+		/*GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
 		{
 			curItem->Remove();
-		},0.5f,false);
+		},0.5f,false);*/
 		break;
 		
 	case 3:
@@ -140,10 +140,10 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 				GI->SavedItems.Remove(curItem->GetClass());
 			}
 			
-			GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
+			/*GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
 			{
 				curItem->Remove();
-			},0.5f,false);
+			},0.5f,false);*/
 		}
 		else
 		{
@@ -177,10 +177,10 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 			GI->SavedItems.Remove(curItem->GetClass());
 		}
 		
-		GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
+		/*GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
 		{
 			curItem->Remove();
-		},0.5f,false);
+		},0.5f,false);*/
 		
 		break;
 		
@@ -205,14 +205,23 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 		{
 			GI->SavedItems.Remove(curItem->GetClass());
 		}
-		
-		GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
+		/*FTimerHandle delaytimer4;
+		GetWorld()->GetTimerManager().SetTimer(delaytimer4,[&]()
 		{
 			curItem->Remove();
-		},0.5f,false);
+		},0.5f,false);*/
 		
 		break;
 	}
+	
+	AItemActor* SafeItem = curItem;
+	GetWorld()->GetTimerManager().SetTimer(delaytimer, [SafeItem]()
+	{
+		if (IsValid(SafeItem))
+		{
+			SafeItem->Remove();
+		}
+	}, 0.5f, false);
 	
 	// 미션체크 확인하기 
 	if (PutDownitemID.Num()==4)
