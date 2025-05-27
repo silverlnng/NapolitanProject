@@ -50,7 +50,6 @@ void AChaseStatue::BeginPlay()
 	me = this;
 
 	mState = ChaseStatueState::Idle;
-	UE_LOG(LogTemp, Warning, TEXT("시작 : %s"), *UEnum::GetValueAsString(mState));
 
 	ChaseAI = Cast<AAIController>(me->GetController());
 	if (!ChaseAI)
@@ -82,7 +81,10 @@ void AChaseStatue::Tick(float DeltaTime)
 
 	//UE_LOG(LogTemp, Warning, TEXT("%s %s"), *UEnum::GetValueAsString(MainCharacter->curState), bClear ? TEXT("true") : TEXT("false"));
 	//UE_LOG(LogTemp, Warning, TEXT("%s"), *UEnum::GetValueAsString(mState));
-	
+
+	// 지금 자기상태 출력하도록 만들기
+	//FString myState = UEnum::GetValueAsString(mState);
+	//DrawDebugString(GetWorld() ,GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
 	switch (mState)
 	{
 	case ChaseStatueState::Idle:
@@ -244,9 +246,27 @@ void AChaseStatue::ResultEvent(int32 result)
 
 			//우선 클리어 선언
 			IsCleared=true;
-			GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+			//GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
 			GI->ClearedNPC.Add(GetNPCID());
+
+			State=4; // 다음 state으로 넘어간다음
+			TestPC->StartEndNPCDialougue(true);
+			TestPC->SetNPCDialougueText(0); // npc 대본에서 다시 시작
 			
+		}
+	}
+	else if(4==State)
+	{
+		if(0==result)
+		{
+			//추격전 시작
+
+			FTimerHandle CuraTimer;
+			GetWorld()->GetTimerManager().SetTimer(CuraTimer,[this]()
+			{
+				TestPC->StartEndNPCDialougue(false); //결과 대화창 출력
+				SetState(ChaseStatueState::Move);
+			},8.0f,false);
 		}
 	}
 	

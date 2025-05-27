@@ -24,5 +24,12 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = FSM)
 	ChaseStatueState animState;
+
+	UFUNCTION()
+	void PlayWalkMontage();
+
+	//몽타주
+	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
+	class UAnimMontage* WalkMontage;
 	
 };

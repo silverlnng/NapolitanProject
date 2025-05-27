@@ -643,7 +643,7 @@ void ATestCharacter::HangNeckUp()
 {
 	//이동할 목표 위치 설정
 	FVector CurrentLocation = GetMesh()->GetRelativeLocation();
-	TargetNeckLocation = FVector(CurrentLocation.X, CurrentLocation.Y, CurrentLocation.Z + 50.0f);
+	TargetNeckLocation = FVector(CurrentLocation.X, CurrentLocation.Y, CurrentLocation.Z + 300.0f);
 
 	//타이머 시작
 	GetWorldTimerManager().SetTimer(MoveMeshTimerHandle, this, &ATestCharacter::UpdateMeshLocation, 0.01f, true);

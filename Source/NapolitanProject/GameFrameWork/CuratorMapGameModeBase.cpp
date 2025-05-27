@@ -26,7 +26,7 @@ void ACuratorMapGameModeBase::BeginPlay()
 
 	MainCharacter=Cast<ATestCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 	if (!MainCharacter){return;}
-	PC =MainCharacter->GetController<ATestPlayerController>();
+	PC = MainCharacter->GetController<ATestPlayerController>();
 	if (!PC){return;}
 	PlayerHUD =PC->GetHUD<APlayerHUD>();	
 

@@ -13,3 +13,10 @@ void UNPC_CuratorAnim::NativeUpdateAnimation(float DeltaSeconds)
 		Curator = Cast<AChaseStatue>(ownerPawn);
 	}
 }
+
+void UNPC_CuratorAnim::PlayWalkMontage()
+{
+	if (!Montage_IsPlaying(WalkMontage)) {
+		Montage_Play(WalkMontage);
+	}
+}
