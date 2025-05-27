@@ -163,18 +163,20 @@ void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)
 
 				// 인벤 효과 애니메이션 실행시키기 
 				PlayerHUD->InteractUI->PlayInvenUIEvent();
-
+				
 				int32 ItemRow =SpiderItemID+1;
 	
 				FString ItemIDstr=FString::FromInt(ItemRow);
-				//DT 작업하기 
+				//DT 작업하기
+				// 게임인스턴스의 데이터 테이블도 had로 변경시키면 기록될것
 				FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(FName(*ItemIDstr) , TEXT(""));
 				if (ItemData)
 				{
 					ItemData->Had=true;
+					FString ItemName=ItemData->Name;
+					PlayerHUD->InteractUI->GetItemEvent(ItemName); // 나중에 아이템 이름으로 바꾸기 
 				}
-			
-			
+				
 			}
 			else
 			{

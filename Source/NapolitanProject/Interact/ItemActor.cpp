@@ -94,7 +94,7 @@ void AItemActor::PutDown()
 
 void AItemActor::OnInventorySlot()
 {
-	// 게임인스턴스의 데이터 테이블도 had로 변경시키면 기록될것
+	
 	// 본인 아이템 ItemID 으로 슬롯 찾아서 활성화 되도록 만들기
 	if (PlayerHUD->InventoryUI)
 	{
@@ -119,7 +119,8 @@ void AItemActor::OnInventorySlot()
 
 	
 	
-	//DT 작업하기 
+	//DT 작업하기
+	// 게임인스턴스의 데이터 테이블도 had로 변경시키면 기록될것
 	FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(FName(*ItemIDstr) , TEXT(""));
 	if (ItemData)
 	{
@@ -144,6 +145,16 @@ void AItemActor::Remove()
 	if (GI->SavedItems.Contains(this->GetClass()))
 	{
 		GI->SavedItems.Remove(this->GetClass());
+	}
+
+	// 버튼도 비활성화 하기
+	// 본인 아이템 ItemID 으로 슬롯 찾아서 활성화 되도록 만들기
+	if (PlayerHUD->InventoryUI)
+	{
+		if (PlayerHUD->InventoryUI->InvenSlots.Contains(ItemID))
+		{
+			PlayerHUD->InventoryUI->InvenSlots[ItemID]->SetIsEnabledBtn();
+		}
 	}
 }
 

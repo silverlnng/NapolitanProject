@@ -168,6 +168,7 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 					playerCharacter->GetMesh()->SetHiddenInGame(true);
 					SequencePlayer->Play();
 					SpawnItems();
+					//SequencePlayer->OnFinished.AddDynamic(this,)
 					FTimerHandle finishTimer;
 					//시퀀스 재생 종료시 캐릭터 다시 보임
 					GetWorldTimerManager().SetTimer(finishTimer, [this]()
