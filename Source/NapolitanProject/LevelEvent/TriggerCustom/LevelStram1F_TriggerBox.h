@@ -26,14 +26,9 @@ public:
 	bool bHasTriggered=false;
 	
 	UPROPERTY(EditDefaultsOnly)
-	const TSoftObjectPtr<UWorld> LobbyLevel;
+	const TSoftObjectPtr<UWorld> MainHall_Level;
 
 	UPROPERTY(EditDefaultsOnly)
-	const TSoftObjectPtr<UWorld> CorriderLevel;
+	const TSoftObjectPtr<UWorld> Base_Roof_Level;
 	
-	UPROPERTY(EditDefaultsOnly)
-	const TSoftObjectPtr<UWorld> LobbyRoom1Level;
-
-	UPROPERTY(EditDefaultsOnly)
-	const TSoftObjectPtr<UWorld> LobbyRoom2Level;
 };
