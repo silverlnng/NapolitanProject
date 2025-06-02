@@ -124,6 +124,7 @@ void ATestGameModeBase::BeginPlay()
 		{
 			// 여기서 수정을 해야함 . 내가 저장한 아이템에 4,5이 있는지 더 나은 방법으로 
 			AItemActor* Item4 =PlayerHUD->InventoryUI->InvenSlots[4]->MyItem;
+			//
 			if (Item4) // MyItem이 있으면 획득했었다는 의미
 			{
 				 // 빵 아이템 hidden 처리

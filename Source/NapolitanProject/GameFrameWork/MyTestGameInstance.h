@@ -173,7 +173,7 @@ public:
 	
 //////////////획득한 아이템 관리하기 ///////////////////////	
 
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TArray<TSubclassOf<class AItemActor>> SavedItems;
 	
 	//  아이템 저장

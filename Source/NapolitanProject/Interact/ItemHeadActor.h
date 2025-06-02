@@ -23,7 +23,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class ANPC_Cleaner* NPC_Cleaner;
-
+	
+	int32 ItemID=2;
+	
 	void CleanerNextState();
 	
 };

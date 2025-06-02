@@ -14,6 +14,7 @@
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
+#include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 
 // Sets default values
 ANPC_Cleaner::ANPC_Cleaner()
@@ -383,6 +384,9 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 			{
 				GI->SavedItems.Remove(ItemHead->GetClass());
 			}
+
+			// 인벤토리에서 버튼도 비활성화 하기
+			ItemHead->Remove();
 			
 			// 스크립트 출력
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "ResultEvent");
