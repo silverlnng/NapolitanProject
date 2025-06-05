@@ -25,6 +25,8 @@ void ADocentV2::BeginPlay()
 	{
 		MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	}
+
+	ChoseRandomTimeTurnRightAnim();
 }
 
 // Called every frame
@@ -40,7 +42,7 @@ void ADocentV2::Tick(float DeltaTime)
 }
 
 
-
+// ChoseRandomTimeTurnRightAnim 시작자체를
 void ADocentV2::ChoseRandomTimeTurnRightAnim()
 {
 	float RandValue = FMath::FRand();
@@ -68,21 +70,19 @@ void ADocentV2::ChoseRandomTimeTurnRightAnim()
 
 void ADocentV2::PlayTurnRightAnimation()
 {
-	if (TurnAroundMontage)
-	{
-		PlayAnimMontage(TurnAroundMontage);
-	}
+	
+	GetMesh()->PlayAnimation(TurnAroundMontage,false);
 	
 	float RandValue = FMath::FRand();
 	float ChosenDelay = 0.f;
 
 	if (RandValue <= 0.6f)
 	{
-		ChosenDelay = 4.0f;
+		ChosenDelay = 8.0f;
 	}
 	else
 	{
-		ChosenDelay = FMath::RandBool() ? 2.0f : 3.0f;
+		ChosenDelay = 6.0f;
 	}
 
 	// 0.5초 지난후 부터 플레이어의 움직임을 감지
@@ -90,16 +90,16 @@ void ADocentV2::PlayTurnRightAnimation()
 		  StartDetectionTimerHandle,
 		  this,
 		  &ADocentV2::StartMovementDetection,
-		  0.5f,
+		  2.0f,
 		  false
 	  );
 	
 	// 그리고 다시 원래대로 회전도 해야함 + 플레이어 감지 스탑
-	FTimerHandle StopDetectionTimerHandle;
+
 	GetWorld()->GetTimerManager().SetTimer(StopDetectionTimerHandle,[this]()
 	{
 		PlayTurnOriginAnimation();
-		StartMovementDetection();
+		StopMovementDetection();
 	},ChosenDelay,false);
 }
 
@@ -107,7 +107,7 @@ void ADocentV2::PlayTurnOriginAnimation()
 {
 	if (TurnOriginMontage)
 	{
-		PlayAnimMontage(TurnOriginMontage);
+		GetMesh()->PlayAnimation(TurnOriginMontage,false);
 	}
 
 	// 다시 시작
@@ -131,12 +131,26 @@ void ADocentV2::StartMovementDetection()
 void ADocentV2::DetectPlayerMovement()
 {
 	FVector CurrentLocation = MainCharacter->GetActorLocation();
+
+	float DistanceToPlayer = FVector::Dist(GetActorLocation(), CurrentLocation);
+	
+	if (DistanceToPlayer > MaxDetectionDistance)
+	{
+		UE_LOG(LogTemp, Verbose, TEXT("❌ 감지 거리 초과: %.1fcm"), DistanceToPlayer);
+		return; // 너무 멀면 감지하지 않음
+	}
+	
+	// 위치 변화량 감지
 	float MovementDelta = FVector::Dist(LastPlayerLocation, CurrentLocation);
 
 	if (MovementDelta > DetectRange) // 임계값 조정 가능
 	{
 		UE_LOG(LogTemp, Warning, TEXT(" 플레이어 움직임 감지됨!"));
+
+		// 감지되면 실행할 함수
+		
 	}
+	LastPlayerLocation = CurrentLocation;
 }
 
 void ADocentV2::StopMovementDetection()

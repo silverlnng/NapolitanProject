@@ -38,11 +38,14 @@ public:
 ///////////////// 플레이어 탐지부분 ////////////////////
 
 	FTimerHandle StartDetectionTimerHandle;
-	
+	FTimerHandle StopDetectionTimerHandle;
 	FVector LastPlayerLocation;
 
 	UPROPERTY(EditAnywhere)
-	float DetectRange=3.0f;
+	float DetectRange=1.0f;
+	
+	UPROPERTY(EditAnywhere)
+	float MaxDetectionDistance = 1000.0f; // 감지 거리 제한 (단위: cm)
 	
 	bool bCanDetectMovement=false;
 	
