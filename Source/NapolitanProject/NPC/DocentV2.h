@@ -26,7 +26,18 @@ public:
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
 
+	class AAIController* AIController;
 	
+	
+	UPROPERTY(EditDefaultsOnly)
+	class UAudioComponent* AudioComp;
+	
+	/** 몬스터 전용 카메라 */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	class UCameraComponent* MonsterCamera;
+	
+	/** 플레이어의 카메라를 몬스터 카메라로 전환하는 함수 */
+	void SwitchToMonsterCamera();
 
 	//3초 뒤돌아있고 ,
 	void ChoseRandomTimeTurnRightAnim();
@@ -45,7 +56,7 @@ public:
 	float DetectRange=1.0f;
 	
 	UPROPERTY(EditAnywhere)
-	float MaxDetectionDistance = 1000.0f; // 감지 거리 제한 (단위: cm)
+	float MaxDetectionDistance = 1500.0f; // 감지 거리 제한 (단위: cm)
 	
 	bool bCanDetectMovement=false;
 	
@@ -56,10 +67,22 @@ public:
 	void StopMovementDetection();
 	
 //////////////////////////////////////////////////////////////////
+	bool bHasDetectedPlayer = false;
+	
+	UPROPERTY(EditAnywhere)
+	float AttackRange = 300.0f;
+
+	void PlayAttackAnimation();
+//////////////////////////////////////////////////////////////////////
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
 	class UAnimMontage* TurnAroundMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
 	class UAnimMontage* TurnOriginMontage;
 	
+	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
+	class UAnimMontage* RunMontage;
+	
+	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
+	class UAnimMontage* AttackMontage;
 };
