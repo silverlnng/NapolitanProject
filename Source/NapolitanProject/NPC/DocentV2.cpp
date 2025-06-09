@@ -4,11 +4,13 @@
 #include "DocentV2.h"
 
 #include "AIController.h"
+#include "EngineUtils.h"
 #include "Camera/CameraComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/YJ/SoundControlActor.h"
 
 // Sets default values
 ADocentV2::ADocentV2()
@@ -35,8 +37,13 @@ void ADocentV2::BeginPlay()
 		MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	}
 	AIController = Cast<AAIController>(GetController());
+
+	for (TActorIterator<ASoundControlActor> It(GetWorld(), ASoundControlActor::StaticClass()); It; ++It)
+	{
+		SoundControlActor = *It;
+	}
 	
-	ChoseRandomTimeTurnRightAnim();
+	//StartTurnDetect();
 }
 
 // Called every frame
@@ -47,6 +54,36 @@ void ADocentV2::Tick(float DeltaTime)
 	DrawDebugSphere(GetWorld(), GetActorLocation(), MaxDetectionDistance, 12, FColor::Blue, false, 0.1f);
 
 	DrawDebugSphere(GetWorld(), GetActorLocation(), AttackRange, 12, FColor::Red, false, 0.1f);
+
+	if (MainCharacter)
+	{
+		FVector CurrentLocation = MainCharacter->GetActorLocation();
+	
+		float DistanceToPlayer = FVector::Dist(GetActorLocation(), CurrentLocation);
+		
+		if (!InMaxDetectionDistance && DistanceToPlayer <= MaxDetectionDistance)
+		{
+			InMaxDetectionDistance=true;
+			// 음원변경
+			if (SoundControlActor&&SoundControlActor->DocentBG)
+			{
+				SoundControlActor->BGSoundChange(SoundControlActor->DocentBG);
+			}
+			// 이때부터 StartTurnDetect(); 시작함
+			StartTurnDetect();
+			
+		}
+		if (InMaxDetectionDistance&&DistanceToPlayer>MaxDetectionDistance)
+		{
+			InMaxDetectionDistance=false;
+			// 음원변경
+			if (SoundControlActor&&SoundControlActor->LobbyRoom)
+			{
+				SoundControlActor->BGSoundChange(SoundControlActor->LobbyRoom);
+			}
+			StopAllTurnDetect();
+		}
+	}
 	
 	if (bCanDetectMovement && MainCharacter)
 	{
@@ -81,7 +118,7 @@ void ADocentV2::Tick(float DeltaTime)
 
 
 // ChoseRandomTimeTurnRightAnim 시작자체를
-void ADocentV2::ChoseRandomTimeTurnRightAnim()
+void ADocentV2::StartTurnDetect()
 {
 	float RandValue = FMath::FRand();
 	float ChosenDelay = 0.f;
@@ -96,13 +133,15 @@ void ADocentV2::ChoseRandomTimeTurnRightAnim()
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("뒤 돌아볼때까지 딜레이: %.1f초"), ChosenDelay);
-
 	
-	FTimerHandle PlayTurnRightAnim;
-	GetWorld()->GetTimerManager().SetTimer(PlayTurnRightAnim,[this]()
-	{
-		PlayTurnRightAnimation();
-	},ChosenDelay,false);
+	GetWorldTimerManager().SetTimer(
+			  PlayTurnRightAnim,
+			  this,
+			  &ADocentV2::PlayTurnRightAnimation,
+			  ChosenDelay,
+			  false
+		  );
+	
 	
 }
 
@@ -129,7 +168,7 @@ void ADocentV2::PlayTurnRightAnimation()
 		  StartDetectionTimerHandle,
 		  this,
 		  &ADocentV2::StartMovementDetection,
-		  2.0f,
+		  1.5f,
 		  false
 	  );
 	
@@ -150,7 +189,7 @@ void ADocentV2::PlayTurnOriginAnimation()
 	}
 
 	// 다시 시작
-	ChoseRandomTimeTurnRightAnim();
+	StartTurnDetect();
 }
 
 void ADocentV2::StartMovementDetection()
@@ -249,4 +288,24 @@ void ADocentV2::SwitchToMonsterCamera()
 		// 카메라 전환
 		TestPC->SetViewTargetWithBlend(this, 0.01f); // 0.5초 동안 부드럽게 전환
 	}
+}
+
+void ADocentV2::StopAllTurnDetect()
+{
+	// 타이머 종료하고 
+	
+	if (GetWorldTimerManager().IsTimerActive(StartDetectionTimerHandle))
+	{
+		GetWorldTimerManager().ClearTimer(StartDetectionTimerHandle);
+		UE_LOG(LogTemp, Log, TEXT("🛑 StartDetectionTimerHandle 타이머 취소됨"));
+	}
+	
+	if (GetWorldTimerManager().IsTimerActive(PlayTurnRightAnim))
+	{
+		GetWorldTimerManager().ClearTimer(PlayTurnRightAnim);
+		UE_LOG(LogTemp, Log, TEXT("🛑 PlayTurnRightAnim 타이머 취소됨"));
+	}
+
+	
+	StopMovementDetection();
 }

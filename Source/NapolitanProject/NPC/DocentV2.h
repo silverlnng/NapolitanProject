@@ -27,7 +27,8 @@ public:
 	class ATestPlayerController* TestPC;
 
 	class AAIController* AIController;
-	
+
+	class ASoundControlActor* SoundControlActor;
 	
 	UPROPERTY(EditDefaultsOnly)
 	class UAudioComponent* AudioComp;
@@ -39,8 +40,10 @@ public:
 	/** 플레이어의 카메라를 몬스터 카메라로 전환하는 함수 */
 	void SwitchToMonsterCamera();
 
+	void StopAllTurnDetect();
+	
 	//3초 뒤돌아있고 ,
-	void ChoseRandomTimeTurnRightAnim();
+	void StartTurnDetect();
 
 	void PlayTurnRightAnimation();
 
@@ -50,6 +53,7 @@ public:
 
 	FTimerHandle StartDetectionTimerHandle;
 	FTimerHandle StopDetectionTimerHandle;
+	FTimerHandle PlayTurnRightAnim;
 	FVector LastPlayerLocation;
 
 	UPROPERTY(EditAnywhere)
@@ -59,7 +63,7 @@ public:
 	float MaxDetectionDistance = 1500.0f; // 감지 거리 제한 (단위: cm)
 	
 	bool bCanDetectMovement=false;
-	
+	bool InMaxDetectionDistance=false;
 	void StartMovementDetection();
 	
 	void DetectPlayerMovement();

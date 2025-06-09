@@ -108,12 +108,9 @@ void ATriggerActorArt2F::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComp
 		//CheckSide();
 
 		// 타이머로 불끄고 배경음 달라지게 하기
-		if (SoundControlActor)
+		if (SoundControlActor&&SoundControlActor->SecondFloor)
 		{
-			SoundControlActor->bInLobby=false;
-			SoundControlActor->AudioComp1->FadeOut(7.f , 0.f);
-			//SoundControlActor->AudioComp2->Play();
-			SoundControlActor->AudioComp2->FadeIn(14.f , 1.f);
+			SoundControlActor->BGSoundChange(SoundControlActor->SecondFloor);
 		}
 		FTimerHandle Timer;
 		GetWorldTimerManager().SetTimer(Timer,[this]()
@@ -163,11 +160,13 @@ void ATriggerActorArt2F::BoxCompEndOverlap( UPrimitiveComponent* OverlappedCompo
 		//CheckSide();
 		if (SoundControlActor)
 		{
-			SoundControlActor->AudioComp2->FadeOut(3.f,0.f);
+			//SoundControlActor->AudioComp2->FadeOut(3.f,0.f);
 			// 2층의 배경음 끄고
-			SoundControlActor->AudioComp1->FadeIn(3.f,1.f);
+			//SoundControlActor->AudioComp1->FadeIn(3.f,1.f);
 			// 다시 1층의 배경음을 키다
-			SoundControlActor->bInLobby=true;
+			//SoundControlActor->bInLobby=true;
+
+			SoundControlActor->SoundChangeOriginLobby();
 		}
 
 		if (MainCharacter)
