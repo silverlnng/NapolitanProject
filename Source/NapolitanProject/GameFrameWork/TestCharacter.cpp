@@ -586,7 +586,13 @@ void ATestCharacter::OnInteraction()
 		{
 			Door->DoorOpen(); //문을 여는 함수
 		}
-		
+
+		//자물쇠 태그 체크
+		if (Interact->Tags.Contains(FName("Lock")))
+		{
+			HandleLockInteraction();
+			return;
+		}
 		
 
 ///////////////// 아이템을 내려놓는 대상 /////////////////////////
@@ -607,6 +613,15 @@ void ATestCharacter::OnInteraction()
 		
 	}
 }
+
+void ATestCharacter::HandleLockInteraction()
+{
+	UE_LOG(LogTemp, Warning, TEXT("자물쇠 상호작용: %s"), *Interact->GetName());
+    
+	// 블루프린트 함수 직접 호출
+	HandleLockInteractionBP(Interact);
+}
+
 
 void ATestCharacter::AdjustCameraPosition()
 {

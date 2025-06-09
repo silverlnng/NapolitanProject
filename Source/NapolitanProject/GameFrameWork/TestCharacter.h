@@ -188,6 +188,14 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	bool IsLightRangeIn=false;
 
+	////////////////자물쇠 관련 함수
+	UFUNCTION()
+	void HandleLockInteraction();
+
+	// 블루프린트에서 구현할 함수 선언
+	UFUNCTION(BlueprintImplementableEvent, Category = "Interaction")
+	void HandleLockInteractionBP(AActor* TargetActor);
+
 	//////////// 김영수 위대한 빨간 등대 선택시 1-3
 public:
 	UPROPERTY(EditDefaultsOnly)
