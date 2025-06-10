@@ -237,24 +237,37 @@ void ADocentV2::DetectPlayerMovement()
 			UE_LOG(LogTemp, Log, TEXT("🛑 StopDetection 타이머 취소됨"));
 		}
 
-		// 감지 소리 
+		// 배경음은 중지하고 , 감지 소리 작동시키기  
 		SoundControlActor->AudioComp2->Stop();
 		
 		if (DetectSound)
 		{
 			UGameplayStatics::PlaySound2D(this, DetectSound);
 		}
-		
-		if (AIController && MainCharacter)
+
+		// 탐지했을때 애니메이션 먼저실행
+		if (DetectMontage)
 		{
-			AIController->MoveToActor(MainCharacter);
-			// 달리는 애니메이션 실행
-			if (RunMontage)
-			{
-				GetMesh()->PlayAnimation(RunMontage,true);
-			}
-			UE_LOG(LogTemp, Log, TEXT("🏃 몬스터가 플레이어를 추적 시작"));
+			GetMesh()->PlayAnimation(DetectMontage,false);
 		}
+
+		// 달리기+ 추적을 살짝만 지연시키기
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+		{
+			if (AIController && MainCharacter)
+			{
+				AIController->MoveToActor(MainCharacter);
+				// 달리는 애니메이션 실행
+				if (RunMontage)
+				{
+					GetMesh()->PlayAnimation(RunMontage,true);
+				}
+				UE_LOG(LogTemp, Log, TEXT("🏃 몬스터가 플레이어를 추적 시작"));
+			}
+		}, 1.0f, false);
+		
+		
 
 		// 이후 반복 감지 막기 위해 종료
 		return;

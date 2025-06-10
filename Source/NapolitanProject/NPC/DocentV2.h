@@ -90,6 +90,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
 	class UAnimMontage* AttackMontage;
 
+	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
+	class UAnimMontage* DetectMontage;
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	class USoundWave* AttackSound;
 
