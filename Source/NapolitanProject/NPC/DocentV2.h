@@ -60,7 +60,7 @@ public:
 	float DetectRange=1.0f;
 	
 	UPROPERTY(EditAnywhere)
-	float MaxDetectionDistance = 1500.0f; // 감지 거리 제한 (단위: cm)
+	float MaxDetectionDistance = 1800.0f; // 감지 거리 제한 (단위: cm)
 	
 	bool bCanDetectMovement=false;
 	bool InMaxDetectionDistance=false;
@@ -89,4 +89,10 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
 	class UAnimMontage* AttackMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class USoundWave* AttackSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Sound")
+	class USoundWave* DetectSound;
 };

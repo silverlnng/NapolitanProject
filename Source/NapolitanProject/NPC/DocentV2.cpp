@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/SoundControlActor.h"
@@ -51,9 +52,9 @@ void ADocentV2::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	DrawDebugSphere(GetWorld(), GetActorLocation(), MaxDetectionDistance, 12, FColor::Blue, false, 0.1f);
+	//DrawDebugSphere(GetWorld(), GetActorLocation(), MaxDetectionDistance, 12, FColor::Blue, false, 0.1f);
 
-	DrawDebugSphere(GetWorld(), GetActorLocation(), AttackRange, 12, FColor::Red, false, 0.1f);
+	//DrawDebugSphere(GetWorld(), GetActorLocation(), AttackRange, 12, FColor::Red, false, 0.1f);
 
 	if (MainCharacter)
 	{
@@ -236,6 +237,13 @@ void ADocentV2::DetectPlayerMovement()
 			UE_LOG(LogTemp, Log, TEXT("🛑 StopDetection 타이머 취소됨"));
 		}
 
+		// 감지 소리 
+		SoundControlActor->AudioComp2->Stop();
+		
+		if (DetectSound)
+		{
+			UGameplayStatics::PlaySound2D(this, DetectSound);
+		}
 		
 		if (AIController && MainCharacter)
 		{
@@ -274,6 +282,10 @@ void ADocentV2::PlayAttackAnimation()
 	//카메라 쉐이크 .
 	SwitchToMonsterCamera();
 	
+	if (AttackSound)
+	{
+		UGameplayStatics::PlaySound2D(this, AttackSound);
+	}
 	/*FTimerHandle SwitchCameraTimer;
 	GetWorld()->GetTimerManager().SetTimer(SwitchCameraTimer,[this]()
 	{
