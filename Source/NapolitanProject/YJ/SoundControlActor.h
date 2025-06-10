@@ -42,12 +42,13 @@ public:
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	bool bInLobby =true;
 
-	UPROPERTY(EditDefaultsOnly,Category=SoundCue)
-	class USoundCue* whiteNoise;
+	
 	UPROPERTY(EditDefaultsOnly,Category=SoundCue)
 	class USoundCue* SecondFloor;
 	UPROPERTY(EditDefaultsOnly,Category=SoundCue)
 	class USoundCue* LobbyRoom;
+	UPROPERTY(EditDefaultsOnly,Category=SoundCue)
+	class USoundCue* DocentBG;
 	
 	UFUNCTION()
 	void BGSoundChange(USoundCue* Sound);

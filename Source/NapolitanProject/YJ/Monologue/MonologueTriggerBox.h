@@ -32,6 +32,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	class UBoxComponent* BoxComp;
 
+	UPROPERTY(VisibleAnywhere)
+	UBillboardComponent* EditorBillboard;  // 시각화용 컴포넌트
+	
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
 	class APlayerHUD* PlayerHUD;

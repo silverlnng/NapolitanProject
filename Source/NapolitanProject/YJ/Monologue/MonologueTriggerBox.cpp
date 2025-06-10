@@ -4,6 +4,7 @@
 #include "MonologueTriggerBox.h"
 
 #include "MonolugueWidget.h"
+#include "Components/BillboardComponent.h"
 #include "Components/BoxComponent.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
@@ -18,6 +19,18 @@ AMonologueTriggerBox::AMonologueTriggerBox()
 	SetRootComponent(SceneComp);
 	BoxComp=CreateDefaultSubobject<UBoxComponent>(TEXT("SphereComponent"));
 	BoxComp->SetupAttachment(RootComponent);
+
+	// 에디터 상에서만 보이는 아이콘
+	EditorBillboard = CreateDefaultSubobject<UBillboardComponent>(TEXT("EditorBillboard"));
+	EditorBillboard->SetupAttachment(RootComponent);
+
+	// 아이콘 이미지 설정 (Engine 기본 아이콘 사용)
+	// /Script/Engine.Texture2D'/Engine/EditorResources/S_PortalActorIcon2.S_PortalActorIcon2'
+	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(TEXT("Texture2D'/Engine/EditorResources/S_PortalActorIcon2.S_PortalActorIcon2'"));
+	if (IconTexture.Succeeded())
+	{
+		EditorBillboard->SetSprite(IconTexture.Object);
+	}
 }
 
 // Called when the game starts or when spawned

@@ -32,6 +32,10 @@ ASoundControlActor::ASoundControlActor()
 void ASoundControlActor::BeginPlay()
 {
 	Super::BeginPlay();
+	if (LobbyRoom)
+	{
+		AudioComp1->SetSound(LobbyRoom);
+	}
 	AudioComp1->Play();
 	AudioComp2->Stop();
 	
