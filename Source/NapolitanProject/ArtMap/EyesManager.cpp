@@ -35,6 +35,8 @@ void AEyesManager::BeginPlay()
 	}
 
 	TimeElapsed = 0.0f;
+
+	bIsLockOpen = false;
 	
 }
 
@@ -53,7 +55,7 @@ void AEyesManager::Tick(float DeltaTime)
 		//눈알 보이는 거 종료
 
 		//제한시간이 끝났을 경우 사망 이벤트 발생
-		if(TimeElapsed >= EndTime)
+		if(TimeElapsed >= EndTime && bIsLockOpen == false)
 		{
 			OnAllEyesRevealed(); // 시간 종료 → 이벤트 실행
 		}
@@ -63,18 +65,7 @@ void AEyesManager::Tick(float DeltaTime)
 
 void AEyesManager::UpdateEyeVisibility()
 {
-	/*float RevealRatio = FMath::Clamp(TimeElapsed / TotalTime, 0.0f, 1.0f);
-	int32 RevealCount = FMath::RoundToInt(OriginEyes.Num() * RevealRatio);
-
-	for (int32 i = 0; i < OriginEyes.Num(); ++i)
-	{
-		bool bShouldBeVisible = i < RevealCount;
-		if (OriginEyes[i])
-		{
-			OriginEyes[i]->SetEyeVisible(bShouldBeVisible);
-		}
-	}*/
-
+	
 	//1분안에 모든 눈알이 보이도록 코드 조정
 	float RevealRatio = FMath::Clamp(TimeElapsed / TotalTime, 0.0f, 1.0f);
 	int32 RevealCount = FMath::CeilToInt(OriginEyes.Num() * RevealRatio);
@@ -92,6 +83,14 @@ void AEyesManager::UpdateEyeVisibility()
 void AEyesManager::OnAllEyesRevealed()
 {
 	UE_LOG(LogTemp, Warning, TEXT("모든 OriginEye가 나타났습니다!"));
-	// 제한시간이 지났음에도 문제를 풀지 못했다면 사망
+	
+	// 모든 눈알들을 추격 모드로 전환
+	for (AOriginEye* Eye : OriginEyes)
+	{
+		if (Eye && IsValid(Eye))
+		{
+			Eye->UpdateChasing(GetWorld()->GetDeltaSeconds());
+		}
+	}
 }
 

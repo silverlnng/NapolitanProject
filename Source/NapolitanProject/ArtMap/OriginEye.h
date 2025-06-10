@@ -35,6 +35,7 @@ public:
 
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
+	class APlayerHUD* PlayerHUD;
 
 	void SetEyeVisible(bool bVisible); //눈을 보이게 하는 함수
 
@@ -44,5 +45,32 @@ private:
 	float TimeSinceLastRandomLook;
 	float RandomLookInterval;
 	float RandomSpeed;
+
+public:
+	// 추격 상태
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Chase")
+	bool bIsChasing;
+    
+	// 추격 속도
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Chase")
+	float ChaseSpeed = 800.0f;
+    
+	// 가속도
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Chase")
+	float ChaseAcceleration = 400.0f;
+    
+	// 현재 속도
+	FVector CurrentVelocity;
+
+public:
+	// 추격 로직
+	void UpdateChasing(float DeltaTime);
+
+	UPROPERTY(EditAnywhere)
+	FString description=FString(TEXT("수많은 눈동자들에 의해 사망했다"));
+
+	//각 눈알의 고유한 목표 오프셋
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Chase")
+	FVector UniqueTargetOffset;
 
 };

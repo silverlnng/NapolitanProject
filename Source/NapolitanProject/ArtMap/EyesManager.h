@@ -28,10 +28,10 @@ public:
 	class UBoxComponent* TriggerBox;
 
 	UPROPERTY(EditAnywhere, Category="Gimmick|Config")
-	float TotalTime = 60.0f; // 눈동자가 나오는 시간
+	float TotalTime = 20.0f; // 눈동자가 나오는 시간
 
 	UPROPERTY(EditAnywhere, Category="Gimmick|Config")
-	float EndTime = 240.0f; // 4분, 제한시간
+	float EndTime = 20.0f; // 4분, 제한시간
 
 public:
 	UPROPERTY()
@@ -41,6 +41,9 @@ public:
 
 	void UpdateEyeVisibility(); //보이게 하도록 하는 함수
 	void OnAllEyesRevealed(); //만약 시간 내에 기믹을 풀지 못했다면 사망
+
+	UPROPERTY(BlueprintReadWrite, Category = "Gimmick")
+	bool bIsLockOpen;
 
 
 };

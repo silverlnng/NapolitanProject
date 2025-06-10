@@ -5,8 +5,10 @@
 
 #include "Components/ArrowComponent.h"
 #include "Components/SphereComponent.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/YJ/DeadEndingWidget.h"
 
 // Sets default values
 AOriginEye::AOriginEye()
@@ -36,12 +38,16 @@ void AOriginEye::BeginPlay()
 	if (TestPC)
 	{
 		MainCharacter =TestPC->GetPawn<ATestCharacter>();
+		PlayerHUD =TestPC->GetHUD<APlayerHUD>();
 	}
+	
 
 	bShouldLookAtPlayer = false;
 	RandomLookInterval = 1.5f;
 	TimeSinceLastRandomLook = 0.0f;
 	RandomSpeed = FMath::RandRange(180.0f, 300.0f);
+	
+	
 }
 
 // Called every frame
@@ -93,6 +99,62 @@ void AOriginEye::SetEyeVisible(bool bVisible)
 	{
 		EyeMesh->SetVisibility(bVisible, true);
 		EyeMesh->SetHiddenInGame(!bVisible, true);
+	}
+}
+
+void AOriginEye::UpdateChasing(float DeltaTime)
+{
+	//제한 시간 내에 자물쇠를 못풀었을 시 플레이어를 향해 달려옴
+
+	if (!MainCharacter) return;
+
+	FVector PlayerLocation = MainCharacter->GetActorLocation();
+    
+	// 플레이어 주변 구형으로 분산
+	float Radius = 300.0f; // 플레이어 주변 반지름
+	FVector RandomDirection = FMath::VRand(); // 완전 랜덤 방향
+	FVector TargetLocation = PlayerLocation + (RandomDirection * Radius);
+
+	FVector EyeLocation = GetActorLocation();
+	FVector DirectionToTarget = (TargetLocation - EyeLocation + FVector(0.f, 0.f, 50.f)).GetSafeNormal();
+
+	CurrentVelocity += DirectionToTarget * ChaseAcceleration * DeltaTime;
+    
+	if (CurrentVelocity.Size() > ChaseSpeed)
+	{
+		CurrentVelocity = CurrentVelocity.GetSafeNormal() * ChaseSpeed;
+	}
+
+	FVector NewLocation = EyeLocation + CurrentVelocity * DeltaTime;
+	SetActorLocation(NewLocation);
+
+	Arrow->SetWorldRotation(DirectionToTarget.Rotation());
+
+	// 플레이어와 충돌 거리 체크 (게임오버 조건)
+	float DistanceToPlayer = FVector::Dist(PlayerLocation, EyeLocation);
+	if (DistanceToPlayer < 200.0f) // 1미터 이내로 접근하면
+	{
+		FTimerHandle UITimer2;
+		GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+		{
+			if (PlayerHUD)
+			{
+				PlayerHUD->PlayDeadVignetteEffect();
+			}
+		},0.2f,false);
+	
+		//시간 지연 주고 사망 UI 나오도록
+		FTimerHandle UITimer;
+		GetWorldTimerManager().SetTimer(UITimer, [this]()
+		{
+			MainCharacter->SetPlayerState(EPlayerState::UI);
+
+			if(PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
+			{
+				PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+				PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
+			}
+		},0.6f,false); //사망
 	}
 }
 
