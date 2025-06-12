@@ -8,6 +8,7 @@
 #include "Components/BoxComponent.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 
@@ -62,7 +63,7 @@ void ASouvenir_Dongjun::OnPickup()
 	//인벤에 넣었으면 다른거 집을수있도록
 	MainCharacter->curItem=nullptr;
 	
-	GI->SavedItems.Add(RoseItem->GetClass());
+	SaveGI->SavedItems.Add(RoseItem->GetClass());
 	
 	
 }

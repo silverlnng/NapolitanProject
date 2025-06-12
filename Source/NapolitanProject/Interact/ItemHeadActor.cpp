@@ -10,6 +10,7 @@
 #include "Components/SlateWrapperTypes.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/NPC/NPC_Cleaner.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
@@ -34,7 +35,7 @@ void AItemHeadActor::OnPickup()
 
 
 	OnInventorySlot(); // 인벤작업
-	GI->SavedItems.Add(this->GetClass());
+	SaveGI->SavedItems.Add(this->GetClass());
 	
 	FTimerHandle UITimer4;
 	

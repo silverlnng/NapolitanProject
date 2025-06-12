@@ -8,6 +8,7 @@
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 
 void URequestLetter::NativeConstruct()
@@ -27,6 +28,8 @@ void URequestLetter::NativeConstruct()
 	}
 	
 	GI=GetGameInstance<UMyTestGameInstance>();
+
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
 }
 
 void URequestLetter::OnTicketClicked()
@@ -36,8 +39,8 @@ void URequestLetter::OnTicketClicked()
 
 	// 기존의 배경음은 stop 하도록 만들기 
 
-	GI->SetLevelMoveToDoor(false);
-	GI->LoadedGame=nullptr;
+	SaveGI->SetLevelMoveToDoor(false);
+	SaveGI->LoadedGame=nullptr;
 	
 	if(OpeningSequence)
 	{

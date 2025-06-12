@@ -6,6 +6,7 @@
 #include "EngineUtils.h"
 #include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
+#include "SaveGISubsystem.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
 #include "Components/ArrowComponent.h"
@@ -80,7 +81,8 @@ void ASpiderMapGameModeBase::BeginPlay()
 
 	
 	GI =GetGameInstance<UMyTestGameInstance>();
-	if (GI)
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
+	if (GI&&SaveGI)
 	{
 		// 시간 지연을 주기
 
@@ -88,13 +90,13 @@ void ASpiderMapGameModeBase::BeginPlay()
 
 		GetWorld()->GetTimerManager().SetTimer(GITimer,[this]()
 		{
-			GI->RestoreAttachedItems();
-			CatchSpiderCount=FCString::Atoi(* GI->CatchSpiderNum);
+			SaveGI->RestoreAttachedItems();
+			CatchSpiderCount=FCString::Atoi(* SaveGI->CatchSpiderNum);
 		},2.0f,false);
 		//GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
-		if (!GI->ClearedNPC.IsEmpty())
+		if (!SaveGI->ClearedNPC.IsEmpty())
 		{
-			for (int32 key :GI->ClearedNPC)
+			for (int32 key :SaveGI->ClearedNPC)
 			{
 				if (2==key) // 도슨트
 				{
@@ -144,7 +146,7 @@ void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)
 			
 				SpiderItem->SetActorHiddenInGame(true);
 
-				GI->SavedItems.Add(SpiderItem->GetClass());
+				SaveGI->SavedItems.Add(SpiderItem->GetClass());
 			
 				if (PlayerHUD->InventoryUI)
 				{
@@ -210,7 +212,7 @@ void ASpiderMapGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	MainCharacter->OnEnablePlayerNoise.Clear();
 
 	// MainCharacter
-	GI->CatchSpiderNum=FString::FromInt(CatchSpiderCount);
+	SaveGI->CatchSpiderNum=FString::FromInt(CatchSpiderCount);
 	// 총 부착-해제시키기
 	Gun->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
 }

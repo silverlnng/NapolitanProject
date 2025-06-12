@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
@@ -50,7 +51,7 @@ void ALevelMoveDoor::BeginPlay()
 	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ALevelMoveDoor::BeginOverlap);
 
 	GI=GetGameInstance<UMyTestGameInstance>();
-	
+	SaveGI = GI->GetSubsystem<USaveGISubsystem>();
 	// 콜리전 설정은 폰 만되도록 블프에서 설정하기
 	
 }
@@ -92,7 +93,7 @@ void ALevelMoveDoor::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 
 void ALevelMoveDoor::LevelMove()
 {
-	GI->SetLevelMoveToDoor(true); //저장된 위치를 사용하라는 bool 변수 설정 함수
+	SaveGI->SetLevelMoveToDoor(true); //저장된 위치를 사용하라는 bool 변수 설정 함수
 			
 	// + 위치 적용 플래그 설정
 	if (bMoveFromLobby) // 지금 현재레벨이 로비일때만 게임저장= 로비에서 다른레벨로 넘어갈때 실행하는것
@@ -103,11 +104,10 @@ void ALevelMoveDoor::LevelMove()
 			MainCharacter->SaveTransform=FromLevelLocComp->GetComponentTransform();
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("MyVector: %s"), *MainCharacter->SaveTransform.GetLocation().ToString()));
 		}
-		GI->SavePlayerFTransform(FromLevelLocComp->GetComponentTransform());
-		GI->GameSaveController->SaveGameToSlot(3); //여긴 자동저장 같은 느낌
-				
-		GI->AsyncLoadLoadLevel(MoveToLevel); //레벨 이동할때 로딩이 되도록
-
+		SaveGI->SavePlayerFTransform(FromLevelLocComp->GetComponentTransform());
+		
+		SaveGI->GameSaveController->SaveGameToSlot(3); //여긴 자동저장 . 슬롯 3에 이전과 동일하도록 저장을 함 
+		
 		//레벨 이동하기 전에 타이머를 종료하고 가야 에러가 안남 !!!!!!!!
 		if (GetWorld()->GetTimerManager().IsTimerActive(PlayerHUD->MonolugueWidgetUI->TextUpdateTimerHandle))
 		{
@@ -118,17 +118,22 @@ void ALevelMoveDoor::LevelMove()
 			GetWorld()->GetTimerManager().ClearTimer(PlayerHUD->MonolugueWidgetUI->FinalTimerHandle);
 		}
 			
+		GI->AsyncLoadLoadLevel(MoveToLevel); //레벨 이동할때 로딩이 되도록
+		
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
 		{
 			UGameplayStatics::OpenLevelBySoftObjectPtr(this,MoveToLevel,true); //레벨 변경
-		}, 1.0f, false);
+		}, 0.5f, false);
 	}
 	else // 다른레벨에서 다시 로비로 돌아갈때 사용하는 것. 
 	{
-		GI->GameSaveController->LoadGameFromSlot(3);
+		SaveGI->GameSaveController->LoadGameFromSlot(3);
 		// 여기에 오픈레벨(로비) 가 있음
 
+		// 서브레벨로 나누었던것도 로드를 해야함.
+		// 이거는 위치한 거 에 따라서 각자 해야함 
+		
 		/*// 여기에 서브레벨로 나누었던것도 로드를 해야함.
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()

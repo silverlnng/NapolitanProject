@@ -36,5 +36,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class UMyTestGameInstance* GI;
-	
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+
 };

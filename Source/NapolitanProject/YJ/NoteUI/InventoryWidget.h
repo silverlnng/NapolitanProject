@@ -33,6 +33,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class UMyTestGameInstance* GI;
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+
 	
 	// create 8번 
 	/*UPROPERTY(meta = (BindWidget))

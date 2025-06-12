@@ -10,6 +10,7 @@
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "../GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 
 // Sets default values
 AExitDoorTrue::AExitDoorTrue()
@@ -43,6 +44,8 @@ void AExitDoorTrue::BeginPlay()
 		PlayerHUD=TestPC->GetHUD<APlayerHUD>();
 	}
 	GI =GetGameInstance<UMyTestGameInstance>();
+	
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
 }
 
 // Called every frame

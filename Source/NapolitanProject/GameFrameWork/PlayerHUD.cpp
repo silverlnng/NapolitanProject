@@ -10,6 +10,7 @@
 #include "../YJ/DialogueUI/NPCDialogueWidget.h"
 #include "Blueprint/UserWidget.h"
 #include "NYS_Choice.h"
+#include "SaveGISubsystem.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
 #include "YSEvanceUI.h"
@@ -36,6 +37,7 @@ void APlayerHUD::BeginPlay()
 	Super::BeginPlay();
 	
 	GI =GetGameInstance<UMyTestGameInstance>();
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
 	
 	PC=Cast<ATestPlayerController>(GetOwningPlayerController());
 	MainCharacter=PC->GetPawn<ATestCharacter>();
@@ -62,6 +64,7 @@ void APlayerHUD::BeginPlay()
 		InventoryUI->AddToViewport(1);
 		InventoryUI->SetVisibility(ESlateVisibility::Hidden);
 		InventoryUI->GI=GI;
+		InventoryUI->SaveGI=SaveGI;
 		InventoryUI->Btn_Close->OnClicked.AddDynamic(this,&APlayerHUD::OnClickBtn_InventoryClose);
 	}
 	
@@ -87,6 +90,7 @@ void APlayerHUD::BeginPlay()
 		InteractUI->SetVisibleCrossHair(true);
 		InteractUI->SetVisibleHBox(false);
 		InteractUI->GI=GI;
+		InteractUI->SaveGI=SaveGI;
 	}
 
 	DeadEndingWidgetUI=CreateWidget<UDeadEndingWidget>(GetWorld(),DeadEndingWidgetFactory);
@@ -95,9 +99,9 @@ void APlayerHUD::BeginPlay()
 		DeadEndingWidgetUI->AddToViewport(3);
 		DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Hidden);
 		DeadEndingWidgetUI->GI=GI;
-		if (GI&&GI->GameSaveController)
+		if (SaveGI&&SaveGI->GameSaveController)
 		{
-			DeadEndingWidgetUI->GameSaveController=GI->GameSaveController;
+			DeadEndingWidgetUI->GameSaveController=SaveGI->GameSaveController;
 		}
 	}
 	
@@ -113,9 +117,9 @@ void APlayerHUD::BeginPlay()
 	{
 		LoadScreenUI->AddToViewport(1);
 		LoadScreenUI->SetVisibility(ESlateVisibility::Hidden);
-		if (GI)
+		if (SaveGI)
 		{
-			LoadScreenUI->LoadUpdateUI(GI->SaveSlotInfos);
+			LoadScreenUI->LoadUpdateUI(SaveGI->SaveSlotInfos);
 		}
 	}
 
@@ -275,9 +279,9 @@ void APlayerHUD::UpdateNPCInfoWidget()
 {
 	// GI 의 TSet<FName> NPCEventManage; 을 보고 업데이트할꺼 만들어두기
 	
-	if (!GI->NPCEventManage.IsEmpty())
+	if (!SaveGI->NPCEventManage.IsEmpty())
 	{
-		for (FName &EventName:GI->NPCEventManage)
+		for (FName &EventName:SaveGI->NPCEventManage)
 		{
 			FString EventString = EventName.ToString();
 			NoteUI->WBP_NPCInfo->LoadUpdate(EventString);
@@ -285,7 +289,7 @@ void APlayerHUD::UpdateNPCInfoWidget()
 	}
 
 	//도슨트 클리어했으면
-	if (GI->ClearedNPC.Contains(2))
+	if (SaveGI->ClearedNPC.Contains(2))
 	{
 		NoteUI->WBP_NPCInfo->WidgetSwitcher_Docent1->SetActiveWidgetIndex(1);
 	}

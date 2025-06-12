@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/NoteUI/EscapeRuleWidget.h"
@@ -43,6 +44,8 @@ void ASouvenirActor::BeginPlay()
 	MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	PlayerHUD=TestPC->GetHUD<APlayerHUD>();
 	GI = GetGameInstance<UMyTestGameInstance>();
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
+	
 	if(M_Overlay)
 	{
 		StaticMeshComp->SetOverlayMaterial(M_Overlay);
@@ -74,9 +77,9 @@ void ASouvenirActor::IInteract()
 void ASouvenirActor::OnPickup()
 {
 	StaticMeshComp->SetHiddenInGame(true);
-	GI->AcquireSouvenir.Add(GetSouvenirID());
+	SaveGI->AcquireSouvenir.Add(GetSouvenirID());
 	// 얻을때마다 갯수셀꺼여서 초기화 
-	GI->AcquireSouvenirNum=0;
+	SaveGI->AcquireSouvenirNum=0;
 	
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 	FName SouvenirName_ = FName(*FString::FromInt(GetSouvenirID()));
@@ -119,16 +122,16 @@ void ASouvenirActor::OnPickup()
 		FSouvenirData* SouvenirData_ = GI->DT_SouvenirData->FindRow<FSouvenirData>(GI->SouvenirDataRowNames[i] , TEXT(""));
 		if (SouvenirData_->Had==true)
 		{
-			 GI->AcquireSouvenirNum++;
-			FString num=FString::FromInt(GI->AcquireSouvenirNum);
+			 SaveGI->AcquireSouvenirNum++;
+			FString num=FString::FromInt(SaveGI->AcquireSouvenirNum);
 			FString temp="AcquireSouvenirNum"+num;
 			 GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, *temp);
 		}
 	}
 
 	// GI->AcquireSouvenirNum 을 받아서 
-	PlayerHUD->NoteUI->WBP_EscapeRule->SetAcquireImage(GI->AcquireSouvenirNum,SouvenirData->thumnail);
-	PlayerHUD->NoteUI->WBP_EscapeRule->SetKeyImage(GI->AcquireSouvenirNum);
+	PlayerHUD->NoteUI->WBP_EscapeRule->SetAcquireImage(SaveGI->AcquireSouvenirNum,SouvenirData->thumnail);
+	PlayerHUD->NoteUI->WBP_EscapeRule->SetKeyImage(SaveGI->AcquireSouvenirNum);
 
 	PlayerHUD->NoteUI->SelectContent(5);
 

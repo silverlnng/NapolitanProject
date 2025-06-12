@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
 
@@ -27,7 +28,7 @@ void ADoor_2Floor::BeginPlay()
 		FString QuestText =FString(TEXT("머리를 찾아주기"));
 		FString QuestText2 =FString(TEXT("머리를 가져다 주자"));
 		
-		if (GI&&(GI->QuestSlots.Contains(QuestText)||GI->QuestSlots.Contains(QuestText2)))
+		if (SaveGI&&(SaveGI->QuestSlots.Contains(QuestText)||SaveGI->QuestSlots.Contains(QuestText2)))
 		{
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("QuestSlots.Contains머리를 찾아주기")));
 			BoxComp->OnComponentBeginOverlap.Clear();

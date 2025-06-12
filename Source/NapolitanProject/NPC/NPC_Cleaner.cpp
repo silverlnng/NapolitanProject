@@ -11,6 +11,7 @@
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
@@ -147,7 +148,7 @@ int32 ANPC_Cleaner::GetNPCID()
 int32 ANPC_Cleaner::GetState()
 {
 	// gi 의 ClearedNPC에서 경비원을 클리어했나 확인하기 
-	if (!(GI->ClearedNPC.Contains(4)))
+	if (!(SaveGI->ClearedNPC.Contains(4)))
 	{
 		//클리어 못함
 		State =1;
@@ -380,9 +381,9 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 			HeadStaticMesh->SetHiddenInGame(false); //머리를 보이게 함
 
 			// 이제 사용한 머리는 SavedItems 에서 제거해야함
-			if (ItemHead && GI->SavedItems.Contains(ItemHead->GetClass()))
+			if (ItemHead && SaveGI->SavedItems.Contains(ItemHead->GetClass()))
 			{
-				GI->SavedItems.Remove(ItemHead->GetClass());
+				SaveGI->SavedItems.Remove(ItemHead->GetClass());
 			}
 
 			// 인벤토리에서 버튼도 비활성화 하기

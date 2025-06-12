@@ -50,7 +50,9 @@ public:
 	virtual void IInteract() override;
 	UPROPERTY(VisibleAnywhere)
 	class UMyTestGameInstance* GI;
-	
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+
 	// 전환용 카메라 부착해주기 
 	UPROPERTY(EditDefaultsOnly)
 	class USpringArmComponent* SpringArmComp;

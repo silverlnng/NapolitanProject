@@ -29,7 +29,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class UMyTestGameInstance* GI;
-	
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
 	class APlayerHUD* PlayerHUD;

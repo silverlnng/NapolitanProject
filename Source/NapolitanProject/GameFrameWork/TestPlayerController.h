@@ -23,6 +23,9 @@ private:
 public:
 	UPROPERTY(VisibleAnywhere)
 	class UMyTestGameInstance* GI;
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+
 	UPROPERTY(VisibleAnywhere)
 	class APlayerHUD* PlayerHUD;
 	UPROPERTY(VisibleAnywhere)

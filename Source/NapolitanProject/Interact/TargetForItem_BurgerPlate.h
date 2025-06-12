@@ -50,7 +50,11 @@ public:
 
 	class ANPC_Butterfly* NPC_Butterfly=nullptr;
 	
+	UPROPERTY()
 	class UMyTestGameInstance* GI;
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+
 public:	
 	//////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")

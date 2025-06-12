@@ -6,6 +6,7 @@
 #include "EngineUtils.h"
 #include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
+#include "SaveGISubsystem.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
 #include "Components/Border.h"
@@ -52,11 +53,12 @@ void AEyeRoomGameModeBase::BeginPlay()
 	}	
 	
 	GI = GetGameInstance<UMyTestGameInstance>();
-
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
+	
 	//GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
-	if (!GI->ClearedNPC.IsEmpty())
+	if (!SaveGI->ClearedNPC.IsEmpty())
 	{
-		for (int32 key :GI->ClearedNPC)
+		for (int32 key :SaveGI->ClearedNPC)
 		{
 			if (NPCArray.Contains(key))
 			{
@@ -84,7 +86,7 @@ void AEyeRoomGameModeBase::BeginPlay()
 		//아이템 인벤토리때문에 만든 것, 저장한 아이템과 인벤토리가 맵을 넘어가도 가져갈 수 있도록
 		GetWorld()->GetTimerManager().SetTimer(RestoreAttachedItemTimer , [this]()
 		{
-			GI->RestoreAttachedItems();
+			SaveGI->RestoreAttachedItems();
 		} , 1.0f , false);
 	}
 }

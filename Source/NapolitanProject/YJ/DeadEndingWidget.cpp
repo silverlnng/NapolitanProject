@@ -10,6 +10,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "Save/GameSaveController.h"
@@ -25,6 +26,7 @@ void UDeadEndingWidget::NativeConstruct()
 	MainCharacter =TestPlayerController->GetPawn<ATestCharacter>();
 	
 	GI=GetGameInstance<UMyTestGameInstance>();
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
 	
 	IMG_BG->SetVisibility(ESlateVisibility::Hidden);
 	TextBlock_description->SetText(FText::FromString(TEXT("")));
@@ -114,20 +116,20 @@ void UDeadEndingWidget::OnRestart()
 
 
 	// IsFromLoad true 이면 불러온것을 로드함
-	if (GI->IsFromLoad)
+	if (SaveGI->IsFromLoad)
 	{
-		if (GI->LoadedSessionInfo)
+		if (SaveGI->LoadedGame)
 		{
-			int SlotNum=GI->LoadedSessionInfo->SlotNum;
-			GI->LoadedGame=GI->GameSaveController->LoadGameFromSlot(SlotNum);
+			int SlotNum=SaveGI->LoadedGame->SlotNum;
+			SaveGI->GameSaveController->LoadGameFromSlot(SlotNum);
 		}
 	}
-	else // 레벨 이동,로드플레이가 아닌경우, 로드 프레이중 한번이라도 저장한게 있는경우.  
+	else // 레벨 이동,로드플레이가 아닌경우, 로드 플레이중 한번이라도 저장한게 있는경우.  
 	{
 		if (GameSaveController&&GameSaveController->FindLatestSaveGame()!=-1)
 		{
 			int32 SlotNum=GameSaveController->FindLatestSaveGame(); //최근껄 로드 
-			GI->LoadedGame=GameSaveController->LoadGameFromSlot(SlotNum);
+			GameSaveController->LoadGameFromSlot(SlotNum);
 			UE_LOG(LogTemp , Warning , TEXT("%s : FindLatestSaveGame is: %d!"),*CALLINFO,SlotNum);
 	
 		}
@@ -147,7 +149,7 @@ void UDeadEndingWidget::OnRestart()
 
 void UDeadEndingWidget::OnQuit()
 {
-	GI->SetLevelMoveToDoor(false);
+	SaveGI->SetLevelMoveToDoor(false);
 	//종료 버튼 누르면 게임 종료
 	auto* pc = GetWorld()->GetFirstPlayerController();
 	UKismetSystemLibrary::QuitGame(GetWorld(), pc, EQuitPreference::Quit, false);

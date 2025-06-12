@@ -20,7 +20,9 @@ public:
 
 	UPROPERTY()
 	class UMyTestGameInstance* GI;
-	
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+
 	class ATestPlayerController* PC;
 	
 	class ATestCharacter* MainCharacter;

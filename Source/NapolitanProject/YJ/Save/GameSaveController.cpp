@@ -8,6 +8,7 @@
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
@@ -20,6 +21,10 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 	if (!PlayerCharacter) return;
 
 	UMyTestGameInstance* GameInstance = Cast<UMyTestGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+	USaveGISubsystem* SaveGISubsystem = GameInstance->GetSubsystem<USaveGISubsystem>();
+ 
+
 	
 	FString SlotName = GetSlotName(SlotIndex);
 	UTestSaveGame* SaveGameInstance = Cast<UTestSaveGame>(UGameplayStatics::CreateSaveGameObject(UTestSaveGame::StaticClass()));
@@ -60,32 +65,32 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 			}
 
 			// 클리어한 npc 정보를 저장하기
-			if (!GameInstance->ClearedNPC.IsEmpty())
+			if (!SaveGISubsystem->ClearedNPC.IsEmpty())
 			{
-				SaveGameInstance->ClearedNPC=GameInstance->ClearedNPC;
+				SaveGameInstance->ClearedNPC=SaveGISubsystem->ClearedNPC;
 			}
 
-			if (!GameInstance->NPCEventManage.IsEmpty())
+			if (!SaveGISubsystem->NPCEventManage.IsEmpty())
 			{
-				SaveGameInstance->NPCEventManage=GameInstance->NPCEventManage;
+				SaveGameInstance->NPCEventManage=SaveGISubsystem->NPCEventManage;
 			}
 			
-			if (!GameInstance->QuestSlots.IsEmpty())
+			if (!SaveGISubsystem->QuestSlots.IsEmpty())
 			{
-				SaveGameInstance->QuestSlots=GameInstance->QuestSlots;
+				SaveGameInstance->QuestSlots=SaveGISubsystem->QuestSlots;
 			}
 
-			if (!GameInstance->AcquireSouvenir.IsEmpty())
+			if (!SaveGISubsystem->AcquireSouvenir.IsEmpty())
 			{
-				SaveGameInstance->AcquireSouvenir=GameInstance->AcquireSouvenir;
+				SaveGameInstance->AcquireSouvenir=SaveGISubsystem->AcquireSouvenir;
 			}
 
-			if (!GameInstance->SavedItems.IsEmpty())
+			if (!SaveGISubsystem->SavedItems.IsEmpty())
 			{
-				SaveGameInstance->SavedItems=GameInstance->SavedItems;
+				SaveGameInstance->SavedItems=SaveGISubsystem->SavedItems;
 			}
 			
-			GameInstance->IsFromLoad=false;
+			SaveGISubsystem->IsFromLoad=false;
 		}
 
 		// 슬롯에 저장
@@ -112,8 +117,9 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 		
 		UMyTestGameInstance* GameInstance = Cast<UMyTestGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
+		USaveGISubsystem* SaveGISubsystem = GameInstance->GetSubsystem<USaveGISubsystem>();
 		
-		if (GameInstance)
+		if (GameInstance&&SaveGISubsystem)
 		{
 			if (GameInstance->DT_Clue)
 			{
@@ -142,8 +148,8 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 					UE_LOG(LogTemp, Warning, TEXT("LoadedGame->ClearedNPC %s,%d"),*CALLINFO,val);
 				}
 				
-				GameInstance->ClearedNPC=LoadedGame->ClearedNPC;
-				for (int32 &val:GameInstance->ClearedNPC)
+				SaveGISubsystem->ClearedNPC=LoadedGame->ClearedNPC;
+				for (int32 &val:SaveGISubsystem->ClearedNPC)
 				{
 					UE_LOG(LogTemp, Warning, TEXT("GameInstance->ClearedNPC %s,%d"),*CALLINFO,val);
 					//제대로 되는지 로그로 확인하기
@@ -154,28 +160,29 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 
 			if (!LoadedGame->NPCEventManage.IsEmpty())
 			{
-				GameInstance->NPCEventManage=LoadedGame->NPCEventManage;
+				SaveGISubsystem->NPCEventManage=LoadedGame->NPCEventManage;
 			}
 			
 			if (!LoadedGame->QuestSlots.IsEmpty())
 			{
-				GameInstance->QuestSlots=LoadedGame->QuestSlots;
+				SaveGISubsystem->QuestSlots=LoadedGame->QuestSlots;
 			}
 
 			if (!LoadedGame->AcquireSouvenir.IsEmpty())
 			{
-				GameInstance->AcquireSouvenir=LoadedGame->AcquireSouvenir;
+				SaveGISubsystem->AcquireSouvenir=LoadedGame->AcquireSouvenir;
 			}
 
 			if (!LoadedGame->SavedItems.IsEmpty())
 			{
-				GameInstance->SavedItems=LoadedGame->SavedItems;
+				SaveGISubsystem->SavedItems=LoadedGame->SavedItems;
 			}
 			
 		}
 
-		GameInstance->IsFromLoad=true;
-		GameInstance->LoadedSessionInfo=LoadedGame; // 불러온게 뭔지 저장을 해두기 
+		SaveGISubsystem->IsFromLoad=true;
+		
+		SaveGISubsystem->LoadedGame=LoadedGame; // 불러온게 뭔지 저장을 해두기 
 		
 		return LoadedGame;
 	}

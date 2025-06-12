@@ -6,6 +6,7 @@
 #include "EngineUtils.h"
 #include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
+#include "SaveGISubsystem.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
 #include "Blueprint/UserWidget.h"
@@ -61,7 +62,7 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 {
 	const FName NameKey(str);
 	// NPCEventManage에서 한번 조회 
-	if (GI&&!(GI->NPCEventManage.IsEmpty())&&GI->NPCEventManage.Contains(NameKey))
+	if (SaveGI&&!(SaveGI->NPCEventManage.IsEmpty())&&SaveGI->NPCEventManage.Contains(NameKey))
 	{
 		return;
 	}
@@ -83,13 +84,13 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 	{
 		// 청소부의 퀘스트 함수
 		Event_Cleaner_Start();
-		GI->NPCEventManage.Add(NameKey);
+		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="CleanerQuestCompleted")
 	{
 		// 청소부의 퀘스트 완료 함수
 		Event_Cleaner_Completed();
-		GI->NPCEventManage.Add(NameKey);
+		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="OldmanClue")
 	{
@@ -100,32 +101,32 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 			// 청소부의 퀘스트 완료 함수
 			Event_Oldman();
 		},3.0f,false);
-		GI->NPCEventManage.Add(NameKey);
+		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="ButterflyQuest")
 	{
 		Event_Butterfly_Start();
-		GI->NPCEventManage.Add(NameKey);
+		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="ButterflyQuestCompleted")
 	{
 		Event_Butterfly_Completed();
-		GI->NPCEventManage.Add(NameKey);
+		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="ButterflyQuestReward")
 	{
 		Event_Butterfly_QuestReward();
-		GI->NPCEventManage.Add(NameKey);
+		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="LeeSeoFirstUI")
 	{
 		Event_LeeSeo_FirstUI();
-		GI->NPCEventManage.Add(NameKey);
+		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="LeeSeoSecondUI")
 	{
 		Event_LeeSeo_SecondUI();
-		GI->NPCEventManage.Add(NameKey);
+		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="CuratorLightEffect")
 	{
@@ -137,7 +138,7 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 	else if (str=="CuratorCompleted")
 	{
 		Event_Curator_Completed();
-		GI->NPCEventManage.Add(NameKey);
+		SaveGI->NPCEventManage.Add(NameKey);
 	}
 }
 
