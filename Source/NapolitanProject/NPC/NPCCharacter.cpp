@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "../GameFrameWork/TestPlayerController.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 
@@ -98,6 +99,26 @@ void ANPCCharacter::ResultEvent(int32 result)
 
 void ANPCCharacter::Interact()
 {
+	// 컨트롤러 의  curNPC에 담아주기 
+	TestPC->curNPC =this;
+	// TestPC 에서 대화창 시작하는 함수 시작하기
+			
+	TestPC->curNPC->playTalkAnimMontage();
+			
+	TestPC->StartEndNPCDialougue(true);
+	TestPC->SetNPCDialougueText(0);
+	// 나의 상태 변화
+	MainCharacter->SetPlayerState(EPlayerState::Talking);
+
+	if (NPCEventSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, NPCEventSoundWave);
+	}
+}
+
+void ANPCCharacter::IInteract()
+{
+	Interact();
 }
 
 void ANPCCharacter::playTalkAnimMontage()

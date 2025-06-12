@@ -466,7 +466,7 @@ void ATestCharacter::SphereTraceFromCamera()
 	FVector TraceStart = CameraLocation;
 	FVector TraceEnd = TraceStart + (CameraRotation.Vector() * traceLength); // 1000 유닛 앞까지 트레이스
 
-	// 트레이스 채널 설정 (여기서는 ECC_Visibility 사용)
+	// 트레이스 채널 설정
 	// Interact : ECC_GameTraceChannel3
 	ECollisionChannel TraceChannel = ECC_GameTraceChannel3;
 	
@@ -476,7 +476,7 @@ void ATestCharacter::SphereTraceFromCamera()
 	FCollisionQueryParams TraceParams;
 	TraceParams.AddIgnoredActor(this);
 
-	//bool SweepSingleByChannel(struct FHitResult& OutHit, const FVector& Start, const FVector& End, const FQuat& Rot, ECollisionChannel TraceChannel, const FCollisionShape& CollisionShape, const FCollisionQueryParams& Params = FCollisionQueryParams::DefaultQueryParam, const FCollisionResponseParams& ResponseParam = FCollisionResponseParams::DefaultResponseParam) const;
+	
 
 	InteractHit = GetWorld()->SweepSingleByChannel(
 		 HitResult,
@@ -496,14 +496,8 @@ void ATestCharacter::SphereTraceFromCamera()
 	if (InteractHit && curState==EPlayerState::Idle) //  이중조건 && interact 중이 아닐때로 만들기  
 	{
 		//DrawDebugSphere(GetWorld(), HitResult.ImpactPoint, SphereRadius, 12, TraceColor, false, 2.0f);
-		if (HitResult.GetActor()->ActorHasTag(FName(TEXT("wall"))))
-		{
-			InteractHit=false;
-			return;
-		}
 		Interact =HitResult.GetActor();
 		PlayerHUD->InteractUI->SetVisibleHBox(true);
-		
 	}
 	else if (!InteractHit && curState==EPlayerState::Idle)
 	{
@@ -527,11 +521,18 @@ void ATestCharacter::OnInteraction()
 	if (InteractHit && Interact && curState!=EPlayerState::Talking && curState!=EPlayerState::UI)
 	{
 		// 상호작용 대상에게 만들어져있는 상호작용 함수 호출시키기
+
+		IInteractInterface* HitInterface = Cast<IInteractInterface>(Interact);
+		if (HitInterface)
+		{
+			HitInterface->IInteract();
+		}
+			
 		 // Interact 을 npc로 캐스팅 가능하다면
-		ANPCCharacter* InteractNPC =Cast<ANPCCharacter>(Interact);
+		/*ANPCCharacter* InteractNPC =Cast<ANPCCharacter>(Interact);
 		if (InteractNPC)
 		{
-		// 컨트롤러 의  curNPC에 담아주기 
+			// 컨트롤러 의  curNPC에 담아주기 
 			TestPC->curNPC =InteractNPC;
 		   // TestPC 에서 대화창 시작하는 함수 시작하기
 			
@@ -554,7 +555,7 @@ void ATestCharacter::OnInteraction()
 		if (Clue)
 		{
 			Clue->LookAt();
-		}
+		}*/
 
 		ASouvenirActor* Souvenir=Cast<ASouvenirActor>(Interact);
 		if (Souvenir)

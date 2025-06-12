@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "NapolitanProject/Interface/InteractInterface.h"
 #include "NPCCharacter.generated.h"
 
 UCLASS()
-class NAPOLITANPROJECT_API ANPCCharacter : public ACharacter
+class NAPOLITANPROJECT_API ANPCCharacter : public ACharacter,public IInteractInterface
 {
 	GENERATED_BODY()
 
@@ -45,7 +46,8 @@ public:
 	virtual void ResultEvent(int32 result); //결과 함수
 
 	virtual void Interact();
-
+	
+	virtual void IInteract() override;
 	UPROPERTY(VisibleAnywhere)
 	class UMyTestGameInstance* GI;
 	
@@ -80,5 +82,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* MissionClearSoundWave;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* NPCEventSoundWave;
 };
 

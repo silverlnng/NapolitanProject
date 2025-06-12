@@ -61,6 +61,12 @@ void AClueActor::Tick(float DeltaTime)
 
 }
 
+void AClueActor::IInteract()
+{
+	//IInteractInterface::Interact();
+	LookAt();
+}
+
 void AClueActor::LookAt()
 {
 	
