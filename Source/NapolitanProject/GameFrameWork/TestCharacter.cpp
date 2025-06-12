@@ -526,88 +526,15 @@ void ATestCharacter::OnInteraction()
 		{
 			HitInterface->IInteract();
 		}
-			
-		 // Interact 을 npc로 캐스팅 가능하다면
-		/*ANPCCharacter* InteractNPC =Cast<ANPCCharacter>(Interact);
-		if (InteractNPC)
-		{
-			// 컨트롤러 의  curNPC에 담아주기 
-			TestPC->curNPC =InteractNPC;
-		   // TestPC 에서 대화창 시작하는 함수 시작하기
-			
-			TestPC->curNPC->playTalkAnimMontage();
-			
-			TestPC->StartEndNPCDialougue(true);
-			TestPC->SetNPCDialougueText(0);
-			// 나의 상태 변화
-			SetPlayerState(EPlayerState::Talking);
-
-			if (NPCEventSoundWave)
-			{
-				UGameplayStatics::PlaySound2D(this, NPCEventSoundWave);
-			}
-		}
 		
-		// 단서라면 단서로 캐스트
-		// 단서를 카메라 가까이 나오고 시간 지연 주고 스크린 ui 으로 각자의 내용이 나오도록 하기
-		AClueActor* Clue =Cast<AClueActor>(Interact);
-		if (Clue)
-		{
-			Clue->LookAt();
-		}*/
-
-		/*ASouvenirActor* Souvenir=Cast<ASouvenirActor>(Interact);
-		if (Souvenir)
-		{
-			Souvenir->OnPickup();
-		}*/
-
-		/*AItemActor* ItemActor =Cast<AItemActor>(Interact);
-		
-		if (!curItem && ItemActor)
-		{
-			curItem=ItemActor;
-			ItemActor->OnPickup();
-		}*/
-
-		// 저장할때
-		
-		/*ACheckPoint* CheckPoint =Cast<ACheckPoint>(Interact);
-		
-		if (CheckPoint)
-		{
-			CheckPoint->VisibleSaveWidget();
-		}*/
-
-		//문 근처에 다가가면 E가 뜨고 -> E를 눌러서 열기
-		/*AExitDoorTrue* Door = Cast<AExitDoorTrue>(Interact);
-		if (Door)
-		{
-			Door->DoorOpen(); //문을 여는 함수
-		}*/
-
-		//자물쇠 태그 체크
+		/*//자물쇠 태그 체크
 		if (Interact->Tags.Contains(FName("Lock")))
 		{
 			HandleLockInteraction();
 			return;
-		}
-		
-
-///////////////// 아이템을 내려놓는 대상 /////////////////////////
-
-		/*//현재 아이템 curItem 을 받아서 검증 하는 방법으로
-		ATargetForItem* TargetForItem =Cast<ATargetForItem>(Interact);
-		if (TargetForItem&&curItem)
-		{
-			TargetForItem->CheckItem(curItem);
-		}
-		else if (TargetForItem&&!curItem)
-		{
-			TargetForItem->NoItem();
 		}*/
 		
-///////////////// 2층에서만 사용하는 기능은 델리게이트로 사용하기.//////////////////////////
+///////////////// 특정 맵,구역에서 사용하는 기능은 델리게이트로 사용하기.//////////////////////////
 		OnSpecialInteraction.Broadcast(Interact);
 		
 	}

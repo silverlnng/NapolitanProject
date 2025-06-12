@@ -29,4 +29,10 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	TMap<int32,class ANPCCharacter*> NPCArray;
+
+	UFUNCTION()
+	void Interaction_OnEyeRoomMap(AActor* Interact);
+
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 };
+

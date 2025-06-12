@@ -34,6 +34,11 @@ void AEyeRoomGameModeBase::BeginPlay()
 	MainCharacter->b_IA_Note_Allowed = true;
 	MainCharacter->b_IA_Inven_Allowed = true;
 
+	// 기존 바인딩 제거
+	MainCharacter->OnSpecialInteraction.Clear();
+	// 새로운 기능 바인딩
+	MainCharacter->OnSpecialInteraction.AddDynamic(this, &AEyeRoomGameModeBase::Interaction_OnEyeRoomMap);
+	
 	PlayerHUD = PC->GetHUD<APlayerHUD>();
 
 	// 현재 맵에 있는 npc들을 저장
@@ -82,4 +87,18 @@ void AEyeRoomGameModeBase::BeginPlay()
 			GI->RestoreAttachedItems();
 		} , 1.0f , false);
 	}
+}
+
+void AEyeRoomGameModeBase::Interaction_OnEyeRoomMap(AActor* Interact)
+{
+	//자물쇠 태그 체크
+	if (Interact->Tags.Contains(FName("Lock")))
+	{
+		MainCharacter->HandleLockInteraction();
+	}
+}
+void AEyeRoomGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+	MainCharacter->OnSpecialInteraction.Clear();
 }
