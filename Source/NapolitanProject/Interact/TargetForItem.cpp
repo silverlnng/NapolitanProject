@@ -75,3 +75,15 @@ void ATargetForItem::CheckItemFail()
 void ATargetForItem::NoItem()
 {
 }
+
+void ATargetForItem::IInteract()
+{
+	if (MainCharacter->curItem)
+	{
+		CheckItem(MainCharacter->curItem);
+	}
+	else if (!MainCharacter->curItem)
+	{
+		NoItem();
+	}
+}

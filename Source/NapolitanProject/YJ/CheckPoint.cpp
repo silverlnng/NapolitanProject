@@ -62,6 +62,12 @@ void ACheckPoint::Tick(float DeltaTime)
 
 }
 
+void ACheckPoint::IInteract()
+{
+	//IInteractInterface::IInteract();
+	void VisibleSaveWidget();
+}
+
 void ACheckPoint::VisibleSaveWidget()
 {
 	PlayerHUD->LoadScreenUI->SetVisibility(ESlateVisibility::Visible);

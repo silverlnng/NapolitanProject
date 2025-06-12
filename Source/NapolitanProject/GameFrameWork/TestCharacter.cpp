@@ -556,36 +556,35 @@ void ATestCharacter::OnInteraction()
 			Clue->LookAt();
 		}*/
 
-		ASouvenirActor* Souvenir=Cast<ASouvenirActor>(Interact);
+		/*ASouvenirActor* Souvenir=Cast<ASouvenirActor>(Interact);
 		if (Souvenir)
 		{
 			Souvenir->OnPickup();
-		}
+		}*/
 
-		AItemActor* ItemActor =Cast<AItemActor>(Interact);
+		/*AItemActor* ItemActor =Cast<AItemActor>(Interact);
 		
 		if (!curItem && ItemActor)
 		{
 			curItem=ItemActor;
 			ItemActor->OnPickup();
-		}
+		}*/
 
 		// 저장할때
 		
-		ACheckPoint* CheckPoint =Cast<ACheckPoint>(Interact);
+		/*ACheckPoint* CheckPoint =Cast<ACheckPoint>(Interact);
 		
 		if (CheckPoint)
 		{
 			CheckPoint->VisibleSaveWidget();
-		}
+		}*/
 
 		//문 근처에 다가가면 E가 뜨고 -> E를 눌러서 열기
-		
-		AExitDoorTrue* Door = Cast<AExitDoorTrue>(Interact);
+		/*AExitDoorTrue* Door = Cast<AExitDoorTrue>(Interact);
 		if (Door)
 		{
 			Door->DoorOpen(); //문을 여는 함수
-		}
+		}*/
 
 		//자물쇠 태그 체크
 		if (Interact->Tags.Contains(FName("Lock")))
@@ -597,7 +596,7 @@ void ATestCharacter::OnInteraction()
 
 ///////////////// 아이템을 내려놓는 대상 /////////////////////////
 
-		//현재 아이템 curItem 을 받아서 검증 하는 방법으로
+		/*//현재 아이템 curItem 을 받아서 검증 하는 방법으로
 		ATargetForItem* TargetForItem =Cast<ATargetForItem>(Interact);
 		if (TargetForItem&&curItem)
 		{
@@ -606,7 +605,7 @@ void ATestCharacter::OnInteraction()
 		else if (TargetForItem&&!curItem)
 		{
 			TargetForItem->NoItem();
-		}
+		}*/
 		
 ///////////////// 2층에서만 사용하는 기능은 델리게이트로 사용하기.//////////////////////////
 		OnSpecialInteraction.Broadcast(Interact);

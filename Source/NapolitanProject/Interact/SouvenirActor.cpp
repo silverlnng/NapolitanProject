@@ -66,6 +66,11 @@ FString ASouvenirActor::GetSouvenirName()
 	return this->SouvenirName;
 }
 
+void ASouvenirActor::IInteract()
+{
+	OnPickup();
+}
+
 void ASouvenirActor::OnPickup()
 {
 	StaticMeshComp->SetHiddenInGame(true);

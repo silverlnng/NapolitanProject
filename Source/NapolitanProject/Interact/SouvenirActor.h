@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "NapolitanProject/Interface/InteractInterface.h"
 #include "SouvenirActor.generated.h"
 
 UCLASS()
-class NAPOLITANPROJECT_API ASouvenirActor : public AActor
+class NAPOLITANPROJECT_API ASouvenirActor : public AActor,public IInteractInterface
 {
 	GENERATED_BODY()
 	
@@ -53,6 +54,8 @@ public:
 
 	virtual FString GetSouvenirName();
 	
+	// 캐릭터가 상호작용 눌렀을때 실행시킬 함수
+	virtual void IInteract() override;
 	virtual void OnPickup();
 
 

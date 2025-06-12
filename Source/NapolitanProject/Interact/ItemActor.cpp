@@ -59,6 +59,13 @@ void AItemActor::Tick(float DeltaTime)
 
 }
 
+void AItemActor::IInteract()
+{
+	if (MainCharacter->curItem) { return; }
+	MainCharacter->curItem = this;
+	OnPickup();
+}
+
 void AItemActor::OnPickup() // 아이템을 레벨에서 처음한번 잡을때. 인벤작업까지 되어있음
 {
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);

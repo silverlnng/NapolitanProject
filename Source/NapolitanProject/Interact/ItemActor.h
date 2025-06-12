@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "NapolitanProject/Interface/InteractInterface.h"
 #include "ItemActor.generated.h"
 
 
 
 UCLASS()
-class NAPOLITANPROJECT_API AItemActor : public AActor
+class NAPOLITANPROJECT_API AItemActor : public AActor,public IInteractInterface
 {
 	GENERATED_BODY()
 	
@@ -55,6 +56,8 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	class APlayerHUD* PlayerHUD;
 	
+	// 캐릭터가 상호작용 눌렀을때 실행시킬 함수
+	virtual void IInteract() override;
 	
 	virtual void OnPickup(); // 아이템을 상호작용e키 눌렀을때 부를 함수 + 카메라 앞에 부착하기 
 

@@ -101,6 +101,10 @@ void AExitDoorTrue::RotateDoor()
 		GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 	}
 }
+void AExitDoorTrue::IInteract()
+{
+	DoorOpen();
+}
 
 void AExitDoorTrue::DoorOpen()
 {
@@ -123,3 +127,4 @@ void AExitDoorTrue::DoorOpen()
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AExitDoorTrue::RotateDoor, 0.01f, true);
 
 }
+

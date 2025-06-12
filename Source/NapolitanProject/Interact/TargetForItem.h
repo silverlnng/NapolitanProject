@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "NapolitanProject/Interface/InteractInterface.h"
 #include "TargetForItem.generated.h"
 
 UCLASS()
-class NAPOLITANPROJECT_API ATargetForItem : public AActor
+class NAPOLITANPROJECT_API ATargetForItem : public AActor,public IInteractInterface
 {
 	GENERATED_BODY()
 	
@@ -44,6 +45,9 @@ public:
 	virtual void CheckItemFail();
 	
 	virtual void NoItem();
+
+	// 캐릭터가 상호작용 눌렀을때 실행시킬 함수
+	virtual void IInteract() override;
 	
 	// 상호작용하는 아이템에대해 미리 설정
 	UPROPERTY(EditAnywhere)

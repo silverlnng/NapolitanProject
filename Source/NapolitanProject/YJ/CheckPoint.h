@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "NapolitanProject/Interface/InteractInterface.h"
 #include "CheckPoint.generated.h"
 
 UCLASS()
-class NAPOLITANPROJECT_API ACheckPoint : public AActor
+class NAPOLITANPROJECT_API ACheckPoint : public AActor,public IInteractInterface
 {
 	GENERATED_BODY()
 	
@@ -41,7 +42,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	class USceneComponent* SaveLocComp;
-
+	
+	// 캐릭터가 상호작용 눌렀을때 실행시킬 함수
+	virtual void IInteract() override;
 	UFUNCTION()
 	void VisibleSaveWidget();
 	
