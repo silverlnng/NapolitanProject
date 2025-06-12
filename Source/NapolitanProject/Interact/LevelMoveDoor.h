@@ -67,6 +67,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool bMoveFromLobby=false;
 
+	// 로드해야하는 서브레벨들을 블프에서 할당하기 
+	UPROPERTY(EditDefaultsOnly)
+	TSet<TSoftObjectPtr<UWorld>> SubLevelArray;
+	
 	/*UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> CorriderLevel;
 	

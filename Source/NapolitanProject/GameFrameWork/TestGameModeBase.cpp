@@ -154,7 +154,7 @@ void ATestGameModeBase::BeginPlay()
 		
 		
 		
-		if (SaveGI->bLevelMoveToDoor)
+		if (SaveGI->bLevelMoveToDoor) // 그림으로 이동후 돌아올 때 
 		{
 			// 저장된 위치가 있으면 플레이어를 해당 위치로 이동
 			MainCharacter->SetActorLocation(SaveGI->GetSavedPlayerLocation().GetLocation());
@@ -162,7 +162,7 @@ void ATestGameModeBase::BeginPlay()
 
 			// 이거 에 따라서 레벨 로드-언로드 필요..
 			// 여기에 서브레벨로 나누었던것도 로드를 해야함.
-			FTimerHandle TimerHandle;
+			/*FTimerHandle TimerHandle;
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
 			{
 				FLatentActionInfo LatentAction;
@@ -181,11 +181,23 @@ void ATestGameModeBase::BeginPlay()
 			{
 				FLatentActionInfo LatentAction2;
 				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom1Level,true,true,LatentAction2);
-			}, 2.0f, false);
+			}, 2.0f, false);*/
+
+			FTimerHandle TimerHandle;
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				FLatentActionInfo LatentAction;
+				for (auto subLevel:SaveGI->SubLevelArray)
+				{
+					UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
+				}
+			
+			}, 1.0f, false);
 			
 			
 			// 적용 후 다시 false로 변경 (새 게임 시작 시 영향 안 주도록)
 			SaveGI->SetLevelMoveToDoor(false);
+			
 		}
 		else if (SaveGI->LoadedGame) // 로드플레이 중 이다
 		{
@@ -197,7 +209,19 @@ void ATestGameModeBase::BeginPlay()
 				MainCharacter->SetActorRotation(SaveGI->LoadedGame->PlayerRotation);
 			} , 1.0f , false);
 
+			//
 			FTimerHandle TimerHandle;
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				FLatentActionInfo LatentAction;
+				for (auto subLevel:SaveGI->SubLevelArray)
+				{
+					UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
+				}
+			
+			}, 1.0f, false);
+			
+			/*FTimerHandle TimerHandle;
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
 			{
 				FLatentActionInfo LatentAction;
@@ -216,7 +240,7 @@ void ATestGameModeBase::BeginPlay()
 			{
 				FLatentActionInfo LatentAction2;
 				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom1Level,true,true,LatentAction2);
-			}, 2.0f, false);
+			}, 2.0f, false);*/
 			
 			FTimerHandle GITimer2;
 			GetWorld()->GetTimerManager().SetTimer(GITimer2 , [this]()

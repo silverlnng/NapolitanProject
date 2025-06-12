@@ -5,7 +5,9 @@
 
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "SaveUI/LoadConfirmWidget.h"
@@ -53,6 +55,9 @@ void ACheckPoint::BeginPlay()
 		PlayerHUD=TestPC->GetHUD<APlayerHUD>();
 	}
 	//SphereComp->OnComponentBeginOverlap.AddDynamic(this, &ACheckPoint::OnSphereOverlap);
+
+	GI=GetGameInstance<UMyTestGameInstance>();
+	SaveGI = GI->GetSubsystem<USaveGISubsystem>();
 }
 
 // Called every frame
@@ -98,6 +103,20 @@ void ACheckPoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		PlayerHUD->LoadScreenUI->WBP_LoadConfirm->SaveLocation=SaveLocation;
 		MainCharacter->SaveLocationStr=SaveLocation;
 		MainCharacter->SaveTransform=SaveLocComp->GetComponentTransform();
+
+		// 로드해야하는 주위 서브레벨들
+
+		// 그냥 여기서 자신의 서브레벨 로드하는게 편함. 
+		if (!SaveGI->SubLevelArray.IsEmpty())
+		{
+			SaveGI->SubLevelArray.Empty();
+		}
+		for (auto Level:SubLevelArray)
+		{
+			SaveGI->SubLevelArray.Add(Level);
+		}
+
+		
 		// ui 보는 모드로 만들기
 		TestPC->SetInputMode(FInputModeGameAndUI());
 		TestPC->SetShowMouseCursor(true);

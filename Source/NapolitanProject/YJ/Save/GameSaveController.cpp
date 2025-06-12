@@ -38,7 +38,6 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 
 		SaveGameInstance->PlayerLocation = PlayerCharacter->SaveTransform.GetLocation();
 		SaveGameInstance->PlayerRotation=PlayerCharacter->SaveTransform.GetRotation().Rotator();
-		
 		SaveGameInstance->PlayerLevel=UGameplayStatics::GetCurrentLevelName(GetWorld());
 		// 저장한 날짜 
 		FDateTime Now = FDateTime::Now();
@@ -47,7 +46,9 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 
 		// 저장한 위치
 		SaveGameInstance->SaveLocation=PlayerCharacter->SaveLocationStr;
-		
+
+		SaveGameInstance->SubLevelArray=SaveGISubsystem->SubLevelArray;
+			
 		// 획득한 단서에 대해 저장하기
 		if (GameInstance && GameInstance->DT_Clue)
 		{
@@ -121,6 +122,9 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 		
 		if (GameInstance&&SaveGISubsystem)
 		{
+			
+			SaveGISubsystem->SubLevelArray=LoadedGame->SubLevelArray;
+			
 			if (GameInstance->DT_Clue)
 			{
 				TMap<FName, bool>& SavedClueStates = LoadedGame->ClueStates;

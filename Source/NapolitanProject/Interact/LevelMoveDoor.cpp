@@ -105,6 +105,17 @@ void ALevelMoveDoor::LevelMove()
 			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("MyVector: %s"), *MainCharacter->SaveTransform.GetLocation().ToString()));
 		}
 		SaveGI->SavePlayerFTransform(FromLevelLocComp->GetComponentTransform());
+
+		// 로드해야하는 주위 서브레벨들
+		if (!SaveGI->SubLevelArray.IsEmpty())
+		{
+			SaveGI->SubLevelArray.Empty();
+		}
+		
+		for (auto Level:SubLevelArray)
+		{
+			SaveGI->SubLevelArray.Add(Level);
+		}
 		
 		SaveGI->GameSaveController->SaveGameToSlot(3); //여긴 자동저장 . 슬롯 3에 이전과 동일하도록 저장을 함 
 		
@@ -130,20 +141,6 @@ void ALevelMoveDoor::LevelMove()
 	{
 		SaveGI->GameSaveController->LoadGameFromSlot(3);
 		// 여기에 오픈레벨(로비) 가 있음
-
-		// 서브레벨로 나누었던것도 로드를 해야함.
-		// 이거는 위치한 거 에 따라서 각자 해야함 
-		
-		/*// 여기에 서브레벨로 나누었던것도 로드를 해야함.
-		FTimerHandle TimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
-		{
-			FLatentActionInfo LatentAction;
-			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom2Level,true,true,LatentAction);
-			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),CorriderLevel,true,true,LatentAction);
-			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom1Level,true,true,LatentAction);
-			
-		}, 3.5f, false);*/
 		
 	}
 	

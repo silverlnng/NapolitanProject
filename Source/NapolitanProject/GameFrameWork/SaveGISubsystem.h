@@ -90,4 +90,7 @@ public:
 	// 위치 사용 여부 플래그 설정 함수
 	UFUNCTION(BlueprintCallable)
 	void SetLevelMoveToDoor(bool bUse);
+
+	UPROPERTY()
+	TSet<TSoftObjectPtr<UWorld>> SubLevelArray;
 };

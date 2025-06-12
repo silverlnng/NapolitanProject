@@ -29,8 +29,14 @@ void ALevelStram1F_TriggerBox::BeginOverlap(UPrimitiveComponent* OverlappedCompo
 		}
 
 		bHasTriggered = true;
-		
+
 		FLatentActionInfo LatentAction;
+		for (auto subLevel:SubLevelArray)
+		{
+			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
+		}
+		
+		/*FLatentActionInfo LatentAction;
 		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),MainHall_Level,true,true,LatentAction);
 
 		// 시간지연을 주고
@@ -46,7 +52,7 @@ void ALevelStram1F_TriggerBox::BeginOverlap(UPrimitiveComponent* OverlappedCompo
 		{
 			FLatentActionInfo LatentAction;
 			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),MainHall_Level,true,true,LatentAction);
-		}, 2.0f, false);
+		}, 2.0f, false);*/
 		
 		
 	}	
