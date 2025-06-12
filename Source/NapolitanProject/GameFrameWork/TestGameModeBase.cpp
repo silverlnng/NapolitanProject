@@ -208,15 +208,21 @@ void ATestGameModeBase::BeginPlay()
 				MainCharacter->SetActorLocation(SaveGI->LoadedGame->PlayerLocation);
 				MainCharacter->SetActorRotation(SaveGI->LoadedGame->PlayerRotation);
 			} , 1.0f , false);
-			
-			FLatentActionInfo LatentAction;
-			for (auto subLevel:SaveGI->SubLevelArray)
+
+			/*FTimerHandle GITimer3;
+			GetWorld()->GetTimerManager().SetTimer(GITimer3 , [this]()
 			{
-				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
+				for (auto subLevel:SaveGI->SubLevelArray)
+				{
+					FLatentActionInfo LatentAction;
+					UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
 				
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("LoadStreamLevel")));
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("LoadStreamLevel")));
 				
-			}
+				}
+			} , 1.0f , false);*/
+			
+			
 			
 			FTimerHandle GITimer2;
 			GetWorld()->GetTimerManager().SetTimer(GITimer2 , [this]()

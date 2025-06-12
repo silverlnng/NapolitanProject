@@ -126,14 +126,29 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 		
 		UE_LOG(LogTemp, Warning, TEXT("Game loaded from slot: %s"), *SlotName);
 		UGameplayStatics::OpenLevel(GetWorld(),FName(*LoadedGame->PlayerLevel));
-
-		FLatentActionInfo LatentAction;
-		for (auto subLevel:LoadedGame->SubLevelArray)
+		
+		auto LoadedGameCopy = LoadedGame;
+		
+		
+		
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this, LoadedGameCopy]()
 		{
-			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
+			for (auto subLevel:LoadedGameCopy->SubLevelArray)
+			{
+				FLatentActionInfo LatentAction;
+				LatentAction.CallbackTarget = this;
+				LatentAction.UUID = UUIDCounter++;
+				LatentAction.Linkage = 0;
+				LatentAction.ExecutionFunction = NAME_None;
+				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
 
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("LoadedGame_SubLevelArray")));
-		}
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("LoadedGame_SubLevelArray")));
+			}
+			
+		}, 1.0f, false);
+		
+		
 		
 		UMyTestGameInstance* GameInstance = Cast<UMyTestGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
