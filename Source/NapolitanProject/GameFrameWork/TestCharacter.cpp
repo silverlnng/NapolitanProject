@@ -33,7 +33,7 @@
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
-#include "Perception/AISense_Hearing.h"
+#include "NapolitanProject/Interface/InteractInterface.h"
 
 
 ATestCharacter::ATestCharacter()
@@ -521,7 +521,6 @@ void ATestCharacter::OnInteraction()
 	if (InteractHit && Interact && curState!=EPlayerState::Talking && curState!=EPlayerState::UI)
 	{
 		// 상호작용 대상에게 만들어져있는 상호작용 함수 호출시키기
-
 		IInteractInterface* HitInterface = Cast<IInteractInterface>(Interact);
 		if (HitInterface)
 		{
