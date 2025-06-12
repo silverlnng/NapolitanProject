@@ -5,6 +5,7 @@
 
 #include "Components/CapsuleComponent.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
@@ -70,7 +71,7 @@ void ACheckPoint::Tick(float DeltaTime)
 void ACheckPoint::IInteract()
 {
 	//IInteractInterface::IInteract();
-	void VisibleSaveWidget();
+	VisibleSaveWidget();
 }
 
 void ACheckPoint::VisibleSaveWidget()
@@ -83,6 +84,10 @@ void ACheckPoint::VisibleSaveWidget()
 	PlayerHUD->LoadScreenUI->WBP_LoadConfirm->SaveLocation=SaveLocation;
 	MainCharacter->SaveLocationStr=SaveLocation;
 	MainCharacter->SaveTransform=SaveLocComp->GetComponentTransform();
+
+	// 로드해야하는 주위 서브레벨들
+	SaveGI->SubLevelArray=SubLevelArray;
+	
 	// ui 보는 모드로 만들기
 	TestPC->SetInputMode(FInputModeGameAndUI());
 	TestPC->SetShowMouseCursor(true);
@@ -103,23 +108,32 @@ void ACheckPoint::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		PlayerHUD->LoadScreenUI->WBP_LoadConfirm->SaveLocation=SaveLocation;
 		MainCharacter->SaveLocationStr=SaveLocation;
 		MainCharacter->SaveTransform=SaveLocComp->GetComponentTransform();
-
-		// 로드해야하는 주위 서브레벨들
-
-		// 그냥 여기서 자신의 서브레벨 로드하는게 편함. 
-		if (!SaveGI->SubLevelArray.IsEmpty())
-		{
-			SaveGI->SubLevelArray.Empty();
-		}
-		for (auto Level:SubLevelArray)
-		{
-			SaveGI->SubLevelArray.Add(Level);
-		}
-
+		
+		// 그냥 여기서 자신의 서브레벨 로드하는게 편함. =>느림 
+		//GetWorldTimerManager().SetTimer(loadSubLevelTimerHandle, this, &ACheckPoint::ProcessNextSubLevel, 1.0f, false);
 		
 		// ui 보는 모드로 만들기
 		TestPC->SetInputMode(FInputModeGameAndUI());
 		TestPC->SetShowMouseCursor(true);
 		MainCharacter->SetPlayerState(EPlayerState::UI);
+	}
+}
+
+void ACheckPoint::ProcessNextSubLevel()
+{
+	if (CurrentIndex < SubLevelArray.Num())
+	{
+		FLatentActionInfo LatentAction;
+		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),SubLevelArray[CurrentIndex],true,true,LatentAction);
+		
+		CurrentIndex++;
+
+		// 다음 아이템을 1초 후 처리
+		GetWorldTimerManager().SetTimer(loadSubLevelTimerHandle, this, &ACheckPoint::ProcessNextSubLevel, 1.0f, false);
+	}
+	else
+	{
+		// 종료 처리
+		UE_LOG(LogTemp, Log, TEXT("모든 레벨 로드 완료"));
 	}
 }

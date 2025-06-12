@@ -5,6 +5,7 @@
 
 #include "Components/BillboardComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
@@ -77,6 +78,25 @@ void AEventTriggerBox::EndOverlap(UPrimitiveComponent* OverlappedComponent, AAct
                                   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	
+}
+
+void AEventTriggerBox::ProcessNextSubLevel()
+{
+	if (CurrentIndex < SubLevelArray.Num())
+	{
+		FLatentActionInfo LatentAction;
+		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),SubLevelArray[CurrentIndex],true,true,LatentAction);
+		
+		CurrentIndex++;
+
+		// 다음 아이템을 1초 후 처리
+		GetWorldTimerManager().SetTimer(LoadSubLevelTimerHandle, this, &AEventTriggerBox::ProcessNextSubLevel, 1.5f, false);
+	}
+	else
+	{
+		// 종료 처리
+		UE_LOG(LogTemp, Log, TEXT("모든 레벨 로드 완료"));
+	}
 }
 
 

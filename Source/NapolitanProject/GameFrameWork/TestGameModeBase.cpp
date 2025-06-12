@@ -208,39 +208,15 @@ void ATestGameModeBase::BeginPlay()
 				MainCharacter->SetActorLocation(SaveGI->LoadedGame->PlayerLocation);
 				MainCharacter->SetActorRotation(SaveGI->LoadedGame->PlayerRotation);
 			} , 1.0f , false);
-
-			//
-			FTimerHandle TimerHandle;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
-			{
-				FLatentActionInfo LatentAction;
-				for (auto subLevel:SaveGI->SubLevelArray)
-				{
-					UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
-				}
 			
-			}, 1.0f, false);
-			
-			/*FTimerHandle TimerHandle;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+			FLatentActionInfo LatentAction;
+			for (auto subLevel:SaveGI->SubLevelArray)
 			{
-				FLatentActionInfo LatentAction;
-				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom2Level,true,true,LatentAction);
-			}, 0.5f, false);
-
-			FTimerHandle TimerHandle2;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [this]()
-			{
-				FLatentActionInfo LatentAction1;
-				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),CorriderLevel,true,true,LatentAction1);
-			}, 1.5f, false);
-
-			FTimerHandle TimerHandle3;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle3, [this]()
-			{
-				FLatentActionInfo LatentAction2;
-				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom1Level,true,true,LatentAction2);
-			}, 2.0f, false);*/
+				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
+				
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("LoadStreamLevel")));
+				
+			}
 			
 			FTimerHandle GITimer2;
 			GetWorld()->GetTimerManager().SetTimer(GITimer2 , [this]()

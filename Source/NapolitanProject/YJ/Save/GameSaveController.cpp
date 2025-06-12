@@ -47,8 +47,19 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 		// 저장한 위치
 		SaveGameInstance->SaveLocation=PlayerCharacter->SaveLocationStr;
 
-		SaveGameInstance->SubLevelArray=SaveGISubsystem->SubLevelArray;
+		//
+		for (auto subLevel:SaveGISubsystem->SubLevelArray)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("SaveGISubsystem_Array")));
+		}
 			
+		SaveGameInstance->SubLevelArray=SaveGISubsystem->SubLevelArray;
+		//
+		for (auto subLevel:SaveGameInstance->SubLevelArray)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("SaveGameInstance_Array")));
+		}
+		
 		// 획득한 단서에 대해 저장하기
 		if (GameInstance && GameInstance->DT_Clue)
 		{
@@ -115,6 +126,14 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 		
 		UE_LOG(LogTemp, Warning, TEXT("Game loaded from slot: %s"), *SlotName);
 		UGameplayStatics::OpenLevel(GetWorld(),FName(*LoadedGame->PlayerLevel));
+
+		FLatentActionInfo LatentAction;
+		for (auto subLevel:LoadedGame->SubLevelArray)
+		{
+			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("LoadedGame_SubLevelArray")));
+		}
 		
 		UMyTestGameInstance* GameInstance = Cast<UMyTestGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 

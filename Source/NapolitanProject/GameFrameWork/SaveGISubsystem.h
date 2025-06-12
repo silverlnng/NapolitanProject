@@ -92,5 +92,5 @@ public:
 	void SetLevelMoveToDoor(bool bUse);
 
 	UPROPERTY()
-	TSet<TSoftObjectPtr<UWorld>> SubLevelArray;
+	TArray<TSoftObjectPtr<UWorld>> SubLevelArray;
 };

@@ -60,6 +60,6 @@ public:
 	TArray<TSubclassOf<class AItemActor>> SavedItems;
 
 	UPROPERTY()
-	TSet<TSoftObjectPtr<UWorld>> SubLevelArray;
+	TArray<TSoftObjectPtr<UWorld>> SubLevelArray;
 	
 };
