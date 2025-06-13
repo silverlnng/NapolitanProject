@@ -47,7 +47,7 @@ void AOriginEye::BeginPlay()
 	TimeSinceLastRandomLook = 0.0f;
 	RandomSpeed = FMath::RandRange(180.0f, 300.0f);
 	
-	
+	bIsDeadEnding = false;
 }
 
 // Called every frame
@@ -130,31 +130,35 @@ void AOriginEye::UpdateChasing(float DeltaTime)
 
 	Arrow->SetWorldRotation(DirectionToTarget.Rotation());
 
-	// 플레이어와 충돌 거리 체크 (게임오버 조건)
-	float DistanceToPlayer = FVector::Dist(PlayerLocation, EyeLocation);
-	if (DistanceToPlayer < 200.0f) // 1미터 이내로 접근하면
+	if(bIsDeadEnding == false)
 	{
-		FTimerHandle UITimer2;
-		GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+		// 플레이어와 충돌 거리 체크 (게임오버 조건)
+		float DistanceToPlayer = FVector::Dist(PlayerLocation, EyeLocation);
+		if (DistanceToPlayer < 200.0f) // 1미터 이내로 접근하면
 		{
-			if (PlayerHUD)
+			FTimerHandle UITimer2;
+			GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
 			{
-				PlayerHUD->PlayDeadVignetteEffect();
-			}
-		},0.2f,false);
-	
-		//시간 지연 주고 사망 UI 나오도록
-		FTimerHandle UITimer;
-		GetWorldTimerManager().SetTimer(UITimer, [this]()
-		{
-			MainCharacter->SetPlayerState(EPlayerState::UI);
+				if (PlayerHUD)
+				{
+					PlayerHUD->PlayDeadVignetteEffect();
+				}
+			},0.2f,false);
+		
+			//시간 지연 주고 사망 UI 나오도록
+			FTimerHandle UITimer;
+			GetWorldTimerManager().SetTimer(UITimer, [this]()
+			{
+				MainCharacter->SetPlayerState(EPlayerState::UI);
 
-			if(PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
-			{
-				PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-				PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
-			}
-		},0.6f,false); //사망
+				if(PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
+				{
+					PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+					PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
+					bIsDeadEnding = true; //한번만 재생하도록 수정
+				}
+			},0.6f,false); //사망
+		}
 	}
 }
 

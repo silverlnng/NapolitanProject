@@ -73,4 +73,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Chase")
 	FVector UniqueTargetOffset;
 
+	bool bIsDeadEnding;
+
 };
