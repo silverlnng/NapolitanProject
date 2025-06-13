@@ -112,5 +112,29 @@ public:
 	class ALightControlActor* LightControlActor;
 
 	void LightEffect();
+
+public:
+	////////// 사망 관련 부분 ////////////////
+	bool bIsDeadEnding;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+	UCameraComponent* MonsterCamera; //점프스케어 카메라 - 사망 시 사용 
+
+	//사망 함수
+	UFUNCTION()
+	void CuratorDead();
+
+	UFUNCTION()
+	void SwitchToMonsterCamera();
+
+	void SetActorViewTarget(UCameraComponent* TargetCamera);
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UCameraShakeBase> DeathCameraShakeClass; //카메라 쉐이크
+
+	//사망용 스크립트
+	UPROPERTY(EditAnywhere)
+	FString description=FString(TEXT("큐레이터에게 살해당했다"));
+	
 };
 

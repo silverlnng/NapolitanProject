@@ -10,6 +10,7 @@
 #include "EngineUtils.h"
 #include "NPC_CuratorAnim.h"
 #include "YSEvanceUI.h"
+#include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/ArtMap/SunFloorDoorToLobby.h"
@@ -39,6 +40,11 @@ AChaseStatue::AChaseStatue()
 	CSCol->SetupAttachment(GetMesh());
 	CSCol->SetCapsuleHalfHeight(90.f);
 	CSCol->SetCapsuleRadius(90.f);
+
+	// 몬스터 카메라 생성 및 초기화
+	MonsterCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("MonsterCamera"));
+	MonsterCamera->SetupAttachment(GetMesh(),FName(TEXT("HeadSocket"))); // 루트에 부착
+	MonsterCamera->bUsePawnControlRotation = false; // 플레이어 조작 방지
 
 }
 
@@ -72,6 +78,8 @@ void AChaseStatue::BeginPlay()
 	{
 		LightControlActor = *It;
 	}
+
+	bIsDeadEnding = false;
 }
 
 // Called every frame
@@ -163,7 +171,14 @@ void AChaseStatue::TickMove(const float& DeltaTime)
 		//타깃쪽으로 이동
 		ChaseAI->MoveToLocation(targetLoc);
 	}
-	
+
+	//만약 큐레이터와의 거리가 200일 경우 사망
+	float Distance = FVector::Dist(targetLoc, myLoc);
+	if(Distance < 200.0f && bIsDeadEnding == false)
+	{
+		CuratorDead();
+		bIsDeadEnding = true; //한번만 호출되도록
+	}
 }
 
 
@@ -335,6 +350,83 @@ void AChaseStatue::LightEffect()
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("LightControlActor")));
 		LightControlActor->StartSineFlicker(0,1,1.5f,25.f,4408.f);
+	}
+}
+
+void AChaseStatue::CuratorDead()
+{
+	//카메라 변경
+	//SwitchToMonsterCamera();
+
+	//애니메이션 실행
+
+	//데드 엔딩 UI 뜨기
+	FTimerHandle UITimer2;
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+	{
+		if (PlayerHUD)
+		{
+		
+			PlayerHUD->PlayDeadVignetteEffect();
+			UE_LOG(LogTemp, Warning, TEXT("CreateDieUI1"));
+		}
+	},2.5f,false);
+	
+	//시간 지연 주고 사망 UI 나오도록
+	FTimerHandle UITimer;
+	GetWorldTimerManager().SetTimer(UITimer, [this]()
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CreateDieUI2"));
+		MainCharacter->SetPlayerState(EPlayerState::UI);
+
+		if(PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
+		{
+			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
+		}
+	},3.5f,false); //사망
+}
+
+void AChaseStatue::SwitchToMonsterCamera()
+{
+	if(TestPC && MonsterCamera)
+	{
+		// 1. 먼저 이 액터를 ViewTarget으로 설정
+		TestPC->SetViewTargetWithBlend(this, 0.01f);
+            
+		// 2. 그 다음 액터의 활성 카메라를 MonsterCamera로 변경
+		SetActorViewTarget(MonsterCamera);
+
+		//3. 플레이어 메쉬 숨기기
+		MainCharacter->GetMesh()->SetHiddenInGame(true);
+
+		// 카메라 흔들기 실행
+		if (TestPC->PlayerCameraManager)
+		{
+			if (DeathCameraShakeClass)
+			{
+				TestPC->PlayerCameraManager->StartCameraShake(DeathCameraShakeClass);
+				
+			}
+		}
+	}
+}
+
+void AChaseStatue::SetActorViewTarget(UCameraComponent* TargetCamera)
+{
+	if (TargetCamera)
+	{
+		// 다른 카메라들 비활성화
+		TArray<UCameraComponent*> CameraComponents;
+		GetComponents<UCameraComponent>(CameraComponents);
+        
+		for (UCameraComponent* Camera : CameraComponents)
+		{
+			Camera->SetActive(false);
+		}
+        
+		// MonsterCamera만 활성화
+		TargetCamera->SetActive(true);
 	}
 }
 
