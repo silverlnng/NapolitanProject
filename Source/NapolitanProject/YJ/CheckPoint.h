@@ -27,6 +27,8 @@ public:
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
 	class APlayerHUD* PlayerHUD;
+	class UMyTestGameInstance* GI;
+	class USaveGISubsystem* SaveGI;
 	
 	UPROPERTY(EditDefaultsOnly)
 	class USceneComponent* SceneComp;
@@ -53,5 +55,18 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly) // 블프에서 정의하기 
 	FString SaveLocation=FString(TEXT("2층 전시관 앞"));
+
+	// 로드해야하는 서브레벨들을 블프에서 할당하기 
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSoftObjectPtr<UWorld>> SubLevelArray;
+	
+	// 현재 인덱스
+	int32 CurrentIndex = 0;
+
+	// 타이머 핸들
+	FTimerHandle loadSubLevelTimerHandle;
+
+	// 반복 실행 함수
+	void ProcessNextSubLevel();
 };
 

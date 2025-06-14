@@ -13,6 +13,7 @@
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/NPC/NPC_Butterfly.h"
@@ -42,6 +43,8 @@ void ATargetForItem_BurgerPlate::BeginPlay()
 	Super::BeginPlay();
 
 	GI =GetGameInstance<UMyTestGameInstance>();
+
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
 }
 
 void ATargetForItem_BurgerPlate::CheckItem(class AItemActor* curItem)
@@ -106,9 +109,9 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 		PlayerHUD->InventoryUI->InvenSlots[1]->SetIsEnabledBtn();
 		
 		// GI->SavedItems 에서도 제거를 해야함 ,
-		if (curItem &&GI&&GI->SavedItems.Contains(curItem->GetClass()))
+		if (curItem &&GI&&SaveGI->SavedItems.Contains(curItem->GetClass()))
 		{
-			GI->SavedItems.Remove(curItem->GetClass());
+			SaveGI->SavedItems.Remove(curItem->GetClass());
 		}
 		
 		/*GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
@@ -135,9 +138,9 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 			PutDownitemID.Add(curItem);
 		
 			// GI->SavedItems 에서도 제거를 해야함 ,
-			if (curItem &&GI&&GI->SavedItems.Contains(curItem->GetClass()))
+			if (curItem &&GI&&SaveGI->SavedItems.Contains(curItem->GetClass()))
 			{
-				GI->SavedItems.Remove(curItem->GetClass());
+				SaveGI->SavedItems.Remove(curItem->GetClass());
 			}
 			
 			/*GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
@@ -172,9 +175,9 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 		PutDownitemID.Add(curItem);
 
 		// GI->SavedItems 에서도 제거를 해야함 ,
-		if (curItem &&GI&&GI->SavedItems.Contains(curItem->GetClass()))
+		if (curItem &&GI&&SaveGI->SavedItems.Contains(curItem->GetClass()))
 		{
-			GI->SavedItems.Remove(curItem->GetClass());
+			SaveGI->SavedItems.Remove(curItem->GetClass());
 		}
 		
 		/*GetWorld()->GetTimerManager().SetTimer(delaytimer,[&]()
@@ -201,9 +204,9 @@ void ATargetForItem_BurgerPlate::PutDown(int32 itemID,AItemActor* curItem)
 		PutDownitemID.Add(curItem);
 
 		// GI->SavedItems 에서도 제거를 해야함 ,
-		if (curItem &&GI&&GI->SavedItems.Contains(curItem->GetClass()))
+		if (curItem &&GI&&SaveGI->SavedItems.Contains(curItem->GetClass()))
 		{
-			GI->SavedItems.Remove(curItem->GetClass());
+			SaveGI->SavedItems.Remove(curItem->GetClass());
 		}
 		/*FTimerHandle delaytimer4;
 		GetWorld()->GetTimerManager().SetTimer(delaytimer4,[&]()

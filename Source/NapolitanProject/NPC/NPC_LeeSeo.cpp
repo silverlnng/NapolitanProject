@@ -11,6 +11,7 @@
 #include "NapolitanProject/ArtMap/SequentialLightController.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/LevelEvent/LightControlActor.h"
@@ -98,7 +99,7 @@ void ANPC_LeeSeo::ChangeCleared()
 {
 	IsCleared=true;
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
-	GI->ClearedNPC.Add(GetNPCID());
+	SaveGI->ClearedNPC.Add(GetNPCID());
 }
 
 void ANPC_LeeSeo::SwitchToMonsterCamera()

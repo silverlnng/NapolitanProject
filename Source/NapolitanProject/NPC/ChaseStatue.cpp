@@ -17,6 +17,7 @@
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/ItemActor.h"
 #include "NapolitanProject/Interact/SouvenirActor.h"
@@ -262,7 +263,7 @@ void AChaseStatue::ResultEvent(int32 result)
 			//우선 클리어 선언
 			IsCleared=true;
 			//GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
-			GI->ClearedNPC.Add(GetNPCID());
+			SaveGI->ClearedNPC.Add(GetNPCID());
 
 			State=4; // 다음 state으로 넘어간다음
 			TestPC->StartEndNPCDialougue(true);

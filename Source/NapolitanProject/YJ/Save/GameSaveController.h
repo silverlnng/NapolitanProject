@@ -30,7 +30,7 @@ public:
 
 	// 가장 최근에 저장한 게임로드를 가져오는 방법
 	int32 FindLatestSaveGame();
-
+	int32 UUIDCounter = 0;
 private:
 	const FString SlotPrefix = TEXT("SaveSlot_");
 };

@@ -6,6 +6,7 @@
 #include "EngineUtils.h"
 #include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
+#include "SaveGISubsystem.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
 #include "Components/Border.h"
@@ -48,7 +49,7 @@ void ATestGameModeBase::BeginPlay()
 
 	PlayerHUD = PC->GetHUD<APlayerHUD>();
 	GI = GetGameInstance<UMyTestGameInstance>();
-	
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
 	// 현재 맵에 있는 npc들을 저장
 	for (TActorIterator<ANPCCharacter> It(GetWorld(), ANPCCharacter::StaticClass()); It; ++It)
 	{
@@ -62,9 +63,9 @@ void ATestGameModeBase::BeginPlay()
 
 	// GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
 	
-	if (!GI->ClearedNPC.IsEmpty())
+	if (!SaveGI->ClearedNPC.IsEmpty())
 	{
-		for (int32 key :GI->ClearedNPC)
+		for (int32 key :SaveGI->ClearedNPC)
 		{
 			if (NPCArray.Contains(key))
 			{
@@ -109,12 +110,12 @@ void ATestGameModeBase::BeginPlay()
 		UE_LOG(LogTemp, Error, TEXT("%s ItemActorArray: %d"),*CALLINFO,key);
 	}
 	
-	if (GI)
+	if (SaveGI)
 	{
 		FTimerHandle RestoreAttachedItemTimer;
 		GetWorld()->GetTimerManager().SetTimer(RestoreAttachedItemTimer , [this]()
 		{
-			GI->RestoreAttachedItems();
+			SaveGI->RestoreAttachedItems();
 			// 아이템을 인벤토리에  복구하는 작업
 		} , 1.0f , false);
 
@@ -153,15 +154,15 @@ void ATestGameModeBase::BeginPlay()
 		
 		
 		
-		if (GI->bLevelMoveToDoor)
+		if (SaveGI->bLevelMoveToDoor) // 그림으로 이동후 돌아올 때 
 		{
 			// 저장된 위치가 있으면 플레이어를 해당 위치로 이동
-			MainCharacter->SetActorLocation(GI->GetSavedPlayerLocation().GetLocation());
-			MainCharacter->SetActorRotation(GI->GetSavedPlayerLocation().GetRotation());
+			MainCharacter->SetActorLocation(SaveGI->GetSavedPlayerLocation().GetLocation());
+			MainCharacter->SetActorRotation(SaveGI->GetSavedPlayerLocation().GetRotation());
 
 			// 이거 에 따라서 레벨 로드-언로드 필요..
 			// 여기에 서브레벨로 나누었던것도 로드를 해야함.
-			FTimerHandle TimerHandle;
+			/*FTimerHandle TimerHandle;
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
 			{
 				FLatentActionInfo LatentAction;
@@ -180,48 +181,54 @@ void ATestGameModeBase::BeginPlay()
 			{
 				FLatentActionInfo LatentAction2;
 				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom1Level,true,true,LatentAction2);
-			}, 2.0f, false);
+			}, 2.0f, false);*/
+
+			FTimerHandle TimerHandle;
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+			{
+				FLatentActionInfo LatentAction;
+				for (auto subLevel:SaveGI->SubLevelArray)
+				{
+					UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
+				}
+			
+			}, 1.0f, false);
 			
 			
 			// 적용 후 다시 false로 변경 (새 게임 시작 시 영향 안 주도록)
-			GI->SetLevelMoveToDoor(false);
+			SaveGI->SetLevelMoveToDoor(false);
+			
 		}
-		else if (GI->LoadedGame) // 로드플레이 중 이다
+		else if (SaveGI->LoadedGame) // 로드플레이 중 이다
 		{
 			
 			FTimerHandle GITimer;
 			GetWorld()->GetTimerManager().SetTimer(GITimer , [this]()
 			{
-				MainCharacter->SetActorLocation(GI->LoadedGame->PlayerLocation);
-				MainCharacter->SetActorRotation(GI->LoadedGame->PlayerRotation);
+				MainCharacter->SetActorLocation(SaveGI->LoadedGame->PlayerLocation);
+				MainCharacter->SetActorRotation(SaveGI->LoadedGame->PlayerRotation);
 			} , 1.0f , false);
 
-			FTimerHandle TimerHandle;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+			/*FTimerHandle GITimer3;
+			GetWorld()->GetTimerManager().SetTimer(GITimer3 , [this]()
 			{
-				FLatentActionInfo LatentAction;
-				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom2Level,true,true,LatentAction);
-			}, 0.5f, false);
-
-			FTimerHandle TimerHandle2;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [this]()
-			{
-				FLatentActionInfo LatentAction1;
-				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),CorriderLevel,true,true,LatentAction1);
-			}, 1.5f, false);
-
-			FTimerHandle TimerHandle3;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle3, [this]()
-			{
-				FLatentActionInfo LatentAction2;
-				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LobbyRoom1Level,true,true,LatentAction2);
-			}, 2.0f, false);
+				for (auto subLevel:SaveGI->SubLevelArray)
+				{
+					FLatentActionInfo LatentAction;
+					UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
+				
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("LoadStreamLevel")));
+				
+				}
+			} , 1.0f , false);*/
+			
+			
 			
 			FTimerHandle GITimer2;
 			GetWorld()->GetTimerManager().SetTimer(GITimer2 , [this]()
 			{
 				// 적용 후 다시 nullptr 변경 (새 게임 시작 시 영향 안 주도록)
-				GI->LoadedGame=nullptr;
+				SaveGI->LoadedGame=nullptr;
 			} , 2.5f , false);
 
 		}

@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 
 AExitDoor_SecondEnding::AExitDoor_SecondEnding()
@@ -29,7 +30,7 @@ void AExitDoor_SecondEnding::OnBeginOverlap1(UPrimitiveComponent* OverlappedComp
 
 	// TSet<int32> AcquireSouvenir; 확인해서 
 
-	if (GI && GI->AcquireSouvenir.Num()<3)
+	if (SaveGI && SaveGI->AcquireSouvenir.Num()<3)
 	{
 		return;
 	}

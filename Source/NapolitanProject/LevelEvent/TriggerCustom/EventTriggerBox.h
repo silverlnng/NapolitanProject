@@ -48,4 +48,17 @@ public:
 	
 	UFUNCTION()
 	virtual void EndOverlap( UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	// 로드해야하는 서브레벨들을 블프에서 할당하기 
+	UPROPERTY(EditDefaultsOnly)
+	TArray<TSoftObjectPtr<UWorld>> SubLevelArray;
+
+	// 현재 인덱스
+	int32 CurrentIndex = 0;
+
+	// 타이머 핸들
+	FTimerHandle LoadSubLevelTimerHandle;
+
+	// 반복 실행 함수
+	virtual void ProcessNextSubLevel();
 };

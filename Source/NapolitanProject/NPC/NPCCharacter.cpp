@@ -10,6 +10,7 @@
 #include "../GameFrameWork/TestPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 
 // Sets default values
@@ -45,7 +46,7 @@ void ANPCCharacter::BeginPlay()
 	}
 	 GI = GetGameInstance<UMyTestGameInstance>();
 
-	//TestPC00
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
 }
 
 // Called every frame
@@ -162,7 +163,7 @@ void ANPCCharacter::ChangeCleared()
 	 // 콜리전 프로필을 다른거로 변경
 	IsCleared=true;
 	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
-	GI->ClearedNPC.Add(GetNPCID());
+	SaveGI->ClearedNPC.Add(GetNPCID());
 	FString id =FString::FromInt(GetNPCID());
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, *id);
 

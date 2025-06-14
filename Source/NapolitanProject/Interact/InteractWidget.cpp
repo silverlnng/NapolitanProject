@@ -13,6 +13,7 @@
 #include "Components/VerticalBox.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/QuestSlotWidget.h"
@@ -95,9 +96,9 @@ void UInteractWidget::GetItemEvent(const FString& str)
 
 void UInteractWidget::LoadUpdateQuestSlot()
 {
-	if (GI&&!GI->QuestSlots.IsEmpty())
+	if (SaveGI&&!SaveGI->QuestSlots.IsEmpty())
 	{
-		for (auto &QuestSlot:GI->QuestSlots)
+		for (auto &QuestSlot:SaveGI->QuestSlots)
 		{
 			
 			UQuestSlotWidget* QuestSlotWidget = CreateWidget<UQuestSlotWidget>(this, QuestSlotWidgetFactory);
@@ -119,9 +120,9 @@ void UInteractWidget::AddQuestSlot(int32 QuestNum,FString& str)
 	//QuestSlotsArray 에서 QuestNum 으로 중복검사하고
 	if (QuestSlotsArray.Contains(str)) {return;}
 
-	if (GI)
+	if (SaveGI)
 	{
-		GI->QuestSlots.Add(str);
+		SaveGI->QuestSlots.Add(str);
 	}
 	
 	UQuestSlotWidget* QuestSlot = CreateWidget<UQuestSlotWidget>(this, QuestSlotWidgetFactory);
@@ -147,9 +148,9 @@ void UInteractWidget::RemoveQuestSlot(const FString& str)
 	{
 		VBox_Quest->RemoveChild(QuestSlotsArray[str]);
 		QuestSlotsArray.Remove(str);
-		if (GI)
+		if (SaveGI)
 		{
-			GI->QuestSlots.Remove(str);
+			SaveGI->QuestSlots.Remove(str);
 		}
 	}
 	

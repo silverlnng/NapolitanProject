@@ -8,6 +8,7 @@
 #include "Components/Button.h"
 #include "Components/WidgetSwitcher.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/YJ/Save/GameSaveController.h"
 
 void ULoadConfirmWidget::NativeConstruct()
@@ -18,17 +19,16 @@ void ULoadConfirmWidget::NativeConstruct()
 	Btn_ReSave->OnClicked.AddDynamic(this,&ULoadConfirmWidget::OnClickReSave);
 	
 	GI=GetGameInstance<UMyTestGameInstance>();
+	SaveGI= GI->GetSubsystem<USaveGISubsystem>();
 	OnVisibilityChanged.AddDynamic(this,&ULoadConfirmWidget::HandleVisibilityChanged);
 }
 
 void ULoadConfirmWidget::OnClickYes()
 {
-	if (GI&&GI->GameSaveController)
+	if (SaveGI&&SaveGI->GameSaveController)
 	{
-		//SaveGameManager = NewObject<UGameSaveController>(this);
-		GI->LoadedGame=GI->GameSaveController->LoadGameFromSlot(SaveSlotSwitcherWidget->SlotNumber);
+		SaveGI->GameSaveController->LoadGameFromSlot(SaveSlotSwitcherWidget->SlotNumber);
 	}
-	
 	
 	SetVisibility(ESlateVisibility::Hidden);
 }
@@ -40,10 +40,9 @@ void ULoadConfirmWidget::OnClickNo()
 
 void ULoadConfirmWidget::OnClickReSave()
 {
-	if (GI&&GI->GameSaveController)
+	if (SaveGI&&SaveGI->GameSaveController)
 	{
-		//SaveGameManager = NewObject<UGameSaveController>(this);
-		GI->GameSaveController->SaveGameToSlot(SaveSlotSwitcherWidget->SlotNumber);
+		SaveGI->GameSaveController->SaveGameToSlot(SaveSlotSwitcherWidget->SlotNumber);
 	}
 
 	SaveSlotSwitcherWidget->SlotSwitcher->SetActiveWidgetIndex(0);

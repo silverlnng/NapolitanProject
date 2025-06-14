@@ -30,6 +30,8 @@ public:
 
 	UPROPERTY()
 	class UMyTestGameInstance* GI;
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
 
 	UPROPERTY(VisibleAnywhere)
 	TMap<int32,class ANPCCharacter*> NPCArray;
@@ -41,6 +43,9 @@ public:
 	class AItemActor* BreadItem4;
 	UPROPERTY(EditInstanceOnly)
 	class AItemActor* BreadItem5;
+
+	UPROPERTY()
+	TSet<TSoftObjectPtr<UWorld>> SubLevelArray;
 	
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> CorriderLevel;

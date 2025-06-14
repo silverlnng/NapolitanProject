@@ -12,6 +12,7 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
@@ -50,6 +51,7 @@ void AItemActor::BeginPlay()
 		StaticMeshComp->SetOverlayMaterial(M_Overlay);
 	}
 	GI =GetGameInstance<UMyTestGameInstance>();
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
 }
 
 // Called every frame
@@ -78,7 +80,7 @@ void AItemActor::OnPickup() // 아이템을 레벨에서 처음한번 잡을때.
 	//인벤에 넣었으면 다른거 집을수있도록
 	MainCharacter->curItem=nullptr;
 
-	GI->SavedItems.Add(this->GetClass());
+	SaveGI->SavedItems.Add(this->GetClass());
 
 	// 사운드 재생시키기 
 	if (ItemSoundWave)
@@ -149,9 +151,9 @@ void AItemActor::Remove()
 		ItemData->Had=false;
 	}
 
-	if (GI->SavedItems.Contains(this->GetClass()))
+	if (SaveGI->SavedItems.Contains(this->GetClass()))
 	{
-		GI->SavedItems.Remove(this->GetClass());
+		SaveGI->SavedItems.Remove(this->GetClass());
 	}
 
 	// 버튼도 비활성화 하기

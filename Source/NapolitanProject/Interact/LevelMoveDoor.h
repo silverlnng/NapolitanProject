@@ -42,7 +42,7 @@ public:
 	class ATestPlayerController* TestPC;
 	class APlayerHUD* PlayerHUD;
 	class UMyTestGameInstance* GI;
-
+	class USaveGISubsystem* SaveGI;
 	// 위치
 	
 	UFUNCTION()
@@ -63,9 +63,14 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> MoveToLevel;
 
+	// 설치한 위치가 로비(메인레벨)면 true 설정을 , 다른레벨이면 false를 설정
 	UPROPERTY(EditAnywhere)
 	bool bMoveFromLobby=false;
 
+	// 로드해야하는 서브레벨들을 블프에서 할당하기 
+	UPROPERTY(EditDefaultsOnly)
+	TSet<TSoftObjectPtr<UWorld>> SubLevelArray;
+	
 	/*UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> CorriderLevel;
 	

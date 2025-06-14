@@ -20,7 +20,9 @@ public:
 
 	UPROPERTY()
 	class UMyTestGameInstance* GI;
-	
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+
 	UPROPERTY(meta=(BindWidget))
 	class UImage* Image_CrossHair;
 	UPROPERTY(meta=(BindWidget))

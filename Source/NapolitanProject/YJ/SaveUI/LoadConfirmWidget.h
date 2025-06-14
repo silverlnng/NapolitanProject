@@ -46,6 +46,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class UMyTestGameInstance* GI;
+	UPROPERTY(VisibleAnywhere)
+	class USaveGISubsystem* SaveGI;
 	UFUNCTION()
 	void HandleVisibilityChanged(ESlateVisibility InVisibility);
 	

@@ -3,18 +3,9 @@
 
 #include "MyTestGameInstance.h"
 
-#include "PlayerHUD.h"
-#include "TestCharacter.h"
-#include "Components/ArrowComponent.h"
-#include "Components/BoxComponent.h"
 #include "Engine/AssetManager.h"
-#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NapolitanProject.h"
-#include "NapolitanProject/Interact/ItemActor.h"
-#include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
-#include "NapolitanProject/YJ/NoteUI/InvenSlotWidget.h"
-#include "NapolitanProject/YJ/Save/TestSaveGame.h"
-#include "NapolitanProject/YJ/Save/GameSaveController.h"
+
 #include "Serialization/Csv/CsvParser.h"
 
 void UMyTestGameInstance::Init()
@@ -22,10 +13,10 @@ void UMyTestGameInstance::Init()
 	Super::Init();
 
 	// 로그 막아두기 
-	if (GEngine)
+	/*if (GEngine)
 	{
 		GEngine->bEnableOnScreenDebugMessages = false;
-	}
+	}*/
 	
 	DT_itemData = LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/DT/DT_Item.DT_Item'"));
 	
@@ -43,7 +34,7 @@ void UMyTestGameInstance::Init()
 			if (ItemData)
 			{
 				//유물획득 초기화 => 게임로드안했을때 . 게임저장시스템만들면 초기화 안해야함 
-				ItemData->Had=false;
+				//ItemData->Had=false;
 			}
 		}
 		
@@ -67,7 +58,7 @@ void UMyTestGameInstance::Init()
 			if (SouvenirData)
 			{
 				//유물획득 초기화 => 게임로드안했을때
-				SouvenirData->Had=false;
+				//SouvenirData->Had=false;
 				
 			}
 		}
@@ -94,7 +85,7 @@ void UMyTestGameInstance::Init()
 			if (ClueData)
 			{
 				//단서 획득 초기화 => 게임로드안했을때
-				ClueData->Had=false;
+				//ClueData->Had=false;
 
 				// 저장해둔 단서 획득 상태를 로드해서 초기화하기 
 				
@@ -120,24 +111,6 @@ void UMyTestGameInstance::Init()
 	// "C:\UnrealProjects\NapolitanProject\NPC_Dialogue.csv"
 	// "C:\UnrealProjects\NapolitanProject\NPC_Result.csv"
 	// "C:\UnrealProjects\NapolitanProject\NPC_Selection.csv"
-
-	// 로딩 위젯을 만들어두기 
-	if (LoadingScreenWidget)
-	{
-		//LoadingScreenWidget = CreateWidget<UFadeUserWidget>(this, FadeWidgetClass);
-		///if (FadeWidget)
-		{
-			// 초기 설정만 해두고, Viewport엔 아직 추가 안 함
-		}
-	}
-
-	
-	
-    // 저장한 게임 저장데이터가 있으면 불러오기  ==> 이걸 스타트화면이 불러올때마다 하기 
-	GameSaveController = NewObject<UGameSaveController>(this);
-	int32 MaxSlots = 3; // 예: 최대 슬롯 수
-	SaveSlotInfos = GameSaveController->LoadAllSlotInfo(MaxSlots);
-	// 로드한 정보로 ULoadScreenWidget 초기화	
 	
 	// ClearedNPC 는 로드한 정보로 초기화가 되야함 
 }
@@ -330,86 +303,14 @@ void UMyTestGameInstance::GetNPCSelect(const int32& NPC_ID, const int32& State, 
 	}
 }
 
-void UMyTestGameInstance::SaveAttachedItems()
-{
-	ATestCharacter* MainCharacter=Cast<ATestCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-}
-
-void UMyTestGameInstance::RestoreAttachedItems()
-{
-	ATestCharacter* MainCharacter=Cast<ATestCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-	
-	APlayerHUD* PlayerHUD = Cast<APlayerHUD>(UGameplayStatics::GetPlayerController(GetWorld(),0)->GetHUD());
-	
-	if (!MainCharacter || SavedItems.Num() == 0) return;
-	for (const TSubclassOf<class AItemActor> ItemActor: SavedItems)
-	{
-		if (ItemActor)
-		{
-			AItemActor* NewItem = MainCharacter->GetWorld()->SpawnActor<AItemActor>(ItemActor);
-			// ✅ 아이템 스폰
-			NewItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
-			
-			NewItem->AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);
-			
-			NewItem->SetActorHiddenInGame(true); // 인벤에 넣을 아이템은 일단 안보이도록
-			UE_LOG(LogTemp,Warning,TEXT("%s Load ItemID :%d"),*CALLINFO,NewItem->ItemID);
-			if (PlayerHUD)
-			{
-				if (PlayerHUD->InventoryUI->InvenSlots.Contains(NewItem->ItemID))
-				{
-					PlayerHUD->InventoryUI->InvenSlots[NewItem->ItemID]->MyItem=NewItem;
-					PlayerHUD->InventoryUI->InvenSlots[NewItem->ItemID]->OnItemAcquired();
-				}
-				if (NewItem->ItemID==3) // 거미일때만
-				{
-					PlayerHUD->InventoryUI->InvenSlots[3]->Set_TextNum(CatchSpiderNum);
-				}
-				// 이미 빵그림을 가졌으면 월드에 있는 빵은 hidden 처리를 하기  
-			}
-			
-		}
-	}	
-}
-
-void UMyTestGameInstance::LoadLevelWithLoadingScreen(FName LevelName)
-{
-	
-}
 
 void UMyTestGameInstance::AsyncLoadLoadLevel(const TSoftObjectPtr<UWorld> Level)
 {
-	CachedLevel = Level; // ✅ 레벨을 임시 저장
-
 	// ✅ TSoftObjectPtr<UWorld> → FSoftObjectPath 변환
 	FSoftObjectPath LevelPath = Level->GetPathName();
 	// ✅ 비동기 레벨 로딩 시작
 	FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
 	Streamable.RequestAsyncLoad(LevelPath);
-}
-
-void UMyTestGameInstance::OnLevelLoaded()
-{
-	// ✅ 레벨 변경
-	UGameplayStatics::OpenLevelBySoftObjectPtr(this,CachedLevel,true); 
-}
-
-void UMyTestGameInstance::SavePlayerFTransform(FTransform NewLocation)
-{
-	SavedPlayerTransform = NewLocation;
-	bLevelMoveToDoor = true; // 문을 통해 이동했으므로 저장된 위치 사용
-}
-
-FTransform UMyTestGameInstance::GetSavedPlayerLocation() const
-{
-	return SavedPlayerTransform;
-}
-
-void UMyTestGameInstance::SetLevelMoveToDoor(bool bUse)
-{
-	bLevelMoveToDoor = bUse; // 문을 통해 이동했으므로 저장된 위치 사용
-
-	// 죽어서 처음레벨 가면 이거 false으로 고치기 
 }
 
 void UMyTestGameInstance::UnlockAchievement(FString AchievementId)

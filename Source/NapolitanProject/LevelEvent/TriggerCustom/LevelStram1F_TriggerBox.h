@@ -31,4 +31,6 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> Base_Roof_Level;
 	
+	virtual void ProcessNextSubLevel() override;
+	
 };

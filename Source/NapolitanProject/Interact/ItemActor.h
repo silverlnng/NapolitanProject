@@ -28,7 +28,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	class UMyTestGameInstance* GI;
-	
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int32 ItemID=0;
 

@@ -58,4 +58,8 @@ public:
 
 	UPROPERTY()
 	TArray<TSubclassOf<class AItemActor>> SavedItems;
+
+	UPROPERTY()
+	TArray<TSoftObjectPtr<UWorld>> SubLevelArray;
+	
 };

@@ -23,6 +23,8 @@ public:
 
 	UPROPERTY()
 	class UMyTestGameInstance* GI;
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
 
 	UPROPERTY()
 	class UGameSaveController* GameSaveController;

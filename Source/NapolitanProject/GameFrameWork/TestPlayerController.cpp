@@ -5,6 +5,7 @@
 
 #include "EventComponent.h"
 #include "MyTestGameInstance.h"
+#include "SaveGISubsystem.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
@@ -38,10 +39,12 @@ void ATestPlayerController::BeginPlay()
 	
 	PlayerHUD=GetHUD<APlayerHUD>();
 	GI = GetGameInstance<UMyTestGameInstance>();
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
+
 	me = Cast<ATestCharacter>(GetPawn());
 	
 	EventComponent->GI=GI;
-
+	EventComponent->SaveGI=SaveGI;
 	TWeakObjectPtr<ATestPlayerController> WeakThis = this;
 	
 	FTimerHandle TimerHandle;

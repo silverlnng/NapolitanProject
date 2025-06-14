@@ -74,4 +74,7 @@ public:
 	class ATestCharacter* MainCharacter;
 	UPROPERTY()
 	class UMyTestGameInstance* GI;
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+
 };
