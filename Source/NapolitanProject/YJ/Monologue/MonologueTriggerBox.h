@@ -53,9 +53,20 @@ public:
 	int32 CurrentIndex;
 
 	// 이벤트가 한 번만 실행되도록 제어하는 플래그
-	bool bHasTriggered;
+	bool bHasTriggered=false;
+
+	// 아님 트리거 될때 마다 나오는 독백박스인지
+	UPROPERTY(EditDefaultsOnly)
+	bool OnlyOnce=true;
 	
 	// 타이머 핸들러
 	FTimerHandle TimerHandle;
 
+	// 몇초동안 움직임을 멈출건지 설정
+	UPROPERTY(EditDefaultsOnly)
+	float MoveStopTime=1.0f;
+
+	UFUNCTION()
+	void MoveCharacter();
+	
 };

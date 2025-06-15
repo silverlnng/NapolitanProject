@@ -31,6 +31,10 @@ AMonologueTriggerBox::AMonologueTriggerBox()
 	{
 		EditorBillboard->SetSprite(IconTexture.Object);
 	}
+	
+	FLinearColor LinearColor = FLinearColor(0.0f, 1.0f, 0.25f, 1.0f); // Example linear color
+	FColor Color = LinearColor.ToFColor(true);
+	BoxComp->ShapeColor=Color;
 }
 
 // Called when the game starts or when spawned
@@ -47,18 +51,6 @@ void AMonologueTriggerBox::BeginPlay()
 	BoxComp->OnComponentEndOverlap.AddDynamic(this,&AMonologueTriggerBox::BoxCompEndOverlap);
 
 	CurrentIndex=0;
-
-	/*DrawDebugBox(
-	   GetWorld(),
-	   BoxComp->GetComponentLocation(),
-	   BoxComp->GetScaledBoxExtent(),
-	   BoxComp->GetComponentRotation().Quaternion(),
-	   FColor::Red,
-	   true,  // 지속 시간
-	   -1.0f, // 무한 지속
-	   0,     // 두께
-	   5.0f   // 선 두께
-   );*/
 }
 
 // Called every frame
@@ -74,7 +66,7 @@ void AMonologueTriggerBox::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedCo
 
 	if (OtherActor->IsA(ATestCharacter::StaticClass()))
 	{
-		if (bHasTriggered)
+		if (OnlyOnce&&bHasTriggered)
 		{
 			return;
 		}
@@ -82,14 +74,29 @@ void AMonologueTriggerBox::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedCo
 		bHasTriggered = true; 
 		// MainCharacter 의 MonologueUI 에 나오도록 해야함 .
 		// 각자의 Monologue_ID 에 따라서 다른 글을 나오도록 하기
-
 		PlayerHUD->MonolugueWidgetUI->SetOutputLines(TextLines);
 		PlayerHUD->MonolugueWidgetUI->SetVisibility(ESlateVisibility::Visible);
+
+		// 움직임을 잠시 멈추기
+		// bIsBeingAttacked
+		if (MainCharacter)
+		MainCharacter->bIsBeingAttacked=true;
+		// 다시 움직이게 만들 타이머
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AMonologueTriggerBox::MoveCharacter, MoveStopTime, false);
+		
 	}
 }
 
 void AMonologueTriggerBox::BoxCompEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+}
+
+void AMonologueTriggerBox::MoveCharacter()
+{
+	if (MainCharacter)
+	{
+		MainCharacter->bIsBeingAttacked=false;
+	}
 }
 
