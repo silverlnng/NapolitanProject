@@ -33,6 +33,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = State)
 	ESpectorState mState = ESpectorState::Watch; //기본은 관람 상태
@@ -75,5 +77,9 @@ public:
 public:
 	UPROPERTY()
 	class USpectatorAnim* Anim;
+
+public:
+	UPROPERTY()
+	FVector CurrentReservedPosition = FVector::ZeroVector;
 	
 };

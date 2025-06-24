@@ -5,9 +5,11 @@
 
 #include "AIController.h"
 #include "SpectatorAnim.h"
+#include "SpectorManager.h"
 #include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 
+class ASpectorManager;
 // Sets default values
 ASpector::ASpector()
 {
@@ -66,67 +68,82 @@ void ASpector::SetState(ESpectorState newstate)
 	}
 }
 
+// 수정된 TickWatch 함수
 void ASpector::TickWatch(const float& DeltaTime)
 {
-	//그림 앞에 도달 시 멈추고 그림을 바라봄
-	// 대기 시간 계산
-	CurrentTime += DeltaTime;
-	if (CurrentTime > IdleDelayTime)
-	{
-
-		//그림 앞에 도착했을 시 멈춰서 그림 바라봄 => 액터를 찾아서 그 위치로 이동하게 하기
-		// 월드에서 "art" 태그를 가진 모든 액터 찾기
-		TArray<AActor*> ArtActors;
-		UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("art"), ArtActors);
-    
-		if (ArtActors.Num() > 0)
-		{
-			// 아트 액터들의 위치를 FVector 배열로 변환
-			TArray<FVector> ArtPoints;
-			for (AActor* ArtActor : ArtActors)
-			{
-				if (ArtActor)
-				{
-					ArtPoints.Add(ArtActor->GetActorLocation());
-				}
-			}
+    // 대기 시간 계산
+    CurrentTime += DeltaTime;
+    if (CurrentTime > IdleDelayTime)
+    {
+        // 월드에서 "art" 태그를 가진 모든 액터 찾기
+        TArray<AActor*> ArtActors;
+        UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("art"), ArtActors);
         
-			// 마지막 방문한 위치 제외하고 랜덤으로 선택
-			if (ArtPoints.Contains(LastVisitedPoint))
-			{
-				ArtPoints.Remove(LastVisitedPoint);
-			}
-        
-			if (ArtPoints.Num() > 0)
-			{
-				int32 randomIndex = FMath::RandRange(0, ArtPoints.Num() - 1);
+        if (ArtActors.Num() > 0)
+        {
+            // 아트 액터들의 위치를 FVector 배열로 변환
+            TArray<FVector> ArtPoints;
+            for (AActor* ArtActor : ArtActors)
+            {
+                if (ArtActor)
+                {
+                    ArtPoints.Add(ArtActor->GetActorLocation());
+                }
+            }
             
-				// 제거된 위치를 다시 추가
-				if (LastVisitedPoint != FVector::ZeroVector)
-				{
-					ArtPoints.Add(LastVisitedPoint);
-				}
-            
-				TargetPoint = ArtPoints[randomIndex];
-				LastVisitedPoint = TargetPoint;
-				
-				// Move 상태로 전환
-				SetState(ESpectorState::Move);
-				CurrentTime = 0; // 시간 초기화
-				bIsMoving = true;
-            
-				UE_LOG(LogTemp, Warning, TEXT("New art target point set: X=%f, Y=%f, Z=%f"), 
-					   TargetPoint.X, TargetPoint.Y, TargetPoint.Z);
-			}
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("No art actors found with 'art' tag"));
-		}
-	}
-	
+            // 매니저를 통해 사용 가능한 위치 가져오기
+            ASpectorManager* Manager = ASpectorManager::GetInstance(GetWorld());
+            if (Manager)
+            {
+                // 이전에 예약한 위치가 있다면 해제
+                if (CurrentReservedPosition != FVector::ZeroVector)
+                {
+                    Manager->ReleaseArtPosition(CurrentReservedPosition);
+                    CurrentReservedPosition = FVector::ZeroVector;
+                }
+                
+                FVector NewTargetPoint = Manager->GetAvailableArtPosition(this, ArtPoints);
+                
+                if (NewTargetPoint != FVector::ZeroVector)
+                {
+                    // 새 위치 예약
+                    if (Manager->ReserveArtPosition(NewTargetPoint, this))
+                    {
+                        TargetPoint = NewTargetPoint;
+                        LastVisitedPoint = TargetPoint;
+                        CurrentReservedPosition = TargetPoint;
+                        
+                        // Move 상태로 전환
+                        SetState(ESpectorState::Move);
+                        CurrentTime = 0;
+                        bIsMoving = true;
+                        
+                        UE_LOG(LogTemp, Warning, TEXT("Spector %s reserved art position: X=%f, Y=%f, Z=%f"), 
+                               *GetName(), TargetPoint.X, TargetPoint.Y, TargetPoint.Z);
+                    }
+                    else
+                    {
+                        UE_LOG(LogTemp, Warning, TEXT("Failed to reserve art position for %s"), *GetName());
+                    }
+                }
+                else
+                {
+                    UE_LOG(LogTemp, Warning, TEXT("No available art positions for %s"), *GetName());
+                }
+            }
+            else
+            {
+                UE_LOG(LogTemp, Error, TEXT("SpectorManager not found!"));
+            }
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("No art actors found with 'art' tag"));
+        }
+    }
 }
 
+// 수정된 TickMove 함수 - 도착 시 예약 해제 추가
 void ASpector::TickMove(const float& DeltaTime)
 {
     if (AI && bIsMoving == true)
@@ -138,7 +155,7 @@ void ASpector::TickMove(const float& DeltaTime)
             AI->StopMovement();
             bIsMoving = false;
             
-            // 가장 가까운 아트 작품 찾기
+            // 가장 가까운 아트 작품 찾기 및 회전 로직 (기존과 동일)
             TArray<AActor*> ArtActors;
             UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("art"), ArtActors);
             
@@ -190,4 +207,20 @@ void ASpector::TickMove(const float& DeltaTime)
             SetState(ESpectorState::Watch);
         }
     }
+}
+
+// Spector가 파괴될 때 예약 해제
+void ASpector::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    // 예약된 위치 해제
+    if (CurrentReservedPosition != FVector::ZeroVector)
+    {
+        ASpectorManager* Manager = ASpectorManager::GetInstance(GetWorld());
+        if (Manager)
+        {
+            Manager->ReleaseArtPosition(CurrentReservedPosition);
+        }
+    }
+    
+    Super::EndPlay(EndPlayReason);
 }
