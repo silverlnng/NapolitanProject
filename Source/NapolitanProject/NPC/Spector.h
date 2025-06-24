@@ -61,6 +61,19 @@ public:
 	
 	// 기존 TargetPoint 아래에 추가
 	FVector LastVisitedPoint = FVector::ZeroVector; // 마지막 방문한 위치
-	
+
+public:
+	UPROPERTY()
+	bool bIsRotating = false;
+    
+	UPROPERTY()
+	FRotator TargetRotation;
+    
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Spector Settings")
+	float RotationSpeed = 2.0f; // 회전 속도
+
+public:
+	UPROPERTY()
+	class USpectatorAnim* Anim;
 	
 };

@@ -4,6 +4,8 @@
 #include "Spector.h"
 
 #include "AIController.h"
+#include "SpectatorAnim.h"
+#include "Components/ArrowComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -21,6 +23,7 @@ void ASpector::BeginPlay()
 
 	AI = Cast<AAIController>(GetController());
 	bIsMoving = false;
+	Anim = Cast<USpectatorAnim>(GetMesh()->GetAnimInstance());
 	
 }
 
@@ -57,7 +60,10 @@ void ASpector::SetState(ESpectorState newstate)
 	mState = newstate;
 
 	//애니메이션 관련 함수 넣기
-	
+	if(Anim)
+	{
+		Anim->animState = newstate;
+	}
 }
 
 void ASpector::TickWatch(const float& DeltaTime)
@@ -123,16 +129,65 @@ void ASpector::TickWatch(const float& DeltaTime)
 
 void ASpector::TickMove(const float& DeltaTime)
 {
-	if (AI && bIsMoving == true)
-	{
-		// 목표 지점으로 이동
-		AI->MoveToLocation(TargetPoint);
-		// 목표 지점 근처에 도달하면 다시 멈췄다가 목적지 설정
-		if (FVector::Dist(GetActorLocation(), TargetPoint) <= 100.f)
-		{
-			//AI->StopMovement();
-			SetState(ESpectorState::Watch); //관람으로 변경
-		}
-	}
+    if (AI && bIsMoving == true)
+    {
+        AI->MoveToLocation(TargetPoint);
+        
+        if (FVector::Dist(GetActorLocation(), TargetPoint) <= 100.f)
+        {
+            AI->StopMovement();
+            bIsMoving = false;
+            
+            // 가장 가까운 아트 작품 찾기
+            TArray<AActor*> ArtActors;
+            UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("art"), ArtActors);
+            
+            AActor* ClosestArt = nullptr;
+            float ClosestDistance = FLT_MAX;
+            
+            for (AActor* ArtActor : ArtActors)
+            {
+                if (ArtActor)
+                {
+                    float Distance = FVector::Dist(GetActorLocation(), ArtActor->GetActorLocation());
+                    if (Distance < ClosestDistance)
+                    {
+                        ClosestDistance = Distance;
+                        ClosestArt = ArtActor;
+                    }
+                }
+            }
+            
+            if (ClosestArt)
+            {
+                UArrowComponent* ArrowComp = ClosestArt->FindComponentByClass<UArrowComponent>();
+                
+                if (ArrowComp)
+                {
+                    FVector ArrowForward = ArrowComp->GetForwardVector();
+                    ArrowForward.Z = 0;
+                    
+                    if (!ArrowForward.IsNearlyZero())
+                    {
+                        TargetRotation = ArrowForward.Rotation();
+                        bIsRotating = true;
+                    }
+                }
+            }
+        }
+    }
+    
+    // 부드러운 회전 처리
+    if (bIsRotating)
+    {
+        FRotator CurrentRotation = GetActorRotation();
+        FRotator NewRotation = FMath::RInterpTo(CurrentRotation, TargetRotation, DeltaTime, RotationSpeed);
+        SetActorRotation(NewRotation);
+        
+        if (FMath::IsNearlyEqual(NewRotation.Yaw, TargetRotation.Yaw, 5.0f))
+        {
+            bIsRotating = false;
+            SetState(ESpectorState::Watch);
+        }
+    }
 }
-
