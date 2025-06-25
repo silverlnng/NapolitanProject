@@ -52,9 +52,9 @@ void ADocentV2::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	//DrawDebugSphere(GetWorld(), GetActorLocation(), MaxDetectionDistance, 12, FColor::Blue, false, 0.1f);
+	DrawDebugSphere(GetWorld(), GetActorLocation(), MaxDetectionDistance, 12, FColor::Blue, false, 0.1f);
 
-	//DrawDebugSphere(GetWorld(), GetActorLocation(), AttackRange, 12, FColor::Red, false, 0.1f);
+	DrawDebugSphere(GetWorld(), GetActorLocation(), AttackRange, 12, FColor::Red, false, 0.1f);
 
 	if (MainCharacter)
 	{
@@ -126,11 +126,11 @@ void ADocentV2::StartTurnDetect()
 
 	if (RandValue <= 0.6f)
 	{
-		ChosenDelay = 4.5f;
+		ChosenDelay = 4.0f;
 	}
 	else
 	{
-		ChosenDelay = FMath::RandBool() ? 2.5f : 3.5f;
+		ChosenDelay = FMath::RandBool() ? 2.0f : 3.0f;
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("뒤 돌아볼때까지 딜레이: %.1f초"), ChosenDelay);

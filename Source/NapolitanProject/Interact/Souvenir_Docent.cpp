@@ -42,4 +42,6 @@ void ASouvenir_Docent::OnPickup()
 		FString QuestText =FString(TEXT("미술관을 탐색하자"));
 		PlayerHUD->InteractUI->AddQuestSlot(1,QuestText);
 	},6.0f,false);*/
+
+	// 도슨트 ADocentV2 를 멈추고 , 그림속으로 들어가도록 만들기 
 }

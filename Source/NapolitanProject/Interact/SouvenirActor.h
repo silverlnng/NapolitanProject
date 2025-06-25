@@ -40,7 +40,7 @@ public:
 	class USceneComponent* SceneComp;
 	
 	//  메쉬 와 콜리전
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
 	class UStaticMeshComponent* StaticMeshComp;
 
 	UPROPERTY(EditDefaultsOnly)

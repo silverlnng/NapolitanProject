@@ -77,6 +77,10 @@ public:
 	float AttackRange = 300.0f;
 
 	void PlayAttackAnimation();
+
+	// 노트를 획득해서 사라지는거 만들어야 할때 
+	void PickUPNote();
+	
 //////////////////////////////////////////////////////////////////////
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
 	class UAnimMontage* TurnAroundMontage;
