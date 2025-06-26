@@ -28,7 +28,8 @@ AEventTriggerBox::AEventTriggerBox()
 
 	// 아이콘 이미지 설정 (Engine 기본 아이콘 사용)
 	// /Script/Engine.Texture2D'/Engine/EditorResources/S_PortalActorIcon2.S_PortalActorIcon2'
-	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(TEXT("Texture2D'/Engine/EditorResources/S_PortalActorIcon2.S_PortalActorIcon2'"));
+	// /Script/Engine.Texture2D'/Game/YJ/BP/LevelTrigger/Bounding_Headline.Bounding_Headline'
+	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(TEXT("Texture2D'/Game/YJ/BP/LevelTrigger/Bounding_Headline.Bounding_Headline'"));
 	if (IconTexture.Succeeded())
 	{
 		EditorBillboard->SetSprite(IconTexture.Object);
@@ -80,12 +81,53 @@ void AEventTriggerBox::EndOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	
 }
 
+void AEventTriggerBox::loadSublevel()
+{
+	UUIDCounter=0;
+	GetWorld()->GetTimerManager().SetTimer(LoadSubLevelTimerHandle, [this]()
+	{
+		for (auto subLevel:LoadSubLevelArray)
+		{
+			FLatentActionInfo LatentAction;
+			LatentAction.CallbackTarget = this;
+			LatentAction.UUID = UUIDCounter++;
+			LatentAction.Linkage = 0;
+			LatentAction.ExecutionFunction = NAME_None;
+			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("LoadedGame_SubLevelArray")));
+		}
+			
+	}, 1.0f, false);
+	
+}
+
+void AEventTriggerBox::UnloadSublevel()
+{
+	UUIDCounter=0;
+	GetWorld()->GetTimerManager().SetTimer(UnLoadSubLevelTimerHandle, [this]()
+	{
+		for (auto subLevel:UnLoadSubLevelArray)
+		{
+			FLatentActionInfo LatentAction;
+			LatentAction.CallbackTarget = this;
+			LatentAction.UUID = UUIDCounter++;
+			LatentAction.Linkage = 0;
+			LatentAction.ExecutionFunction = NAME_None;
+			UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,LatentAction,true);
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("UnLoadedGame_SubLevelArray")));
+		}
+			
+	}, 1.0f, false);
+}
+
 void AEventTriggerBox::ProcessNextSubLevel()
 {
-	if (CurrentIndex < SubLevelArray.Num())
+	if (CurrentIndex < LoadSubLevelArray.Num())
 	{
 		FLatentActionInfo LatentAction;
-		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),SubLevelArray[CurrentIndex],true,true,LatentAction);
+		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LoadSubLevelArray[CurrentIndex],true,true,LatentAction);
 		
 		CurrentIndex++;
 

@@ -26,7 +26,8 @@ AMonologueTriggerBox::AMonologueTriggerBox()
 
 	// 아이콘 이미지 설정 (Engine 기본 아이콘 사용)
 	// /Script/Engine.Texture2D'/Engine/EditorResources/S_PortalActorIcon2.S_PortalActorIcon2'
-	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(TEXT("Texture2D'/Engine/EditorResources/S_PortalActorIcon2.S_PortalActorIcon2'"));
+	// /Script/Engine.Texture2D'/Game/YJ/BP/MonoloogueTriggerBox/MonologueIcon.MonologueIcon'
+	static ConstructorHelpers::FObjectFinder<UTexture2D> IconTexture(TEXT("Texture2D'/Game/YJ/BP/MonoloogueTriggerBox/MonologueIcon.MonologueIcon'"));
 	if (IconTexture.Succeeded())
 	{
 		EditorBillboard->SetSprite(IconTexture.Object);
