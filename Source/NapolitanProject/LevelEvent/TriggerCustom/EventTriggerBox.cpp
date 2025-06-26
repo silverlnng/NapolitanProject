@@ -160,24 +160,22 @@ void AEventTriggerBox::EndOverlap(UPrimitiveComponent* OverlappedComp, AActor* O
 
 void AEventTriggerBox::WhenLToR()
 {
-	LoadUUIDCounter=0;
 	if (!LToR_LoadLevelArray.IsEmpty())
 	{
-			GetWorld()->GetTimerManager().SetTimer(LoadSubLevelTimerHandle, [this]()
-		{
-			for (auto subLevel:LToR_LoadLevelArray)
-			{
-				FLatentActionInfo LatentAction;
-				LatentAction.CallbackTarget = this;
-				LatentAction.UUID = LoadUUIDCounter++;
-				LatentAction.Linkage = 0;
-				LatentAction.ExecutionFunction = NAME_None;
-				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
+		LoadUUIDCounter = 0;
 
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("LoadedGame_SubLevelArray")));
-			}
-				
-		}, 1.0f, false);
+		for (auto subLevel : LToR_LoadLevelArray)
+		{
+			FLatentActionInfo LatentAction;
+			LatentAction.CallbackTarget = this;
+			LatentAction.UUID = LoadUUIDCounter++;
+			LatentAction.Linkage = 0;
+			LatentAction.ExecutionFunction = NAME_None;
+			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld() , subLevel , true , true , LatentAction);
+
+			GEngine->AddOnScreenDebugMessage(-1 , 5.f , FColor::Green ,
+			                                 FString::Printf(TEXT("LoadedGame_SubLevelArray")));
+		}
 	}
 	
 	if (!LToR_UnLoadLevelArray.IsEmpty())
@@ -193,24 +191,21 @@ void AEventTriggerBox::WhenLToR()
 
 void AEventTriggerBox::WhenRToL()
 {
-	LoadUUIDCounter=0;
 	if (!RToL_LoadLevelArray.IsEmpty())
 	{
-		GetWorld()->GetTimerManager().SetTimer(LoadSubLevelTimerHandle , [this]()
+		LoadUUIDCounter=0;
+		for (auto subLevel : RToL_LoadLevelArray)
 		{
-			for (auto subLevel : RToL_LoadLevelArray)
-			{
-				FLatentActionInfo LatentAction;
-				LatentAction.CallbackTarget = this;
-				LatentAction.UUID = LoadUUIDCounter++;
-				LatentAction.Linkage = 0;
-				LatentAction.ExecutionFunction = NAME_None;
-				UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld() , subLevel , true , true , LatentAction);
+			FLatentActionInfo LatentAction;
+			LatentAction.CallbackTarget = this;
+			LatentAction.UUID = LoadUUIDCounter++;
+			LatentAction.Linkage = 0;
+			LatentAction.ExecutionFunction = NAME_None;
+			UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld() , subLevel , true , true , LatentAction);
 
-				GEngine->AddOnScreenDebugMessage(-1 , 5.f , FColor::Green ,
-				                                 FString::Printf(TEXT("LoadedGame_SubLevelArray")));
-			}
-		} , 1.0f , false);
+			GEngine->AddOnScreenDebugMessage(-1 , 5.f , FColor::Green ,
+			                                 FString::Printf(TEXT("LoadedGame_SubLevelArray")));
+		}
 	}
 	
 	if (!RToL_UnLoadLevelArray.IsEmpty())
