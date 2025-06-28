@@ -9,8 +9,11 @@
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/Interact/InteractWidget.h"
+#include "NapolitanProject/Interact/Souvenir_Docent.h"
 #include "NapolitanProject/YJ/SoundControlActor.h"
 
 // Sets default values
@@ -43,7 +46,6 @@ void ADocentV2::BeginPlay()
 	{
 		SoundControlActor = *It;
 	}
-	
 	//StartTurnDetect();
 }
 
@@ -126,14 +128,16 @@ void ADocentV2::StartTurnDetect()
 
 	if (RandValue <= 0.6f)
 	{
-		ChosenDelay = FMath::RandBool() ? 2.0f : 3.0f;
+		ChosenDelay = FMath::RandBool() ? 2.0f : 2.6f;
 	}
 	else
 	{
-		ChosenDelay = 4.0f;
+		ChosenDelay = 3.5f;
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("뒤 돌아볼때까지 딜레이: %.1f초"), ChosenDelay);
+
+
 	
 	GetWorldTimerManager().SetTimer(
 			  PlayTurnRightAnim,
@@ -150,6 +154,16 @@ void ADocentV2::PlayTurnRightAnimation()
 {
 	
 	GetMesh()->PlayAnimation(TurnAroundMontage,false);
+	
+	if (Souvenir_Docent)
+	{
+		Souvenir_Docent->ChangeCollResponseIgnore();
+		UE_LOG(LogTemp, Log, TEXT("Souvenir_Docent 콜리전 수정"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Log, TEXT("Souvenir_Docent 없음"));
+	}
 	
 	float RandValue = FMath::FRand();
 	float ChosenDelay = 0.f;
@@ -193,6 +207,10 @@ void ADocentV2::PlayTurnOriginAnimation()
 		GetMesh()->PlayAnimation(TurnOriginMontage,false);
 	}
 
+	if (Souvenir_Docent)
+	{
+		Souvenir_Docent->ChangeCollResponseBlock();
+	}
 	
 	// 다시 시작
 	StartTurnDetect();
@@ -348,6 +366,7 @@ void ADocentV2::PickUPNote()
 		else
 		{
 			//조금 높이가 있는 곳으로 걷는 애니메이션
+			// 코드로 앞으로 조금씩 이동시키기 
 			if (GoingUpMontage)
 			{
 				PlayAnimMontage(GoingUpMontage);

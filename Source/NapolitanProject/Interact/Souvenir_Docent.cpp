@@ -4,6 +4,7 @@
 #include "Souvenir_Docent.h"
 
 #include "InteractWidget.h"
+#include "Components/BoxComponent.h"
 #include "NapolitanProject/GameFrameWork/EventComponent.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
@@ -53,4 +54,14 @@ void ASouvenir_Docent::OnPickup()
 	{
 		MonologueBox->Destroy();
 	}
+}
+
+void ASouvenir_Docent::ChangeCollResponseIgnore()
+{
+	BoxComp->SetCollisionResponseToChannel(ECC_GameTraceChannel3,ECR_Ignore);
+}
+
+void ASouvenir_Docent::ChangeCollResponseBlock()
+{
+	BoxComp->SetCollisionResponseToChannel(ECC_GameTraceChannel3,ECR_Block);
 }

@@ -32,4 +32,8 @@ class NAPOLITANPROJECT_API ASouvenir_Docent : public ASouvenirActor
 	UPROPERTY(EditAnywhere) // 맵에서 할당하기 
 	class AMonologueTriggerBox* MonologueBox=nullptr;
 	
+public:
+	void ChangeCollResponseIgnore();
+
+	void ChangeCollResponseBlock();
 };

@@ -81,6 +81,8 @@ public:
 	// 노트를 획득해서 사라지는거 만들어야 할때 
 	void PickUPNote();
 
+	UPROPERTY(EditAnywhere) // 맵에서 할당하기 
+	class ASouvenir_Docent* Souvenir_Docent=nullptr;
 	
 	
 //////////////////////////////////////////////////////////////////////
