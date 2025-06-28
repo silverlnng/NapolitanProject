@@ -128,11 +128,12 @@ void ADocentV2::StartTurnDetect()
 
 	if (RandValue <= 0.6f)
 	{
-		ChosenDelay = FMath::RandBool() ? 2.0f : 2.6f;
+		ChosenDelay=FMath::FRandRange(2.0f,2.6f);
+		//ChosenDelay = FMath::RandBool() ? 2.0f : 2.6f;
 	}
 	else
 	{
-		ChosenDelay = 3.5f;
+		ChosenDelay = 3.0f;
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("뒤 돌아볼때까지 딜레이: %.1f초"), ChosenDelay);
@@ -358,7 +359,7 @@ void ADocentV2::PickUPNote()
 			{
 				if (GoingUpMontage)
 				{
-					PlayAnimMontage(GoingUpMontage);
+					GetMesh()->PlayAnimation(GoingUpMontage,true);
 				}
 			},3.5f,false);
 			
@@ -369,7 +370,7 @@ void ADocentV2::PickUPNote()
 			// 코드로 앞으로 조금씩 이동시키기 
 			if (GoingUpMontage)
 			{
-				PlayAnimMontage(GoingUpMontage);
+				GetMesh()->PlayAnimation(GoingUpMontage,true);
 			}
 		}
 		
