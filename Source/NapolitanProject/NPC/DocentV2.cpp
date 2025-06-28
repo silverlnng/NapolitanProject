@@ -126,11 +126,11 @@ void ADocentV2::StartTurnDetect()
 
 	if (RandValue <= 0.6f)
 	{
-		ChosenDelay = 4.0f;
+		ChosenDelay = FMath::RandBool() ? 2.0f : 3.0f;
 	}
 	else
 	{
-		ChosenDelay = FMath::RandBool() ? 2.0f : 3.0f;
+		ChosenDelay = 4.0f;
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("뒤 돌아볼때까지 딜레이: %.1f초"), ChosenDelay);
@@ -162,6 +162,7 @@ void ADocentV2::PlayTurnRightAnimation()
 	{
 		ChosenDelay = 5.0f;
 	}
+	
 	UE_LOG(LogTemp, Log, TEXT("앞으로 돌아볼때까지 딜레이: %.1f초"), ChosenDelay);
 	
 	// 0.5초 지난후 부터 플레이어의 움직임을 감지
@@ -169,16 +170,19 @@ void ADocentV2::PlayTurnRightAnimation()
 		  StartDetectionTimerHandle,
 		  this,
 		  &ADocentV2::StartMovementDetection,
-		  1.5f,
+		  1.0f,
 		  false
 	  );
 	
 	// 그리고 다시 원래대로 회전도 해야함 + 플레이어 감지 스탑
 
+	// 배경음도 잠시 멈추기
+	
 	GetWorld()->GetTimerManager().SetTimer(StopDetectionTimerHandle,[this]()
 	{
 		PlayTurnOriginAnimation();
 		StopMovementDetection();
+		// 배경음 다시 플레이되도록 하기 
 	},ChosenDelay,false);
 }
 
@@ -189,6 +193,7 @@ void ADocentV2::PlayTurnOriginAnimation()
 		GetMesh()->PlayAnimation(TurnOriginMontage,false);
 	}
 
+	
 	// 다시 시작
 	StartTurnDetect();
 }
@@ -304,6 +309,64 @@ void ADocentV2::PlayAttackAnimation()
 	{
 		
 	},0.75f,false);*/
+}
+
+void ADocentV2::PickUPNote()
+{
+
+	// 모든거 멈추도록 하기
+	StopAllTurnDetect();
+	
+	// 도슨트가 그림속을 향해 사라지도록 만들기
+	// 무조건 그림앞을 향해 보고
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance)
+	{
+		UE_LOG(LogTemp, Log, TEXT("🛑 도슨트의 AnimInstance"));
+
+		//모든 애니메이션 실행 멈추고 . 그림속으로 들어가도록 하고싶다
+		
+		bool bIsTurnBack=AnimInstance->Montage_IsPlaying(TurnAroundMontage);
+		if (bIsTurnBack)
+		{
+			UE_LOG(LogTemp, Log, TEXT("🛑TurnAround"));
+			if (TurnOriginMontage)
+			{
+				GetMesh()->PlayAnimation(TurnOriginMontage,false);
+			}
+			// 시간지연을 주고
+			FTimerHandle Timer1;
+			GetWorld()->GetTimerManager().SetTimer(Timer1,[this]()
+			{
+				if (GoingUpMontage)
+				{
+					PlayAnimMontage(GoingUpMontage);
+				}
+			},3.5f,false);
+			
+		}
+		else
+		{
+			//조금 높이가 있는 곳으로 걷는 애니메이션
+			if (GoingUpMontage)
+			{
+				PlayAnimMontage(GoingUpMontage);
+			}
+		}
+		
+	}
+	
+	// 그리고 시간지연 주고 사라지도록 하기
+	FTimerHandle Timer2;
+	GetWorld()->GetTimerManager().SetTimer(Timer2,[this]()
+	{
+		Destroy();
+		// 노래원래대로 변경하기
+		if (SoundControlActor&&SoundControlActor->LobbyRoom)
+		{
+			SoundControlActor->BGSoundChange(SoundControlActor->LobbyRoom);
+		}
+	},8.0f,false);
 }
 
 void ADocentV2::SwitchToMonsterCamera()

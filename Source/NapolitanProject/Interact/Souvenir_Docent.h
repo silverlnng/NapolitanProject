@@ -13,6 +13,8 @@ UCLASS()
 class NAPOLITANPROJECT_API ASouvenir_Docent : public ASouvenirActor
 {
 	GENERATED_BODY()
+
+	virtual void BeginPlay() override;
 	
 	int32 SouvenirID=2;
 	
@@ -23,5 +25,11 @@ class NAPOLITANPROJECT_API ASouvenir_Docent : public ASouvenirActor
 	virtual FString GetSouvenirName();
 	
 	virtual void OnPickup();
+
+	UPROPERTY(EditAnywhere) // 맵에서 할당하기 
+	class ADocentV2* Docent=nullptr;
+
+	UPROPERTY(EditAnywhere) // 맵에서 할당하기 
+	class AMonologueTriggerBox* MonologueBox=nullptr;
 	
 };

@@ -80,6 +80,8 @@ public:
 
 	// 노트를 획득해서 사라지는거 만들어야 할때 
 	void PickUPNote();
+
+	
 	
 //////////////////////////////////////////////////////////////////////
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
@@ -96,6 +98,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
 	class UAnimMontage* DetectMontage;
+
+	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
+	class UAnimMontage* GoingUpMontage;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	class USoundWave* AttackSound;
