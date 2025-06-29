@@ -15,7 +15,7 @@
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/NPC/ChaseStatue.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
-#include "NapolitanProject/NPC/NPC_Butterfly.h"
+#include "NapolitanProject/NPC/Butterfly/NPC_Butterfly.h"
 #include "NapolitanProject/YJ/EventWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"

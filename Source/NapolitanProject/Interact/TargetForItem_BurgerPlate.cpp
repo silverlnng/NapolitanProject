@@ -16,7 +16,7 @@
 #include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "NapolitanProject/NPC/NPC_Butterfly.h"
+#include "NapolitanProject/NPC/Butterfly/NPC_Butterfly.h"
 #include "NapolitanProject/YJ/Monologue/MonolugueWidget.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 
