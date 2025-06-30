@@ -40,6 +40,7 @@ public:
 	bool bisDissolve = false;
 	float dissolveAnimValue;
 
+	// 맵에서 할당 
 	UPROPERTY(EditAnywhere)
 	class AExitDoor_Lobby* Door=nullptr;
 };
