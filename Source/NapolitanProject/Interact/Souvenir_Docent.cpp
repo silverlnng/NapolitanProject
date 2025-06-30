@@ -8,7 +8,7 @@
 #include "NapolitanProject/GameFrameWork/EventComponent.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "NapolitanProject/NPC/DocentV2.h"
+#include "NapolitanProject/NPC/Docent/DocentV2.h"
 #include "NapolitanProject/YJ/Monologue/MonologueTriggerBox.h"
 
 void ASouvenir_Docent::BeginPlay()

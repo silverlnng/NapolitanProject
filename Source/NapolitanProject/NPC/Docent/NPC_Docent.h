@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "NPCCharacter.h"
+#include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NPC_Docent.generated.h"
 
 /**

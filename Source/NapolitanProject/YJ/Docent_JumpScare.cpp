@@ -13,7 +13,7 @@
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "NapolitanProject/NPC/NPC_Docent_AnimInstance.h"
+#include "NapolitanProject/NPC/Docent/NPC_Docent_AnimInstance.h"
 
 // Sets default values
 ADocent_JumpScare::ADocent_JumpScare()

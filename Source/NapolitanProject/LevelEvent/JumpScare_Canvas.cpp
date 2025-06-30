@@ -49,7 +49,7 @@ void AJumpScare_Canvas::BeginPlay()
 	
 
 	FTimerHandle NextAnimTimer1;
-	GetWorld()->GetTimerManager().SetTimer(NextAnimTimer1,[this]()
+ 	GetWorld()->GetTimerManager().SetTimer(NextAnimTimer1,[this]()
 	{
 		SceneCaptureComponent2D->CaptureScene();
 	},1.5f,false);
