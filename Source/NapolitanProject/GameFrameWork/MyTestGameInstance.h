@@ -102,6 +102,26 @@ struct FClueData : public FTableRowBase
 	
 };
 
+USTRUCT(BlueprintType)
+struct FQuestData : public FTableRowBase
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString Who="";
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	bool Done=false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	int32 QuestID=-1;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString Kor_Content="";
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString Eng_Content="";
+	
+};
 UCLASS()
 class NAPOLITANPROJECT_API UMyTestGameInstance : public UGameInstance
 {
