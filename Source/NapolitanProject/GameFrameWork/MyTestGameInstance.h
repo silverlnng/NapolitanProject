@@ -110,6 +110,12 @@ struct FQuestData : public FTableRowBase
 	FString Who="";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	int32 State=-1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	bool Doing=false;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	bool Done=false;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
