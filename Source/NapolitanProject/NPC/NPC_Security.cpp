@@ -93,7 +93,18 @@ void ANPC_Security::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	
+	// 지금 자기상태 출력하도록 만들기
+	FString myState = UEnum::GetValueAsString(SecurityState);
+	DrawDebugString(GetWorld() ,GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
 
+	FString myTarget = Target? TEXT("target"):TEXT("target is null");
+	FVector newGetActorLoc=FVector(GetActorLocation().X,GetActorLocation().Y,GetActorLocation().Z+50.f);
+	
+	DrawDebugString(GetWorld() ,newGetActorLoc, myTarget , nullptr , FColor::Green , 0 , true , 1);
+
+	DrawDebugSphere(GetWorld(), GetActorLocation(), DamagedDistance, 12, FColor::Black, false, 0.1f);
+
+	DrawDebugSphere(GetWorld(), GetActorLocation(), AttackDistance, 12, FColor::Red, false, 0.1f);
 	
 	if (SecurityState==ESecurityState::Stop)
 	{
@@ -102,10 +113,6 @@ void ANPC_Security::Tick(float DeltaSeconds)
 		TickAllStop(DeltaSeconds);
 		return;
 	}
-
-	// 지금 자기상태 출력하도록 만들기
-	//FString myState = UEnum::GetValueAsString(SecurityState);
-	//DrawDebugString(GetWorld() ,GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
 	
 	// 캐릭터와의 거리도 계산  ==> 일정거리 이상 멀어지면 다시 가까운 라이트를 켜야함
 	AllLightTurnOff=true;
@@ -135,12 +142,6 @@ void ANPC_Security::Tick(float DeltaSeconds)
 		MinimumLightDist=100000;
 	}
 
-	if (SecurityState==ESecurityState::Stop)
-	{
-		EnemyAI->StopMovement();
-		//TickAllStop(DeltaSeconds);
-		return;
-	}
 	
 	if (Target&& SecurityState!=ESecurityState::Attack)
 	{
@@ -163,6 +164,8 @@ void ANPC_Security::Tick(float DeltaSeconds)
 	{
 		// 보일 가능성이 없으면 
 		Target=nullptr;
+		UE_LOG(LogTemp,Warning,TEXT("CouldSeePawn"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Black, FString(TEXT("CouldSeePawn")));
 	}
 
 	switch ( SecurityState )
@@ -206,7 +209,7 @@ void ANPC_Security::OnSeePawn(APawn *OtherPawn)
 	/*if (OtherPawn)
 	{
 		FString message = TEXT("Saw Actor ") + OtherPawn->GetName();
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
 	}*/
 	auto* testCha =Cast<ATestCharacter>(OtherPawn);
 	if (testCha)
@@ -236,6 +239,7 @@ void ANPC_Security::TickChasePlayer(const float& DeltaTime)
 		FVector dir = Target->GetActorLocation() - this->GetActorLocation();
 		float dist = dir.Size();
 
+		// 가까울때 공격상태로 전이 
 		if ( dist < AttackDistance )
 		{
 			// 공격상태로 전이하고싶다.
@@ -349,7 +353,7 @@ void ANPC_Security::OnMyAttackMiddle()
 	else
 	{
 		// 이동상태로 전이하고싶다.==> 이게 어색함 .앞에 캐릭터있는데도 다른곳으로 갈때 있음 시야각에 있음 무조건 캐릭터 다시 채이스하도록
-		Target=MainCha;
+		Target=MainCharacter;
 		SetState(ESecurityState::ChasePlayer);
 	}
 }
@@ -360,18 +364,16 @@ void ANPC_Security::OnMyAttackEnd()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString(TEXT("OnMyAttackEnd")));
 	if (!Target){return;}
 	float dist = GetDistanceTo(Target);
-	if ( dist <= DamagedDistance) {
-
-		//다시 공격 애니메이션을 실행
-		// 플레이어에게 데미지를 입히고싶다.
-		Anim->bAttack = true;
-		
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString(TEXT("dist <= AttackDistance")));
+	
+	if (dist <= AttackDistance)
+	{
+		Target=MainCharacter;
+		SetState(ESecurityState::Attack);
 	}
 	// 그렇지 않다면 
 	else {
 		// 이동상태로 전이하고싶다.
-		Target=MainCha;
+		Target=MainCharacter;
 		SetState(ESecurityState::ChasePlayer);
 	}
 }
