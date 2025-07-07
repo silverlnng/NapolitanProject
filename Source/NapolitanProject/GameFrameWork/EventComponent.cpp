@@ -8,11 +8,14 @@
 #include "PlayerHUD.h"
 #include "SaveGISubsystem.h"
 #include "TestCharacter.h"
+#include "TestGameModeBase.h"
 #include "TestPlayerController.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/RichTextBlock.h"
+#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/Door_2Floor.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
+#include "NapolitanProject/Interface/Command/ButterflyQuestStartCommand.h"
 #include "NapolitanProject/NPC/ChaseStatue.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NapolitanProject/NPC/Butterfly/NPC_Butterfly.h"
@@ -38,8 +41,23 @@ void UEventComponent::BeginPlay()
 	Super::BeginPlay();
 	TestPC=GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	MainCharacter=Cast<ATestCharacter>(TestPC->GetPawn());
-	// ...
 	PlayerHUD=TestPC->GetHUD<APlayerHUD>();
+	
+	// 게임모드의 NPCArray 가져오기
+
+	ATestGameModeBase* TestGM = Cast<ATestGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (!TestGM) return;
+
+	if (TestGM->NPCArray.Contains(8))
+	{
+		CommandMap.Add(
+		   "ButterflyQuestStart",
+		   MakeShared<ButterflyQuestStartCommand>(TestGM->NPCArray[8], TestPC,MainCharacter,PlayerHUD,GetWorld())
+	   );
+
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("CommandMap")));
+	}
+	
 }
 
 void UEventComponent::InitializeComponent()

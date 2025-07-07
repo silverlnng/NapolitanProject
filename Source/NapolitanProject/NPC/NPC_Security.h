@@ -75,9 +75,7 @@ public:
 	bool AllLightTurnOff;
 	UPROPERTY(VisibleAnywhere)
 	APawn* Target;
-	UPROPERTY(VisibleAnywhere)
-	ATestCharacter* MainCha;
-
+	
 	UPROPERTY(EditAnywhere,Category=Speed)
 	float PatrolSpeed=300.f;
 	UPROPERTY(EditAnywhere,Category=Speed)
@@ -85,10 +83,10 @@ public:
 	UPROPERTY(EditAnywhere,Category=Speed)
 	float TurnOffSpeed=400.f;
 	UPROPERTY(EditAnywhere,Category=Attack)
-	float DamagedDistance = 240;
+	float DamagedDistance = 200;
 	// 공격 가능거리
 	UPROPERTY(EditAnywhere,Category=Attack)
-	float AttackDistance = 200;
+	float AttackDistance = 240;
 	UFUNCTION()
 	void OnSeePawn(APawn *OtherPawn);
 	
