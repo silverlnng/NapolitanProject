@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "EventComponent.generated.h"
 
+class IEventCommand;
 // 이벤트를 정의하는 함수
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class NAPOLITANPROJECT_API UEventComponent : public UActorComponent
@@ -77,4 +78,6 @@ public:
 	UPROPERTY()
 	class USaveGISubsystem* SaveGI;
 
+private:
+	TMap<FString, TSharedPtr<IEventCommand>> CommandMap;
 };

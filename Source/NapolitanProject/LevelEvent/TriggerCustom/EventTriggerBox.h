@@ -100,6 +100,7 @@ public:
 	
 //////////////////////////////방향 판정 //////////////////////////////////////
 
+	
 	TMap<AActor*, ETriggerSide> FirstTriggerMap;
 	
 	void HandleDirection(AActor* PlayerActor, ETriggerSide FirstSide, ETriggerSide SecondSide);
