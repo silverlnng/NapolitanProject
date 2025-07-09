@@ -40,10 +40,10 @@ void ALightHouse::BeginPlay()
 
 	// 기본 설정값
 	RotationSpeed = 30.0f;          // 30도/초
-	LightIntensity = 10000.0f;      // 강한 빛
-	LightColor = FLinearColor::White;
+	//LightIntensity = 10000.0f;      // 강한 빛
+	//LightColor = FLinearColor::White;
 	SpotLightAngle = 45.0f;         // 45도 각도
-	LightDistance = 5000.0f;        // 5000 유닛 도달거리
+	//LightDistance = 5000.0f;        // 5000 유닛 도달거리
 	bEnableBlinking = false;        // 깜빡임 비활성화
 	BlinkingInterval = 2.0f;        // 2초 주기
 
@@ -55,11 +55,11 @@ void ALightHouse::BeginPlay()
 	// 스포트라이트 초기 설정
 	if (SpotLight)
 	{
-		SpotLight->SetIntensity(LightIntensity);
-		SpotLight->SetLightColor(LightColor);
+		//SpotLight->SetIntensity(LightIntensity);
+		//SpotLight->SetLightColor(LightColor);
 		SpotLight->SetInnerConeAngle(SpotLightAngle * 0.5f);
 		SpotLight->SetOuterConeAngle(SpotLightAngle);
-		SpotLight->SetAttenuationRadius(LightDistance);
+		//SpotLight->SetAttenuationRadius(LightDistance);
 		SpotLight->SetVisibility(bIsLightOn);
         
 		// 그림자 설정
