@@ -2,9 +2,9 @@
 
 
 #include "EventTriggerBox.h"
-
 #include "Components/BillboardComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
@@ -240,24 +240,6 @@ void AEventTriggerBox::UnLoadLevel(TArray<TSoftObjectPtr<UWorld>>* UnLoadLevelAr
 }
 
 
-void AEventTriggerBox::ProcessNextSubLevel()
-{
-	if (CurrentIndex < LToR_LoadLevelArray.Num())
-	{
-		FLatentActionInfo LatentAction;
-		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),LToR_LoadLevelArray[CurrentIndex],true,true,LatentAction);
-		
-		CurrentIndex++;
-
-		// 다음 아이템을 1초 후 처리
-		GetWorldTimerManager().SetTimer(LoadSubLevelTimerHandle, this, &AEventTriggerBox::ProcessNextSubLevel, 1.5f, false);
-	}
-	else
-	{
-		// 종료 처리
-		UE_LOG(LogTemp, Log, TEXT("모든 레벨 로드 완료"));
-	}
-}
 
 
 

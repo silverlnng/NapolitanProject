@@ -47,14 +47,4 @@ public:
 	UPROPERTY()
 	TSet<TSoftObjectPtr<UWorld>> SubLevelArray;
 	
-	UPROPERTY(EditDefaultsOnly)
-	const TSoftObjectPtr<UWorld> CorriderLevel;
-	
-	UPROPERTY(EditDefaultsOnly)
-	const TSoftObjectPtr<UWorld> LobbyRoom1Level;
-
-	UPROPERTY(EditDefaultsOnly)
-	const TSoftObjectPtr<UWorld> LobbyRoom2Level;
-private:
-	
 };

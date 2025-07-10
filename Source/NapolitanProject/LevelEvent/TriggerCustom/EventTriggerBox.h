@@ -105,9 +105,4 @@ public:
 	
 	void HandleDirection(AActor* PlayerActor, ETriggerSide FirstSide, ETriggerSide SecondSide);
 	
-	// 현재 인덱스
-	int32 CurrentIndex = 0;
-	
-	// 반복 실행 함수
-	virtual void ProcessNextSubLevel();
 };

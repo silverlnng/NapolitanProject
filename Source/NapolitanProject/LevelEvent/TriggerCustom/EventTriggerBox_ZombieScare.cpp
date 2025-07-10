@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "EventTriggerBox_Butterfly.h"
+#include "EventTriggerBox_ZombieScare.h"
 
 #include "EngineUtils.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/YJ/Event/Picture_Zombie.h"
 
-void AEventTriggerBox_Butterfly::BeginPlay()
+void AEventTriggerBox_ZombieScare::BeginPlay()
 {
 	Super::BeginPlay();
 	BindBeginOverlap();
@@ -23,7 +23,7 @@ void AEventTriggerBox_Butterfly::BeginPlay()
 	}
 }
 
-void AEventTriggerBox_Butterfly::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+void AEventTriggerBox_ZombieScare::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor->IsA(ATestCharacter::StaticClass()))

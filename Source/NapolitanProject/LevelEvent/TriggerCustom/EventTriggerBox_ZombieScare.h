@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "EventTriggerBox.h"
-#include "EventTriggerBox_Butterfly.generated.h"
+#include "EventTriggerBox_ZombieScare.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class NAPOLITANPROJECT_API AEventTriggerBox_Butterfly : public AEventTriggerBox
+class NAPOLITANPROJECT_API AEventTriggerBox_ZombieScare : public AEventTriggerBox
 {
 	GENERATED_BODY()
 public:
