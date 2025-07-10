@@ -99,6 +99,7 @@ void ATriggerActorArt2F::BoxCompBeginOverlap(UPrimitiveComponent* OverlappedComp
 	{
 		if (NPC_Security)
 		{
+			NPC_Security->SetActorHiddenInGame(false);
 			NPC_Security->SetState(ESecurityState::Patrol);
 			NPC_Security->AudioComp->Play();
 			NPC_Security->SetActorTickEnabled(true);
@@ -151,6 +152,11 @@ void ATriggerActorArt2F::BoxCompEndOverlap( UPrimitiveComponent* OverlappedCompo
 		if (NPC_Security)
 		{
 			NPC_Security->AudioComp->Stop();
+
+			// 나갈때 맵이 언로드 될수있으니까
+			NPC_Security->SetActorHiddenInGame(true);
+			NPC_Security->SetState(ESecurityState::Patrol);
+			NPC_Security->SetActorTickEnabled(false);
 		}
 		//플레이어의 심장소리 플레이 중이면 중지
 		
