@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "LevelEvent/TriggerCustom/EventTriggerBox.h"
+#include "EventTriggerBox.h"
 #include "EventTriggerBox_MusicChange.generated.h"
 
 /**
