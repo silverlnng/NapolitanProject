@@ -25,7 +25,7 @@ public:
 	
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
-
+	class APlayerHUD* PlayerHUD;
 	class AAIController* AIController;
 
 	class ASoundControlActor* SoundControlActor;
@@ -83,7 +83,9 @@ public:
 
 	UPROPERTY(EditAnywhere) // 맵에서 할당하기 
 	class ASouvenir_Docent* Souvenir_Docent=nullptr;
-	
+
+	UPROPERTY(EditAnywhere)
+	FString description=FString(TEXT("도슨트에게 먹혔다"));
 	
 //////////////////////////////////////////////////////////////////////
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)

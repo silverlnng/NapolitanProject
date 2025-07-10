@@ -14,6 +14,7 @@
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interact/Souvenir_Docent.h"
+#include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/YJ/SoundControlActor.h"
 
 // Sets default values
@@ -40,6 +41,9 @@ void ADocentV2::BeginPlay()
 	{
 		MainCharacter =TestPC->GetPawn<ATestCharacter>();
 	}
+	
+	PlayerHUD =TestPC->GetHUD<APlayerHUD>();
+	
 	AIController = Cast<AAIController>(GetController());
 
 	for (TActorIterator<ASoundControlActor> It(GetWorld(), ASoundControlActor::StaticClass()); It; ++It)
@@ -323,11 +327,30 @@ void ADocentV2::PlayAttackAnimation()
 	{
 		UGameplayStatics::PlaySound2D(this, AttackSound);
 	}
-	/*FTimerHandle SwitchCameraTimer;
-	GetWorld()->GetTimerManager().SetTimer(SwitchCameraTimer,[this]()
+	
+
+	FTimerHandle UITimer2;
+	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
 	{
+		if (PlayerHUD )
+		{
 		
-	},0.75f,false);*/
+			PlayerHUD->PlayDeadVignetteEffect();
+		}
+	},2.5f,false);
+	
+	//시간지연 주고 사망 UI 나오도록 
+	FTimerHandle UITimer;
+	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+	{
+		MainCharacter->SetPlayerState(EPlayerState::UI);
+		
+		if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
+		{
+			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
+		}
+	},3.5f,false);
 }
 
 void ADocentV2::PickUPNote()

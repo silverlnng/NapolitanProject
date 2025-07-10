@@ -45,6 +45,9 @@ ANPC_Security::ANPC_Security()
 void ANPC_Security::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// 2층 맵이 로드되기 전까지는 중력영향을 안받고 그위치에 딱 고정되있고 싶다
+	SetActorHiddenInGame(true);
 	
 	SetActorTickEnabled(false); //최적화를 위해 tick 막아두기 
 	PawnSensingComp->SetComponentTickEnabled(false);
