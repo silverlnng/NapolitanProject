@@ -99,7 +99,7 @@ public:
 	class ASouvenir_Docent* Souvenir_Docent=nullptr;
 
 	UPROPERTY(EditAnywhere)
-	FString description=FString(TEXT("도슨트에게 먹혔다"));
+	FString description=FString(TEXT("도슨트에게 잡혔다"));
 	
 //////////////////////////////////////////////////////////////////////
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
