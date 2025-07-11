@@ -28,6 +28,9 @@ ADocentV2::ADocentV2()
 	MonsterCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("MonsterCamera"));
 	MonsterCamera->SetupAttachment(GetMesh(),FName(TEXT("HeadSocket"))); // 루트에 부착
 	MonsterCamera->bUsePawnControlRotation = false; // 플레이어 조작 방지
+
+	//콜린전 채널
+	
 }
 
 // Called when the game starts or when spawned
@@ -76,8 +79,22 @@ void ADocentV2::Tick(float DeltaTime)
 			{
 				SoundControlActor->BGSoundChange(SoundControlActor->DocentBG);
 			}
-			// 이때부터 StartTurnDetect(); 시작함
-			StartTurnDetect();
+
+			// 처음 진입 딱한번 만 .
+			if (!bOnlyOnce)
+			{
+				// bOnlyOnce=true; //=> 이걸 마지막대사 끝날때 
+				// 대사나오도록 하기
+				Interact();
+				// 대사 끝나고 StartTurnDetect 시작하도록 하기
+				// 그리고 마지막 대사할때 알아서 닫도록 하기 
+			}
+			else
+			{
+				// 이때부터 StartTurnDetect(); 시작함
+				StartTurnDetect();
+			}
+			
 			
 		}
 		if (InMaxDetectionDistance&&DistanceToPlayer>MaxDetectionDistance)
@@ -412,8 +429,25 @@ void ADocentV2::PickUPNote()
 	},8.0f,false);
 }
 
+void ADocentV2::Interact()
+{
+	Super::Interact();
+}
+
+int32 ADocentV2::GetNPCID()
+{
+	return NPC_ID;
+}
+
+int32 ADocentV2::GetState()
+{
+	return State;
+}
+
 void ADocentV2::SwitchToMonsterCamera()
 {
+	this->CameraComp->SetActive(false);
+	this->MonsterCamera->SetActive(true);
 	if (TestPC && MonsterCamera)
 	{
 		// 카메라 전환

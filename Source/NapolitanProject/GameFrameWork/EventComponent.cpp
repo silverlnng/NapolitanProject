@@ -19,6 +19,7 @@
 #include "NapolitanProject/NPC/ChaseStatue.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NapolitanProject/NPC/Butterfly/NPC_Butterfly.h"
+#include "NapolitanProject/NPC/Docent/DocentV2.h"
 #include "NapolitanProject/YJ/EventWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
@@ -158,6 +159,11 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 		Event_Curator_Completed();
 		SaveGI->NPCEventManage.Add(NameKey);
 	}
+	else if (str=="DocentDetectStart")
+	{
+		Event_DocentDetectStart();
+	}
+	
 }
 
 void UEventComponent::NPCFinalEvent()
@@ -569,6 +575,24 @@ void UEventComponent::Event_Curator_Completed()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Curator(2,2);
 	},2.5f,false);
+}
+
+void UEventComponent::Event_DocentDetectStart()
+{
+	// 대화 창 닫고
+	TestPC->StartEndNPCDialougue(false);
+	
+	// 도슨트 탐색 시작하도록
+	ADocentV2* DocentV2=nullptr;
+	if (TestPC->curNPC)
+	{
+		DocentV2=Cast<ADocentV2>(TestPC->curNPC);
+		if (DocentV2)
+		{
+			DocentV2->bOnlyOnce=true;
+			DocentV2->InMaxDetectionDistance=false;
+		}
+	}
 }
 
 void UEventComponent::UpdateText()

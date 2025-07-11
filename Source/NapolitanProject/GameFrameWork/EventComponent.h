@@ -57,6 +57,8 @@ public:
 	void Event_Curator_LightEffect();
 	
 	void Event_Curator_Completed();
+
+	void Event_DocentDetectStart();
 	
 	void UpdateText();
 
