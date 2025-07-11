@@ -73,4 +73,7 @@ public:
 
 	UPROPERTY()
 	class ATestCharacter* playerCharacter;
+
+public:
+	void LiquidMeshChange();
 };

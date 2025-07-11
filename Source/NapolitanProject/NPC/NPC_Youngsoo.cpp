@@ -260,4 +260,10 @@ void ANPC_Youngsoo::SpawnItems()
 	}		
 }
 
+void ANPC_Youngsoo::LiquidMeshChange()
+{
+	//녹아드는 메쉬로 변경
+	
+}
+
 
