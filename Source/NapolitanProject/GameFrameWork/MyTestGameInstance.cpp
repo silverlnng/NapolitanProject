@@ -153,7 +153,7 @@ bool UMyTestGameInstance::LoadResultFromCSV(const FString& FilePath)
 		FNPCResult Dialogue;
 		Dialogue.result_Kor = col[5];
 		Dialogue.result_Eng= col[6];
-		Dialogue.Effect=col[7];
+		Dialogue.EventNameString=col[7];
 		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue.result_Kor);
 		// NPC 대사를 맵에 저장
 		NPCResultMap.Add(FindKey, Dialogue);

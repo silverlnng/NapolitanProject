@@ -12,7 +12,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/EventComponent.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "NapolitanProject/NPC/NPC_Security.h"
+#include "NapolitanProject/NPC/Security/NPC_Security.h"
 
 // Sets default values
 ASculpture::ASculpture()

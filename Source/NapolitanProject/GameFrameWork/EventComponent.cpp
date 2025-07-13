@@ -15,7 +15,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/Door_2Floor.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
-#include "NapolitanProject/Interface/Command/ButterflyQuestStartCommand.h"
+#include "NapolitanProject/NPC/Butterfly/Command/ButterflyQuestStartCommand.h"
 #include "NapolitanProject/NPC/Curator/ChaseStatue.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NapolitanProject/NPC/Butterfly/NPC_Butterfly.h"

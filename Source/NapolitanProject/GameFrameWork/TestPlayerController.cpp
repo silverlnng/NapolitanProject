@@ -364,11 +364,11 @@ void ATestPlayerController::SetNPCResultText(int32 curOrder)
 
 		// 이벤트가 정의 되어있으면 이벤트를 발생시키기 
 		// Dialogue_.CameraEffect 값에 따라서 이벤트를 실행시키기
-		FString str=NPCResult.Effect;
+		FString str=NPCResult.EventNameString;
 		if (!str.IsEmpty())
 		{
 			// UEventComponent 에 이벤트발생시키도록 전달
-			//EventComponent->StartEvent(str,"");
+			EventComponent->StartEvent(str,"");
 			EventComponent->StartEvent_(str);
 		}
 	}

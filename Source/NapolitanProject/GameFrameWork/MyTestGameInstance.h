@@ -60,7 +60,7 @@ struct FNPCResult
 	FString State;
 	FString result_Kor;
 	FString result_Eng;
-	FString Effect;
+	FString EventNameString;
 };
 
 USTRUCT(BlueprintType)
