@@ -20,6 +20,11 @@
 #include "NapolitanProject/NPC/Butterfly/NPC_Butterfly.h"
 #include "NapolitanProject/NPC/Butterfly/Command/ButterflyQuestCompletedCommand.h"
 #include "NapolitanProject/NPC/Butterfly/Command/ButterflyQuestRewardCommand.h"
+#include "NapolitanProject/NPC/Cleaner/Command/CleanerQuestCompletedCommand.h"
+#include "NapolitanProject/NPC/Cleaner/Command/CleanerQuestStartCommand.h"
+#include "NapolitanProject/NPC/Curator/Command/CuratorCompletedCommand.h"
+#include "NapolitanProject/NPC/Curator/Command/CuratorLightEffectCommand.h"
+#include "NapolitanProject/NPC/Docent/DocentDetectStartCommand.h"
 #include "NapolitanProject/NPC/Docent/DocentV2.h"
 #include "NapolitanProject/YJ/EventWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
@@ -50,7 +55,31 @@ void UEventComponent::BeginPlay()
 	ATestGameModeBase* TestGM = Cast<ATestGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (!TestGM) return;
 
-	if (TestGM->NPCArray.Contains(8))
+	// 6 : AChaseStatue (큐레이터)
+	// 8 : 나비
+	// 1 : 김영수
+	// 2 : 도슨트
+	// 3 : 노인 (이동준)
+	// 4 : 검은경비원
+	// 5 : 흰 청소부
+	// 7 : 이서
+	
+	if (TestGM->NPCArray.Contains(2))
+	{
+		CommandMap.Add(
+		"DocentDetectStart",
+		MakeShared<DocentDetectStartCommand>(TestGM->NPCArray[2] , TestPC ,MainCharacter));
+	}
+	else if (TestGM->NPCArray.Contains(5))
+	{
+		CommandMap.Add(
+		"CleanerQuestStart",
+		MakeShared<CleanerQuestStartCommand>(TestGM->NPCArray[5] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+		CommandMap.Add(
+		"CleanerQuestCompleted",
+		MakeShared<CleanerQuestCompletedCommand>(TestGM->NPCArray[5] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+	}
+	else if (TestGM->NPCArray.Contains(8))
 	{
 		CommandMap.Add(
 			"ButterflyQuestStart" ,
@@ -64,7 +93,15 @@ void UEventComponent::BeginPlay()
 		
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("ButterflyCommandMap")));
 	}
-	
+	else if (TestGM->NPCArray.Contains(6))
+	{
+		CommandMap.Add(
+		"CuratorLightEffect" ,
+		MakeShared<CuratorLightEffectCommand>(TestGM->NPCArray[6] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+		CommandMap.Add(
+			"CuratorCompleted" ,
+			MakeShared<CuratorCompletedCommand>(TestGM->NPCArray[6] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+	}
 }
 
 void UEventComponent::InitializeComponent()
@@ -96,13 +133,13 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 	if (str=="CleanerQuest")
 	{
 		// 청소부의 퀘스트 함수
-		Event_Cleaner_Start();
+		//Event_Cleaner_Start();
 		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="CleanerQuestCompleted")
 	{
 		// 청소부의 퀘스트 완료 함수
-		Event_Cleaner_Completed();
+		//Event_Cleaner_Completed();
 		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="OldmanClue")

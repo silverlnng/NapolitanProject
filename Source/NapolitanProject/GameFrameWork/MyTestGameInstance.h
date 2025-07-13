@@ -106,6 +106,10 @@ USTRUCT(BlueprintType)
 struct FQuestData : public FTableRowBase
 {
 	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString QuestKey="";
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	FString Who="";
 
