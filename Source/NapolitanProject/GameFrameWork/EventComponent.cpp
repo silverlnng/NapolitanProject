@@ -4,7 +4,6 @@
 #include "EventComponent.h"
 
 #include "EngineUtils.h"
-#include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
 #include "SaveGISubsystem.h"
 #include "TestCharacter.h"
@@ -19,6 +18,8 @@
 #include "NapolitanProject/NPC/Curator/ChaseStatue.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NapolitanProject/NPC/Butterfly/NPC_Butterfly.h"
+#include "NapolitanProject/NPC/Butterfly/Command/ButterflyQuestCompletedCommand.h"
+#include "NapolitanProject/NPC/Butterfly/Command/ButterflyQuestRewardCommand.h"
 #include "NapolitanProject/NPC/Docent/DocentV2.h"
 #include "NapolitanProject/YJ/EventWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
@@ -52,11 +53,16 @@ void UEventComponent::BeginPlay()
 	if (TestGM->NPCArray.Contains(8))
 	{
 		CommandMap.Add(
-		   "ButterflyQuestStart",
-		   MakeShared<ButterflyQuestStartCommand>(TestGM->NPCArray[8], TestPC,MainCharacter,PlayerHUD,GetWorld())
-	   );
-
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("CommandMap")));
+			"ButterflyQuestStart" ,
+			MakeShared<ButterflyQuestStartCommand>(TestGM->NPCArray[8] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+		CommandMap.Add(
+			"ButterflyQuestCompleted" ,
+			MakeShared<ButterflyQuestCompletedCommand>(TestGM->NPCArray[8] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+		CommandMap.Add(
+		"ButterflyQuestReward" ,
+		MakeShared<ButterflyQuestRewardCommand>(TestGM->NPCArray[8] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+		
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("ButterflyCommandMap")));
 	}
 	
 }
@@ -86,20 +92,8 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 		return;
 	}
 		
-	if (str=="RedDosentStart")
-	{
-		Event_RedDosent(str,content);
-	}
-	else if (str=="RedDosentEnd")
-	{
-		Event_RedDosent(str,content);
-	}
-	else if (str=="NPCFinalEvent")
-	{
-		NPCFinalEvent();
-		// 선택지 누르고 결과가 아니라 그냥 대사 마지막에 npc의  ResultEvent 호출시키고 싶을때 
-	}
-	else if (str=="CleanerQuest")
+	
+	if (str=="CleanerQuest")
 	{
 		// 청소부의 퀘스트 함수
 		Event_Cleaner_Start();
@@ -124,17 +118,17 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 	}
 	else if (str=="ButterflyQuest")
 	{
-		Event_Butterfly_Start();
+		//Event_Butterfly_Start();
 		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="ButterflyQuestCompleted")
 	{
-		Event_Butterfly_Completed();
+		//Event_Butterfly_Completed();
 		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="ButterflyQuestReward")
 	{
-		Event_Butterfly_QuestReward();
+		//Event_Butterfly_QuestReward();
 		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="LeeSeoFirstUI")

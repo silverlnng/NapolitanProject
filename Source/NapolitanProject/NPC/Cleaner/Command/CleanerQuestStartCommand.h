@@ -5,24 +5,25 @@
 #include "CoreMinimal.h"
 #include "NapolitanProject/Interface/EventCommand.h"
 
+class ANPC_Cleaner;
 class ANPCCharacter;
 class APlayerHUD;
 class ATestCharacter;
 class ATestPlayerController;
-class ANPC_Butterfly;
 /**
  * 
  */
-class NAPOLITANPROJECT_API ButterflyQuestRewardCommand: public IEventCommand
+class NAPOLITANPROJECT_API CleanerQuestStartCommand: public IEventCommand
 {
 public:
-	ButterflyQuestRewardCommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
-	~ButterflyQuestRewardCommand();
+	CleanerQuestStartCommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	~CleanerQuestStartCommand();
 	virtual void Execute() override;
 private:
 	UWorld* World;
-	ANPC_Butterfly* NPC;
+	ANPC_Cleaner* NPC;
 	ATestPlayerController* PC;
 	ATestCharacter* MainCharacter;
-	APlayerHUD* PlayerHUD;	
+	APlayerHUD* PlayerHUD;
+	class ADoor_2Floor* Door_2Floor;
 };
