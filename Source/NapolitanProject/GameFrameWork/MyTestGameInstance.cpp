@@ -154,7 +154,7 @@ bool UMyTestGameInstance::LoadResultFromCSV(const FString& FilePath)
 		Dialogue.result_Kor = col[5];
 		Dialogue.result_Eng= col[6];
 		Dialogue.EventNameString=col[7];
-		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue.result_Kor);
+		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue.EventNameString);
 		// NPC 대사를 맵에 저장
 		NPCResultMap.Add(FindKey, Dialogue);
 	}
@@ -195,7 +195,7 @@ bool UMyTestGameInstance::LoadDialogueFromCSV(const FString& FilePath)
 		Dialogue.Dialogue_Eng = Col[6];
 		Dialogue.EventNameString = Col[7];
 		//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue.Dialogue_Kor);
-		//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue.Who);
+		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue.EventNameString);
 		// NPC 대사를 맵에 저장
 		NPCDialogueMap.Add(FindKey, Dialogue);
 	}

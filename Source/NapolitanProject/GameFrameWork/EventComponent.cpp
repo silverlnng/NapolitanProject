@@ -26,6 +26,9 @@
 #include "NapolitanProject/NPC/Curator/Command/CuratorLightEffectCommand.h"
 #include "NapolitanProject/NPC/Docent/DocentDetectStartCommand.h"
 #include "NapolitanProject/NPC/Docent/DocentV2.h"
+#include "NapolitanProject/NPC/LeeSeo/Command/LeeSeoFirstUICommand.h"
+#include "NapolitanProject/NPC/LeeSeo/Command/LeeSeoSecondUICommand.h"
+#include "NapolitanProject/NPC/Security/SecurityCompletedCommand.h"
 #include "NapolitanProject/YJ/EventWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
@@ -63,12 +66,22 @@ void UEventComponent::BeginPlay()
 	// 4 : 검은경비원
 	// 5 : 흰 청소부
 	// 7 : 이서
+
+	CommandMap.Add(
+			"ButterflyQuestStart" ,
+			MakeShared<ButterflyQuestStartCommand>(TestPC , MainCharacter , PlayerHUD ,GetWorld()));
 	
 	if (TestGM->NPCArray.Contains(2))
 	{
 		CommandMap.Add(
 		"DocentDetectStart",
 		MakeShared<DocentDetectStartCommand>(TestGM->NPCArray[2] , TestPC ,MainCharacter));
+	}
+	else if (TestGM->NPCArray.Contains(4))
+	{
+		CommandMap.Add(
+		"SecurityCompleted",
+		MakeShared<SecurityCompletedCommand>(TestGM->NPCArray[4], TestPC , MainCharacter , PlayerHUD ,GetWorld()));
 	}
 	else if (TestGM->NPCArray.Contains(5))
 	{
@@ -79,11 +92,20 @@ void UEventComponent::BeginPlay()
 		"CleanerQuestCompleted",
 		MakeShared<CleanerQuestCompletedCommand>(TestGM->NPCArray[5] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
 	}
+	else if (TestGM->NPCArray.Contains(7))
+	{
+		CommandMap.Add(
+			"LeeSeoFirstUI" ,
+			MakeShared<LeeSeoFirstUICommand>(TestGM->NPCArray[7] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+		CommandMap.Add(
+			"LeeSeoSecondUI" ,
+			MakeShared<LeeSeoSecondUICommand>(TestGM->NPCArray[7] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+	}
 	else if (TestGM->NPCArray.Contains(8))
 	{
 		CommandMap.Add(
 			"ButterflyQuestStart" ,
-			MakeShared<ButterflyQuestStartCommand>(TestGM->NPCArray[8] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+			MakeShared<ButterflyQuestStartCommand>(TestPC , MainCharacter , PlayerHUD ,GetWorld()));
 		CommandMap.Add(
 			"ButterflyQuestCompleted" ,
 			MakeShared<ButterflyQuestCompletedCommand>(TestGM->NPCArray[8] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
@@ -202,6 +224,11 @@ void UEventComponent::StartEvent_(FString& EventKey)
 	if (auto FoundCommand = CommandMap.Find(EventKey))
 	{
 		(*FoundCommand)->Execute();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green,*EventKey);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green,FString::Printf(TEXT("CommandMap EventKey 없음")));
 	}
 }
 
