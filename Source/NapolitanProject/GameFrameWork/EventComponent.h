@@ -27,6 +27,8 @@ public:
 
 	void StartEvent(FString& str,const FString& content);
 
+	void StartEvent_(FString& EventKey);
+	
 	void NPCFinalEvent();
 	
 	void Event_RedDosent(FString& str,const FString& content);

@@ -70,7 +70,7 @@ struct FNPCDialogue
 	FString Who;
 	FString Dialogue_Kor;
 	FString Dialogue_Eng;
-	FString CameraEffect;
+	FString EventNameString;
 };
 
 USTRUCT(BlueprintType)

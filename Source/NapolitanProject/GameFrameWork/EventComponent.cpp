@@ -16,7 +16,7 @@
 #include "NapolitanProject/Interact/Door_2Floor.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interface/Command/ButterflyQuestStartCommand.h"
-#include "NapolitanProject/NPC/ChaseStatue.h"
+#include "NapolitanProject/NPC/Curator/ChaseStatue.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NapolitanProject/NPC/Butterfly/NPC_Butterfly.h"
 #include "NapolitanProject/NPC/Docent/DocentV2.h"
@@ -164,6 +164,14 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 		Event_DocentDetectStart();
 	}
 	
+}
+
+void UEventComponent::StartEvent_(FString& EventKey)
+{
+	if (auto FoundCommand = CommandMap.Find(EventKey))
+	{
+		(*FoundCommand)->Execute();
+	}
 }
 
 void UEventComponent::NPCFinalEvent()
