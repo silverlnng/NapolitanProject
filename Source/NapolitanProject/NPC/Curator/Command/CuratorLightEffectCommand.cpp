@@ -5,9 +5,8 @@
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/NPC/Curator/ChaseStatue.h"
 
-CuratorLightEffectCommand::CuratorLightEffectCommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld)
+CuratorLightEffectCommand::CuratorLightEffectCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld)
 {
-	NPC=Cast<AChaseStatue>(INNPC);
 	PC=INPC;
 	MainCharacter=INMainCharacter;
 	PlayerHUD=INPlayerHUD;

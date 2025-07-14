@@ -17,7 +17,7 @@ class AChaseStatue;
 class NAPOLITANPROJECT_API CuratorLightEffectCommand: public IEventCommand
 {
 public:
-	CuratorLightEffectCommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	CuratorLightEffectCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
 	~CuratorLightEffectCommand();
 	virtual void Execute() override;
 private:

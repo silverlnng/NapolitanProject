@@ -53,11 +53,7 @@ void UEventComponent::BeginPlay()
 	MainCharacter=Cast<ATestCharacter>(TestPC->GetPawn());
 	PlayerHUD=TestPC->GetHUD<APlayerHUD>();
 	
-	// 게임모드의 NPCArray 가져오기
-
-	ATestGameModeBase* TestGM = Cast<ATestGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
-	if (!TestGM) return;
-
+	
 	// 6 : AChaseStatue (큐레이터)
 	// 8 : 나비
 	// 1 : 김영수
@@ -66,11 +62,32 @@ void UEventComponent::BeginPlay()
 	// 4 : 검은경비원
 	// 5 : 흰 청소부
 	// 7 : 이서
-
-	CommandMap.Add(
-			"ButterflyQuestStart" ,
-			MakeShared<ButterflyQuestStartCommand>(TestPC , MainCharacter , PlayerHUD ,GetWorld()));
 	
+	GetWorld()->GetTimerManager().SetTimer(DelayTimerHandle,this,&UEventComponent::CommandAdd,1.0f, false);
+	
+}
+
+void UEventComponent::CommandAdd()
+{
+	// 게임모드의 NPCArray 가져오기
+	// 몇몇 npc는 다른 게임모드를 넣어줘야함 !
+
+	// 이서 Command 연결
+	CommandMap.Add(
+			"LeeSeoFirstUI" ,
+			MakeShared<LeeSeoFirstUICommand>(TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+	CommandMap.Add(
+		"LeeSeoSecondUI" ,
+		MakeShared<LeeSeoSecondUICommand>(TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+
+	// 큐레이터 command 연결
+	CommandMap.Add(
+	"CuratorLightEffect" ,
+	MakeShared<CuratorLightEffectCommand>(TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+	ATestGameModeBase* TestGM = Cast<ATestGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	
+	if (!TestGM) return;
+
 	if (TestGM->NPCArray.Contains(2))
 	{
 		CommandMap.Add(
@@ -92,15 +109,6 @@ void UEventComponent::BeginPlay()
 		"CleanerQuestCompleted",
 		MakeShared<CleanerQuestCompletedCommand>(TestGM->NPCArray[5] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
 	}
-	else if (TestGM->NPCArray.Contains(7))
-	{
-		CommandMap.Add(
-			"LeeSeoFirstUI" ,
-			MakeShared<LeeSeoFirstUICommand>(TestGM->NPCArray[7] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
-		CommandMap.Add(
-			"LeeSeoSecondUI" ,
-			MakeShared<LeeSeoSecondUICommand>(TestGM->NPCArray[7] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
-	}
 	else if (TestGM->NPCArray.Contains(8))
 	{
 		CommandMap.Add(
@@ -117,9 +125,7 @@ void UEventComponent::BeginPlay()
 	}
 	else if (TestGM->NPCArray.Contains(6))
 	{
-		CommandMap.Add(
-		"CuratorLightEffect" ,
-		MakeShared<CuratorLightEffectCommand>(TestGM->NPCArray[6] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+	
 		CommandMap.Add(
 			"CuratorCompleted" ,
 			MakeShared<CuratorCompletedCommand>(TestGM->NPCArray[6] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
@@ -231,6 +237,7 @@ void UEventComponent::StartEvent_(FString& EventKey)
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green,FString::Printf(TEXT("CommandMap EventKey 없음")));
 	}
 }
+
 
 void UEventComponent::NPCFinalEvent()
 {

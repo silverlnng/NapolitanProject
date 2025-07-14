@@ -28,6 +28,10 @@ public:
 	void StartEvent(FString& str,const FString& content);
 
 	void StartEvent_(FString& EventKey);
+
+	FTimerHandle DelayTimerHandle;
+
+	void CommandAdd();
 	
 	void NPCFinalEvent();
 	

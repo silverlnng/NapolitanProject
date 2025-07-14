@@ -16,7 +16,7 @@ class ANPC_LeeSeo;
 class NAPOLITANPROJECT_API LeeSeoSecondUICommand: public IEventCommand
 {
 public:
-	LeeSeoSecondUICommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	LeeSeoSecondUICommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
 	~LeeSeoSecondUICommand();
 	virtual void Execute() override;
 private:
