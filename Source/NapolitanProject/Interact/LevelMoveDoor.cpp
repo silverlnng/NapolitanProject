@@ -129,21 +129,20 @@ void ALevelMoveDoor::LevelMove()
 			GetWorld()->GetTimerManager().ClearTimer(PlayerHUD->MonolugueWidgetUI->FinalTimerHandle);
 		}
 			
-		GI->AsyncLoadLoadLevel(MoveToLevel); //레벨 이동할때 로딩이 되도록
+		//GI->AsyncLoadLoadLevel(MoveToLevel); //레벨 이동할때 로딩이 되도록
+		GI->PreloadLevel(MoveToLevelPathString);
 		
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
 		{
 			UGameplayStatics::OpenLevelBySoftObjectPtr(this,MoveToLevel,true); //레벨 변경
-		}, 0.5f, false);
+		}, 1.f, false);
 	}
 	else // 다른레벨에서 다시 로비로 돌아갈때 사용하는 것. 
 	{
 		SaveGI->GameSaveController->LoadGameFromSlot(3);
 		// 여기에 오픈레벨(로비) 가 있음
-		
 	}
-	
 }
 
 // 더 작은 범위의 트리거 박스

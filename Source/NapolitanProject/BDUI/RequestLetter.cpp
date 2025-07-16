@@ -56,7 +56,10 @@ void URequestLetter::OnTicketClicked()
 			SequencePlayer->Play();
 			
 			// ✅ 2. 비동기 레벨 로딩 시작
-			GI->AsyncLoadLoadLevel(MuseumLevel);
+			//GI->AsyncLoadLoadLevel(MuseumLevel);
+			// start level 경로
+			FName PathString = TEXT("/Game/JI/Level/HWM_map.HWM_map");
+			GI->PreloadLevel(PathString);
 			
 			FTimerHandle TimerHandle;
 			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()

@@ -90,6 +90,7 @@ void ADetectiveMapGameModeBase::BeginPlay()
 			if(SequencePlayer)
 			{
 				// 시퀀스 종료 후 LoadNextLevel 호출
+				
 				SequencePlayer->OnFinished.AddDynamic(this, &ADetectiveMapGameModeBase::OpenNextLevel);
 				SequencePlayer->Play();
 			}

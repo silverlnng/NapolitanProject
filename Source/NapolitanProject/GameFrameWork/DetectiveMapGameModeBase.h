@@ -45,6 +45,7 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> StartLevel;
+	
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> HWLevel;
 	
