@@ -61,5 +61,12 @@ public:
 
 	UPROPERTY()
 	TArray<TSoftObjectPtr<UWorld>> SubLevelArray;
-	
+
+	// 세팅값 저장하기
+	UPROPERTY(VisibleAnywhere)
+	float TotalSoundMix=1.f;
+	UPROPERTY(VisibleAnywhere)
+	float BGSoundMix=1.f;
+	UPROPERTY(VisibleAnywhere)
+	float SFXSoundMix=1.f;
 };

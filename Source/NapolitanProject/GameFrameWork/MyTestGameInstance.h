@@ -208,5 +208,8 @@ public:
 	TSharedPtr<FStreamableHandle> PreloadHandle;
 	
 	void UnlockAchievement(FString AchievementId);
+
+/////////////// 세팅
+	
 };
 

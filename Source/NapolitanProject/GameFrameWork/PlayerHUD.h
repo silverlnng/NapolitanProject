@@ -164,6 +164,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
 	class UESCWidget* UESC_UI;
 	
+
 	UFUNCTION()
 	void UpdateClueSlotWidget();
 

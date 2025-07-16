@@ -81,3 +81,9 @@ void USaveGISubsystem::SetLevelMoveToDoor(bool bUse)
 	bLevelMoveToDoor = bUse; // 문을 통해 이동했으므로 저장된 위치 사용
 	// 죽어서 처음레벨 가면 이거 false으로 고치기 
 }
+
+void USaveGISubsystem::LoadSettingValue()
+{
+	
+}
+

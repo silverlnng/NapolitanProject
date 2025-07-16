@@ -46,5 +46,25 @@ public:
 
 	UPROPERTY()
 	TSet<TSoftObjectPtr<UWorld>> SubLevelArray;
+
+	UPROPERTY(EditDefaultsOnly,Category="Sound")
+	class  USoundMix* SFXMix;
+
+	UPROPERTY(EditDefaultsOnly,Category="Sound")
+	class USoundClass* MySFXClass;
+
+	UPROPERTY(EditDefaultsOnly,Category="Sound")
+	class  USoundMix* MasterMix;
+
+	UPROPERTY(EditDefaultsOnly,Category="Sound")
+	class USoundClass* MyMasterClass;
+
+	UPROPERTY(EditDefaultsOnly,Category="Sound")
+	class  USoundMix* BackGroundMix;
+
+	UPROPERTY(EditDefaultsOnly,Category="Sound")
+	class USoundClass* BackGroundClass;
+	
+	void LoadSettingValue();
 	
 };

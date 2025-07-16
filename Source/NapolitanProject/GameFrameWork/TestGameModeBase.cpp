@@ -192,11 +192,17 @@ void ATestGameModeBase::BeginPlay()
 			
 		} , 1.5f , false);
 		
-		
-		
-		
+
+		//// 설정값 로드하기 
+		LoadSettingValue();
 	}
-	
+}
+
+void ATestGameModeBase::LoadSettingValue()
+{
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),MasterMix,MyMasterClass,SaveGI->TotalSoundMix,1,0);
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),BackGroundMix,BackGroundClass,SaveGI->BGSoundMix,1,0);
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),SFXMix,MySFXClass,SaveGI->SFXSoundMix,1,0);
 }
 
 
