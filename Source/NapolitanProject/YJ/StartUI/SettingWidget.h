@@ -56,13 +56,18 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Button_Setting;
 
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Button_Exit;
+
 	UFUNCTION()
 	void OnSlider_Setting_Changed(float value);
 
 	//슬라이더 값을 움직일때 소리도 같이 해당 볼륨만큼 플레이 되도록 만들기
-
+	class UMyTestGameInstance* GI;
+	class USaveGISubsystem* SaveGI;
 	
-
 	UFUNCTION()
 	void OnClickeSetting();
+	UFUNCTION()
+	void OnClickeExit();
 };

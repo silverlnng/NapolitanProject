@@ -55,7 +55,10 @@ void ADetectiveMapGameModeBase::BeginPlay()
 		if (OpeningUI)
 		{
 			OpeningUI->AddToViewport();
-			GI->AsyncLoadLoadLevel(HWLevel);
+			//GI->AsyncLoadLoadLevel(HWLevel);
+			///Script/Engine.World'/Game/JI/Level/HWM_map.HWM_map'
+			FName PathString = TEXT("/Game/JI/Level/HWM_map.HWM_map");
+			GI->PreloadLevel(PathString);
 			OpeningUI->SequencePlayer->OnFinished.AddDynamic(this,&ADetectiveMapGameModeBase::OpenHWLevel);
 		}
 		break;
@@ -87,6 +90,7 @@ void ADetectiveMapGameModeBase::BeginPlay()
 			if(SequencePlayer)
 			{
 				// 시퀀스 종료 후 LoadNextLevel 호출
+				
 				SequencePlayer->OnFinished.AddDynamic(this, &ADetectiveMapGameModeBase::OpenNextLevel);
 				SequencePlayer->Play();
 			}

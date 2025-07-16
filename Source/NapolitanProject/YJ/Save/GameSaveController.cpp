@@ -105,6 +105,11 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 			SaveGISubsystem->IsFromLoad=false;
 		}
 
+		// 설정값을 저장하기
+		SaveGameInstance->TotalSoundMix=SaveGISubsystem->TotalSoundMix;
+		SaveGameInstance->BGSoundMix=SaveGISubsystem->BGSoundMix;
+		SaveGameInstance->SFXSoundMix=SaveGISubsystem->SFXSoundMix;
+
 		// 슬롯에 저장
 		UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
 		
@@ -217,6 +222,13 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 			}
 			
 		}
+
+
+		// 설정값을 로드하기 
+		SaveGISubsystem->TotalSoundMix=LoadedGame->TotalSoundMix;
+		SaveGISubsystem->BGSoundMix=LoadedGame->BGSoundMix;
+		SaveGISubsystem->SFXSoundMix=LoadedGame->SFXSoundMix;
+		
 
 		SaveGISubsystem->IsFromLoad=true;
 		

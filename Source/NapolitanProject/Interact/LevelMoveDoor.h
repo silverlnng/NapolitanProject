@@ -62,7 +62,10 @@ public:
 public:
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> MoveToLevel;
-
+	
+	UPROPERTY(EditAnywhere)
+	FName MoveToLevelPathString = TEXT("");
+	
 	// 설치한 위치가 로비(메인레벨)면 true 설정을 , 다른레벨이면 false를 설정
 	UPROPERTY(EditAnywhere)
 	bool bMoveFromLobby=false;

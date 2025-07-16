@@ -16,11 +16,11 @@ class NAPOLITANPROJECT_API AStartLevelGameModeBase : public AGameModeBase
 	
 public:
 	virtual void BeginPlay() override;
-	
-	class UMyTestGameInstance* GI;
-
+	class ATestPlayerController* PC;
+	class APlayerHUD* PlayerHUD;
+	// 스타트 ui 생성시키기
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
-	TSubclassOf<class UUserWidget> OpeningWidgetFactory;
+	TSubclassOf<class UGameStartWidget> StartWidgetFactory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
-	class UUserWidget* OpeningUI;
+	class UGameStartWidget* StartWidgetUI;
 };

@@ -25,6 +25,12 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_Continue;
 
+	UPROPERTY(meta = (BindWidget))
+	class UButton* Btn_Setting;
+
+	UPROPERTY(meta = (BindWidget))
+	class USettingWidget* SettingUI;
+
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> StartLevel;
 	
@@ -41,5 +47,8 @@ public:
 
 	UFUNCTION()
 	void OnClick_Continue();
+
+	UFUNCTION()
+	void OnClick_Setting();
 	
 };

@@ -12,6 +12,8 @@
  * 
  */
 
+struct FStreamableHandle;
+
 USTRUCT(BlueprintType)
 struct FItemData : public FTableRowBase
 {
@@ -199,7 +201,15 @@ public:
 	///////// 비동기 로비 레벨로드 //////
 	UFUNCTION(BlueprintCallable)
 	void AsyncLoadLoadLevel(const TSoftObjectPtr<UWorld> Level);
+
+	UFUNCTION(BlueprintCallable)
+	void PreloadLevel(FName& LevelName);
+	
+	TSharedPtr<FStreamableHandle> PreloadHandle;
 	
 	void UnlockAchievement(FString AchievementId);
+
+/////////////// 세팅
+	
 };
 

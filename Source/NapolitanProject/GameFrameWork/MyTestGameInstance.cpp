@@ -310,7 +310,34 @@ void UMyTestGameInstance::AsyncLoadLoadLevel(const TSoftObjectPtr<UWorld> Level)
 	FSoftObjectPath LevelPath = Level->GetPathName();
 	// ✅ 비동기 레벨 로딩 시작
 	FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
-	Streamable.RequestAsyncLoad(LevelPath);
+	//Streamable.RequestAsyncLoad(LevelPath);
+
+	// KeepHandle은 GC 방지용
+	TSharedPtr<FStreamableHandle> Handle = Streamable.RequestAsyncLoad(LevelPath, FStreamableDelegate::CreateLambda([=]()
+	{
+		UE_LOG(LogTemp, Log, TEXT("Level Preload Finished!"));
+	}));
+
+	// 핸들을 유지하지 않으면 GC가 다시 언로드해버림
+	PreloadHandle = Handle; // ex. UPROPERTY로 잡아두기
+
+	if (PreloadHandle.IsValid() && PreloadHandle->HasLoadCompleted())
+	{
+		UE_LOG(LogTemp, Log, TEXT("Level is already preloaded!"));
+	}
+}
+
+void UMyTestGameInstance::PreloadLevel(FName& LevelName)
+{
+	
+	UE_LOG(LogTemp, Warning, TEXT("Preload Path: %s"), *LevelName.ToString());
+	FSoftObjectPath LevelPath(LevelName);
+
+	FStreamableManager& Streamable = UAssetManager::GetStreamableManager();
+	PreloadHandle = Streamable.RequestAsyncLoad(LevelPath, FStreamableDelegate::CreateLambda([=]()
+	{
+		UE_LOG(LogTemp, Log, TEXT("Preload done for %s"), *LevelName.ToString());
+	}));
 }
 
 void UMyTestGameInstance::UnlockAchievement(FString AchievementId)
