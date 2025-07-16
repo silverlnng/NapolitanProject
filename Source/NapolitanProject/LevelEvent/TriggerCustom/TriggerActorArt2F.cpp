@@ -14,7 +14,8 @@
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interact/Sculpture.h"
 #include "NapolitanProject/Interact/PieceActor.h"
-#include "NapolitanProject/NPC/NPC_Security.h"
+#include "NapolitanProject/NPC/Security/NPC_Security.h"
+#include "Perception/PawnSensingComponent.h"
 
 // Sets default values
 ATriggerActorArt2F::ATriggerActorArt2F()

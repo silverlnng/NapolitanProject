@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "NapolitanProject/NPC/NPCCharacter.h"
 #include "DocentV2.generated.h"
 
 UCLASS()
-class NAPOLITANPROJECT_API ADocentV2 : public ACharacter
+class NAPOLITANPROJECT_API ADocentV2 : public ANPCCharacter
 {
 	GENERATED_BODY()
 
@@ -36,6 +37,19 @@ public:
 	/** 몬스터 전용 카메라 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	class UCameraComponent* MonsterCamera;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	int32 NPC_ID =2;
+	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
+	int32 State =1;
+
+	virtual void Interact() override;
+
+	virtual int32 GetNPCID() override;
+
+	virtual int32 GetState() override;
+	
+	bool bOnlyOnce=false;
 	
 	/** 플레이어의 카메라를 몬스터 카메라로 전환하는 함수 */
 	void SwitchToMonsterCamera();
@@ -85,7 +99,7 @@ public:
 	class ASouvenir_Docent* Souvenir_Docent=nullptr;
 
 	UPROPERTY(EditAnywhere)
-	FString description=FString(TEXT("도슨트에게 먹혔다"));
+	FString description=FString(TEXT("도슨트에게 잡혔다"));
 	
 //////////////////////////////////////////////////////////////////////
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)

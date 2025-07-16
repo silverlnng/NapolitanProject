@@ -60,7 +60,7 @@ struct FNPCResult
 	FString State;
 	FString result_Kor;
 	FString result_Eng;
-	FString Effect;
+	FString EventNameString;
 };
 
 USTRUCT(BlueprintType)
@@ -70,7 +70,7 @@ struct FNPCDialogue
 	FString Who;
 	FString Dialogue_Kor;
 	FString Dialogue_Eng;
-	FString CameraEffect;
+	FString EventNameString;
 };
 
 USTRUCT(BlueprintType)
@@ -106,6 +106,10 @@ USTRUCT(BlueprintType)
 struct FQuestData : public FTableRowBase
 {
 	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString QuestKey="";
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	FString Who="";
 

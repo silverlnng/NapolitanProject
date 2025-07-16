@@ -28,4 +28,4 @@ NPC_ID,State,SelectedAnswer,order,key,result_Kor,result_Eng,Effect
 8,1,0,6,8106,<Default>바로… 바삭바삭하게 구운 거미버거!,,
 8,1,0,7,8107,<Default>음~ 그러고 보니 네가 나한테 딱 맞는 걸 가져다줄 수 있을 것 같은데~?,,
 8,1,0,8,8108,<Default>나 대신… 거미를 사냥해서 버거를 만들어 줄래?,,
-8,1,0,9,8109,<Default>어때? 맛있는 보상을 줄게.,,ButterflyQuest
+8,1,0,9,8109,<Default>어때? 맛있는 보상을 줄게.,,ButterflyQuestStart

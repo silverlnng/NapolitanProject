@@ -27,6 +27,12 @@ public:
 
 	void StartEvent(FString& str,const FString& content);
 
+	void StartEvent_(FString& EventKey);
+
+	FTimerHandle DelayTimerHandle;
+
+	void CommandAdd();
+	
 	void NPCFinalEvent();
 	
 	void Event_RedDosent(FString& str,const FString& content);
@@ -57,6 +63,8 @@ public:
 	void Event_Curator_LightEffect();
 	
 	void Event_Curator_Completed();
+
+	void Event_DocentDetectStart();
 	
 	void UpdateText();
 

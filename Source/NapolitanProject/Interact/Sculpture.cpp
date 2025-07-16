@@ -12,7 +12,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/EventComponent.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "NapolitanProject/NPC/NPC_Security.h"
+#include "NapolitanProject/NPC/Security/NPC_Security.h"
 
 // Sets default values
 ASculpture::ASculpture()
@@ -167,6 +167,8 @@ void ASculpture::MissionCheck()
 		if (TestPC)
 		{
 			TestPC->EventComponent->Event_Security_Completed();
+			FString EventKey=TEXT("SecurityCompleted");
+			TestPC->EventComponent->StartEvent_(EventKey);
 		}
 
 	},14.f,false);

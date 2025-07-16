@@ -45,9 +45,19 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> StartLevel;
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> HWLevel;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UOpeningWidget> OpeningWidgetFactory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
+	class UOpeningWidget* OpeningUI;
 	
 	UFUNCTION()
 	void OpenNextLevel();
+
+	UFUNCTION()
+	void OpenHWLevel();
 
 	FTimerHandle UITimer;
 	FTimerHandle UITimer2;

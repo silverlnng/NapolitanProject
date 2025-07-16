@@ -4,7 +4,6 @@
 #include "EventComponent.h"
 
 #include "EngineUtils.h"
-#include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
 #include "SaveGISubsystem.h"
 #include "TestCharacter.h"
@@ -15,10 +14,21 @@
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/Door_2Floor.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
-#include "NapolitanProject/Interface/Command/ButterflyQuestStartCommand.h"
-#include "NapolitanProject/NPC/ChaseStatue.h"
+#include "NapolitanProject/NPC/Butterfly/Command/ButterflyQuestStartCommand.h"
+#include "NapolitanProject/NPC/Curator/ChaseStatue.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NapolitanProject/NPC/Butterfly/NPC_Butterfly.h"
+#include "NapolitanProject/NPC/Butterfly/Command/ButterflyQuestCompletedCommand.h"
+#include "NapolitanProject/NPC/Butterfly/Command/ButterflyQuestRewardCommand.h"
+#include "NapolitanProject/NPC/Cleaner/Command/CleanerQuestCompletedCommand.h"
+#include "NapolitanProject/NPC/Cleaner/Command/CleanerQuestStartCommand.h"
+#include "NapolitanProject/NPC/Curator/Command/CuratorCompletedCommand.h"
+#include "NapolitanProject/NPC/Curator/Command/CuratorLightEffectCommand.h"
+#include "NapolitanProject/NPC/Docent/DocentDetectStartCommand.h"
+#include "NapolitanProject/NPC/Docent/DocentV2.h"
+#include "NapolitanProject/NPC/LeeSeo/Command/LeeSeoFirstUICommand.h"
+#include "NapolitanProject/NPC/LeeSeo/Command/LeeSeoSecondUICommand.h"
+#include "NapolitanProject/NPC/Security/SecurityCompletedCommand.h"
 #include "NapolitanProject/YJ/EventWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
@@ -43,21 +53,83 @@ void UEventComponent::BeginPlay()
 	MainCharacter=Cast<ATestCharacter>(TestPC->GetPawn());
 	PlayerHUD=TestPC->GetHUD<APlayerHUD>();
 	
-	// 게임모드의 NPCArray 가져오기
+	
+	// 6 : AChaseStatue (큐레이터)
+	// 8 : 나비
+	// 1 : 김영수
+	// 2 : 도슨트
+	// 3 : 노인 (이동준)
+	// 4 : 검은경비원
+	// 5 : 흰 청소부
+	// 7 : 이서
+	
+	GetWorld()->GetTimerManager().SetTimer(DelayTimerHandle,this,&UEventComponent::CommandAdd,1.0f, false);
+	
+}
 
+void UEventComponent::CommandAdd()
+{
+	// 게임모드의 NPCArray 가져오기
+	// 몇몇 npc는 다른 게임모드를 넣어줘야함 !
+
+	// 이서 Command 연결
+	CommandMap.Add(
+			"LeeSeoFirstUI" ,
+			MakeShared<LeeSeoFirstUICommand>(TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+	CommandMap.Add(
+		"LeeSeoSecondUI" ,
+		MakeShared<LeeSeoSecondUICommand>(TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+
+	// 큐레이터 command 연결
+	CommandMap.Add(
+	"CuratorLightEffect" ,
+	MakeShared<CuratorLightEffectCommand>(TestPC , MainCharacter , PlayerHUD ,GetWorld()));
 	ATestGameModeBase* TestGM = Cast<ATestGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	
 	if (!TestGM) return;
 
-	if (TestGM->NPCArray.Contains(8))
+	if (TestGM->NPCArray.Contains(2))
 	{
 		CommandMap.Add(
-		   "ButterflyQuestStart",
-		   MakeShared<ButterflyQuestStartCommand>(TestGM->NPCArray[8], TestPC,MainCharacter,PlayerHUD,GetWorld())
-	   );
-
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("CommandMap")));
+		"DocentDetectStart",
+		MakeShared<DocentDetectStartCommand>(TestGM->NPCArray[2] , TestPC ,MainCharacter));
 	}
+	else if (TestGM->NPCArray.Contains(4))
+	{
+		CommandMap.Add(
+		"SecurityCompleted",
+		MakeShared<SecurityCompletedCommand>(TestGM->NPCArray[4], TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+	}
+	else if (TestGM->NPCArray.Contains(5))
+	{
+		CommandMap.Add(
+		"CleanerQuestStart",
+		MakeShared<CleanerQuestStartCommand>(TestGM->NPCArray[5] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+		CommandMap.Add(
+		"CleanerQuestCompleted",
+		MakeShared<CleanerQuestCompletedCommand>(TestGM->NPCArray[5] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+	}
+	else if (TestGM->NPCArray.Contains(8))
+	{
+		CommandMap.Add(
+			"ButterflyQuestStart" ,
+			MakeShared<ButterflyQuestStartCommand>(TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+		CommandMap.Add(
+			"ButterflyQuestCompleted" ,
+			MakeShared<ButterflyQuestCompletedCommand>(TestGM->NPCArray[8] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+		CommandMap.Add(
+		"ButterflyQuestReward" ,
+		MakeShared<ButterflyQuestRewardCommand>(TestGM->NPCArray[8] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+		
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("ButterflyCommandMap")));
+	}
+	else if (TestGM->NPCArray.Contains(6))
+	{
 	
+		CommandMap.Add(
+			"CuratorCompleted" ,
+			MakeShared<CuratorCompletedCommand>(TestGM->NPCArray[6] , TestPC , MainCharacter , PlayerHUD ,GetWorld()));
+	}
 }
 
 void UEventComponent::InitializeComponent()
@@ -85,29 +157,17 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 		return;
 	}
 		
-	if (str=="RedDosentStart")
-	{
-		Event_RedDosent(str,content);
-	}
-	else if (str=="RedDosentEnd")
-	{
-		Event_RedDosent(str,content);
-	}
-	else if (str=="NPCFinalEvent")
-	{
-		NPCFinalEvent();
-		// 선택지 누르고 결과가 아니라 그냥 대사 마지막에 npc의  ResultEvent 호출시키고 싶을때 
-	}
-	else if (str=="CleanerQuest")
+	
+	if (str=="CleanerQuest")
 	{
 		// 청소부의 퀘스트 함수
-		Event_Cleaner_Start();
+		//Event_Cleaner_Start();
 		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="CleanerQuestCompleted")
 	{
 		// 청소부의 퀘스트 완료 함수
-		Event_Cleaner_Completed();
+		//Event_Cleaner_Completed();
 		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="OldmanClue")
@@ -123,17 +183,17 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 	}
 	else if (str=="ButterflyQuest")
 	{
-		Event_Butterfly_Start();
+		//Event_Butterfly_Start();
 		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="ButterflyQuestCompleted")
 	{
-		Event_Butterfly_Completed();
+		//Event_Butterfly_Completed();
 		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="ButterflyQuestReward")
 	{
-		Event_Butterfly_QuestReward();
+		//Event_Butterfly_QuestReward();
 		SaveGI->NPCEventManage.Add(NameKey);
 	}
 	else if (str=="LeeSeoFirstUI")
@@ -158,7 +218,26 @@ void UEventComponent::StartEvent(FString& str,const FString& content)
 		Event_Curator_Completed();
 		SaveGI->NPCEventManage.Add(NameKey);
 	}
+	else if (str=="DocentDetectStart")
+	{
+		Event_DocentDetectStart();
+	}
+	
 }
+
+void UEventComponent::StartEvent_(FString& EventKey)
+{
+	if (auto FoundCommand = CommandMap.Find(EventKey))
+	{
+		(*FoundCommand)->Execute();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green,*EventKey);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green,FString::Printf(TEXT("CommandMap EventKey 없음")));
+	}
+}
+
 
 void UEventComponent::NPCFinalEvent()
 {
@@ -569,6 +648,24 @@ void UEventComponent::Event_Curator_Completed()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Curator(2,2);
 	},2.5f,false);
+}
+
+void UEventComponent::Event_DocentDetectStart()
+{
+	// 대화 창 닫고
+	TestPC->StartEndNPCDialougue(false);
+	
+	// 도슨트 탐색 시작하도록
+	ADocentV2* DocentV2=nullptr;
+	if (TestPC->curNPC)
+	{
+		DocentV2=Cast<ADocentV2>(TestPC->curNPC);
+		if (DocentV2)
+		{
+			DocentV2->bOnlyOnce=true;
+			DocentV2->InMaxDetectionDistance=false;
+		}
+	}
 }
 
 void UEventComponent::UpdateText()

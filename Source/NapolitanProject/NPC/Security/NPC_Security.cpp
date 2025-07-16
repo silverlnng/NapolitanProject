@@ -7,9 +7,9 @@
 #include "../Interact/ControllableLightActor.h"
 #include "EngineUtils.h"
 #include "NavigationSystem.h"
-#include "NPC_Cleaner.h"
+#include "../Cleaner/NPC_Cleaner.h"
 #include "NPC_Security_AnimInstance.h"
-#include "NPC_Youngsoo.h"
+#include "../NPC_Youngsoo.h"
 #include "Camera/CameraComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
@@ -21,6 +21,7 @@
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/ItemActor.h"
 #include "Navigation/PathFollowingComponent.h"
+#include "Perception/PawnSensingComponent.h"
 
 ANPC_Security::ANPC_Security()
 {

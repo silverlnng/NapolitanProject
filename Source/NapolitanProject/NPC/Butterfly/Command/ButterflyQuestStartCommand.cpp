@@ -7,6 +7,7 @@
 #include "Components/SlateWrapperTypes.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/NPC/Butterfly/NPC_Butterfly.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
@@ -14,10 +15,9 @@
 #include "NapolitanProject/YJ/NoteUI/NPCInfoWidget.h"
 
 
-ButterflyQuestStartCommand::ButterflyQuestStartCommand(ANPCCharacter* INNPC, ATestPlayerController* INPC,
+ButterflyQuestStartCommand::ButterflyQuestStartCommand(ATestPlayerController* INPC,
 	ATestCharacter* INMainCharacter, APlayerHUD* INPlayerHUD, UWorld* InWorld)
 {
-	NPC=Cast<ANPC_Butterfly>(INNPC);
 	PC=INPC;
 	MainCharacter=INMainCharacter;
 	PlayerHUD=INPlayerHUD;
@@ -62,9 +62,15 @@ void ButterflyQuestStartCommand::Execute()
 	{
 		MainCharacter->SetPlayerState(EPlayerState::UI);
 	},6.0f,false);
+
+	ANPC_Butterfly* NPC_Butterfly= Cast<ANPC_Butterfly>(PC->curNPC);
+	if (NPC_Butterfly)
+	{
+		NPC_Butterfly->State=2; 
+	}
 	
-	if (NPC)
+	/*if (NPC)
 	{
 		NPC->State=2; //현재 나비여서 state 증가시키기 
-	}
+	}*/
 }

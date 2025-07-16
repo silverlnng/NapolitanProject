@@ -5,7 +5,7 @@
 #include "Components/RectLightComponent.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "NapolitanProject/NPC/NPC_Security.h"
+#include "NapolitanProject/NPC/Security/NPC_Security.h"
 
 // Sets default values
 AControllableLightActor::AControllableLightActor()

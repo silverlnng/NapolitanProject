@@ -97,7 +97,7 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 {
 	//GI 의 SouvenirMap에서 앍어오기
 	 // curNum 을 fname으로 바꾸기
-
+	if (!SouvenirUI){return;}
 	////////// 버튼 보이게,안보이게 처리
 	if (1==curNum){SouvenirUI->Btn_Souvenir_Back->SetVisibility(ESlateVisibility::Hidden);}
 	if (1!=curNum){SouvenirUI->Btn_Souvenir_Back->SetVisibility(ESlateVisibility::Visible);}
@@ -256,16 +256,16 @@ void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue_.Who);
 		// 이벤트가 정의 되어있으면 이벤트를 발생시키기 
 		// Dialogue_.CameraEffect 값에 따라서 이벤트를 실행시키기
-		FString str=Dialogue_.CameraEffect;
+		FString str=Dialogue_.EventNameString;
 		if (!str.IsEmpty())
 		{
 			PlayerHUD->NPCDialogueUI->UIEffect(str);
 			// UEventComponent 에 이벤트발생시키도록 전달
-			EventComponent->StartEvent(str,Dialogue_.Dialogue_Kor);
+			//EventComponent->StartEvent(str,Dialogue_.Dialogue_Kor);
+			EventComponent->StartEvent_(str);
+			UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*str);
 		}
 	}
-	
-	
 }
 
 void ATestPlayerController::CameraViewChangeNPC()
@@ -365,11 +365,13 @@ void ATestPlayerController::SetNPCResultText(int32 curOrder)
 
 		// 이벤트가 정의 되어있으면 이벤트를 발생시키기 
 		// Dialogue_.CameraEffect 값에 따라서 이벤트를 실행시키기
-		FString str=NPCResult.Effect;
+		FString str=NPCResult.EventNameString;
 		if (!str.IsEmpty())
 		{
 			// UEventComponent 에 이벤트발생시키도록 전달
-			EventComponent->StartEvent(str,"");
+			//EventComponent->StartEvent(str,"");
+			EventComponent->StartEvent_(str);
+			UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*str);
 		}
 	}
 	

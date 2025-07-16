@@ -16,12 +16,11 @@ class NAPOLITANPROJECT_API AStartLevelGameModeBase : public AGameModeBase
 	
 public:
 	virtual void BeginPlay() override;
-
-	UPROPERTY()
+	
 	class UMyTestGameInstance* GI;
 
-	class ATestPlayerController* PC;
-	
-	class APlayerHUD* PlayerHUD;
-	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = UI)
+	TSubclassOf<class UUserWidget> OpeningWidgetFactory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = UI)
+	class UUserWidget* OpeningUI;
 };
