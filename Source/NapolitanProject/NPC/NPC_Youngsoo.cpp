@@ -193,11 +193,12 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 		{
 			//남자에게 말을 걸어선 안된다. 어서 도망치자.의 경우 => 도망칠 경우 디졸브 블랙 후 NPC 사라짐
 
-			FString dissolve = "Black";
-			DissolveEvent(dissolve); //디졸브 이벤트 발생
+			//FString dissolve = "Black";
+			//DissolveEvent(dissolve); //디졸브 이벤트 발생
 			TestPC->StartEndNPCDialougue(false); //결과 대화창 출력
 			ChangeCleared();
 			Scarf->SetHiddenInGame(true);
+			LiquidMeshChange();
 			
 		}
 		else
@@ -262,8 +263,68 @@ void ANPC_Youngsoo::SpawnItems()
 
 void ANPC_Youngsoo::LiquidMeshChange()
 {
-	//녹아드는 메쉬로 변경
+	Scarf->SetVisibility(true);
+	GetMesh()->SetHiddenInGame(true);
 	
+	UE_LOG(LogTemp, Warning, TEXT("=== Moving LiquidMesh actor to my location ==="));
+
+	// 현재 액터(me)의 위치와 회전 가져오기
+	FVector MyLocation = GetMesh()->GetComponentLocation();
+	FRotator MyRotation = GetMesh()->GetComponentRotation();
+	
+	UE_LOG(LogTemp, Warning, TEXT("My Location: %s"), *MyLocation.ToString());
+
+	// "LiquidMesh" 태그를 가진 액터 찾기
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("LiquidMesh"), FoundActors);
+	
+	if (FoundActors.Num() > 0)
+	{
+		AActor* LiquidActor = FoundActors[0]; // 첫 번째 찾은 액터 사용
+		
+		UE_LOG(LogTemp, Warning, TEXT("Found LiquidMesh actor: %s"), *LiquidActor->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("Moving from: %s"), *LiquidActor->GetActorLocation().ToString());
+		UE_LOG(LogTemp, Warning, TEXT("Moving to: %s"), *MyLocation.ToString());
+		
+		// 액터를 내 위치로 이동
+		LiquidActor->SetActorLocationAndRotation(MyLocation, MyRotation);
+		
+		// 액터가 숨겨져 있다면 보이게 설정
+		if (LiquidActor->IsHidden())
+		{
+			LiquidActor->SetActorHiddenInGame(false);
+			UE_LOG(LogTemp, Warning, TEXT("Made hidden LiquidMesh actor visible"));
+		}
+		
+		// 별도로 BP_Liquid 액터 찾아서 LiquidEffect 함수 호출
+		TArray<AActor*> BP_LiquidActors;
+		UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("BP_Liquid"), BP_LiquidActors);
+		
+		if (BP_LiquidActors.Num() > 0)
+		{
+			AActor* BP_LiquidActor = BP_LiquidActors[0];
+			UFunction* LiquidEffectFunction = BP_LiquidActor->FindFunction(FName("LiquidEffect"));
+			if (LiquidEffectFunction)
+			{
+				BP_LiquidActor->ProcessEvent(LiquidEffectFunction, nullptr);
+				UE_LOG(LogTemp, Warning, TEXT("LiquidEffect function called on BP_Liquid actor successfully!"));
+			}
+			else
+			{
+				UE_LOG(LogTemp, Warning, TEXT("LiquidEffect function not found in BP_Liquid actor: %s"), *BP_LiquidActor->GetName());
+			}
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("BP_Liquid actor not found! Please add 'BP_Liquid' tag to the BP_Liquid actor."));
+		}
+		
+		UE_LOG(LogTemp, Warning, TEXT("LiquidMesh actor moved and activated successfully!"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("No actor found with tag 'LiquidMesh'! Please add the tag to your BP_Liquid actor."));
+	}
 }
 
 
