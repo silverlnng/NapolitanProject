@@ -6,6 +6,7 @@
 #include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
 #include "TestPlayerController.h"
+#include "Blueprint/UserWidget.h"
 
 void AStartLevelGameModeBase::BeginPlay()
 {
@@ -13,9 +14,10 @@ void AStartLevelGameModeBase::BeginPlay()
 	
 	GI = GetGameInstance<UMyTestGameInstance>();
 	
-	PC = Cast<ATestPlayerController>(GetWorld()->GetFirstPlayerController());
-
-	PlayerHUD = PC->GetHUD<APlayerHUD>();
-
+	OpeningUI =CreateWidget<UUserWidget>(GetWorld(),OpeningWidgetFactory);
+	if (OpeningUI)
+	{
+		OpeningUI->AddToViewport();
+	}
 	
 }

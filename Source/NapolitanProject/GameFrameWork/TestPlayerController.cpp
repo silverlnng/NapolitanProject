@@ -97,7 +97,7 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 {
 	//GI 의 SouvenirMap에서 앍어오기
 	 // curNum 을 fname으로 바꾸기
-
+	if (!SouvenirUI){return;}
 	////////// 버튼 보이게,안보이게 처리
 	if (1==curNum){SouvenirUI->Btn_Souvenir_Back->SetVisibility(ESlateVisibility::Hidden);}
 	if (1!=curNum){SouvenirUI->Btn_Souvenir_Back->SetVisibility(ESlateVisibility::Visible);}
