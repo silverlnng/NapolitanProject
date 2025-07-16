@@ -36,7 +36,7 @@ void ASpector::Tick(float DeltaTime)
 
 	//현재 상태 뜨게 하기
 	FString myState = UEnum::GetValueAsString(mState);
-	DrawDebugString(GetWorld() , GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
+	//DrawDebugString(GetWorld() , GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
 
 	switch (mState)
 	{

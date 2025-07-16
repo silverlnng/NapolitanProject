@@ -76,13 +76,4 @@ public:
 
 public:
 	void LiquidMeshChange();
-
-	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Liquid Mesh")
-	TSubclassOf<AActor> LiquidMeshActorClass;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Liquid Mesh")
-	USkeletalMesh* LiquidSkeletalMesh;*/
-
-	//블루프린트 함수 호출
-	//void ();
 };
