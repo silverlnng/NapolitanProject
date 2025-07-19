@@ -40,5 +40,17 @@ public:
 	TSubclassOf<class AItemActor> CutterItemClass;
 	UFUNCTION()
 	void SpawnItems();
+
+	// 애니메이션 3 개 연출하기
+	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
+	class UAnimMontage* WingMontage;
+	
+	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
+	class UAnimMontage* EatMontage;
+	
+	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
+	class UAnimMontage* FlyHighMontage;
+
+	void PlayWingMontage();
 };
 

@@ -71,3 +71,8 @@ void ANPC_Butterfly::SpawnItems()
 	
 	
 }
+
+void ANPC_Butterfly::PlayWingMontage()
+{
+	GetMesh()->PlayAnimation(WingMontage,true);
+}
