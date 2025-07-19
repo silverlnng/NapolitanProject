@@ -14,7 +14,7 @@ class ADocentV2;
 class NAPOLITANPROJECT_API DocentDetectStartCommand: public IEventCommand
 {
 public:
-	DocentDetectStartCommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter);
+	DocentDetectStartCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter);
 	~DocentDetectStartCommand();
 	virtual void Execute() override;
 private:

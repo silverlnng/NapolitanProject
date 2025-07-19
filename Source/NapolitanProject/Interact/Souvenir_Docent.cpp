@@ -39,7 +39,8 @@ void ASouvenir_Docent::OnPickup()
 		PlayerHUD->InteractUI->PlayNoteUIEvent(true);
 		if (TestPC)
 		{
-			TestPC->EventComponent->Event_Docent_NoteUI();
+			FString EventKey=TEXT("DocentNoteUI");
+			TestPC->EventComponent->StartEvent_(EventKey);
 		}
 	},2.0f,false);
 

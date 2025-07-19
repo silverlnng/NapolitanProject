@@ -7,13 +7,11 @@
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
-#include "NapolitanProject/NPC/Cleaner/NPC_Cleaner.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NPCInfoWidget.h"
 
-CleanerQuestCompletedCommand::CleanerQuestCompletedCommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld)
+CleanerQuestCompletedCommand::CleanerQuestCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld)
 {
-	NPC=Cast<ANPC_Cleaner>(INNPC);
 	PC=INPC;
 	MainCharacter=INMainCharacter;
 	PlayerHUD=INPlayerHUD;

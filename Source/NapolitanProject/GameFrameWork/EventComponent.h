@@ -24,50 +24,14 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-	void StartEvent(FString& str,const FString& content);
-
+	
 	void StartEvent_(FString& EventKey);
 
 	FTimerHandle DelayTimerHandle;
 
 	void CommandAdd();
 	
-	void NPCFinalEvent();
-	
-	void Event_RedDosent(FString& str,const FString& content);
-
-	void Event_Docent_NoteUI();
-
-	void Event_Cleaner_Start();
-
-	UPROPERTY(VisibleAnywhere)
-	class ADoor_2Floor* Door_2Floor;
-
-	void Event_Cleaner_Completed();
-
-	void Event_Security_Completed();
-	
-	void Event_Oldman();
-
-	void Event_Butterfly_Start();
-
-	void Event_Butterfly_Completed();
-
-	void Event_Butterfly_QuestReward();
-
-	void Event_LeeSeo_FirstUI();
-
-	void Event_LeeSeo_SecondUI();
-
-	void Event_Curator_LightEffect();
-	
-	void Event_Curator_Completed();
-
-	void Event_DocentDetectStart();
-	
 	void UpdateText();
-
 	
 	FString CurrentText;
 	FString FullText;

@@ -16,7 +16,7 @@ class ANPC_Butterfly;
 class NAPOLITANPROJECT_API ButterflyQuestRewardCommand: public IEventCommand
 {
 public:
-	ButterflyQuestRewardCommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	ButterflyQuestRewardCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
 	~ButterflyQuestRewardCommand();
 	virtual void Execute() override;
 private:

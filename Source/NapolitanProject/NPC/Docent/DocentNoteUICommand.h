@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "NapolitanProject/Interface/EventCommand.h"
 
-class ANPC_Security;
 class ANPCCharacter;
 class APlayerHUD;
 class ATestCharacter;
@@ -13,16 +12,15 @@ class ATestPlayerController;
 /**
  * 
  */
-class NAPOLITANPROJECT_API SecurityCompletedCommand: public IEventCommand
+class NAPOLITANPROJECT_API DocentNoteUICommand: public IEventCommand
 {
 public:
-	SecurityCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
-	~SecurityCompletedCommand();
+	DocentNoteUICommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	~DocentNoteUICommand();
 	virtual void Execute() override;
 private:
 	UWorld* World;
-	ANPC_Security* NPC;
 	ATestPlayerController* PC;
 	ATestCharacter* MainCharacter;
-	APlayerHUD* PlayerHUD;
+	APlayerHUD* PlayerHUD;	
 };

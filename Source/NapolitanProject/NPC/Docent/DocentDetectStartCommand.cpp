@@ -6,9 +6,8 @@
 #include "DocentV2.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
-DocentDetectStartCommand::DocentDetectStartCommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter)
+DocentDetectStartCommand::DocentDetectStartCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter)
 {
-	NPC=Cast<ADocentV2>(INNPC);
 	PC=INPC;
 	MainCharacter=INMainCharacter;
 

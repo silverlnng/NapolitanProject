@@ -7,9 +7,8 @@
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/NPC/Butterfly/NPC_Butterfly.h"
 
-ButterflyQuestCompletedCommand::ButterflyQuestCompletedCommand(ANPCCharacter* INNPC, ATestPlayerController* INPC,ATestCharacter* INMainCharacter, APlayerHUD* INPlayerHUD, UWorld* InWorld)
+ButterflyQuestCompletedCommand::ButterflyQuestCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter, APlayerHUD* INPlayerHUD, UWorld* InWorld)
 {
-	NPC=Cast<ANPC_Butterfly>(INNPC);
 	PC=INPC;
 	MainCharacter=INMainCharacter;
 	PlayerHUD=INPlayerHUD;

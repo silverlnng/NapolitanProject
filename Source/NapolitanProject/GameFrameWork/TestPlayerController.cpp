@@ -261,7 +261,6 @@ void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 		{
 			PlayerHUD->NPCDialogueUI->UIEffect(str);
 			// UEventComponent 에 이벤트발생시키도록 전달
-			//EventComponent->StartEvent(str,Dialogue_.Dialogue_Kor);
 			EventComponent->StartEvent_(str);
 			UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*str);
 		}
@@ -369,7 +368,6 @@ void ATestPlayerController::SetNPCResultText(int32 curOrder)
 		if (!str.IsEmpty())
 		{
 			// UEventComponent 에 이벤트발생시키도록 전달
-			//EventComponent->StartEvent(str,"");
 			EventComponent->StartEvent_(str);
 			UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*str);
 		}

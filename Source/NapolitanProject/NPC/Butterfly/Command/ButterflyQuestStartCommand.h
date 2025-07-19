@@ -22,7 +22,6 @@ public:
 	virtual void Execute() override;
 private:
 	UWorld* World;
-	ANPC_Butterfly* NPC;
 	ATestPlayerController* PC;
 	ATestCharacter* MainCharacter;
 	APlayerHUD* PlayerHUD;	

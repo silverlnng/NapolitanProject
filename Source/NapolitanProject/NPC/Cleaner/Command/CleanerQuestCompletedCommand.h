@@ -16,7 +16,7 @@ class ATestPlayerController;
 class NAPOLITANPROJECT_API CleanerQuestCompletedCommand: public IEventCommand
 {
 public:
-	CleanerQuestCompletedCommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	CleanerQuestCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
 	~CleanerQuestCompletedCommand();
 	virtual void Execute() override;
 private:

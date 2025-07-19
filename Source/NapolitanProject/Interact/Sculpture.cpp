@@ -166,7 +166,6 @@ void ASculpture::MissionCheck()
 	{
 		if (TestPC)
 		{
-			TestPC->EventComponent->Event_Security_Completed();
 			FString EventKey=TEXT("SecurityCompleted");
 			TestPC->EventComponent->StartEvent_(EventKey);
 		}

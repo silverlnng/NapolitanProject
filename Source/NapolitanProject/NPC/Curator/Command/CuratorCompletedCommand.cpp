@@ -5,9 +5,8 @@
 
 #include "NapolitanProject/NPC/Curator/ChaseStatue.h"
 
-CuratorCompletedCommand::CuratorCompletedCommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld)
+CuratorCompletedCommand::CuratorCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld)
 {
-	NPC=Cast<AChaseStatue>(INNPC);
 	PC=INPC;
 	MainCharacter=INMainCharacter;
 	PlayerHUD=INPlayerHUD;

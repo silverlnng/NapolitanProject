@@ -16,7 +16,7 @@ class ANPC_Butterfly;
 class NAPOLITANPROJECT_API ButterflyQuestCompletedCommand : public IEventCommand
 {
 public:
-	ButterflyQuestCompletedCommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	ButterflyQuestCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
 	~ButterflyQuestCompletedCommand();
 	virtual void Execute() override;
 private:

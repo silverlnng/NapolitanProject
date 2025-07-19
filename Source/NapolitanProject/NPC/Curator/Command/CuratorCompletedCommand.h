@@ -17,7 +17,7 @@ class AChaseStatue;
 class NAPOLITANPROJECT_API CuratorCompletedCommand: public IEventCommand
 {
 public:
-	CuratorCompletedCommand(ANPCCharacter* INNPC,ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	CuratorCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
 	~CuratorCompletedCommand();
 	virtual void Execute() override;
 private:
