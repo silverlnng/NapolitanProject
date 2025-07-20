@@ -51,7 +51,7 @@ void ButterflyQuestRewardCommand::Execute()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Butterfly(2,3);
 		
-		PlayerHUD->NoteUI->State==EEventState::ButterflyEvent;
+		PlayerHUD->NoteUI->State=EEventState::ButterflyEvent;
 		
 	},2.5f,false);
 }

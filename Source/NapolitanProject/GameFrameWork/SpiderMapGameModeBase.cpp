@@ -19,12 +19,51 @@
 #include "NapolitanProject/YJ/AttackSpiderV2.h"
 #include "NapolitanProject/YJ/SpiderMapGunActor.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
+#include "Sound/SoundClass.h"
+#include "Sound/SoundMix.h"
 
 
 ASpiderMapGameModeBase::ASpiderMapGameModeBase()
 {
+	// 경로 대입 하기
+	static ConstructorHelpers::FObjectFinder<USoundMix> SFXMix_(TEXT("/Game/Resource/Audio/SoundClass/SFXMix.SFXMix"));
+	if (SFXMix_.Succeeded())
+	{
+		SFXMix=SFXMix_.Object;
+	}
 	
-	
+	static ConstructorHelpers::FObjectFinder<USoundClass> SFXClass_Finder(TEXT("/Game/Resource/Audio/SoundClass/SC_SFX.SC_SFX"));
+	if (SFXClass_Finder.Succeeded())
+	{
+		// 임시 U포인터 사용하여 형변환 수행
+		USoundClass* TempSoundClass = SFXClass_Finder.Object;
+		MySFXClass=TempSoundClass;
+	}
+
+	///Script/Engine.SoundMix'/Game/Resource/Audio/SoundClass/MasterMix.MasterMix'
+	static ConstructorHelpers::FObjectFinder<USoundMix> MasterMix_Finder(TEXT("/Game/Resource/Audio/SoundClass/MasterMix.MasterMix"));
+	if (MasterMix_Finder.Succeeded())
+	{
+		MasterMix=MasterMix_Finder.Object;
+	}
+	///Script/Engine.SoundClass'/Game/Resource/Audio/SoundClass/SC_Master.SC_Master'
+	static ConstructorHelpers::FObjectFinder<USoundClass> MyMasterClass_Finder(TEXT("/Game/Resource/Audio/SoundClass/SC_Master.SC_Master"));
+	if (MyMasterClass_Finder.Succeeded())
+	{
+		MyMasterClass=MyMasterClass_Finder.Object;
+	}
+	// /Script/Engine.SoundMix'/Game/Resource/Audio/SoundClass/BackGroundMix.BackGroundMix'
+	static ConstructorHelpers::FObjectFinder<USoundMix> BackGroundMix_Finder(TEXT("/Game/Resource/Audio/SoundClass/BackGroundMix.BackGroundMix"));
+	if (BackGroundMix_Finder.Succeeded())
+	{
+		BackGroundMix=BackGroundMix_Finder.Object;
+	}
+	///Script/Engine.SoundClass'/Game/Resource/Audio/SoundClass/SC_BG.SC_BG'
+	static ConstructorHelpers::FObjectFinder<USoundClass> BackGroundClass_Finder(TEXT("/Game/Resource/Audio/SoundClass/SC_BG.SC_BG"));
+	if (BackGroundClass_Finder.Succeeded())
+	{
+		BackGroundClass=BackGroundClass_Finder.Object;
+	}
 }
 
 void ASpiderMapGameModeBase::BeginPlay()
@@ -109,8 +148,19 @@ void ASpiderMapGameModeBase::BeginPlay()
 				}
 			}
 		}
-		
+
+		FTimerHandle RestoreAttachedItemTimer;
+		GetWorld()->GetTimerManager().SetTimer(RestoreAttachedItemTimer , [this]()
+		{
+			SaveGI->RestoreAttachedItems();
+			// 아이템을 인벤토리에  복구하는 작업
+		} , 1.0f , false);
+
+
+
+		LoadSettingValue();
 	}
+	
 }
 
 void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)
@@ -202,6 +252,13 @@ void ASpiderMapGameModeBase::MakeNoisePlayer()
 
 	MakeNoise(100.f,MainCharacter,origin,NoiseRange);
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("플레이어의 소리 발생")));
+}
+
+void ASpiderMapGameModeBase::LoadSettingValue()
+{
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),MasterMix,MyMasterClass,SaveGI->TotalSoundMix,1,0);
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),BackGroundMix,BackGroundClass,SaveGI->BGSoundMix,1,0);
+	UGameplayStatics::SetSoundMixClassOverride(GetWorld(),SFXMix,MySFXClass,SaveGI->SFXSoundMix,1,0);
 }
 
 void ASpiderMapGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)

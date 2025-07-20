@@ -61,6 +61,26 @@ public:
 
 	UPROPERTY()
 	class AAttackSpiderV2* AttackSpiderV2;
+	
+	UPROPERTY(EditAnywhere,Category="Sound")
+	TObjectPtr<USoundMix> SFXMix;
+
+	UPROPERTY(EditDefaultsOnly,Category="Sound")
+	TObjectPtr<USoundClass> MySFXClass;
+
+	UPROPERTY(EditDefaultsOnly,Category="Sound")
+	TObjectPtr<USoundMix> MasterMix;
+
+	UPROPERTY(EditDefaultsOnly,Category="Sound")
+	TObjectPtr<USoundClass> MyMasterClass;
+
+	UPROPERTY(EditDefaultsOnly,Category="Sound")
+	TObjectPtr<USoundMix> BackGroundMix;
+
+	UPROPERTY(EditDefaultsOnly,Category="Sound")
+	TObjectPtr<USoundClass> BackGroundClass;
+	
+	void LoadSettingValue();
 };
 
 

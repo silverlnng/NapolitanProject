@@ -114,7 +114,7 @@ void UEventComponent::CommandAdd()
 		MakeShared<ButterflyQuestRewardCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
 	CommandMap.Add(
 	"ButterflyCloseUp" ,
-	MakeShared<ButterflyCloseUpCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
+	MakeShared<ButterflyCloseUpCommand>(TestPC , MainCharacter, GetWorld()));
 
 	GEngine->AddOnScreenDebugMessage(-1 , 5.f , FColor::Green , FString::Printf(TEXT("ButterflyCommandMap")));
 	

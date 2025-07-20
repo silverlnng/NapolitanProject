@@ -23,7 +23,7 @@ void ButterflyCloseUpCommand::Execute()
 	ANPC_Butterfly* NPC_Butterfly= Cast<ANPC_Butterfly>(PC->curNPC);
 	if (NPC_Butterfly)
 	{
-		
+		GEngine->AddOnScreenDebugMessage(-1 , 5.f , FColor::Green , FString::Printf(TEXT("ButterflyCloseUpCommand")));
 	}
 	
 }
