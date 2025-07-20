@@ -7,6 +7,7 @@
 #include "Components/BoxComponent.h"
 #include "NapolitanProject/GameFrameWork/EventComponent.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/NPC/Docent/DocentV2.h"
 #include "NapolitanProject/YJ/Monologue/MonologueTriggerBox.h"
@@ -39,6 +40,8 @@ void ASouvenir_Docent::OnPickup()
 		PlayerHUD->InteractUI->PlayNoteUIEvent(true);
 		if (TestPC)
 		{
+			MainCharacter->SetPlayerState(EPlayerState::UI);
+			TestPC->curNPC=Docent;
 			FString EventKey=TEXT("DocentNoteUI");
 			TestPC->EventComponent->StartEvent_(EventKey);
 		}

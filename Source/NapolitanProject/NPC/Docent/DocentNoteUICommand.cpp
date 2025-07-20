@@ -3,6 +3,7 @@
 
 #include "DocentNoteUICommand.h"
 
+#include "DocentV2.h"
 #include "Components/SlateWrapperTypes.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
@@ -26,9 +27,11 @@ void DocentNoteUICommand::Execute()
 {
 	PC->StartEndNPCDialougue(false);
 	PC->EndResult();
-	// 머리잡았을때 경비원의 노트ui 나오고 단서 추가하도록 하기
 	MainCharacter->SetPlayerState(EPlayerState::UI);
 
+	//여기서 도슨트도 가까이 오도록 만들기
+	NPC_Docent= Cast<ADocentV2>(PC->curNPC);
+	// 월드에서 도슨트 찾기 
 	// 시간지연
 	FTimerHandle UITimer;
 
@@ -37,6 +40,8 @@ void DocentNoteUICommand::Execute()
 		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
 
 		PlayerHUD->NoteUI->OnClickBtn_Btn_Docent();
+
+		PlayerHUD->NoteUI->State=EEventState::DocentEvent;
 		
 	},1.0f,false);
 
@@ -45,5 +50,15 @@ void DocentNoteUICommand::Execute()
 	World->GetTimerManager().SetTimer(UITimer2,[this]()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Docent(2,1);
+		
+		if (NPC_Docent)
+		{
+			NPC_Docent->CloseUPCam();
+		}
+		else
+		{
+			UE_LOG(LogTemp, Log, TEXT("🛑 NPC_Docent_Null"));
+		}
 	},1.5f,false);
+	
 }

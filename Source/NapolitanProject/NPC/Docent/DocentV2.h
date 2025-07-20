@@ -38,6 +38,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	class UCameraComponent* MonsterCamera;
 
+	UPROPERTY(EditDefaultsOnly)
+	class USpotLightComponent* SpotLightComp;
+
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
 	int32 NPC_ID =2;
 	UPROPERTY(VisibleAnywhere,BlueprintReadWrite)
@@ -94,6 +97,11 @@ public:
 
 	// 노트를 획득해서 사라지는거 만들어야 할때 
 	void PickUPNote();
+
+	// 노트획득, 가까이오는거 만들기
+	void CloseUPCam();
+
+	void DocentLightOn();
 
 	UPROPERTY(EditAnywhere) // 맵에서 할당하기 
 	class ASouvenir_Docent* Souvenir_Docent=nullptr;

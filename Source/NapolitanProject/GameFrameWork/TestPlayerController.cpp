@@ -255,11 +255,13 @@ void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 		PlayerHUD->NPCDialogueUI->SetText_Name(Dialogue_.Who);
 		UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*Dialogue_.Who);
 		// 이벤트가 정의 되어있으면 이벤트를 발생시키기 
-		// Dialogue_.CameraEffect 값에 따라서 이벤트를 실행시키기
+		// Dialogue_.EventNameString 값에 따라서 이벤트를 실행시키기
+
+		// 지금은 대사출력이 안되고 빠르게 이벤트로 넘어가는게 문제
+		// => 시간지연 ? 
 		FString str=Dialogue_.EventNameString;
 		if (!str.IsEmpty())
 		{
-			PlayerHUD->NPCDialogueUI->UIEffect(str);
 			// UEventComponent 에 이벤트발생시키도록 전달
 			EventComponent->StartEvent_(str);
 			UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*str);

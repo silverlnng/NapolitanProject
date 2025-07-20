@@ -221,13 +221,17 @@ void APlayerHUD::OnClickBtn_NoteClose()
 	// 지금 상황에 따라서 추가 이벤트 발생시킬수있음
 	if (NoteUI->State==EEventState::DocentEvent)
 	{
-		// 이때 도슨트가 가까이 오는 이벤트 실행
+		// 이때 도슨트와 대사 실행
+		FString eventStr = TEXT("DocentCloseUp");
+		PC->EventComponent->StartEvent_(eventStr);
+		NoteUI->State=EEventState::Normal;
 	}
 	else if (NoteUI->State==EEventState::ButterflyEvent)
 	{
 		// 이때 가까이 날라오는 이벤트 실행.
 		FString eventStr = TEXT("ButterflyCloseUp");
 		PC->EventComponent->StartEvent_(eventStr);
+		NoteUI->State=EEventState::Normal;
 	}
 }
 

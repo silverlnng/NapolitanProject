@@ -6,8 +6,10 @@
 #include "AIController.h"
 #include "EngineUtils.h"
 #include "Camera/CameraComponent.h"
+#include "Components/ArrowComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SpotLightComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
@@ -30,7 +32,8 @@ ADocentV2::ADocentV2()
 	MonsterCamera->bUsePawnControlRotation = false; // 플레이어 조작 방지
 
 	//콜린전 채널
-	
+	SpotLightComp=CreateDefaultSubobject<USpotLightComponent>(TEXT("SpotLightComponent"));
+	SpotLightComp->SetupAttachment(GetMesh());
 }
 
 // Called when the game starts or when spawned
@@ -54,6 +57,7 @@ void ADocentV2::BeginPlay()
 		SoundControlActor = *It;
 	}
 	//StartTurnDetect();
+	SpotLightComp->SetActive(false);
 }
 
 // Called every frame
@@ -375,10 +379,14 @@ void ADocentV2::PickUPNote()
 
 	// 모든거 멈추도록 하기
 	StopAllTurnDetect();
-	
+
+	// 도슨트의 카메라는 제거하기
+	this->CameraComp->SetActive(false);
+	this->MonsterCamera->SetActive(false);
+	State=2;
 	// 도슨트가 그림속을 향해 사라지도록 만들기
 	// 무조건 그림앞을 향해 보고
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	/*UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance)
 	{
 		UE_LOG(LogTemp, Log, TEXT("🛑 도슨트의 AnimInstance"));
@@ -426,7 +434,28 @@ void ADocentV2::PickUPNote()
 		{
 			SoundControlActor->BGSoundChange(SoundControlActor->LobbyRoom);
 		}
-	},8.0f,false);
+	},8.0f,false);*/
+}
+
+void ADocentV2::CloseUPCam()
+{
+	UE_LOG(LogTemp, Log, TEXT("🛑ADocentV2::CloseUPCam"));
+	if (DetectMontage)
+	{
+		GetMesh()->PlayAnimation(DetectMontage,false);
+	}
+	
+	this->AttachToComponent(MainCharacter->CenterArrowComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+	// Arrow를 바라보도록 회전 보간
+	FRotator DesiredRot = (MainCharacter->GetActorLocation() - this->GetActorLocation()).Rotation();
+	
+	this->SetActorRotation(DesiredRot);
+}
+
+void ADocentV2::DocentLightOn()
+{
+	SpotLightComp->SetActive(true);
 }
 
 void ADocentV2::Interact()

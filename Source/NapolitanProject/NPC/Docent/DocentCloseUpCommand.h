@@ -5,24 +5,19 @@
 #include "CoreMinimal.h"
 #include "NapolitanProject/Interface/EventCommand.h"
 
-class ANPCCharacter;
-class APlayerHUD;
 class ATestCharacter;
 class ATestPlayerController;
-class ADocentV2;
 /**
  * 
  */
-class NAPOLITANPROJECT_API DocentNoteUICommand: public IEventCommand
+class NAPOLITANPROJECT_API DocentCloseUpCommand: public IEventCommand
 {
 public:
-	DocentNoteUICommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
-	~DocentNoteUICommand();
+	DocentCloseUpCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,UWorld* InWorld);
+	~DocentCloseUpCommand();
 	virtual void Execute() override;
 private:
 	UWorld* World;
 	ATestPlayerController* PC;
 	ATestCharacter* MainCharacter;
-	APlayerHUD* PlayerHUD;
-	ADocentV2* NPC_Docent;
 };

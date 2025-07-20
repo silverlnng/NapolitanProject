@@ -161,11 +161,3 @@ void UNPCDialogueWidget::CreateSelectionChildren(int32 count,TArray<FString> str
 	}
 }
 
-void UNPCDialogueWidget::UIEffect(FString& str)
-{
-	// str 값에 따라서 이벤트 작동시키기
-	if (str=="Red")
-	{
-		
-	}
-}

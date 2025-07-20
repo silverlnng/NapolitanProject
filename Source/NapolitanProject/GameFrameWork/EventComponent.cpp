@@ -7,7 +7,6 @@
 #include "PlayerHUD.h"
 
 #include "TestCharacter.h"
-
 #include "TestPlayerController.h"
 #include "Components/RichTextBlock.h"
 #include "NapolitanProject/NPC/Butterfly/Command/ButterflyCloseUpCommand.h"
@@ -18,6 +17,7 @@
 #include "NapolitanProject/NPC/Cleaner/Command/CleanerQuestStartCommand.h"
 #include "NapolitanProject/NPC/Curator/Command/CuratorCompletedCommand.h"
 #include "NapolitanProject/NPC/Curator/Command/CuratorLightEffectCommand.h"
+#include "NapolitanProject/NPC/Docent/DocentCloseUpCommand.h"
 #include "NapolitanProject/NPC/Docent/DocentDetectStartCommand.h"
 #include "NapolitanProject/NPC/Docent/DocentNoteUICommand.h"
 #include "NapolitanProject/NPC/LeeSeo/Command/LeeSeoFirstUICommand.h"
@@ -44,7 +44,6 @@ void UEventComponent::BeginPlay()
 	TestPC=GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	MainCharacter=Cast<ATestCharacter>(TestPC->GetPawn());
 	PlayerHUD=TestPC->GetHUD<APlayerHUD>();
-	
 	
 	// 6 : AChaseStatue (큐레이터)
 	// 8 : 나비
@@ -83,14 +82,17 @@ void UEventComponent::CommandAdd()
 		MakeShared<CuratorCompletedCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
 
 	// 도슨트
+
 	CommandMap.Add(
 		"DocentDetectStart" ,
-		MakeShared<DocentDetectStartCommand>(TestPC , MainCharacter));
+		MakeShared<DocentDetectStartCommand>(TestPC , MainCharacter,GetWorld()));
 	CommandMap.Add(
 		"DocentNoteUI" ,
-		MakeShared<DocentNoteUICommand>(TestPC , MainCharacter,PlayerHUD , GetWorld()));
-
-
+		MakeShared<DocentNoteUICommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
+	CommandMap.Add(
+		"DocentCloseUp" ,
+		MakeShared<DocentCloseUpCommand>(TestPC , MainCharacter , GetWorld()));
+	
 	CommandMap.Add(
 		"SecurityCompleted" ,
 		MakeShared<SecurityCompletedCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
