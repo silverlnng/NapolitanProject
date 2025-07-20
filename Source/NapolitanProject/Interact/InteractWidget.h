@@ -30,13 +30,6 @@ public:
 
 	void SetVisibleCrossHair(bool value);
 	void SetVisibleHBox(bool value);
-
-	////// 피격당했을때 나올 animation ////////////
-	UPROPERTY(Transient,meta=(BindWidgetAnim))
-	class UWidgetAnimation* HitAnim;
-
-	UFUNCTION()
-	void PlayHitAnim();
 	
 	////// 유물 얻었을때 ////////////
 	UPROPERTY(meta=(BindWidget))
@@ -114,9 +107,6 @@ public:
 	UPROPERTY(meta=(BindWidget))
 	class UImage* Img_ClueContent;
 	
-	UPROPERTY(meta=(BindWidget))
-	class UCanvasPanel* CanvasPanel_Hit;
-
 	UPROPERTY(meta=(BindWidget))
 	class UButton* Btn_ClueClose;
 

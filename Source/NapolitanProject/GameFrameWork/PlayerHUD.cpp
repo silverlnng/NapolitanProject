@@ -4,6 +4,7 @@
 #include "PlayerHUD.h"
 
 #include "EngineUtils.h"
+#include "EventComponent.h"
 #include "MyTestGameInstance.h"
 #include "../YJ/DeadEndingWidget.h"
 #include "../Interact/InteractWidget.h"
@@ -215,6 +216,18 @@ void APlayerHUD::OnClickBtn_NoteClose()
 	if (CloseSoundWave)
 	{
 		UGameplayStatics::PlaySound2D(this, CloseSoundWave);
+	}
+
+	// 지금 상황에 따라서 추가 이벤트 발생시킬수있음
+	if (NoteUI->State==EEventState::DocentEvent)
+	{
+		// 이때 도슨트가 가까이 오는 이벤트 실행
+	}
+	else if (NoteUI->State==EEventState::ButterflyEvent)
+	{
+		// 이때 가까이 날라오는 이벤트 실행.
+		FString eventStr = TEXT("ButterflyCloseUp");
+		PC->EventComponent->StartEvent_(eventStr);
 	}
 }
 

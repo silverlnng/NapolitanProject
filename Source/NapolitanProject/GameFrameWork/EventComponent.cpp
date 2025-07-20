@@ -10,6 +10,7 @@
 
 #include "TestPlayerController.h"
 #include "Components/RichTextBlock.h"
+#include "NapolitanProject/NPC/Butterfly/Command/ButterflyCloseUpCommand.h"
 #include "NapolitanProject/NPC/Butterfly/Command/ButterflyQuestStartCommand.h"
 #include "NapolitanProject/NPC/Butterfly/Command/ButterflyQuestCompletedCommand.h"
 #include "NapolitanProject/NPC/Butterfly/Command/ButterflyQuestRewardCommand.h"
@@ -111,6 +112,9 @@ void UEventComponent::CommandAdd()
 	CommandMap.Add(
 		"ButterflyQuestReward" ,
 		MakeShared<ButterflyQuestRewardCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
+	CommandMap.Add(
+	"ButterflyCloseUp" ,
+	MakeShared<ButterflyCloseUpCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
 
 	GEngine->AddOnScreenDebugMessage(-1 , 5.f , FColor::Green , FString::Printf(TEXT("ButterflyCommandMap")));
 	

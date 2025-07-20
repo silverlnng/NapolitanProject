@@ -6,9 +6,17 @@
 #include "Blueprint/UserWidget.h"
 #include "NoteWidget.generated.h"
 
+
 /**
  * 
  */
+UENUM(BlueprintType)
+enum class EEventState:uint8
+{
+	Normal,
+	DocentEvent,
+	ButterflyEvent
+};
 UCLASS()
 class NAPOLITANPROJECT_API UNoteWidget : public UUserWidget
 {
@@ -120,5 +128,7 @@ public:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* Btn_Close;
 
+	UPROPERTY(VisibleAnywhere)
+	EEventState State=EEventState::Normal;
 };
 

@@ -50,5 +50,8 @@ void ButterflyQuestRewardCommand::Execute()
 	World->GetTimerManager().SetTimer(UITimer2,[this]()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Butterfly(2,3);
+		
+		PlayerHUD->NoteUI->State==EEventState::ButterflyEvent;
+		
 	},2.5f,false);
 }

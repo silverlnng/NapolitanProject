@@ -25,7 +25,7 @@ void UInteractWidget::NativeConstruct()
 	Border_Note->SetVisibility(ESlateVisibility::Hidden);
 	// Border_Inven->SetVisibility(ESlateVisibility::Hidden);
 	CanvasPanel_Clue->SetVisibility(ESlateVisibility::Hidden);
-	CanvasPanel_Hit->SetVisibility(ESlateVisibility::Hidden);
+	
 	Btn_ClueClose->OnClicked.AddDynamic(this,&UInteractWidget::OnClickBtn_ClueClose);
 	pc =GetOwningPlayer<ATestPlayerController>();
 	MainCharacter=pc->GetPawn<ATestCharacter>();
@@ -55,12 +55,6 @@ void UInteractWidget::SetVisibleHBox(bool value)
 	}
 }
 
-void UInteractWidget::PlayHitAnim()
-{
-	PlayAnimation(HitAnim);
-	// 비네트 효과로 변경하기
-	
-}
 
 void UInteractWidget::GetSouvenirEvent(const FString& str)
 {
