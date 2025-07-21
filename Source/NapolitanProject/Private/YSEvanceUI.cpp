@@ -47,8 +47,5 @@ void UYSEvanceUI::AddDeadEnding()
 	{
 		PlayerHUD->YsEvanceUserWidget->SetVisibility(ESlateVisibility::Hidden);
 		PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-		FString name= FString(TEXT("<Red_Big>남자</>"));
-		PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
-		PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
 	}
 }

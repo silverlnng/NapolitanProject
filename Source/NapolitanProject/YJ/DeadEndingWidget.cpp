@@ -30,12 +30,7 @@ void UDeadEndingWidget::NativeConstruct()
 	
 	IMG_BG->SetVisibility(ESlateVisibility::Hidden);
 	TextBlock_description->SetText(FText::FromString(TEXT("")));
-	RichText_Name->SetVisibility(ESlateVisibility::Hidden);
-}
-
-void UDeadEndingWidget::SetRichText_Name(const FString& Str) const
-{
-	RichText_Name->SetText(FText::FromString(Str));
+	
 }
 
 void UDeadEndingWidget::SetTextBlock_description(const FString& Str)
@@ -68,34 +63,6 @@ void UDeadEndingWidget::UpdateText()
 	}
 }
 
-void UDeadEndingWidget::StartLerpTimer()
-{
-	// 페이드 애니 실행시키기
-	if (FadeAnim)
-	{
-		// 애니메이션 재생
-		PlayAnimation(FadeAnim);
-	}
-	
-}
-
-void UDeadEndingWidget::UpdateLerp()
-{
-	/*ElapsedTime += 0.01f; // 타이머 호출 간격만큼 시간 증가
-
-	// Lerp 비율 계산
-	float Alpha = FMath::Clamp(ElapsedTime / LerpDuration, 0.0f, 1.0f);
-	
-	
-	float Alp = FMath::Lerp(Img_Fade->GetColorAndOpacity().A, 1, Alpha);
-	
-	Img_Fade->SetColorAndOpacity(FLinearColor(0,0,0,Alp));
-
-	if (Alpha >= 1.0f)
-	{
-		GetWorld()->GetTimerManager().ClearTimer(LerpTimerHandle);
-	}*/
-}
 
 void UDeadEndingWidget::OnRestart()
 {

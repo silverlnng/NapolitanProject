@@ -207,10 +207,7 @@ void AChaseStatue::CuratorOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 			if (PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
 			{
 				PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-				FString name= FString(TEXT("<Red_Big>큐레이터</>"));
-				PlayerHUD->DeadEndingWidgetUI->SetRichText_Name(name);
-				PlayerHUD->DeadEndingWidgetUI->StartLerpTimer();
-
+				
 				//대기 상태로 변경 => 여기는 수정 필요
 				SetState(ChaseStatueState::Idle); 
 			}

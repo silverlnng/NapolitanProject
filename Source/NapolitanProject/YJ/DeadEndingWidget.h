@@ -28,12 +28,6 @@ public:
 
 	UPROPERTY()
 	class UGameSaveController* GameSaveController;
-	
-	UPROPERTY(meta=(BindWidget))
-	class URichTextBlock* RichText_Name;
-
-	void SetRichText_Name(const FString& Str) const;
-
 ////////////////////////////// 새롭게 사망 글 적기//////////////////	
 	UPROPERTY(meta=(BindWidget))
 	class UTextBlock* TextBlock_description;
@@ -48,20 +42,9 @@ public:
 
 	//// 한글자씩 업데이트 효과
 	void UpdateText();
+	
 ////////////////////////////////////////////////////////////////////////////
-
-	/*UPROPERTY(meta=(BindWidget))
-	class UImage* Img_Fade;*/
-	UPROPERTY(meta = (BindWidgetAnim), Transient)
-	UWidgetAnimation* FadeAnim;
-
-	FTimerHandle LerpTimerHandle;
-	float ElapsedTime = 0.0f;
-	float ElapsedTime2 = 0.0f;
-	float LerpDuration = 12.0f;
-	void StartLerpTimer();
-	void UpdateLerp();
-
+	
 	UPROPERTY(EditAnywhere, meta=(BindWidget))
 	class UButton* RestartButton;
 
