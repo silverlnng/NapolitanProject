@@ -103,6 +103,11 @@ public:
 
 	void DocentLightOn();
 
+	void DetachDestroy();
+
+	UPROPERTY(EditAnywhere)
+	float LightIntensity=20.f;
+
 	UPROPERTY(EditAnywhere) // 맵에서 할당하기 
 	class ASouvenir_Docent* Souvenir_Docent=nullptr;
 

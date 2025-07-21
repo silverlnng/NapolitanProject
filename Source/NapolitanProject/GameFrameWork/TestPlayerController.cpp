@@ -269,6 +269,33 @@ void ATestPlayerController::SetNPCDialougueText(int32 curOrder)
 	}
 }
 
+void ATestPlayerController::StartNPCDialougueNoCamChange()
+{
+	SetUIMode(true); // ui 모드로 
+	PlayerHUD->InteractUI->SetVisibleCrossHair(false);
+	PlayerHUD->InteractUI->SetVisibleHBox(false);
+		
+	PlayerHUD->NPCDialogueUI->curOrder=0; // 초기화 작업 
+	PlayerHUD->NPCDialogueUI->SetVisibility(ESlateVisibility::Visible);
+	PlayerHUD->NPCDialogueUI->Text_Dialogue->SetText(FText::FromString(("")));
+	PlayerHUD->NPCDialogueUI->Text_Name->SetText(FText::FromString(("")));
+	//남아있는 텍스트 초기화
+		
+	int32 npcID =curNPC->GetNPCID();
+	UE_LOG(LogTemp,Warning,TEXT("%s,npcID : %d"),*CALLINFO,npcID);
+	int32 npcState =curNPC->GetState();
+
+	// NPC 의 ID , STATE를 가져와서 
+	SetCurNPCSelectUI(npcID,npcState,"kor");
+		
+	SetNPCDialougueMaxSize();
+		
+	//CameraViewChangeNPC();
+	
+	//자신의 캐릭터는 안보이도록
+	me->GetMesh()->SetHiddenInGame(true);
+}
+
 void ATestPlayerController::CameraViewChangeNPC()
 {
 	// npc 의 카메라로 전환 부드럽게 전환

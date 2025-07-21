@@ -50,15 +50,6 @@ void DocentNoteUICommand::Execute()
 	World->GetTimerManager().SetTimer(UITimer2,[this]()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Docent(2,1);
-		
-		if (NPC_Docent)
-		{
-			NPC_Docent->CloseUPCam();
-		}
-		else
-		{
-			UE_LOG(LogTemp, Log, TEXT("🛑 NPC_Docent_Null"));
-		}
 	},1.5f,false);
 	
 }

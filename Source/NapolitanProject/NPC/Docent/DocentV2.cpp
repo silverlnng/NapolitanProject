@@ -9,6 +9,7 @@
 #include "Components/ArrowComponent.h"
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/Overlay.h"
 #include "Components/SpotLightComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
@@ -57,7 +58,7 @@ void ADocentV2::BeginPlay()
 		SoundControlActor = *It;
 	}
 	//StartTurnDetect();
-	SpotLightComp->SetActive(false);
+	SpotLightComp->SetIntensity(0.f);
 }
 
 // Called every frame
@@ -369,6 +370,7 @@ void ADocentV2::PlayAttackAnimation()
 		if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
 		{
 			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			PlayerHUD->DeadEndingWidgetUI->Overlay_Docent->SetVisibility(ESlateVisibility::Visible);		
 			PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
 		}
 	},3.5f,false);
@@ -451,12 +453,32 @@ void ADocentV2::CloseUPCam()
 	FRotator DesiredRot = (MainCharacter->GetActorLocation() - this->GetActorLocation()).Rotation();
 	
 	this->SetActorRotation(DesiredRot);
+
+	// 다리 안보이도록 숨기기
+}
+
+void ADocentV2::DetachDestroy()
+{
+	this->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+	
+	FTimerHandle Timer2;
+	GetWorld()->GetTimerManager().SetTimer(Timer2,[this]()
+	{
+		Destroy();
+		// 노래원래대로 변경하기
+		if (SoundControlActor&&SoundControlActor->LobbyRoom)
+		{
+			SoundControlActor->BGSoundChange(SoundControlActor->LobbyRoom);
+		}
+	},6.0f,false);
 }
 
 void ADocentV2::DocentLightOn()
 {
-	SpotLightComp->SetActive(true);
+	SpotLightComp->SetIntensity(LightIntensity);
 }
+
+
 
 void ADocentV2::Interact()
 {
@@ -475,6 +497,7 @@ int32 ADocentV2::GetState()
 
 void ADocentV2::SwitchToMonsterCamera()
 {
+	DocentLightOn();
 	this->CameraComp->SetActive(false);
 	this->MonsterCamera->SetActive(true);
 	if (TestPC && MonsterCamera)

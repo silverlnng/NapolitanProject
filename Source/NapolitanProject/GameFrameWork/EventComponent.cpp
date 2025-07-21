@@ -19,6 +19,7 @@
 #include "NapolitanProject/NPC/Curator/Command/CuratorLightEffectCommand.h"
 #include "NapolitanProject/NPC/Docent/DocentCloseUpCommand.h"
 #include "NapolitanProject/NPC/Docent/DocentDetectStartCommand.h"
+#include "NapolitanProject/NPC/Docent/DocentEndCommand.h"
 #include "NapolitanProject/NPC/Docent/DocentNoteUICommand.h"
 #include "NapolitanProject/NPC/LeeSeo/Command/LeeSeoFirstUICommand.h"
 #include "NapolitanProject/NPC/LeeSeo/Command/LeeSeoSecondUICommand.h"
@@ -92,6 +93,10 @@ void UEventComponent::CommandAdd()
 	CommandMap.Add(
 		"DocentCloseUp" ,
 		MakeShared<DocentCloseUpCommand>(TestPC , MainCharacter , GetWorld()));
+	CommandMap.Add(
+		"DocentPlayEnd" ,
+		MakeShared<DocentEndCommand>(TestPC , MainCharacter , GetWorld()));
+
 	
 	CommandMap.Add(
 		"SecurityCompleted" ,

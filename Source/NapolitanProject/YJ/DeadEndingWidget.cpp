@@ -4,6 +4,7 @@
 #include "DeadEndingWidget.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
+#include "Components/Overlay.h"
 #include "Components/RichTextBlock.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
@@ -30,6 +31,9 @@ void UDeadEndingWidget::NativeConstruct()
 	
 	IMG_BG->SetVisibility(ESlateVisibility::Hidden);
 	TextBlock_description->SetText(FText::FromString(TEXT("")));
+
+	Overlay_LeeSeo->SetVisibility(ESlateVisibility::Hidden);
+	Overlay_Docent->SetVisibility(ESlateVisibility::Hidden);				 Overlay_Seciruty->SetVisibility(ESlateVisibility::Hidden);
 	
 }
 
