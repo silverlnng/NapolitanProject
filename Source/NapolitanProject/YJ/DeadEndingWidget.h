@@ -32,7 +32,8 @@ public:
 ///
 	UPROPERTY(meta=(BindWidget))
 	class UOverlay* Overlay_LeeSeo;
-
+	UPROPERTY(meta=(BindWidget))
+	class UTextBlock* TextBlock_LeeSeo;
 	UPROPERTY(meta=(BindWidget))
 	class UOverlay* Overlay_Docent;
 
@@ -47,6 +48,8 @@ public:
 
 	void SetTextBlock_description(const FString& Str);
 
+	void SetTextBlock_description_(const FString& Str,UTextBlock* Text_description);
+
 	FString CurrentText;
 	FString FullText;
 	UPROPERTY(EditAnywhere)
@@ -55,6 +58,8 @@ public:
 
 	//// 한글자씩 업데이트 효과
 	void UpdateText();
+
+	void UpdateText_(UTextBlock* Text_description);
 	
 ////////////////////////////////////////////////////////////////////////////
 	
@@ -76,3 +81,4 @@ public:
 	const TSoftObjectPtr<UWorld> LobbyLevel;
 	
 };
+

@@ -66,9 +66,9 @@ void ADocentV2::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	DrawDebugSphere(GetWorld(), GetActorLocation(), MaxDetectionDistance, 12, FColor::Blue, false, 0.1f);
+	//DrawDebugSphere(GetWorld(), GetActorLocation(), MaxDetectionDistance, 12, FColor::Blue, false, 0.1f);
 
-	DrawDebugSphere(GetWorld(), GetActorLocation(), AttackRange, 12, FColor::Red, false, 0.1f);
+	//DrawDebugSphere(GetWorld(), GetActorLocation(), AttackRange, 12, FColor::Red, false, 0.1f);
 
 	if (MainCharacter)
 	{

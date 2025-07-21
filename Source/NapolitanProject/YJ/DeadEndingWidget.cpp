@@ -46,6 +46,18 @@ void UDeadEndingWidget::SetTextBlock_description(const FString& Str)
 	GetWorld()->GetTimerManager().SetTimer(TextUpdateTimerHandle, this, &UDeadEndingWidget::UpdateText, TextUpdateInterval, true);
 }
 
+void UDeadEndingWidget::SetTextBlock_description_(const FString& Str , UTextBlock* Text_description)
+{
+	CurrentText = FString(TEXT(""));
+	FullText = Str;
+
+	GetWorld()->GetTimerManager().SetTimer(TextUpdateTimerHandle , FTimerDelegate::CreateLambda([&, this]()
+	{
+		UpdateText_(Text_description);
+	}) , TextUpdateInterval , true);
+}
+
+
 void UDeadEndingWidget::UpdateText()
 {
 	// 전체 텍스트의 끝까지 도달하면 타이머 중지
@@ -64,6 +76,26 @@ void UDeadEndingWidget::UpdateText()
 	if (TextBlock_description)
 	{
 		TextBlock_description->SetText(FText::FromString(CurrentText));
+	}
+}
+void UDeadEndingWidget::UpdateText_(UTextBlock* Text_description)
+{
+	// 전체 텍스트의 끝까지 도달하면 타이머 중지
+	if (CurrentText.Len() >= FullText.Len())
+	{
+		GetWorld()->GetTimerManager().ClearTimer(TextUpdateTimerHandle);
+		// 끝나는 시점 에 특정함수를 실행할수 있도록 만들기
+		
+		return;
+	}
+	
+	// 한 글자씩 추가
+	CurrentText += FullText.Mid(CurrentText.Len(), 1);
+	
+	// TextBlock에 적용
+	if (Text_description)
+	{
+		Text_description->SetText(FText::FromString(CurrentText));
 	}
 }
 
