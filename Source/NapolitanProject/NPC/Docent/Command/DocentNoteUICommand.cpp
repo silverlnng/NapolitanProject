@@ -3,7 +3,7 @@
 
 #include "DocentNoteUICommand.h"
 
-#include "DocentV2.h"
+#include "../DocentV2.h"
 #include "Components/SlateWrapperTypes.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"

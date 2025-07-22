@@ -3,7 +3,7 @@
 
 #include "DocentCloseUpCommand.h"
 
-#include "DocentV2.h"
+#include "../DocentV2.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 

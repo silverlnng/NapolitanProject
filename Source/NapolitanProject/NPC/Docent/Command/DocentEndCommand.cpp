@@ -3,7 +3,7 @@
 
 #include "DocentEndCommand.h"
 
-#include "DocentV2.h"
+#include "../DocentV2.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
 DocentEndCommand::DocentEndCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,UWorld* InWorld)
