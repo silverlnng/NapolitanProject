@@ -4,6 +4,7 @@
 #include "EventComponent.h"
 
 
+#include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
 
 #include "TestCharacter.h"
@@ -46,6 +47,10 @@ void UEventComponent::BeginPlay()
 	MainCharacter=Cast<ATestCharacter>(TestPC->GetPawn());
 	PlayerHUD=TestPC->GetHUD<APlayerHUD>();
 	
+	if (TestPC&&TestPC->GI)
+	{
+		GI =TestPC->GI;
+	}
 	// 6 : AChaseStatue (큐레이터)
 	// 8 : 나비
 	// 1 : 김영수
@@ -105,7 +110,7 @@ void UEventComponent::CommandAdd()
 
 	CommandMap.Add(
 		"CleanerQuestStart" ,
-		MakeShared<CleanerQuestStartCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
+		MakeShared<CleanerQuestStartCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld(),GI));
 	CommandMap.Add(
 		"CleanerQuestCompleted" ,
 		MakeShared<CleanerQuestCompletedCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));

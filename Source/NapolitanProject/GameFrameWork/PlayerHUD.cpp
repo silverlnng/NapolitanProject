@@ -219,6 +219,7 @@ void APlayerHUD::OnClickBtn_NoteClose()
 	}
 
 	// 지금 상황에 따라서 추가 이벤트 발생시킬수있음
+	
 	if (NoteUI->State==EEventState::DocentEvent)
 	{
 		// 이때 도슨트와 대사 실행
@@ -295,7 +296,8 @@ void APlayerHUD::UpdateClueSlotWidget()
 void APlayerHUD::UpdateNPCInfoWidget()
 {
 	// GI 의 TSet<FName> NPCEventManage; 을 보고 업데이트할꺼 만들어두기
-	
+
+	// 
 	if (!SaveGI->NPCEventManage.IsEmpty())
 	{
 		for (FName &EventName:SaveGI->NPCEventManage)
@@ -310,7 +312,8 @@ void APlayerHUD::UpdateNPCInfoWidget()
 	{
 		NoteUI->WBP_NPCInfo->WidgetSwitcher_Docent1->SetActiveWidgetIndex(1);
 	}
-	
+
+	// npc의 state는 어디서 저장 ?? 
 }
 
 void APlayerHUD::PlayDeadVignetteEffect()

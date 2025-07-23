@@ -20,6 +20,7 @@ void UNPCInfoWidget::NativeConstruct()
 
 void UNPCInfoWidget::LoadUpdate(const FString& str)
 {
+	// 수행한 퀘스트 에따라서 업데이트 시키기 
 	if (str=="CleanerQuest")
 	{
 		ScrollBox_Cleaner->ScrollWidgetIntoView(CanvasPanel_Cleaner1,true);

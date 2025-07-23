@@ -164,6 +164,15 @@ public:
 	TArray<FName> ClueDataRowNames;
 	UPROPERTY()
 	TMap<int32,FClueData> ClueMap;
+
+	///////////// 추리 단서 ////////////////////////	
+	UPROPERTY(VisibleAnywhere)
+	UDataTable* DT_Quest;
+
+	UPROPERTY(VisibleAnywhere)
+	TArray<FName> QuestDataRowNames;
+	UPROPERTY()
+	TMap<FName,FQuestData> QuestMap;
 	
 	///////////////////CSV Read 하기
 	TMap<int32,FNPCResult> NPCResultMap;

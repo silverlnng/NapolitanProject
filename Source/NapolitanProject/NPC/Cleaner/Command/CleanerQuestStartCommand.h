@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "NapolitanProject/Interface/EventCommand.h"
 
+class UMyTestGameInstance;
 class ANPC_Cleaner;
 class ANPCCharacter;
 class APlayerHUD;
@@ -16,7 +17,7 @@ class ATestPlayerController;
 class NAPOLITANPROJECT_API CleanerQuestStartCommand: public IEventCommand
 {
 public:
-	CleanerQuestStartCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	CleanerQuestStartCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld,UMyTestGameInstance* InGI);
 	~CleanerQuestStartCommand();
 	virtual void Execute() override;
 private:
@@ -26,4 +27,5 @@ private:
 	ATestCharacter* MainCharacter;
 	APlayerHUD* PlayerHUD;
 	class ADoor_2Floor* Door_2Floor;
+	UMyTestGameInstance* GI;
 };
