@@ -25,10 +25,12 @@ void UInteractWidget::NativeConstruct()
 	Border_Note->SetVisibility(ESlateVisibility::Hidden);
 	// Border_Inven->SetVisibility(ESlateVisibility::Hidden);
 	CanvasPanel_Clue->SetVisibility(ESlateVisibility::Hidden);
+	CanvasPanel_PictureLabel->SetVisibility(ESlateVisibility::Hidden);
 	
 	Btn_ClueClose->OnClicked.AddDynamic(this,&UInteractWidget::OnClickBtn_ClueClose);
 	pc =GetOwningPlayer<ATestPlayerController>();
 	MainCharacter=pc->GetPawn<ATestCharacter>();
+	
 }
 
 void UInteractWidget::SetVisibleCrossHair(bool value)
@@ -181,6 +183,42 @@ void UInteractWidget::SetVisibleCanvasPanel_Clue(bool val)
 void UInteractWidget::OnClickBtn_ClueClose()
 {
 	CanvasPanel_Clue->SetVisibility(ESlateVisibility::Hidden);
+	// 캐릭터 모드도 변경
+	
+	if (pc)
+	{
+		if (MainCharacter)
+		{
+			MainCharacter->SetPlayerState(EPlayerState::Idle);
+		}
+	}
+}
+
+void UInteractWidget::SetText_PictureLabel(FString& Title,FString& descrip)
+{
+	TextBlock_PictureLabel_Title->SetText(FText::FromString(*Title));
+	TextBlock_PictureLabel_Descrip->SetText(FText::FromString(*descrip));
+}
+
+void UInteractWidget::SetVisibleCanvasPanel_PictureLabel(bool val)
+{
+	if (val)
+	{
+		CanvasPanel_PictureLabel->SetVisibility(ESlateVisibility::Visible);
+		if (ClueSoundWave)
+		{
+			UGameplayStatics::PlaySound2D(this, ClueSoundWave);
+		}
+	}
+	else
+	{
+		CanvasPanel_PictureLabel->SetVisibility(ESlateVisibility::Hidden);
+	}
+}
+
+void UInteractWidget::OnClickBtn_PictureLabelClose()
+{
+	CanvasPanel_PictureLabel->SetVisibility(ESlateVisibility::Hidden);
 	// 캐릭터 모드도 변경
 	
 	if (pc)

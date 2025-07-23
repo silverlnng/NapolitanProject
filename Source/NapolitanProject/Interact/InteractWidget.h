@@ -109,7 +109,7 @@ public:
 	
 	UPROPERTY(meta=(BindWidget))
 	class UButton* Btn_ClueClose;
-
+	
 	void SetImgClueContent(UTexture2D* Texture);
 	
 	void SetRichText_Clue(FString str);
@@ -118,7 +118,25 @@ public:
 
 	UFUNCTION()
 	void OnClickBtn_ClueClose();
+/////////////// 그림 라벨 UI //////////////////////////////////////
+	UPROPERTY(meta=(BindWidget))
+	class UCanvasPanel* CanvasPanel_PictureLabel;
+	
+	UPROPERTY(meta=(BindWidget))
+	class UTextBlock* TextBlock_PictureLabel_Title;
 
+	UPROPERTY(meta=(BindWidget))
+	class UTextBlock* TextBlock_PictureLabel_Descrip;
+	
+	UPROPERTY(meta=(BindWidget))
+	class UButton* Btn_PictureLabelClose;
+	
+	void SetText_PictureLabel(FString& Title,FString& descrip);
+
+	void SetVisibleCanvasPanel_PictureLabel(bool val);
+
+	UFUNCTION()
+	void OnClickBtn_PictureLabelClose();
 ///////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* ClueSoundWave;
