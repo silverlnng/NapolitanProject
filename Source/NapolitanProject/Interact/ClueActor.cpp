@@ -54,12 +54,7 @@ void AClueActor::BeginPlay()
 	}
 }
 
-// Called every frame
-void AClueActor::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 
-}
 
 void AClueActor::IInteract()
 {

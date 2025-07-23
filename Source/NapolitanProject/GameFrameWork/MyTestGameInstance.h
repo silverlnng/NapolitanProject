@@ -105,6 +105,18 @@ struct FClueData : public FTableRowBase
 };
 
 USTRUCT(BlueprintType)
+struct FPictureLabelData : public FTableRowBase
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString Title="";
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString Description="";
+};
+
+USTRUCT(BlueprintType)
 struct FQuestData : public FTableRowBase
 {
 	GENERATED_BODY()
@@ -164,8 +176,12 @@ public:
 	TArray<FName> ClueDataRowNames;
 	UPROPERTY()
 	TMap<int32,FClueData> ClueMap;
-
-	///////////// 추리 단서 ////////////////////////	
+	
+	///////////// 그림 라벨 ////////////////////////	
+	UPROPERTY(VisibleAnywhere)
+	UDataTable* DT_PictureLabel;
+	
+	///////////// 퀘스트 데이터 ////////////////////////	
 	UPROPERTY(VisibleAnywhere)
 	UDataTable* DT_Quest;
 

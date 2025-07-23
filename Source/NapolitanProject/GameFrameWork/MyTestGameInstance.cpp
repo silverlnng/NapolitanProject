@@ -99,6 +99,7 @@ void UMyTestGameInstance::Init()
 	
 	DT_Quest=LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/DT/DT_Quest.DT_Quest'"));
 	
+	DT_PictureLabel=LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/DT/DT_PictureLabel.DT_PictureLabel'"));
 
 	// 언어선택 기본값 한글 :0 ,영어:1
 	lang=0;

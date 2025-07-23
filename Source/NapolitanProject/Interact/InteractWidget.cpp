@@ -28,9 +28,10 @@ void UInteractWidget::NativeConstruct()
 	CanvasPanel_PictureLabel->SetVisibility(ESlateVisibility::Hidden);
 	
 	Btn_ClueClose->OnClicked.AddDynamic(this,&UInteractWidget::OnClickBtn_ClueClose);
+	Btn_PictureLabelClose->OnClicked.AddDynamic(this,&UInteractWidget::OnClickBtn_PictureLabelClose);
+	
 	pc =GetOwningPlayer<ATestPlayerController>();
 	MainCharacter=pc->GetPawn<ATestCharacter>();
-	
 }
 
 void UInteractWidget::SetVisibleCrossHair(bool value)
