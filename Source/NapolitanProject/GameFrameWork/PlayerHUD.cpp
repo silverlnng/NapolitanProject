@@ -219,6 +219,7 @@ void APlayerHUD::OnClickBtn_NoteClose()
 	}
 
 	// 지금 상황에 따라서 추가 이벤트 발생시킬수있음
+	if (NoteUI->State==EEventState::Normal){return;}
 	
 	if (NoteUI->State==EEventState::DocentEvent)
 	{

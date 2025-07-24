@@ -128,16 +128,13 @@ struct FQuestData : public FTableRowBase
 	FString Who="";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	int32 State=-1;
-
+	int32 NPCID=-1;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	bool Doing=false;
+	int32 State=-1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	bool Done=false;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	int32 QuestID=-1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	FString Kor_Content="";

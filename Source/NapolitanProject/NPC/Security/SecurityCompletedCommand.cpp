@@ -48,4 +48,7 @@ void SecurityCompletedCommand::Execute()
 	{
 		PlayerHUD->NoteUI->WBP_NPCInfo->SetForcus_ScrollBox_Security(2,1);
 	},2.5f,false);
+
+	// 여기서 머리를 가져다 주기 UI 나오도록 하기
+	
 }
