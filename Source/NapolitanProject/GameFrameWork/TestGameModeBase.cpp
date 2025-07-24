@@ -95,7 +95,6 @@ void ATestGameModeBase::BeginPlay()
 					PlayerHUD->InteractUI->Border_Note->SetVisibility(ESlateVisibility::Visible);
 				} , 1.5f , false);
 			}
-			
 		}
 	}
 	
@@ -159,7 +158,7 @@ void ATestGameModeBase::BeginPlay()
 			// 아이템을 인벤토리에  복구하는 작업
 		} , 1.0f , false);
 
-
+		// 인벤에 이미 있는 아이템은 맵에서 제거하는 함수
 		FTimerHandle RestoreItemTimer;
 		GetWorld()->GetTimerManager().SetTimer(RestoreItemTimer , [this]()
 		{

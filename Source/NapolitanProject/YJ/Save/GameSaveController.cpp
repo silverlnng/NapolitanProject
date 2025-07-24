@@ -29,93 +29,81 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 	FString SlotName = GetSlotName(SlotIndex);
 	UTestSaveGame* SaveGameInstance = Cast<UTestSaveGame>(UGameplayStatics::CreateSaveGameObject(UTestSaveGame::StaticClass()));
 	
-	if (SaveGameInstance)
+	if (!SaveGameInstance){return;}
+
+	SaveGameInstance->SlotNum = SlotIndex;
+	// 데이터 저장 (예: 플레이어 위치)
+	//SaveGameInstance->PlayerLocation = PlayerCharacter->GetActorLocation(); 
+	//SaveGameInstance->PlayerRotation =PlayerCharacter->GetActorRotation();
+
+	SaveGameInstance->PlayerLocation = PlayerCharacter->SaveTransform.GetLocation();
+	SaveGameInstance->PlayerRotation = PlayerCharacter->SaveTransform.GetRotation().Rotator();
+	SaveGameInstance->PlayerLevel = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	// 저장한 날짜 
+	FDateTime Now = FDateTime::Now();
+	SaveGameInstance->SaveTime = Now.ToString(TEXT("%Y-%m-%d %H:%M:%S"));
+	SaveGameInstance->DateTime = Now;
+
+	// 저장한 위치
+	SaveGameInstance->SaveLocation = PlayerCharacter->SaveLocationStr;
+
+	//
+	for (auto subLevel : SaveGISubsystem->SubLevelArray)
 	{
-		SaveGameInstance->SlotNum=SlotIndex;
-		// 데이터 저장 (예: 플레이어 위치)
-		//SaveGameInstance->PlayerLocation = PlayerCharacter->GetActorLocation(); 
-	   //SaveGameInstance->PlayerRotation =PlayerCharacter->GetActorRotation();
-
-		SaveGameInstance->PlayerLocation = PlayerCharacter->SaveTransform.GetLocation();
-		SaveGameInstance->PlayerRotation=PlayerCharacter->SaveTransform.GetRotation().Rotator();
-		SaveGameInstance->PlayerLevel=UGameplayStatics::GetCurrentLevelName(GetWorld());
-		// 저장한 날짜 
-		FDateTime Now = FDateTime::Now();
-		SaveGameInstance->SaveTime = Now.ToString(TEXT("%Y-%m-%d %H:%M:%S"));
-		SaveGameInstance->DateTime=Now;
-
-		// 저장한 위치
-		SaveGameInstance->SaveLocation=PlayerCharacter->SaveLocationStr;
-
-		//
-		for (auto subLevel:SaveGISubsystem->SubLevelArray)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("SaveGISubsystem_Array")));
-		}
-			
-		SaveGameInstance->SubLevelArray=SaveGISubsystem->SubLevelArray;
-		//
-		for (auto subLevel:SaveGameInstance->SubLevelArray)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("SaveGameInstance_Array")));
-		}
-		
-		// 획득한 단서에 대해 저장하기
-		if (GameInstance && GameInstance->DT_Clue)
-		{
-			TArray<FName> RowNames = GameInstance->DT_Clue->GetRowNames();
-
-			for (const FName& RowName : RowNames)
-			{
-				FClueData* Row = GameInstance->DT_Clue->FindRow<FClueData>(RowName, "");
-				if (Row)
-				{
-					// 상태 저장
-					SaveGameInstance->ClueStates.Add(RowName,Row->Had);
-					UE_LOG(LogTemp, Warning, TEXT("Game saved to slot clue: %s"), *Row->Name);
-				}
-			}
-
-			// 클리어한 npc 정보를 저장하기
-			if (!SaveGISubsystem->ClearedNPC.IsEmpty())
-			{
-				SaveGameInstance->ClearedNPC=SaveGISubsystem->ClearedNPC;
-			}
-
-			if (!SaveGISubsystem->NPCEventManage.IsEmpty())
-			{
-				SaveGameInstance->NPCEventManage=SaveGISubsystem->NPCEventManage;
-			}
-			
-			if (!SaveGISubsystem->QuestSlots.IsEmpty())
-			{
-				SaveGameInstance->QuestSlots=SaveGISubsystem->QuestSlots;
-			}
-
-			if (!SaveGISubsystem->AcquireSouvenir.IsEmpty())
-			{
-				SaveGameInstance->AcquireSouvenir=SaveGISubsystem->AcquireSouvenir;
-			}
-
-			if (!SaveGISubsystem->SavedItems.IsEmpty())
-			{
-				SaveGameInstance->SavedItems=SaveGISubsystem->SavedItems;
-			}
-			
-			SaveGISubsystem->IsFromLoad=false;
-		}
-
-		// 설정값을 저장하기
-		SaveGameInstance->TotalSoundMix=SaveGISubsystem->TotalSoundMix;
-		SaveGameInstance->BGSoundMix=SaveGISubsystem->BGSoundMix;
-		SaveGameInstance->SFXSoundMix=SaveGISubsystem->SFXSoundMix;
-
-		// 슬롯에 저장
-		UGameplayStatics::SaveGameToSlot(SaveGameInstance, SlotName, 0);
-		
-		UE_LOG(LogTemp, Warning, TEXT("Game saved to slot: %s"), *SlotName);
-		UE_LOG(LogTemp, Warning, TEXT("Game saved to slot: %s"), *UGameplayStatics::GetCurrentLevelName(GetWorld()));
+		GEngine->AddOnScreenDebugMessage(-1 , 5.f , FColor::Green , FString::Printf(TEXT("SaveGISubsystem_Array")));
 	}
+
+	SaveGameInstance->SubLevelArray = SaveGISubsystem->SubLevelArray;
+	//
+	for (auto subLevel : SaveGameInstance->SubLevelArray)
+	{
+		GEngine->AddOnScreenDebugMessage(-1 , 5.f , FColor::Green , FString::Printf(TEXT("SaveGameInstance_Array")));
+	}
+
+	// 획득한 단서에 대해 저장하기
+
+	SaveGameInstance->AcquireClueMap = GameInstance->ClueMap;
+
+	// 클리어한 npc 정보를 저장하기
+	if (!SaveGISubsystem->ClearedNPC.IsEmpty())
+	{
+		SaveGameInstance->ClearedNPC = SaveGISubsystem->ClearedNPC;
+	}
+
+	if (!SaveGISubsystem->NPCEventManage.IsEmpty())
+	{
+		SaveGameInstance->NPCEventManage = SaveGISubsystem->NPCEventManage;
+	}
+
+	if (!SaveGISubsystem->QuestSlots.IsEmpty())
+	{
+		SaveGameInstance->QuestSlots = SaveGISubsystem->QuestSlots;
+	}
+
+	if (!SaveGISubsystem->AcquireSouvenir.IsEmpty())
+	{
+		SaveGameInstance->AcquireSouvenir = SaveGISubsystem->AcquireSouvenir;
+	}
+
+	if (!SaveGISubsystem->SavedItems.IsEmpty())
+	{
+		SaveGameInstance->SavedItems = SaveGISubsystem->SavedItems;
+	}
+
+	SaveGISubsystem->IsFromLoad = false;
+
+
+	// 설정값을 저장하기
+	SaveGameInstance->TotalSoundMix = SaveGISubsystem->TotalSoundMix;
+	SaveGameInstance->BGSoundMix = SaveGISubsystem->BGSoundMix;
+	SaveGameInstance->SFXSoundMix = SaveGISubsystem->SFXSoundMix;
+
+	// 슬롯에 저장
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance , SlotName , 0);
+
+	UE_LOG(LogTemp , Warning , TEXT("Game saved to slot: %s") , *SlotName);
+	UE_LOG(LogTemp , Warning , TEXT("Game saved to slot: %s") , *UGameplayStatics::GetCurrentLevelName(GetWorld()));
+	
 }
 
 UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
@@ -161,24 +149,13 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 		
 		if (GameInstance&&SaveGISubsystem)
 		{
-			
+			// 로드해야 하는 서브레벨
 			SaveGISubsystem->SubLevelArray=LoadedGame->SubLevelArray;
-			
-			if (GameInstance->DT_Clue)
+
+			// 단서
+			if (!LoadedGame->AcquireClueMap.IsEmpty())
 			{
-				TMap<FName, bool>& SavedClueStates = LoadedGame->ClueStates;
-
-				for (const TPair<FName, bool>& Pair : SavedClueStates)
-				{
-					FClueData* Row = GameInstance->DT_Clue->FindRow<FClueData>(Pair.Key, "");
-					if (Row)
-					{
-						// 상태 복원
-						Row->Had = Pair.Value;
-					}
-				}
-
-				UE_LOG(LogTemp, Warning, TEXT("ClueStates 로드 완료"));
+				GameInstance->ClueMap = LoadedGame->AcquireClueMap;
 			}
 		
 

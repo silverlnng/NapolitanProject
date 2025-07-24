@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "DetectiveMapGameModeBase.h"
 #include "Engine/GameInstance.h"
-#include "NapolitanProject/YJ/Save/TestSaveGame.h"
 #include "MyTestGameInstance.generated.h"
 
 /**
@@ -105,6 +104,18 @@ struct FClueData : public FTableRowBase
 };
 
 USTRUCT(BlueprintType)
+struct FPictureLabelData : public FTableRowBase
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString Title="";
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
+	FString Description="";
+};
+
+USTRUCT(BlueprintType)
 struct FQuestData : public FTableRowBase
 {
 	GENERATED_BODY()
@@ -116,16 +127,13 @@ struct FQuestData : public FTableRowBase
 	FString Who="";
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	int32 State=-1;
-
+	int32 NPCID=-1;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	bool Doing=false;
+	int32 State=-1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	bool Done=false;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
-	int32 QuestID=-1;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyData")
 	FString Kor_Content="";
@@ -163,7 +171,22 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	TArray<FName> ClueDataRowNames;
 	UPROPERTY()
-	TMap<int32,FClueData> ClueMap;
+	TMap<int32,FClueData> ClueMap; // 런타임용 동적 데이터 (상태 저장, 수정 가능)
+	
+	///////////// 그림 라벨 ////////////////////////	
+	UPROPERTY(VisibleAnywhere)
+	UDataTable* DT_PictureLabel;
+	
+	///////////// 퀘스트 데이터 ////////////////////////	
+	UPROPERTY(VisibleAnywhere)
+	UDataTable* DT_Quest;
+
+	UPROPERTY(VisibleAnywhere)
+	TArray<FName> QuestDataRowNames;
+
+	
+	UPROPERTY()
+	TMap<FName,FQuestData> QuestMap; // 런타임용 동적 데이터 (상태 저장, 수정 가능)
 	
 	///////////////////CSV Read 하기
 	TMap<int32,FNPCResult> NPCResultMap;

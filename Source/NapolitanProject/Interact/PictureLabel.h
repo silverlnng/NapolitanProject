@@ -5,26 +5,24 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "NapolitanProject/Interface/InteractInterface.h"
-#include "ClueActor.generated.h"
-
-
+#include "PictureLabel.generated.h"
 
 UCLASS()
-class NAPOLITANPROJECT_API AClueActor : public AActor,public IInteractInterface
+class NAPOLITANPROJECT_API APictureLabel : public AActor,public IInteractInterface
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AClueActor();
+	APictureLabel();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-
-
+	
+	
 	class ATestCharacter* MainCharacter;
 	class ATestPlayerController* TestPC;
 	class APlayerHUD* PlayerHUD;
@@ -43,16 +41,12 @@ public:
 	class UBoxComponent* BoxComp;
 	
 	UPROPERTY(EditDefaultsOnly)
-	int32 Clue_ID;
+	int32 PictureLabel_ID;
 
 	UPROPERTY(EditDefaultsOnly)
 	class UMaterialInterface* M_Overlay;
 	
-    // 캐릭터가 상호작용 눌렀을때 실행시킬 함수
+	// 캐릭터가 상호작용 눌렀을때 실행시킬 함수
 	virtual void IInteract() override;
 	void LookAt();
-	
-	inline static int32 ClueActorCount=0;
 };
-
-

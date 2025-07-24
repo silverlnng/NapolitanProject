@@ -3,7 +3,7 @@
 
 #include "DocentDetectStartCommand.h"
 
-#include "DocentV2.h"
+#include "../DocentV2.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
 DocentDetectStartCommand::DocentDetectStartCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,UWorld* InWorld)

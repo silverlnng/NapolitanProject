@@ -67,8 +67,7 @@ void AItemHeadActor::CleanerNextState()
 	if (NPC_Cleaner)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("NPC_Cleaner next state"));
-		NPC_Cleaner->State=2;
-
+		NPC_Cleaner->State=3;
 		// NPC_Cleaner가 다음 스테이트로 넘어간걸 게임저장을 해야함 
 	}
 }

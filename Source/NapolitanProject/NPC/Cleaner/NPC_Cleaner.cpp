@@ -5,17 +5,10 @@
 
 #include "AIController.h"
 #include "NPCCleanerAnim.h"
-#include "Components/CapsuleComponent.h"
-#include "Evaluation/MovieSceneTimeWarping.h"
 #include "Kismet/GameplayStatics.h"
-#include "NapolitanProject/NapolitanProject.h"
-#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
-#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
-#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
-#include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
+
 
 // Sets default values
 ANPC_Cleaner::ANPC_Cleaner()
@@ -148,15 +141,9 @@ int32 ANPC_Cleaner::GetNPCID()
 int32 ANPC_Cleaner::GetState()
 {
 	// gi 의 ClearedNPC에서 경비원을 클리어했나 확인하기 
-	if (!(SaveGI->ClearedNPC.Contains(4)))
+	if (SaveGI->ClearedNPC.Contains(4))
 	{
-		//클리어 못함
-		State =1;
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "State =1");
-	}
-	else // 클리어 했으면 
-	{
-		State =2;
+		State =3;
 	}
 	
 	return State;
@@ -356,7 +343,7 @@ void ANPC_Cleaner::ResultEvent(int32 result)
 	//이거 자체가 일단 호출되면 캐릭터의 움직임을 멈춤 상태로
 	SetState(CleanerState::Stop);
 	
-	if (2==State)
+	if (3==State)
 	{
 		if (0==result)
 		{

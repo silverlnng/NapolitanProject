@@ -470,7 +470,7 @@ void ADocentV2::DetachDestroy()
 		{
 			SoundControlActor->BGSoundChange(SoundControlActor->LobbyRoom);
 		}
-	},6.0f,false);
+	},2.0f,false);
 }
 
 void ADocentV2::DocentLightOn()

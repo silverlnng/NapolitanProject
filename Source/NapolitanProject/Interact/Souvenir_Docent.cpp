@@ -41,6 +41,7 @@ void ASouvenir_Docent::OnPickup()
 		if (TestPC)
 		{
 			MainCharacter->SetPlayerState(EPlayerState::UI);
+			MainCharacter->b_IA_Note_Allowed=true;
 			TestPC->curNPC=Docent;
 			FString EventKey=TEXT("DocentNoteUI");
 			TestPC->EventComponent->StartEvent_(EventKey);

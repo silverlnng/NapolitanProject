@@ -4,6 +4,7 @@
 #include "EventComponent.h"
 
 
+#include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
 
 #include "TestCharacter.h"
@@ -17,10 +18,10 @@
 #include "NapolitanProject/NPC/Cleaner/Command/CleanerQuestStartCommand.h"
 #include "NapolitanProject/NPC/Curator/Command/CuratorCompletedCommand.h"
 #include "NapolitanProject/NPC/Curator/Command/CuratorLightEffectCommand.h"
-#include "NapolitanProject/NPC/Docent/DocentCloseUpCommand.h"
-#include "NapolitanProject/NPC/Docent/DocentDetectStartCommand.h"
-#include "NapolitanProject/NPC/Docent/DocentEndCommand.h"
-#include "NapolitanProject/NPC/Docent/DocentNoteUICommand.h"
+#include "NapolitanProject/NPC/Docent/Command/DocentCloseUpCommand.h"
+#include "NapolitanProject/NPC/Docent/Command/DocentDetectStartCommand.h"
+#include "NapolitanProject/NPC/Docent/Command/DocentEndCommand.h"
+#include "NapolitanProject/NPC/Docent/Command/DocentNoteUICommand.h"
 #include "NapolitanProject/NPC/LeeSeo/Command/LeeSeoFirstUICommand.h"
 #include "NapolitanProject/NPC/LeeSeo/Command/LeeSeoSecondUICommand.h"
 #include "NapolitanProject/NPC/Security/SecurityCompletedCommand.h"
@@ -46,6 +47,10 @@ void UEventComponent::BeginPlay()
 	MainCharacter=Cast<ATestCharacter>(TestPC->GetPawn());
 	PlayerHUD=TestPC->GetHUD<APlayerHUD>();
 	
+	if (TestPC&&TestPC->GI)
+	{
+		GI =TestPC->GI;
+	}
 	// 6 : AChaseStatue (큐레이터)
 	// 8 : 나비
 	// 1 : 김영수
@@ -105,7 +110,7 @@ void UEventComponent::CommandAdd()
 
 	CommandMap.Add(
 		"CleanerQuestStart" ,
-		MakeShared<CleanerQuestStartCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
+		MakeShared<CleanerQuestStartCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld(),GI));
 	CommandMap.Add(
 		"CleanerQuestCompleted" ,
 		MakeShared<CleanerQuestCompletedCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));

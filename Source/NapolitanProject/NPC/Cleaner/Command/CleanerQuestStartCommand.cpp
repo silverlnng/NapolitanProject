@@ -4,6 +4,7 @@
 #include "CleanerQuestStartCommand.h"
 
 #include "EngineUtils.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
@@ -13,12 +14,13 @@
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NPCInfoWidget.h"
 
-CleanerQuestStartCommand::CleanerQuestStartCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld)
+CleanerQuestStartCommand::CleanerQuestStartCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld,UMyTestGameInstance* InGI)
 {
 	PC=INPC;
 	MainCharacter=INMainCharacter;
 	PlayerHUD=INPlayerHUD;
 	World=InWorld;
+	GI=InGI;
 }
 
 CleanerQuestStartCommand::~CleanerQuestStartCommand()
@@ -28,6 +30,12 @@ CleanerQuestStartCommand::~CleanerQuestStartCommand()
 void CleanerQuestStartCommand::Execute()
 {
 	// 대화 창 닫고
+	ANPC_Cleaner* NPC_Cleaner= Cast<ANPC_Cleaner>(PC->curNPC);
+	if (NPC_Cleaner)
+	{
+		NPC_Cleaner->State=2; 
+	}
+	
 	PC->StartEndNPCDialougue(false);
 
 	MainCharacter->SetPlayerState(EPlayerState::UI);
@@ -58,8 +66,16 @@ void CleanerQuestStartCommand::Execute()
 
 	World->GetTimerManager().SetTimer(UITimer3,[this]()
 	{
-		FString QuestText =FString(TEXT("머리를 찾아주기"));
-		PlayerHUD->InteractUI->AddQuestSlot(2,QuestText);
+		
+		//FString QuestText =FString(TEXT("머리를 찾아주기"));
+		
+		FQuestData* QuestData = GI->DT_Quest->FindRow<FQuestData>(FName(TEXT("CleanerQuestStart")) , TEXT(""));
+		if (QuestData)
+		{
+			QuestData->Done=true;
+			FString QuestText =QuestData->Kor_Content;
+			PlayerHUD->InteractUI->AddQuestSlot(2,QuestText);
+		}
 	},8.0f,false);
 
 	FTimerHandle Timer4;
