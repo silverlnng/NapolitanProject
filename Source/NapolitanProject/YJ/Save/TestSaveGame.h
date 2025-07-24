@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/SaveGame.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "TestSaveGame.generated.h"
 
 /**
@@ -36,9 +37,6 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "SaveData") // 저장을 한 장소  
 	FString SaveLocation;
 	
-	// 아이템 획득,단서 획득 , npc 들간의 관계성 ,클리어 여부
-	UPROPERTY(VisibleAnywhere, Category = "SaveData")
-	TMap<FName,bool> ClueStates;
 
 	// npc id 와 state를 저장
 	UPROPERTY(BlueprintReadWrite)
@@ -58,6 +56,10 @@ public:
 
 	UPROPERTY()
 	TArray<TSubclassOf<class AItemActor>> SavedItems;
+	
+	// 그동안 모은 단서
+	UPROPERTY()
+	TMap<int32,FClueData> AcquireClueMap;
 
 	UPROPERTY()
 	TArray<TSoftObjectPtr<UWorld>> SubLevelArray;

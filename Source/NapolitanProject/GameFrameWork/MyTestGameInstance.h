@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "DetectiveMapGameModeBase.h"
 #include "Engine/GameInstance.h"
-#include "NapolitanProject/YJ/Save/TestSaveGame.h"
 #include "MyTestGameInstance.generated.h"
 
 /**
@@ -172,7 +171,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	TArray<FName> ClueDataRowNames;
 	UPROPERTY()
-	TMap<int32,FClueData> ClueMap;
+	TMap<int32,FClueData> ClueMap; // 런타임용 동적 데이터 (상태 저장, 수정 가능)
 	
 	///////////// 그림 라벨 ////////////////////////	
 	UPROPERTY(VisibleAnywhere)
@@ -184,8 +183,10 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<FName> QuestDataRowNames;
+
+	
 	UPROPERTY()
-	TMap<FName,FQuestData> QuestMap;
+	TMap<FName,FQuestData> QuestMap; // 런타임용 동적 데이터 (상태 저장, 수정 가능)
 	
 	///////////////////CSV Read 하기
 	TMap<int32,FNPCResult> NPCResultMap;

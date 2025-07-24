@@ -45,8 +45,6 @@ void AClueActor::BeginPlay()
 		PlayerHUD =TestPC->GetHUD<APlayerHUD>();
 	}
 	GI = GetGameInstance<UMyTestGameInstance>();
-
-	ClueDataRowNames=GI->DT_Clue->GetRowNames();
 	
 	if(M_Overlay)
 	{
@@ -66,42 +64,25 @@ void AClueActor::LookAt()
 {
 	
 	MainCharacter->SetPlayerState(EPlayerState::UI);
-	FName Clue_FName = FName(*FString::FromInt(Clue_ID));
-	FClueData* ClueData= GI->DT_Clue->FindRow<FClueData>(Clue_FName , TEXT(""));
-	if (!ClueData)
+	
+	if (!GI->ClueMap.Contains(Clue_ID))
 	{
-		// ClueData에 없으면 의뢰서. 의뢰서 ui 나오도록 하기
-		if (RequestLetterFactory)
-		{
-			RequestLetterUI =CreateWidget<URequestLetter>(GetWorld(),RequestLetterFactory);
-			if (RequestLetterUI)
-			{
-				RequestLetterUI->AddToViewport(2);
-				MainCharacter->SetPlayerState(EPlayerState::UI);
-			}
-			
-		}
-		
 		UE_LOG(LogTemp,Warning,TEXT("ClueData null"))
 		return;
 	}
-	
-
-	
-
-	
+	FClueData ClueData= GI->ClueMap[Clue_ID];
 	
 	// tarray는 0부터 시작
 	PlayerHUD->NoteUI->WBP_ClueInfo->ClueSlots[Clue_ID-1]->SetWidgetSwitcher(1);
 	
-	FString ClueContent =ClueData->Content;
+	FString ClueContent =ClueData.Content;
 	// ClueData->Content 를 전달
 
 	//방어코드
 	
 	PlayerHUD->InteractUI->SetRichText_Clue(*ClueContent);
 	
-	UTexture2D* ClueImage = ClueData->ClueImage;
+	UTexture2D* ClueImage = ClueData.ClueImage;
 	if (ClueImage)
 	{
 		PlayerHUD->InteractUI->SetImgClueContent(ClueImage);
@@ -120,13 +101,12 @@ void AClueActor::LookAt()
 
 
 	//데이터 테이블에 had으로 표시
-
 	UE_LOG(LogTemp, Warning, TEXT("ClueActorCount: %d%s"),ClueActorCount,*CALLINFO);
 	
-	if (ClueData->Had){return;}
+	if (ClueData.Had){return;}
 	else
 	{
-		ClueData->Had=true;
+		ClueData.Had=true;
 	
 		ClueActorCount++;
 

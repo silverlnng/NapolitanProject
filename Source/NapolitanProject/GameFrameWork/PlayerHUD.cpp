@@ -141,26 +141,10 @@ void APlayerHUD::BeginPlay()
 			 newSlot->Clue_ID=ClueData->ClueID;
 			
 			UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*ClueData->Name);
-			 if (ClueData->Had)
-			 {
-				 // 있으면
-			 	newSlot->SetWidgetSwitcher(1);
-			 	//newSlot->Btn_ClueSlot->SetIsEnabled(true);
-			 	//newSlot->WidgetSwitcher->SetActiveWidgetIndex(1);
-			 }
-			 else
-			 {
-			 	// 없으면
-			 	newSlot->WidgetSwitcher->SetActiveWidgetIndex(0);
-			 }
-			
 		}
-
-		// GI 의 NPCEventManage 받아서 로드하고 업데이트 하는 함수 
-		UpdateNPCInfoWidget();
-		// 진행하고 있던 퀘스트 목록을 받아서 로드하고 업데이트하기 
-		InteractUI->LoadUpdateQuestSlot();
 	}
+	
+	
 	
 	for (TActorIterator<APostProcessVolume> It(GetWorld(), APostProcessVolume::StaticClass()); It; ++It)
 	{
@@ -196,6 +180,14 @@ void APlayerHUD::BeginPlay()
 
 	// 레벨로드시 비네트 효과
 	PlayLevelLoadVignetteEffect();
+
+
+	// 로드게임 플레이시 진행할 함수
+	// GI 의 NPCEventManage 받아서 로드하고 업데이트 하는 함수 
+	UpdateNPCInfoWidget();
+	// 진행하고 있던 퀘스트 목록을 받아서 로드하고 업데이트하기 
+	InteractUI->LoadUpdateQuestSlot();
+	UpdateClueSlotWidget();
 }
 
 void APlayerHUD::OnClickBtn_NoteClose()
@@ -282,10 +274,10 @@ void APlayerHUD::UpdateClueSlotWidget()
 
 	for (int i = 0; i < GI->ClueDataRowNames.Num(); i++)
 	{
-		FClueData* ClueData =GI-> DT_Clue->FindRow<FClueData>(GI->ClueDataRowNames[i],TEXT(""));
-		if (ClueData->Had)
+		FClueData ClueData =GI-> ClueMap[i];
+		if (ClueData.Had)
 		{
-			UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*ClueData->Name);
+			UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*ClueData.Name);
 			UE_LOG(LogTemp,Warning,TEXT("%s,%d"),*CALLINFO,i);
 			NoteUI->WBP_ClueInfo->ClueSlots[i]->SetWidgetSwitcher(1);
 			NoteUI->WBP_ClueInfo->ClueSlots[i]->Btn_ClueSlot->SetIsEnabled(true);
@@ -316,6 +308,7 @@ void APlayerHUD::UpdateNPCInfoWidget()
 
 	// npc의 state는 어디서 저장 ?? 
 }
+
 
 void APlayerHUD::PlayDeadVignetteEffect()
 {

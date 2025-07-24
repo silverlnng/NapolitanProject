@@ -170,6 +170,5 @@ public:
 
 	UFUNCTION()
 	void UpdateNPCInfoWidget();
-
-
+	
 };

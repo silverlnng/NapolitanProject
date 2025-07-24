@@ -84,6 +84,7 @@ void UMyTestGameInstance::Init()
 			FClueData* ClueData = DT_Clue->FindRow<FClueData>(ClueDataRowNames[i] , TEXT(""));
 			if (ClueData)
 			{
+				ClueMap.Add(i,*ClueData);
 				//단서 획득 초기화 => 게임로드안했을때
 				//ClueData->Had=false;
 				
