@@ -149,6 +149,9 @@ class NAPOLITANPROJECT_API UMyTestGameInstance : public UGameInstance
 public:
 	virtual void Init() override;
 
+	UPROPERTY()
+	class USaveGISubsystem* SaveGISubsystem;
+	
 	//////////// 소모성 아이템 데이터 ///////////////////////	
 	UPROPERTY(VisibleAnywhere)
 	UDataTable* DT_itemData;

@@ -104,17 +104,16 @@ void AClueActor::LookAt()
 	UE_LOG(LogTemp, Warning, TEXT("ClueActorCount: %d%s"),ClueActorCount,*CALLINFO);
 	
 	if (ClueData.Had){return;}
-	else
-	{
-		ClueData.Had=true;
-	
-		ClueActorCount++;
 
-		if (ClueActorCount==5)
-		{
-			GI->UnlockAchievement(TEXT("ClueCollect_ACH"));
-		}
+	GI->ClueMap[Clue_ID].Had=true;
+	
+	ClueActorCount++;
+
+	if (ClueActorCount == 5)
+	{
+		GI->UnlockAchievement(TEXT("ClueCollect_ACH"));
 	}
+	
 	
 	//여기서 10번째 면 스팀도전과제 나오도록 하기 
 	

@@ -20,7 +20,7 @@ void USaveGISubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	GameSaveController = NewObject<UGameSaveController>(this);
 	int32 MaxSlots = 3; // 예: 최대 슬롯 수
 	SaveSlotInfos = GameSaveController->LoadAllSlotInfo(MaxSlots);
-	// 로드한 정보로 ULoadScreenWidget 초기화	
+	// 로드한 정보로 ULoadScreenWidget 초기화
 }
 
 void USaveGISubsystem::SaveAttachedItems()

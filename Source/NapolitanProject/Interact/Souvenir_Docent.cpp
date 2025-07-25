@@ -7,6 +7,7 @@
 #include "Components/BoxComponent.h"
 #include "NapolitanProject/GameFrameWork/EventComponent.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/NPC/Docent/DocentV2.h"
@@ -53,7 +54,7 @@ void ASouvenir_Docent::OnPickup()
 	{
 		Docent->PickUPNote();
 	}
-
+	SaveGI->ClearedNPC.Add(2);
 	// 독백박스 가 사라지도록 만들기
 	if (MonologueBox)
 	{

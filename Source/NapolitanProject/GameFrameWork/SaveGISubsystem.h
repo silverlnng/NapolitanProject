@@ -49,15 +49,7 @@ public:
 
 	UPROPERTY()
 	FString CatchSpiderNum=TEXT("0");
-	///////////// 추리 단서 ////////////////////////	
-	UPROPERTY(VisibleAnywhere)
-	UDataTable* DT_Clue;
-
-	UPROPERTY(VisibleAnywhere)
-	TArray<FName> ClueDataRowNames;
-	UPROPERTY()
-	TMap<int32,FClueData> ClueMap;
-
+	
 	//////////// 게임 저장 /////////////////////
 
 	UPROPERTY()

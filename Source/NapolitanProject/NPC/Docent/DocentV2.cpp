@@ -13,6 +13,7 @@
 #include "Components/SpotLightComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
@@ -385,6 +386,7 @@ void ADocentV2::PickUPNote()
 	// 도슨트의 카메라는 제거하기
 	this->CameraComp->SetActive(false);
 	this->MonsterCamera->SetActive(false);
+	
 	State=2;
 	// 도슨트가 그림속을 향해 사라지도록 만들기
 	// 무조건 그림앞을 향해 보고

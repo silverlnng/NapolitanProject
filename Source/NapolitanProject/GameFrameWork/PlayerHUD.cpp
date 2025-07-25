@@ -272,7 +272,7 @@ void APlayerHUD::UpdateClueSlotWidget()
 	UE_LOG(LogTemp, Warning, TEXT("UpdateClueSlotWidget"));
 	TArray<FName> RowNames = GI->DT_Clue->GetRowNames();
 
-	for (int i = 0; i < GI->ClueDataRowNames.Num(); i++)
+	for (int i = 0; i < RowNames.Num(); i++)
 	{
 		FClueData ClueData =GI-> ClueMap[i];
 		if (ClueData.Had)

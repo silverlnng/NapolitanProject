@@ -3,9 +3,9 @@
 
 #include "MyTestGameInstance.h"
 
+#include "SaveGISubsystem.h"
 #include "Engine/AssetManager.h"
 #include "NapolitanProject/NapolitanProject.h"
-
 #include "Serialization/Csv/CsvParser.h"
 
 void UMyTestGameInstance::Init()
@@ -17,6 +17,7 @@ void UMyTestGameInstance::Init()
 	{
 		GEngine->bEnableOnScreenDebugMessages = false;
 	}*/
+	SaveGISubsystem=GetSubsystem<USaveGISubsystem>();
 	
 	DT_itemData = LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/DT/DT_Item.DT_Item'"));
 	
@@ -76,6 +77,7 @@ void UMyTestGameInstance::Init()
 
 	if (DT_Clue)
 	{
+		if (SaveGISubsystem->IsFromLoad) {return;}
 		//UE_LOG(LogTemp, Error, TEXT("%s DT_Clue 로드성공"),*CALLINFO);
 		ClueDataRowNames=DT_Clue->GetRowNames();
 
@@ -85,9 +87,6 @@ void UMyTestGameInstance::Init()
 			if (ClueData)
 			{
 				ClueMap.Add(i,*ClueData);
-				//단서 획득 초기화 => 게임로드안했을때
-				//ClueData->Had=false;
-				
 				// 로드 확인용
 				//FString cluerowname=ClueDataRowNames[i].ToString();
 				//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,*cluerowname);
