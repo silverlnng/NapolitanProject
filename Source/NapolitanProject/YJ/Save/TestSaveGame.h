@@ -55,7 +55,13 @@ public:
 	TSet<int32> AcquireSouvenir;
 
 	UPROPERTY()
+	TMap<int32,FItemData> SaveditemDataMap;
+	
+	UPROPERTY()
 	TArray<TSubclassOf<class AItemActor>> SavedItems;
+
+	UPROPERTY()
+	FString CatchSpiderNum=TEXT("0");
 	
 	// 그동안 모은 단서
 	UPROPERTY()

@@ -120,37 +120,25 @@ void AItemActor::OnInventorySlot()
 	// 인벤 효과 애니메이션 실행시키기 
 	PlayerHUD->InteractUI->PlayInvenUIEvent();
 	
+	int32 ItemRow =ItemID;
 	
-	
-	int32 ItemRow =ItemID+1;
-	
-	FString ItemIDstr=FString::FromInt(ItemRow);
-
-	
-	
-	//DT 작업하기
-	// 게임인스턴스의 데이터 테이블도 had로 변경시키면 기록될것
-	FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(FName(*ItemIDstr) , TEXT(""));
-	if (ItemData)
+	if (GI->itemDataMap.Contains(ItemRow))
 	{
-		ItemData->Had=true;
-		FString ItemName=ItemData->Name;
-		PlayerHUD->InteractUI->GetItemEvent(ItemName); // 나중에 아이템 이름으로 바꾸기 
+		FString ItemName=GI->itemDataMap[ItemRow].Name;
+		PlayerHUD->InteractUI->GetItemEvent(ItemName);
+		GI->itemDataMap[ItemRow].Had=true;
 	}
 }
 
 void AItemActor::Remove()
 {
-	int32 ItemRow =ItemID+1;
+	int32 ItemRow =ItemID;
 	
-	FString ItemIDstr=FString::FromInt(ItemRow);
-	//DT 작업하기 
-	FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(FName(*ItemIDstr) , TEXT(""));
-	if (ItemData)
+	if (GI->itemDataMap.Contains(ItemRow))
 	{
-		ItemData->Had=false;
+		GI->itemDataMap[ItemRow].Had=false;
 	}
-
+	
 	if (SaveGI->SavedItems.Contains(this->GetClass()))
 	{
 		SaveGI->SavedItems.Remove(this->GetClass());

@@ -57,6 +57,7 @@ void USaveGISubsystem::RestoreAttachedItems()
 				if (NewItem->ItemID==3) // 거미일때만
 				{
 					PlayerHUD->InventoryUI->InvenSlots[3]->Set_TextNum(CatchSpiderNum);
+					UE_LOG(LogTemp,Warning,TEXT("%sCatchSpider :%s"),*CALLINFO,*CatchSpiderNum);
 				}
 				// 이미 빵그림을 가졌으면 월드에 있는 빵은 hidden 처리를 하기  
 			}

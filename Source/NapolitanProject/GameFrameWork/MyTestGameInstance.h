@@ -159,7 +159,7 @@ public:
 	TArray<FName> itemDataRowNames;
 
 	UPROPERTY(VisibleAnywhere)
-	TMap<int32,bool> itemDataHadMap;
+	TMap<int32,FItemData> itemDataMap;
 	
 	//////////// 유물 데이터 ///////////////////////	
 	UPROPERTY(VisibleAnywhere)

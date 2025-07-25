@@ -90,9 +90,13 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 		SaveGameInstance->SavedItems = SaveGISubsystem->SavedItems;
 	}
 
+
+	SaveGameInstance->SaveditemDataMap=GameInstance->itemDataMap;
+	
+	SaveGameInstance->CatchSpiderNum=SaveGISubsystem->CatchSpiderNum;
+	UE_LOG(LogTemp,Warning,TEXT("%s SaveGI CatchSpider :%s"),*CALLINFO,*SaveGISubsystem->CatchSpiderNum);
+	
 	SaveGISubsystem->IsFromLoad = false;
-
-
 	// 설정값을 저장하기
 	SaveGameInstance->TotalSoundMix = SaveGISubsystem->TotalSoundMix;
 	SaveGameInstance->BGSoundMix = SaveGISubsystem->BGSoundMix;
@@ -197,10 +201,13 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 			{
 				SaveGISubsystem->SavedItems=LoadedGame->SavedItems;
 			}
+
+			GameInstance->itemDataMap=LoadedGame->SaveditemDataMap;
 			
+			SaveGISubsystem->CatchSpiderNum=LoadedGame->CatchSpiderNum;
+			UE_LOG(LogTemp,Warning,TEXT("%sLoadedGame CatchSpider :%s"),*CALLINFO,*LoadedGame->CatchSpiderNum);
+			UE_LOG(LogTemp,Warning,TEXT("%sSaveGI CatchSpider :%s"),*CALLINFO,*SaveGISubsystem->CatchSpiderNum);
 		}
-
-
 		// 설정값을 로드하기 
 		SaveGISubsystem->TotalSoundMix=LoadedGame->TotalSoundMix;
 		SaveGISubsystem->BGSoundMix=LoadedGame->BGSoundMix;

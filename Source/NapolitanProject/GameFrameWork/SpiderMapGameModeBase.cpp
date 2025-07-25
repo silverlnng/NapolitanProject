@@ -13,6 +13,7 @@
 #include "Components/Border.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/Interact/CatchSpider.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interact/ItemActor.h"
@@ -76,7 +77,7 @@ void ASpiderMapGameModeBase::BeginPlay()
 	PlayerHUD =PC->GetHUD<APlayerHUD>();
 	
 	
-	MainCharacter->GetMesh()->SetWorldScale3D(FVector3d(1,1,1));
+	//MainCharacter->GetMesh()->SetWorldScale3D(FVector3d(1,1,1));
 		
 	for (TActorIterator<AAttackSpiderV2> It(GetWorld(), AAttackSpiderV2::StaticClass()); It; ++It)
 	{
@@ -121,17 +122,18 @@ void ASpiderMapGameModeBase::BeginPlay()
 	
 	GI =GetGameInstance<UMyTestGameInstance>();
 	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
-	if (GI&&SaveGI)
+	if (GI&&SaveGI->IsFromLoad)
 	{
 		// 시간 지연을 주기
-
 		FTimerHandle GITimer;
-
 		GetWorld()->GetTimerManager().SetTimer(GITimer,[this]()
 		{
+			UE_LOG(LogTemp,Warning,TEXT("%sLoadedGame CatchSpider :%s"),*CALLINFO,*SaveGI->CatchSpiderNum);
+			
 			SaveGI->RestoreAttachedItems();
-			CatchSpiderCount=FCString::Atoi(* SaveGI->CatchSpiderNum);
-		},2.0f,false);
+			
+			CatchSpiderCount=FCString::Atoi(*SaveGI->CatchSpiderNum);
+		},1.0f,false);
 		//GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
 		if (!SaveGI->ClearedNPC.IsEmpty())
 		{
@@ -148,16 +150,7 @@ void ASpiderMapGameModeBase::BeginPlay()
 				}
 			}
 		}
-
-		FTimerHandle RestoreAttachedItemTimer;
-		GetWorld()->GetTimerManager().SetTimer(RestoreAttachedItemTimer , [this]()
-		{
-			SaveGI->RestoreAttachedItems();
-			// 아이템을 인벤토리에  복구하는 작업
-		} , 1.0f , false);
-
-
-
+		
 		LoadSettingValue();
 	}
 	
@@ -186,7 +179,9 @@ void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)
 			CatchSpider->Die();
 			// 갯수도 누적해서 표시.
 			CatchSpiderCount++;
-		
+			// 잡을때 마다 늘어난 숫자를 저장시키기 
+			SaveGI->CatchSpiderNum=FString::FromInt(CatchSpiderCount);
+			
 			FString CatchSpiderNum=FString::FromInt(CatchSpiderCount);
 
 			if (CatchSpiderCount==1)
@@ -216,17 +211,13 @@ void ASpiderMapGameModeBase::Interaction_OnSpiderMap(AActor* Interact)
 				// 인벤 효과 애니메이션 실행시키기 
 				PlayerHUD->InteractUI->PlayInvenUIEvent();
 				
-				int32 ItemRow =SpiderItemID+1;
-	
-				FString ItemIDstr=FString::FromInt(ItemRow);
-				//DT 작업하기
-				// 게임인스턴스의 데이터 테이블도 had로 변경시키면 기록될것
-				FItemData* ItemData = GI->DT_itemData->FindRow<FItemData>(FName(*ItemIDstr) , TEXT(""));
-				if (ItemData)
+				int32 ItemRow =SpiderItemID;
+				
+				if (GI->itemDataMap.Contains(ItemRow))
 				{
-					ItemData->Had=true;
-					FString ItemName=ItemData->Name;
-					PlayerHUD->InteractUI->GetItemEvent(ItemName); // 나중에 아이템 이름으로 바꾸기 
+					GI->itemDataMap[ItemRow].Had=true;
+					FString ItemName=GI->itemDataMap[ItemRow].Name;
+					PlayerHUD->InteractUI->GetItemEvent(ItemName); 
 				}
 				
 			}
@@ -269,7 +260,7 @@ void ASpiderMapGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	MainCharacter->OnEnablePlayerNoise.Clear();
 
 	// MainCharacter
-	SaveGI->CatchSpiderNum=FString::FromInt(CatchSpiderCount);
+	// SaveGI->CatchSpiderNum=FString::FromInt(CatchSpiderCount);
 	// 총 부착-해제시키기
 	Gun->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
 }

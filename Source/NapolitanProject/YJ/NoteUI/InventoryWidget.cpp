@@ -9,6 +9,7 @@
 #include "Components/UniformGridPanel.h"
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 
 void UInventoryWidget::NativeConstruct()
 {
@@ -33,7 +34,7 @@ void UInventoryWidget::NativeConstruct()
 		InvenSlots.Add(i,newSlot);
 	}
 	
-	// InvenSlot 들을 생성시키고 이미지들 할당
+	// InvenSlot 들을 생성시키고 이미지들 할당 (읽기 작업)
 	
 	if (GI)
 	{
@@ -50,15 +51,21 @@ void UInventoryWidget::NativeConstruct()
 					InvenSlots[i]->Mytexture2D=ItemData->thumnail;
 					InvenSlots[i]->ItemInfo=ItemData->ItemInfo;
 				}
-				
-				if (ItemData->Had)
-				{
-					UE_LOG(LogTemp, Error, TEXT("%s DT_Item Had"),*CALLINFO);
-					InvenSlots[i]->OnItemAcquired();
-				}
 			}
 		}
 	}
+
+	// 게임 로드 플레이 일때
+	/*if (GI->SaveGISubsystem->IsFromLoad)
+	{
+		for (int i = 0; i < GI->itemDataRowNames.Num(); i++)
+		{
+			if (GI->itemDataMap[i].Had)
+			{
+				InvenSlots[i]->OnItemAcquired();
+			}
+		}
+	}*/
 	
 }
 

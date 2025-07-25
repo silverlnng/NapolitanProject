@@ -25,7 +25,8 @@ void UMyTestGameInstance::Init()
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s DT_Item 로드성공"),*CALLINFO);
 		itemDataRowNames = DT_itemData->GetRowNames();
-
+		
+		if (SaveGISubsystem->IsFromLoad) {return;}
 		
 		for (int i = 0; i < itemDataRowNames.Num(); i++)
 		{
@@ -34,8 +35,8 @@ void UMyTestGameInstance::Init()
 			FItemData* ItemData = DT_itemData->FindRow<FItemData>(itemDataRowNames[i] , TEXT(""));
 			if (ItemData)
 			{
-				//유물획득 초기화 => 게임로드안했을때 . 게임저장시스템만들면 초기화 안해야함 
-				//ItemData->Had=false;
+				itemDataMap.Add(i,*ItemData);
+				// 로드 플레이가 아닐때 . 
 			}
 		}
 		
