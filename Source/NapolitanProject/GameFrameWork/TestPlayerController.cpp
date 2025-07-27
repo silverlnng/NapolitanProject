@@ -106,16 +106,19 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	//////////
 	
 	FName curNum_ = FName(FString::FromInt(curNum));
+	
 	if (!(GI->DT_SouvenirData)){return;}
+	
 	FSouvenirData* SouvenirData = GI->DT_SouvenirData->FindRow<FSouvenirData>(curNum_,TEXT(""));
+	
 	if (!SouvenirData){return;} // 방어코드
 
 	// SouvenirData->IsHad 값에 따라서 
-	if(!(SouvenirData->Had))
+	if(!(SaveGI->AcquireSouvenir.Contains(curNum))) //획득안한거 
 	{
 		SouvenirUI->Img_Souvenir_left->SetColorAndOpacity(FLinearColor(0.01,0.01,0.01,1));
 	}
-	else
+	else // 획득한거 
 	{
 		SouvenirUI->Img_Souvenir_left->SetColorAndOpacity(FLinearColor(1,1,1,1));
 	}
@@ -123,10 +126,11 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	SouvenirUI->Text_Souvenir_left->SetText( FText::FromString(SouvenirData->SouvenirInfo));
 
 	FName nextNum_ = FName(FString::FromInt(curNum+1));
+	
 	FSouvenirData* SouvenirDataNext = GI->DT_SouvenirData->FindRow<FSouvenirData>(nextNum_,TEXT(""));
 	if (!SouvenirDataNext){return;} // 방어코드
 
-	if(!SouvenirDataNext->Had)
+	if(!(SaveGI->AcquireSouvenir.Contains(curNum+1)))
 	{
 		SouvenirUI->Img_Souvenir_right->SetColorAndOpacity(FLinearColor(0.01,0.01,0.01,1));
 	}
@@ -137,8 +141,6 @@ void ATestPlayerController::SetSouvenirUICurNumber(int curNum)
 	
 	SouvenirUI->Img_Souvenir_right->SetBrushFromTexture(SouvenirDataNext->thumnail);
 	SouvenirUI->Text_Souvenir_right->SetText( FText::FromString(SouvenirDataNext->SouvenirInfo));
-	
-	
 }
 
 void ATestPlayerController::StartEndNPCDialougue(bool value)

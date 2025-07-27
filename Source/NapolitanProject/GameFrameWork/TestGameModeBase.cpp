@@ -12,7 +12,6 @@
 #include "Components/Border.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
-#include "NapolitanProject/Interact/Souvenir/Souvenir_Docent.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NapolitanProject/YJ/Save/TestSaveGame.h"
 
@@ -68,7 +67,6 @@ void ATestGameModeBase::BeginPlay()
 				{
 					NPCArray[key]->Destroy();
 				}
-				
 				if (2==key) // 도슨트 클리어 => 
 				{
 					MainCharacter->b_IA_Note_Allowed = true;
@@ -77,9 +75,6 @@ void ATestGameModeBase::BeginPlay()
 					{
 						PlayerHUD->InteractUI->Border_Note->SetVisibility(ESlateVisibility::Visible);
 					} , 1.5f , false);
-
-					// 노트,독백박스, 블럭박스 삭제하기
-					if (Souvenir_Docent){Souvenir_Docent->Destroy();}
 					
 				}
 			}
@@ -122,7 +117,6 @@ void ATestGameModeBase::BeginPlay()
 				MainCharacter->SetActorRotation(SaveGI->LoadedGame->PlayerRotation);
 			} , 1.0f , false);
 
-			
 			
 			FTimerHandle GITimer2;
 			GetWorld()->GetTimerManager().SetTimer(GITimer2 , [this]()

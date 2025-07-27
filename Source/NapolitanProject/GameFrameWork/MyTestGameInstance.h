@@ -167,6 +167,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	TArray<FName> SouvenirDataRowNames;
 
+	UPROPERTY(VisibleAnywhere)
+	TSet<int32> AcquiredSouvenir;
+
 	///////////// 추리 단서 ////////////////////////	
 	UPROPERTY(VisibleAnywhere)
 	UDataTable* DT_Clue;

@@ -78,14 +78,7 @@ void ASouvenirActor::OnPickup()
 	SaveGI->AcquireSouvenirNum=0;
 	
 	BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
-	FName SouvenirName_ = FName(*FString::FromInt(GetSouvenirID()));
-			
-	FSouvenirData* SouvenirData= GI->DT_SouvenirData->FindRow<FSouvenirData>(SouvenirName_ , TEXT(""));
-	if (SouvenirData)
-	{
-		SouvenirData->Had=true;
-	}
-
+	
 	if (GetSouvenirID()%2==0) // 짝수라면 
 	{
 		PlayerHUD->NoteUI->WBP_Souvenir->curPage=GetSouvenirID()-1;
@@ -124,7 +117,10 @@ void ASouvenirActor::OnPickup()
 			 GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, *temp);
 		}
 	}
-
+	
+	FName SouvenirName_ = FName(*FString::FromInt(GetSouvenirID()));
+			
+	FSouvenirData* SouvenirData= GI->DT_SouvenirData->FindRow<FSouvenirData>(SouvenirName_ , TEXT(""));
 	// GI->AcquireSouvenirNum 을 받아서 
 	PlayerHUD->NoteUI->WBP_EscapeRule->SetAcquireImage(SaveGI->AcquireSouvenirNum,SouvenirData->thumnail);
 	PlayerHUD->NoteUI->WBP_EscapeRule->SetKeyImage(SaveGI->AcquireSouvenirNum);

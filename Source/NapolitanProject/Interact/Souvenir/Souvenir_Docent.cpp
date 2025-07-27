@@ -16,7 +16,18 @@
 void ASouvenir_Docent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	FTimerHandle DelayTimer;
+	GetWorldTimerManager().SetTimer(DelayTimer,[this]()
+	{
+		if (SaveGI->IsFromLoad)
+		{
+			if (SaveGI->AcquireSouvenir.Contains(GetSouvenirID()))
+			{
+				Destroy();
+			}
+		}
+	},1.f,false);
 }
 
 int32 ASouvenir_Docent::GetSouvenirID()

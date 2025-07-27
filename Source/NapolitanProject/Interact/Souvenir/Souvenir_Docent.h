@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "SouvenirActor.h"
+#include "NapolitanProject/Interface/SaveAware.h"
 #include "Souvenir_Docent.generated.h"
 
 /**

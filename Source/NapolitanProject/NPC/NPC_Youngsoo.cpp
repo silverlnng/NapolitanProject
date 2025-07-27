@@ -15,6 +15,8 @@
 #include "MovieSceneSequencePlaybackSettings.h"
 #include <Runtime/LevelSequence/Public/LevelSequencePlayer.h>
 
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
+
 // Sets default values
 ANPC_Youngsoo::ANPC_Youngsoo()
 {
@@ -175,15 +177,8 @@ void ANPC_Youngsoo::ResultEvent(int32 result)
 					}, 17.f, false);
 				}
 			}, 8.0f, false);
-
 			
-			FName NPC_IDName = FName(*FString::FromInt(NPC_ID));
-			
-			FSouvenirData* SouvenirData= GI->DT_SouvenirData->FindRow<FSouvenirData>(NPC_IDName , TEXT(""));
-			if (SouvenirData)
-			{
-				SouvenirData->Had=true;
-			}
+			SaveGI->AcquireSouvenir.Add(NPC_ID);
 			
 			TestPC->SetSouvenirUICurNumber(NPC_ID);
 		}
