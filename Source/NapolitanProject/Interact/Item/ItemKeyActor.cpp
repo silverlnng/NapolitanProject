@@ -4,8 +4,8 @@
 #include "ItemKeyActor.h"
 
 #include "EngineUtils.h"
-#include "ExitDoor_First.h"
-#include "InteractWidget.h"
+#include "../ExitDoor_First.h"
+#include "../InteractWidget.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 
 void AItemKeyActor::BeginPlay()

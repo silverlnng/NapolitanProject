@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "NPCCharacter.h"
 #include "GameFramework/Character.h"
-#include "NapolitanProject/Interact/SouvenirActor.h"
+#include "NapolitanProject/Interact/Souvenir/SouvenirActor.h"
 #include "NPC_Youngsoo.generated.h"
 
 UCLASS()

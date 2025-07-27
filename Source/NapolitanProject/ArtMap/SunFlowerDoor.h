@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "NapolitanProject/Interact/LevelMoveDoor.h"
+#include "NapolitanProject/Interact/LevelMoveDoor/LevelMoveDoor.h"
 #include "SunFlowerDoor.generated.h"
 
 UCLASS()

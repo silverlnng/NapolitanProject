@@ -4,9 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "NPCCharacter.h"
-#include "GameFramework/Character.h"
-#include "NapolitanProject/Interact/ItemActor.h"
-#include "NapolitanProject/Interact/Souvenir_Dongjun.h"
+#include "NapolitanProject/Interact/Item/ItemActor.h"
+#include "NapolitanProject/Interact/Souvenir/Souvenir_Dongjun.h"
 #include "NPCDongjon.generated.h"
 
 UCLASS()

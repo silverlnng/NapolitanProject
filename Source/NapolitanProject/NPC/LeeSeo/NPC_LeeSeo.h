@@ -3,8 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "NapolitanProject/Interact/SouvenirActor.h"
+#include "NapolitanProject/Interact/Souvenir/SouvenirActor.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "NPC_LeeSeo.generated.h"
 

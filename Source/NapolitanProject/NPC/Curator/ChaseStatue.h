@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "NapolitanProject/Interact/SouvenirActor.h"
+#include "NapolitanProject/Interact/Souvenir/SouvenirActor.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
 #include "ChaseStatue.generated.h"
 

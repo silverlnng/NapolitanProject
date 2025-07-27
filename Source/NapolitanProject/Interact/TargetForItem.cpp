@@ -3,7 +3,7 @@
 
 #include "TargetForItem.h"
 
-#include "ItemActor.h"
+#include "Item/ItemActor.h"
 #include "Components/BoxComponent.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"

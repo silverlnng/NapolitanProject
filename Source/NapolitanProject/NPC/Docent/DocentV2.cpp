@@ -17,7 +17,7 @@
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
-#include "NapolitanProject/Interact/Souvenir_Docent.h"
+#include "NapolitanProject/Interact/Souvenir/Souvenir_Docent.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/YJ/SoundControlActor.h"
 

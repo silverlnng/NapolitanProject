@@ -2,15 +2,10 @@
 
 
 #include "NPCDongjon.h"
-
-#include "../GameFrameWork/TestPlayerController.h"
-#include "Components/CapsuleComponent.h"
-#include "Components/SlateWrapperTypes.h"
 #include "Kismet/GameplayStatics.h"
-#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
-#include "NapolitanProject/Interact/Souvenir_Dongjun.h"
-#include "NapolitanProject/Interact/SunFlowerKey.h"
-#include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
+#include "NapolitanProject/Interact/Souvenir/Souvenir_Dongjun.h"
+#include "NapolitanProject/Interact/Item/SunFlowerKey.h"
+
 
 // Sets default values
 ANPCDongjon::ANPCDongjon()

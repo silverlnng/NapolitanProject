@@ -9,7 +9,7 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NapolitanProject.h"
-#include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/Interact/Item/ItemActor.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 #include "NapolitanProject/YJ/Save/GameSaveController.h"
 

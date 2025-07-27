@@ -3,11 +3,10 @@
 
 #include "ItemActor.h"
 
-#include "InteractWidget.h"
+#include "../InteractWidget.h"
 #include "../YJ/NoteUI/InventoryWidget.h"
 #include "../YJ/NoteUI/InvenSlotWidget.h"
 #include "../GameFrameWork/PlayerHUD.h"
-#include "../YJ/NoteUI/NoteWidget.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"

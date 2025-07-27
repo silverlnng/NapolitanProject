@@ -8,7 +8,6 @@
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
-#include "NapolitanProject/Interact/ItemActor.h"
 
 void UInvenSlotWidget::NativeConstruct()
 {

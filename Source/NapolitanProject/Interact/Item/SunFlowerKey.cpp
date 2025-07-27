@@ -3,7 +3,7 @@
 
 #include "SunFlowerKey.h"
 
-#include "AttachArt.h"
+#include "../AttachArt.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"

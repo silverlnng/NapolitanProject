@@ -3,7 +3,7 @@
 
 #include "Souvenir_Docent.h"
 
-#include "InteractWidget.h"
+#include "../InteractWidget.h"
 #include "Components/BoxComponent.h"
 #include "NapolitanProject/GameFrameWork/EventComponent.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"

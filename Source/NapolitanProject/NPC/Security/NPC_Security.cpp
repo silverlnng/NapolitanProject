@@ -4,7 +4,7 @@
 #include "NPC_Security.h"
 
 #include "AIController.h"
-#include "../Interact/ControllableLightActor.h"
+#include "../Interact/SecondFloor/ControllableLightActor.h"
 #include "EngineUtils.h"
 #include "NavigationSystem.h"
 #include "../Cleaner/NPC_Cleaner.h"
@@ -19,7 +19,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/Interact/Item/ItemActor.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "Perception/PawnSensingComponent.h"
 

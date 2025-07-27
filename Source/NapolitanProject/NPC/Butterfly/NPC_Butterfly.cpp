@@ -2,9 +2,7 @@
 
 
 #include "NPC_Butterfly.h"
-
-#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/Interact/Item/ItemActor.h"
 #include "NapolitanProject/Interact/TargetForItem_BurgerPlate.h"
 
 void ANPC_Butterfly::BeginPlay()

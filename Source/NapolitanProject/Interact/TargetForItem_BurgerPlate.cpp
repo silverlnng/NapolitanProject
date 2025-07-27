@@ -4,7 +4,7 @@
 #include "TargetForItem_BurgerPlate.h"
 
 #include "EngineUtils.h"
-#include "ItemActor.h"
+#include "Item/ItemActor.h"
 #include "NiagaraComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/SlateWrapperTypes.h"

@@ -2,12 +2,8 @@
 
 
 #include "SouvenirActor.h"
-
-#include "EngineUtils.h"
-#include "ExitDoor_LeeSeo.h"
-#include "InteractWidget.h"
+#include "../InteractWidget.h"
 #include "Components/BoxComponent.h"
-#include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"

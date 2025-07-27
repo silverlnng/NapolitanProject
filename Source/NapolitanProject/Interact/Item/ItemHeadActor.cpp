@@ -4,17 +4,14 @@
 #include "ItemHeadActor.h"
 
 #include "EngineUtils.h"
-#include "InteractWidget.h"
+#include "../InteractWidget.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
-#include "Components/SlateWrapperTypes.h"
-#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/NPC/Cleaner/NPC_Cleaner.h"
-#include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
-#include "NapolitanProject/YJ/NoteUI/NPCInfoWidget.h"
+
 
 void AItemHeadActor::BeginPlay()
 {

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/Interact/Item/ItemActor.h"
 #include "SunFlowerKeyV2.generated.h"
 
 /**

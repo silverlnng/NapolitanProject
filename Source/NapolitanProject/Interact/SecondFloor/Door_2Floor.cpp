@@ -15,6 +15,7 @@
 void ADoor_2Floor::BeginPlay()
 {
 	Super::BeginPlay();
+
 	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ADoor_2Floor::BeginOverlap);
 	
 	//GI=GetGameInstance<UMyTestGameInstance>();

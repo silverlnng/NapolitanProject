@@ -3,10 +3,9 @@
 
 #include "Sculpture.h"
 
-#include "ClueActor.h"
+#include "../ClueActor.h"
 #include "NiagaraComponent.h"
 #include "EngineUtils.h"
-#include "ItemActor.h"
 #include "PieceActor.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"

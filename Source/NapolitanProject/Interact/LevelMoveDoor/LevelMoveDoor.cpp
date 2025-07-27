@@ -2,7 +2,6 @@
 
 
 #include "LevelMoveDoor.h"
-
 #include "Components/BoxComponent.h"
 #include "Components/SlateWrapperTypes.h"
 #include "Kismet/GameplayStatics.h"

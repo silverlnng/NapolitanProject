@@ -11,9 +11,7 @@
 #include "../GameFrameWork/TestCharacter.h"
 #include "../GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
-#include "NapolitanProject/Interact/InteractWidget.h"
-#include "NapolitanProject/Interact/SouvenirActor.h"
-#include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"
+#include "NapolitanProject/Interact/Souvenir/SouvenirActor.h"
 #include "MovieSceneSequencePlaybackSettings.h"
 #include <Runtime/LevelSequence/Public/LevelSequencePlayer.h>
 

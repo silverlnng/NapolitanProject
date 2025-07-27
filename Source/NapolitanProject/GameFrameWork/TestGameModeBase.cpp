@@ -11,14 +11,9 @@
 #include "TestPlayerController.h"
 #include "Components/Border.h"
 #include "Kismet/GameplayStatics.h"
-#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
-#include "NapolitanProject/Interact/PieceActor.h"
-#include "NapolitanProject/Interact/Sculpture.h"
-#include "NapolitanProject/Interact/Souvenir_Docent.h"
+#include "NapolitanProject/Interact/Souvenir/Souvenir_Docent.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
-#include "NapolitanProject/YJ/Monologue/MonologueTriggerBox.h"
-#include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 #include "NapolitanProject/YJ/Save/TestSaveGame.h"
 
 ATestGameModeBase::ATestGameModeBase()
@@ -73,8 +68,7 @@ void ATestGameModeBase::BeginPlay()
 				{
 					NPCArray[key]->Destroy();
 				}
-
-					
+				
 				if (2==key) // 도슨트 클리어 => 
 				{
 					MainCharacter->b_IA_Note_Allowed = true;

@@ -10,10 +10,10 @@
 #include "Sound/SoundCue.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "NapolitanProject/Interact/ControllableLightActor.h"
+#include "NapolitanProject/Interact/SecondFloor/ControllableLightActor.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
-#include "NapolitanProject/Interact/Sculpture.h"
-#include "NapolitanProject/Interact/PieceActor.h"
+#include "NapolitanProject/Interact/SecondFloor/Sculpture.h"
+#include "NapolitanProject/Interact/SecondFloor/PieceActor.h"
 #include "NapolitanProject/NPC/Security/NPC_Security.h"
 #include "Perception/PawnSensingComponent.h"
 

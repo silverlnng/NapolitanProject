@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "NapolitanProject/Interact/LevelMoveDoor.h"
+#include "NapolitanProject/Interact/LevelMoveDoor/LevelMoveDoor.h"
 #include "SunFloorDoorToLobby.generated.h"
 
 /**

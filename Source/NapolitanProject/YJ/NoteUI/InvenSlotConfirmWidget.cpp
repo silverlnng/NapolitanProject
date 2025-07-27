@@ -9,7 +9,7 @@
 #include "Components/TextBlock.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/Interact/Item/ItemActor.h"
 
 void UInvenSlotConfirmWidget::NativeConstruct()
 {

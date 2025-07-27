@@ -2,9 +2,7 @@
 
 
 #include "TestCharacter.h"
-
-#include "../Interact/ClueActor.h"
-#include "../Interact/ControllableLightActor.h"
+#include "../Interact/SecondFloor/ControllableLightActor.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "../Interact/InteractWidget.h"
@@ -22,12 +20,6 @@
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
 #include "Kismet/GameplayStatics.h"
-#include "NapolitanProject/Interact/ExitDoorTrue.h"
-#include "NapolitanProject/Interact/ItemActor.h"
-#include "NapolitanProject/Interact/middleDoor_Fashion.h"
-#include "NapolitanProject/Interact/SouvenirActor.h"
-#include "NapolitanProject/Interact/TargetForItem.h"
-#include "NapolitanProject/YJ/CheckPoint.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
 #include "NapolitanProject/YJ/ESCWidget.h"
 #include "NapolitanProject/YJ/DialogueUI/NPCDialogueWidget.h"

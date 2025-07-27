@@ -16,7 +16,7 @@
 #include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/Interact/CatchSpider.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
-#include "NapolitanProject/Interact/ItemActor.h"
+#include "NapolitanProject/Interact/Item/ItemActor.h"
 #include "NapolitanProject/YJ/AttackSpiderV2.h"
 #include "NapolitanProject/YJ/SpiderMapGunActor.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"

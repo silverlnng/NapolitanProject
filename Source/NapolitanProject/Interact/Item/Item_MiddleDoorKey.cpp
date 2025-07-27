@@ -2,8 +2,7 @@
 
 
 #include "Item_MiddleDoorKey.h"
-
-#include "middleDoor_Fashion.h"
+#include "../middleDoor_Fashion.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values

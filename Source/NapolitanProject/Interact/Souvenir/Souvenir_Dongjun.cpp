@@ -3,14 +3,12 @@
 
 #include "Souvenir_Dongjun.h"
 
-#include "ItemActor.h"
+#include "../Item/ItemActor.h"
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
-#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
-#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
-#include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
+
 
 // Sets default values
 ASouvenir_Dongjun::ASouvenir_Dongjun()

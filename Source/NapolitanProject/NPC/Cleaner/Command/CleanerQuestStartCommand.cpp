@@ -8,7 +8,7 @@
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
-#include "NapolitanProject/Interact/Door_2Floor.h"
+#include "NapolitanProject/Interact/SecondFloor/Door_2Floor.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/NPC/Cleaner/NPC_Cleaner.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"

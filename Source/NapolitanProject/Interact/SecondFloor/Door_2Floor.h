@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "ExitDoor_Lobby.h"
+#include "../ExitDoor_Lobby.h"
 #include "Door_2Floor.generated.h"
 
 /**
