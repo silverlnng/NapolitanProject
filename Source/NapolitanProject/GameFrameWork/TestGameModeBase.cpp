@@ -114,7 +114,6 @@ void ATestGameModeBase::BeginPlay()
 			
 			}, 1.0f, false);
 			
-			
 			// 적용 후 다시 false로 변경 (새 게임 시작 시 영향 안 주도록)
 			SaveGI->SetLevelMoveToDoor(false);
 			

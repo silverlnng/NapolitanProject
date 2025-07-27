@@ -20,6 +20,7 @@
 #include "NapolitanProject/YJ/AttackSpiderV2.h"
 #include "NapolitanProject/YJ/SpiderMapGunActor.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
+#include "NapolitanProject/YJ/Save/TestSaveGame.h"
 #include "Sound/SoundClass.h"
 #include "Sound/SoundMix.h"
 
@@ -259,8 +260,19 @@ void ASpiderMapGameModeBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 	MainCharacter->OnEnablePlayerNoise.Clear();
 
-	// MainCharacter
-	// SaveGI->CatchSpiderNum=FString::FromInt(CatchSpiderCount);
+	FString SlotName = TEXT("SaveSlot_3");
+	UTestSaveGame* LoadedGame = Cast<UTestSaveGame>(
+		UGameplayStatics::LoadGameFromSlot(SlotName, 0));
+	
+	if (LoadedGame)
+	{
+		LoadedGame->SavedItems=SaveGI->SavedItems;
+		LoadedGame->CatchSpiderNum=SaveGI->CatchSpiderNum;
+		UGameplayStatics::SaveGameToSlot(LoadedGame , SlotName , 0);
+	}
+
+	
+
 	// 총 부착-해제시키기
 	Gun->DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
 }

@@ -140,6 +140,21 @@ void ALevelMoveDoor::LevelMove()
 	}
 	else // 다른레벨에서 다시 로비로 돌아갈때 사용하는 것. 
 	{
+		FString SlotName = TEXT("SaveSlot_3");
+		UTestSaveGame* LoadedGame = Cast<UTestSaveGame>(
+			UGameplayStatics::LoadGameFromSlot(SlotName, 0));
+	
+		if (LoadedGame)
+		{
+			LoadedGame->SavedItems=SaveGI->SavedItems;
+			LoadedGame->CatchSpiderNum=SaveGI->CatchSpiderNum;
+			UGameplayStatics::SaveGameToSlot(LoadedGame , SlotName , 0);
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("SaveSlot_3 LoadedGame Null")));
+		}
+		
 		SaveGI->GameSaveController->LoadGameFromSlot(3);
 		// 여기에 오픈레벨(로비) 가 있음
 	}

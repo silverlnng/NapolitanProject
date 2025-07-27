@@ -48,7 +48,7 @@ public:
 	void RestoreAttachedItems();
 
 	UPROPERTY()
-	FString CatchSpiderNum;
+	FString CatchSpiderNum=TEXT("0");
 	
 	//////////// 게임 저장 /////////////////////
 
