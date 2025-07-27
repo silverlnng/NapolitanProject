@@ -56,6 +56,7 @@ void APlayerHUD::BeginPlay()
 		NoteUI->AddToViewport(2);
 		NoteUI->SetVisibility(ESlateVisibility::Hidden);
 		NoteUI->Btn_Close->OnClicked.AddDynamic(this,&APlayerHUD::OnClickBtn_NoteClose);
+		NoteUI->WBP_NPCInfo->GI=GI;
 	}
 
 	// 초반에 slot 을 생성해주기
@@ -291,7 +292,7 @@ void APlayerHUD::UpdateNPCInfoWidget()
 	// GI 의 TSet<FName> NPCEventManage; 을 보고 업데이트할꺼 만들어두기
 
 	// 
-	if (!SaveGI->NPCEventManage.IsEmpty())
+	/*if (!SaveGI->NPCEventManage.IsEmpty())
 	{
 		for (FName &EventName:SaveGI->NPCEventManage)
 		{
@@ -304,7 +305,7 @@ void APlayerHUD::UpdateNPCInfoWidget()
 	if (SaveGI->ClearedNPC.Contains(2))
 	{
 		NoteUI->WBP_NPCInfo->WidgetSwitcher_Docent1->SetActiveWidgetIndex(1);
-	}
+	}*/
 
 	// npc의 state는 어디서 저장 ?? 
 }

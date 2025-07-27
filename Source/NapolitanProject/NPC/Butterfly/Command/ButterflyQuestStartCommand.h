@@ -10,13 +10,14 @@ class APlayerHUD;
 class ATestCharacter;
 class ATestPlayerController;
 class ANPC_Butterfly;
+class UMyTestGameInstance;
 /**
  * 
  */
 class NAPOLITANPROJECT_API ButterflyQuestStartCommand: public IEventCommand
 {
 public:
-	ButterflyQuestStartCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	ButterflyQuestStartCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld,UMyTestGameInstance* InGI);
 	
 	~ButterflyQuestStartCommand();
 	virtual void Execute() override;
@@ -24,5 +25,6 @@ private:
 	UWorld* World;
 	ATestPlayerController* PC;
 	ATestCharacter* MainCharacter;
-	APlayerHUD* PlayerHUD;	
+	APlayerHUD* PlayerHUD;
+	UMyTestGameInstance* GI;
 };

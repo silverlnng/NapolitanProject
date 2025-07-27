@@ -85,7 +85,7 @@ void UEventComponent::CommandAdd()
 
 	CommandMap.Add(
 		"CuratorCompleted" ,
-		MakeShared<CuratorCompletedCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
+		MakeShared<CuratorCompletedCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld(),GI));
 
 	// 도슨트
 

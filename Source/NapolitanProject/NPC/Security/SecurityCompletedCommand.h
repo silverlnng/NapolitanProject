@@ -10,13 +10,14 @@ class ANPCCharacter;
 class APlayerHUD;
 class ATestCharacter;
 class ATestPlayerController;
+class UMyTestGameInstance;
 /**
  * 
  */
 class NAPOLITANPROJECT_API SecurityCompletedCommand: public IEventCommand
 {
 public:
-	SecurityCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	SecurityCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld,UMyTestGameInstance* InGI);
 	~SecurityCompletedCommand();
 	virtual void Execute() override;
 private:
@@ -25,4 +26,5 @@ private:
 	ATestPlayerController* PC;
 	ATestCharacter* MainCharacter;
 	APlayerHUD* PlayerHUD;
+	UMyTestGameInstance* GI;
 };

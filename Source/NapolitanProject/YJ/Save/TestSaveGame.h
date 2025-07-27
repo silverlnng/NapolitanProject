@@ -46,8 +46,9 @@ public:
 	TSet<int32> ClearedNPC;
 	
 	UPROPERTY(VisibleAnywhere, Category = "SaveData")
-	TSet<FName> NPCEventManage;
+	TMap<FName,FQuestData> QuestCommandsMap;
 
+	// 우측상단 UI 에 표시할 단어 목록 저장/로드
 	UPROPERTY(VisibleAnywhere, Category = "SaveData")
 	TSet<FString> QuestSlots;
 

@@ -186,10 +186,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	TArray<FName> QuestDataRowNames;
-
 	
 	UPROPERTY()
-	TMap<FName,FQuestData> QuestMap; // 런타임용 동적 데이터 (상태 저장, 수정 가능)
+	TMap<FName,FQuestData> QuestCommandsMap; // 런타임용 동적 데이터 (상태 저장, 수정 가능)
 	
 	///////////////////CSV Read 하기
 	TMap<int32,FNPCResult> NPCResultMap;

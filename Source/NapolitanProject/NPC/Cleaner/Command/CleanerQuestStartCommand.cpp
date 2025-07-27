@@ -66,16 +66,14 @@ void CleanerQuestStartCommand::Execute()
 
 	World->GetTimerManager().SetTimer(UITimer3,[this]()
 	{
-		
-		//FString QuestText =FString(TEXT("머리를 찾아주기"));
-		
-		FQuestData* QuestData = GI->DT_Quest->FindRow<FQuestData>(FName(TEXT("CleanerQuestStart")) , TEXT(""));
-		if (QuestData)
+		FName eventKey =TEXT("CleanerQuestStart");
+		if (GI->QuestCommandsMap.Contains(eventKey))
 		{
-			QuestData->Done=true;
-			FString QuestText =QuestData->Kor_Content;
-			PlayerHUD->InteractUI->AddQuestSlot(2,QuestText);
+			GI->QuestCommandsMap[eventKey].Done = true;
+			FString QuestText = GI->QuestCommandsMap[eventKey].Kor_Content;
+			PlayerHUD->InteractUI->AddQuestSlot(2 , QuestText);
 		}
+			
 	},8.0f,false);
 
 	FTimerHandle Timer4;

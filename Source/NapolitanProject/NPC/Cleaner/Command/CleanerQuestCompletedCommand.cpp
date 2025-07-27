@@ -3,6 +3,7 @@
 
 #include "CleanerQuestCompletedCommand.h"
 
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
@@ -10,12 +11,13 @@
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NPCInfoWidget.h"
 
-CleanerQuestCompletedCommand::CleanerQuestCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld)
+CleanerQuestCompletedCommand::CleanerQuestCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld,UMyTestGameInstance* InGI)
 {
 	PC=INPC;
 	MainCharacter=INMainCharacter;
 	PlayerHUD=INPlayerHUD;
 	World=InWorld;
+	GI=InGI;
 }
 
 CleanerQuestCompletedCommand::~CleanerQuestCompletedCommand()
@@ -61,7 +63,13 @@ void CleanerQuestCompletedCommand::Execute()
 	
 	World->GetTimerManager().SetTimer(UITimer4,[this]()
 	{
-		FString QuestText =FString(TEXT("머리를 가져다 주자"));
+		FName eventKey =TEXT("CleanerQuestCompleted");
+		if (GI->QuestCommandsMap.Contains(eventKey))
+		{
+			GI->QuestCommandsMap[eventKey].Done = true;
+		}
+		
+		FString QuestText = GI->QuestCommandsMap["SecurityCompleted"].Kor_Content;
 		PlayerHUD->InteractUI->RemoveQuestSlot(QuestText);
 	},8.0f,false);
 }

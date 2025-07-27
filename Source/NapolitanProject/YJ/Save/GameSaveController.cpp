@@ -70,10 +70,11 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 		SaveGameInstance->ClearedNPC = SaveGISubsystem->ClearedNPC;
 	}
 
-	if (!SaveGISubsystem->NPCEventManage.IsEmpty())
+	/*if (!SaveGISubsystem->NPCEventManage.IsEmpty())
 	{
 		SaveGameInstance->NPCEventManage = SaveGISubsystem->NPCEventManage;
-	}
+	}*/
+	
 
 	if (!SaveGISubsystem->QuestSlots.IsEmpty())
 	{
@@ -90,7 +91,8 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 		SaveGameInstance->SavedItems = SaveGISubsystem->SavedItems;
 	}
 
-
+	SaveGameInstance->QuestCommandsMap=GameInstance->QuestCommandsMap;
+	
 	SaveGameInstance->SaveditemDataMap=GameInstance->itemDataMap;
 	
 	SaveGameInstance->CatchSpiderNum=SaveGISubsystem->CatchSpiderNum;
@@ -182,10 +184,6 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 				}
 			}
 
-			if (!LoadedGame->NPCEventManage.IsEmpty())
-			{
-				SaveGISubsystem->NPCEventManage=LoadedGame->NPCEventManage;
-			}
 			
 			if (!LoadedGame->QuestSlots.IsEmpty())
 			{
@@ -202,9 +200,12 @@ UTestSaveGame* UGameSaveController::LoadGameFromSlot(int32 SlotIndex)
 				SaveGISubsystem->SavedItems=LoadedGame->SavedItems;
 			}
 
+			GameInstance->QuestCommandsMap=LoadedGame->QuestCommandsMap;
+			
 			GameInstance->itemDataMap=LoadedGame->SaveditemDataMap;
 			
 			SaveGISubsystem->CatchSpiderNum=LoadedGame->CatchSpiderNum;
+			
 			UE_LOG(LogTemp,Warning,TEXT("%sLoadedGame CatchSpider :%s"),*CALLINFO,*LoadedGame->CatchSpiderNum);
 			UE_LOG(LogTemp,Warning,TEXT("%sSaveGI CatchSpider :%s"),*CALLINFO,*SaveGISubsystem->CatchSpiderNum);
 		}

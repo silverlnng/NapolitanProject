@@ -99,6 +99,27 @@ void UMyTestGameInstance::Init()
 
 	
 	DT_Quest=LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/DT/DT_Quest.DT_Quest'"));
+
+	if (DT_Quest)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s DT_Item 로드성공"),*CALLINFO);
+		QuestDataRowNames = DT_Quest->GetRowNames();
+		
+		if (SaveGISubsystem->IsFromLoad) {return;}
+		
+		for (int i = 0; i < QuestDataRowNames.Num(); i++)
+		{
+			UE_LOG(LogTemp, Error, TEXT("%s,%s"),*CALLINFO,*QuestDataRowNames[i].ToString());
+			
+			FQuestData* QuestData = DT_Quest->FindRow<FQuestData>(QuestDataRowNames[i] , TEXT(""));
+			if (QuestData)
+			{
+				QuestCommandsMap.Add(QuestDataRowNames[i],*QuestData);
+				// 로드 플레이가 아닐때 . 
+			}
+		}
+	}
+	
 	
 	DT_PictureLabel=LoadObject<UDataTable>(nullptr ,TEXT("'/Game/YJ/DT/DT_PictureLabel.DT_PictureLabel'"));
 

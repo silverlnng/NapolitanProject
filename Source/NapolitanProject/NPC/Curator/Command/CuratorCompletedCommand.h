@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "NapolitanProject/Interface/EventCommand.h"
 
+class UMyTestGameInstance;
 class ANPCCharacter;
 class APlayerHUD;
 class ATestCharacter;
@@ -17,7 +18,7 @@ class AChaseStatue;
 class NAPOLITANPROJECT_API CuratorCompletedCommand: public IEventCommand
 {
 public:
-	CuratorCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	CuratorCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld,UMyTestGameInstance* InGI);
 	~CuratorCompletedCommand();
 	virtual void Execute() override;
 private:
@@ -25,5 +26,6 @@ private:
 	AChaseStatue* NPC;
 	ATestPlayerController* PC;
 	ATestCharacter* MainCharacter;
-	APlayerHUD* PlayerHUD;	
+	APlayerHUD* PlayerHUD;
+	UMyTestGameInstance* GI;
 };

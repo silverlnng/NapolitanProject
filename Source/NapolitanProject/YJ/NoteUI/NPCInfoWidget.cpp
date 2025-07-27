@@ -9,6 +9,7 @@
 #include "Components/ScrollBox.h"
 #include "Components/WidgetSwitcher.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 
 void UNPCInfoWidget::NativeConstruct()
 {
@@ -16,11 +17,63 @@ void UNPCInfoWidget::NativeConstruct()
 	Img_Head->SetVisibility(ESlateVisibility::Hidden);
 	Img_Head2->SetVisibility(ESlateVisibility::Hidden);
 	Img_Head_BG->SetVisibility(ESlateVisibility::Hidden);
+
+	GI=GetGameInstance<UMyTestGameInstance>();
 }
 
 void UNPCInfoWidget::LoadUpdate(const FString& str)
 {
-	// 수행한 퀘스트 에따라서 업데이트 시키기 
+	// 수행한 퀘스트 에따라서 업데이트 시키기
+	if (GI&&!GI->QuestCommandsMap.IsEmpty())
+	{
+		// 도슨트
+		if (GI->QuestCommandsMap["DocentPlayEnd"].Done)
+		{
+			WidgetSwitcher_Docent1->SetActiveWidgetIndex(1);
+		}
+
+		// 청소부
+		if (GI->QuestCommandsMap["CleanerQuestStart"].Done)
+		{
+			ScrollBox_Cleaner->ScrollWidgetIntoView(CanvasPanel_Cleaner1,true);
+			WidgetSwitcher_Cleaner1->SetActiveWidgetIndex(1);
+			PlayAnimation(Anim_Cleaner_1);
+		}
+
+		if (GI->QuestCommandsMap["CleanerQuestCompleted"].Done)
+		{
+			ScrollBox_Cleaner->ScrollWidgetIntoView(CanvasPanel_Cleaner2,true);
+			WidgetSwitcher_Cleaner2->SetActiveWidgetIndex(1);
+		}
+
+		// 경비원
+		if (GI->QuestCommandsMap["SecurityCompleted"].Done)
+		{
+			WidgetSwitcher_Security1->SetActiveWidgetIndex(1);
+			Img_Head->SetVisibility(ESlateVisibility::Visible);
+			Img_Head2->SetVisibility(ESlateVisibility::Visible);
+			Img_Head_BG->SetVisibility(ESlateVisibility::Visible);
+		}
+		// 노인 
+		
+		// 나비
+		
+		if (GI->QuestCommandsMap["ButterflyQuestStart"].Done)
+		{
+			ScrollBox_Butterfly->ScrollWidgetIntoView(CanvasPanel_Butterfly_1,true);
+			WidgetSwitcher_Butterfly_1->SetActiveWidgetIndex(1);
+			WidgetSwitcher_Butterfly_2->SetActiveWidgetIndex(1);
+		}
+
+		if (GI->QuestCommandsMap["ButterflyQuestReward"].Done)
+		{
+			WidgetSwitcher_Butterfly_3->SetActiveWidgetIndex(1);
+		}
+
+		
+	}
+	
+	
 	if (str=="CleanerQuest")
 	{
 		ScrollBox_Cleaner->ScrollWidgetIntoView(CanvasPanel_Cleaner1,true);

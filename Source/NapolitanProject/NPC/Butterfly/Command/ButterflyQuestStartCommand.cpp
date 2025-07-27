@@ -5,6 +5,7 @@
 
 #include "Engine/World.h"
 #include "Components/SlateWrapperTypes.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
@@ -16,12 +17,13 @@
 
 
 ButterflyQuestStartCommand::ButterflyQuestStartCommand(ATestPlayerController* INPC,
-	ATestCharacter* INMainCharacter, APlayerHUD* INPlayerHUD, UWorld* InWorld)
+	ATestCharacter* INMainCharacter, APlayerHUD* INPlayerHUD, UWorld* InWorld,UMyTestGameInstance* InGI)
 {
 	PC=INPC;
 	MainCharacter=INMainCharacter;
 	PlayerHUD=INPlayerHUD;
 	World=InWorld;
+	GI=InGI;
 }
 
 ButterflyQuestStartCommand::~ButterflyQuestStartCommand()
@@ -53,8 +55,14 @@ void ButterflyQuestStartCommand::Execute()
 	FTimerHandle UITimer3;
 	World->GetTimerManager().SetTimer(UITimer3,[this]()
 	{
-		FString QuestText =FString(TEXT("거미버거를 만들어주기"));
-		PlayerHUD->InteractUI->AddQuestSlot(4,QuestText);
+		FName eventKey =TEXT("ButterflyQuestStart");
+		if (GI->QuestCommandsMap.Contains(eventKey))
+		{
+			GI->QuestCommandsMap[eventKey].Done = true;
+			FString QuestText = GI->QuestCommandsMap[eventKey].Kor_Content;
+			PlayerHUD->InteractUI->AddQuestSlot(4,QuestText);
+		}
+	
 	},8.0f,false);
 	
 	FTimerHandle UITimer4;

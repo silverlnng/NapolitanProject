@@ -5,19 +5,21 @@
 
 #include "NPC_Security.h"
 #include "Components/SlateWrapperTypes.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/NoteUI/NoteWidget.h"
 #include "NapolitanProject/YJ/NoteUI/NPCInfoWidget.h"
 
-SecurityCompletedCommand::SecurityCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld)
+SecurityCompletedCommand::SecurityCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld,UMyTestGameInstance* InGI)
 {
 
 	PC=INPC;
 	MainCharacter=INMainCharacter;
 	PlayerHUD=INPlayerHUD;
 	World=InWorld;
+	GI=InGI;
 }
 
 SecurityCompletedCommand::~SecurityCompletedCommand()
@@ -51,4 +53,9 @@ void SecurityCompletedCommand::Execute()
 
 	// 여기서 머리를 가져다 주기 UI 나오도록 하기
 	
+	FName eventKey =TEXT("SecurityCompleted");
+	if (GI->QuestCommandsMap.Contains(eventKey))
+	{
+		GI->QuestCommandsMap[eventKey].Done = true;
+	}
 }

@@ -5,25 +5,24 @@
 #include "CoreMinimal.h"
 #include "NapolitanProject/Interface/EventCommand.h"
 
-class ANPC_Cleaner;
 class ANPCCharacter;
 class APlayerHUD;
 class ATestCharacter;
 class ATestPlayerController;
+class AChaseStatue;
 /**
  * 
  */
-class NAPOLITANPROJECT_API CleanerQuestCompletedCommand: public IEventCommand
+class NAPOLITANPROJECT_API CuratorUICommand: public IEventCommand
 {
 public:
-	CleanerQuestCompletedCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld,UMyTestGameInstance* InGI);
-	~CleanerQuestCompletedCommand();
+	CuratorUICommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,APlayerHUD* INPlayerHUD,UWorld* InWorld);
+	~CuratorUICommand();
 	virtual void Execute() override;
 private:
 	UWorld* World;
-	ANPC_Cleaner* NPC;
+	AChaseStatue* NPC;
 	ATestPlayerController* PC;
 	ATestCharacter* MainCharacter;
-	APlayerHUD* PlayerHUD;
-	class UMyTestGameInstance* GI;
+	APlayerHUD* PlayerHUD;	
 };
