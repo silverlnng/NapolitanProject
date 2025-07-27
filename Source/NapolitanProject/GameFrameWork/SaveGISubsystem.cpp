@@ -41,6 +41,10 @@ void USaveGISubsystem::RestoreAttachedItems()
 		{
 			AItemActor* NewItem = MainCharacter->GetWorld()->SpawnActor<AItemActor>(ItemActor);
 			// ✅ 아이템 스폰
+
+			// 스폰아이템은 태그달아주기 
+			NewItem->Tags.Add(FName("SpawnedFromSave"));
+			
 			NewItem->BoxComp->SetCollisionResponseToChannel(ECollisionChannel::ECC_GameTraceChannel3,ECR_Ignore);
 			
 			NewItem->AttachToComponent(MainCharacter->ItemArrowComp,FAttachmentTransformRules::SnapToTargetNotIncludingScale);

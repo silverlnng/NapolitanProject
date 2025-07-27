@@ -14,7 +14,8 @@ class NAPOLITANPROJECT_API APieceActor : public AItemActor
 {
 	GENERATED_BODY()
 	
-public:	
+public:
+	virtual void BeginPlay() override;
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int32 PieceNum=0;
 
@@ -24,5 +25,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* PickUpSoundWave;
 	
-	virtual void OnPickup() override; 
+	virtual void OnPickup() override;
+	
 };

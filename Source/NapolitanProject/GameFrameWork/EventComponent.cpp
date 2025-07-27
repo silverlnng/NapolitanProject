@@ -18,6 +18,7 @@
 #include "NapolitanProject/NPC/Cleaner/Command/CleanerQuestStartCommand.h"
 #include "NapolitanProject/NPC/Curator/Command/CuratorCompletedCommand.h"
 #include "NapolitanProject/NPC/Curator/Command/CuratorLightEffectCommand.h"
+#include "NapolitanProject/NPC/Curator/Command/CuratorUICommand.h"
 #include "NapolitanProject/NPC/Docent/Command/DocentCloseUpCommand.h"
 #include "NapolitanProject/NPC/Docent/Command/DocentDetectStartCommand.h"
 #include "NapolitanProject/NPC/Docent/Command/DocentEndCommand.h"
@@ -86,7 +87,10 @@ void UEventComponent::CommandAdd()
 	CommandMap.Add(
 		"CuratorCompleted" ,
 		MakeShared<CuratorCompletedCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld(),GI));
-
+	
+	CommandMap.Add(
+			"CuratorUI" ,
+			MakeShared<CuratorUICommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
 	// 도슨트
 
 	CommandMap.Add(
@@ -105,7 +109,7 @@ void UEventComponent::CommandAdd()
 	
 	CommandMap.Add(
 		"SecurityCompleted" ,
-		MakeShared<SecurityCompletedCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
+		MakeShared<SecurityCompletedCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld(),GI));
 
 
 	CommandMap.Add(
@@ -113,11 +117,11 @@ void UEventComponent::CommandAdd()
 		MakeShared<CleanerQuestStartCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld(),GI));
 	CommandMap.Add(
 		"CleanerQuestCompleted" ,
-		MakeShared<CleanerQuestCompletedCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
+		MakeShared<CleanerQuestCompletedCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld(),GI));
 	
 	CommandMap.Add(
 		"ButterflyQuestStart" ,
-		MakeShared<ButterflyQuestStartCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));
+		MakeShared<ButterflyQuestStartCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld(),GI));
 	CommandMap.Add(
 		"ButterflyQuestCompleted" ,
 		MakeShared<ButterflyQuestCompletedCommand>(TestPC , MainCharacter , PlayerHUD , GetWorld()));

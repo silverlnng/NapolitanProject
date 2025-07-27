@@ -5,12 +5,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "NapolitanProject/Interface/InteractInterface.h"
+#include "NapolitanProject/Interface/SaveAware.h"
 #include "ItemActor.generated.h"
 
 
 
 UCLASS()
-class NAPOLITANPROJECT_API AItemActor : public AActor,public IInteractInterface
+class NAPOLITANPROJECT_API AItemActor : public AActor,public IInteractInterface, public ISaveAware
 {
 	GENERATED_BODY()
 	
@@ -72,4 +73,9 @@ public:
 	virtual void Remove();
 	
 	virtual int32 GetItemID();
+
+	UPROPERTY(EditAnywhere)
+	int32 AssociatedNpcID=-1;
+	
+	virtual int32 GetAssociatedNpcID() const override{return AssociatedNpcID;}
 };

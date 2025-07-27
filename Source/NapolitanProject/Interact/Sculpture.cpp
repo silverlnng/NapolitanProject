@@ -11,6 +11,7 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/EventComponent.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/NPC/Security/NPC_Security.h"
 
@@ -56,6 +57,18 @@ ASculpture::ASculpture()
 void ASculpture::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	GI = GetGameInstance<UMyTestGameInstance>();
+	SaveGI = GI->GetSubsystem<USaveGISubsystem>();
+
+	if (SaveGI->IsFromLoad)
+	{
+		if (SaveGI->ClearedNPC.Contains(GetAssociatedNpcID()))
+		{
+			Destroy();
+		}
+	}
+	
 	TestPC=GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	
 	for (TActorIterator<ANPC_Security> It(GetWorld(), ANPC_Security::StaticClass()); It; ++It)

@@ -55,6 +55,9 @@ public:
 	
 	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category=Light)
 	float RectLightIntensity = 100.f;
+
+	UPROPERTY(EditAnywhere,BlueprintReadWrite,Category=Light)
+	float offRectLightIntensity = 30.f;
 	
 	UPROPERTY(VisibleAnywhere)
 	TArray<URectLightComponent*> RectLightArray;

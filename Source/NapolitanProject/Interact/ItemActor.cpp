@@ -40,6 +40,11 @@ void AItemActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GI =GetGameInstance<UMyTestGameInstance>();
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
+
+	
+	
 	TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	if (TestPC)
 	{
@@ -50,8 +55,20 @@ void AItemActor::BeginPlay()
 	{
 		StaticMeshComp->SetOverlayMaterial(M_Overlay);
 	}
-	GI =GetGameInstance<UMyTestGameInstance>();
-	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
+
+	// 게임 저장/로드시
+	FTimerHandle DelayTimer;
+	GetWorldTimerManager().SetTimer(DelayTimer,[this]()
+	{
+		if (SaveGI->IsFromLoad&& !Tags.Contains("SpawnedFromSave"))
+		{
+			if (SaveGI->SavedItems.Contains(this->GetClass()))
+			{
+				Destroy();
+			}
+		}
+	},1.f,false);
+	
 }
 
 // Called every frame

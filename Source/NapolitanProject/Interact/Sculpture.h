@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "NapolitanProject/Interface/SaveAware.h"
 #include "Sculpture.generated.h"
 
 UCLASS()
-class NAPOLITANPROJECT_API ASculpture : public AActor
+class NAPOLITANPROJECT_API ASculpture : public AActor, public ISaveAware
 {
 	GENERATED_BODY()
 	
@@ -76,6 +77,15 @@ public:
 	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
-	USoundWave* OneTwoSoundWave; //1,2개 붙일때 소리 
+	USoundWave* OneTwoSoundWave; //1,2개 붙일때 소리
+	
+	UPROPERTY()
+	class UMyTestGameInstance* GI;
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+	
+	UPROPERTY(EditAnywhere)
+	int32 AssociatedNpcID=4;
+	virtual int32 GetAssociatedNpcID() const override{return AssociatedNpcID;}
 	
 };

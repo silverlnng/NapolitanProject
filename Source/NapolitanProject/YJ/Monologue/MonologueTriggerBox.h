@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "NapolitanProject/Interface/SaveAware.h"
 #include "MonologueTriggerBox.generated.h"
 
 UCLASS()
-class NAPOLITANPROJECT_API AMonologueTriggerBox : public AActor
+class NAPOLITANPROJECT_API AMonologueTriggerBox : public AActor, public ISaveAware
 {
 	GENERATED_BODY()
 	
@@ -68,5 +69,12 @@ public:
 
 	UFUNCTION()
 	void MoveCharacter();
+	UPROPERTY()
+	class UMyTestGameInstance* GI;
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+	UPROPERTY(EditAnywhere)
+	int32 AssociatedNpcID=-1;
+	virtual int32 GetAssociatedNpcID() const override{return AssociatedNpcID;}
 	
 };

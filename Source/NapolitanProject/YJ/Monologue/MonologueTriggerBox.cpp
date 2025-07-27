@@ -6,7 +6,9 @@
 #include "MonolugueWidget.h"
 #include "Components/BillboardComponent.h"
 #include "Components/BoxComponent.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
@@ -42,6 +44,17 @@ AMonologueTriggerBox::AMonologueTriggerBox()
 void AMonologueTriggerBox::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	GI = GetGameInstance<UMyTestGameInstance>();
+	SaveGI = GI->GetSubsystem<USaveGISubsystem>();
+
+	if (SaveGI->IsFromLoad)
+	{
+		if (SaveGI->ClearedNPC.Contains(GetAssociatedNpcID()))
+		{
+			Destroy();
+		}
+	}
 	TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
 	if (TestPC)
 	{

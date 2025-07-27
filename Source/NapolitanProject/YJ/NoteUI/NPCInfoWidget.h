@@ -22,7 +22,7 @@ public:
 	class UMyTestGameInstance* GI;
 	
 	UFUNCTION()
-	void LoadUpdate(const FString& str);
+	void LoadUpdate();
 	
 /////////////////////소리///////////////////////////
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")

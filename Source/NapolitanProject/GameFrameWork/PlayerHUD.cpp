@@ -184,11 +184,14 @@ void APlayerHUD::BeginPlay()
 
 
 	// 로드게임 플레이시 진행할 함수
-	// GI 의 NPCEventManage 받아서 로드하고 업데이트 하는 함수 
-	UpdateNPCInfoWidget();
-	// 진행하고 있던 퀘스트 목록을 받아서 로드하고 업데이트하기 
-	InteractUI->LoadUpdateQuestSlot();
-	UpdateClueSlotWidget();
+	// GI 의 NPCEventManage 받아서 로드하고 업데이트 하는 함수
+	if (SaveGI->IsFromLoad)
+	{
+		UpdateNPCInfoWidget();
+		// 진행하고 있던 퀘스트 목록을 받아서 로드하고 업데이트하기 
+		InteractUI->LoadUpdateQuestSlot();
+		UpdateClueSlotWidget();
+	}
 }
 
 void APlayerHUD::OnClickBtn_NoteClose()
@@ -289,8 +292,9 @@ void APlayerHUD::UpdateClueSlotWidget()
 
 void APlayerHUD::UpdateNPCInfoWidget()
 {
+	NoteUI->WBP_NPCInfo->LoadUpdate();
+	
 	// GI 의 TSet<FName> NPCEventManage; 을 보고 업데이트할꺼 만들어두기
-
 	// 
 	/*if (!SaveGI->NPCEventManage.IsEmpty())
 	{

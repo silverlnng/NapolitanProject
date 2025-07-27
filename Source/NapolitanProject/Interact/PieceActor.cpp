@@ -6,7 +6,21 @@
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
+
+void APieceActor::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	if (SaveGI->IsFromLoad)
+	{
+		if (SaveGI->ClearedNPC.Contains(GetAssociatedNpcID()))
+		{
+			Destroy();
+		}
+	}
+}
 
 void APieceActor::OnPickup()
 {

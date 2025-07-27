@@ -21,7 +21,7 @@ void UNPCInfoWidget::NativeConstruct()
 	GI=GetGameInstance<UMyTestGameInstance>();
 }
 
-void UNPCInfoWidget::LoadUpdate(const FString& str)
+void UNPCInfoWidget::LoadUpdate()
 {
 	// 수행한 퀘스트 에따라서 업데이트 시키기
 	if (GI&&!GI->QuestCommandsMap.IsEmpty())
@@ -60,7 +60,6 @@ void UNPCInfoWidget::LoadUpdate(const FString& str)
 		
 		if (GI->QuestCommandsMap["ButterflyQuestStart"].Done)
 		{
-			ScrollBox_Butterfly->ScrollWidgetIntoView(CanvasPanel_Butterfly_1,true);
 			WidgetSwitcher_Butterfly_1->SetActiveWidgetIndex(1);
 			WidgetSwitcher_Butterfly_2->SetActiveWidgetIndex(1);
 		}
@@ -69,34 +68,6 @@ void UNPCInfoWidget::LoadUpdate(const FString& str)
 		{
 			WidgetSwitcher_Butterfly_3->SetActiveWidgetIndex(1);
 		}
-
-		
-	}
-	
-	
-	if (str=="CleanerQuest")
-	{
-		ScrollBox_Cleaner->ScrollWidgetIntoView(CanvasPanel_Cleaner1,true);
-		WidgetSwitcher_Cleaner1->SetActiveWidgetIndex(1);
-		PlayAnimation(Anim_Cleaner_1);
-	}
-	else if (str=="CleanerQuestCompleted")
-	{
-		ScrollBox_Cleaner->ScrollWidgetIntoView(CanvasPanel_Cleaner2,true);
-		WidgetSwitcher_Cleaner2->SetActiveWidgetIndex(1);
-	}
-	else if (str=="OldmanClue")
-	{
-		
-	}
-	else if (str=="ButterflyQuest")
-	{
-		WidgetSwitcher_Butterfly_1->SetActiveWidgetIndex(1);
-		WidgetSwitcher_Butterfly_2->SetActiveWidgetIndex(1);
-	}
-	else if (str=="ButterflyQuestReward")
-	{
-		WidgetSwitcher_Butterfly_3->SetActiveWidgetIndex(1);
 	}
 	
 }

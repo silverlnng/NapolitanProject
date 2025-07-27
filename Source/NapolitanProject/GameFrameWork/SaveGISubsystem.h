@@ -28,9 +28,6 @@ public:
 
 	UPROPERTY()
 	TSet<FString> QuestSlots;
-
-	UPROPERTY()
-	
 	
 	UPROPERTY()
 	TSet<int32> AcquireSouvenir;

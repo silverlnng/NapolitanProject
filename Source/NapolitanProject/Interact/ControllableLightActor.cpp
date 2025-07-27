@@ -105,13 +105,8 @@ void AControllableLightActor::TurnOnLight(bool value)
 		// 라이트를 꺼주기 => 경비가 실행시키는 부분
 		for (URectLightComponent* RectLight :RectLightArray)
 		{
-			RectLight->SetIntensity(10);
+			RectLight->SetIntensity(offRectLightIntensity);
 		}
-		/*RectLightComp0->SetIntensity(0);
-		RectLightComp1->SetIntensity(0);
-		RectLightComp2->SetIntensity(0);
-		RectLightComp3->SetIntensity(0);*/
-		
 		IsTurnOn=false;
 	}
 }

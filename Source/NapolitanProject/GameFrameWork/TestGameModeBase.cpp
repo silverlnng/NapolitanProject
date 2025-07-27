@@ -15,7 +15,9 @@
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/Interact/PieceActor.h"
 #include "NapolitanProject/Interact/Sculpture.h"
+#include "NapolitanProject/Interact/Souvenir_Docent.h"
 #include "NapolitanProject/NPC/NPCCharacter.h"
+#include "NapolitanProject/YJ/Monologue/MonologueTriggerBox.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 #include "NapolitanProject/YJ/Save/TestSaveGame.h"
 
@@ -59,57 +61,42 @@ void ATestGameModeBase::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("NPCArray: %d"),key));
 	}	
 	
-
-	// GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
-	
-	if (!SaveGI->ClearedNPC.IsEmpty())
-	{
-		for (int32 key :SaveGI->ClearedNPC)
-		{
-			if (NPCArray.Contains(key))
-			{
-				NPCArray[key]->Destroy();
-				// 어색 하면 Destroy()
-			}
-
-			if (4==key) // 경비원 npc클리어했을때 
-			{
-				// 2층의 조각상 삭제
-				for (TActorIterator<ASculpture> It(GetWorld(), ASculpture::StaticClass()); It; ++It)
-				{
-					ASculpture* Sculpture = *It;
-					Sculpture->Destroy(1);
-				}
-				for (TActorIterator<APieceActor> It(GetWorld(), APieceActor::StaticClass()); It; ++It)
-				{
-					APieceActor* Piece = *It;
-					Piece->Destroy(1);
-				}
-			}
-			if (2==key) // 도슨트 클리어 => 
-			{
-				MainCharacter->b_IA_Note_Allowed = true;
-				FTimerHandle HUDTimer;
-				GetWorld()->GetTimerManager().SetTimer(HUDTimer , [this]()
-				{
-					PlayerHUD->InteractUI->Border_Note->SetVisibility(ESlateVisibility::Visible);
-				} , 1.5f , false);
-			}
-		}
-	}
-	
-	for (TActorIterator<AItemActor> It(GetWorld()); It; ++It)
-	{
-		AItemActor* Item=*It;
-		int32 key = Item->GetItemID();
-		ItemActorArray.Add(key,Item);
-		// 로그 출력으로 확인하기
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("ItemActorArray: %d"),key));
-		UE_LOG(LogTemp, Error, TEXT("%s ItemActorArray: %d"),*CALLINFO,key);
-	}
-	
 	if (SaveGI)
 	{
+		// 그림으로 레벨이동 때문에 로드플레이 아닐때도 해야함 
+		// GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
+		if (!SaveGI->ClearedNPC.IsEmpty())
+		{
+			for (int32 key :SaveGI->ClearedNPC)
+			{
+				if (NPCArray.Contains(key))
+				{
+					NPCArray[key]->Destroy();
+				}
+
+					
+				if (2==key) // 도슨트 클리어 => 
+				{
+					MainCharacter->b_IA_Note_Allowed = true;
+					FTimerHandle HUDTimer;
+					GetWorld()->GetTimerManager().SetTimer(HUDTimer , [this]()
+					{
+						PlayerHUD->InteractUI->Border_Note->SetVisibility(ESlateVisibility::Visible);
+					} , 1.5f , false);
+
+					// 노트,독백박스, 블럭박스 삭제하기
+					if (Souvenir_Docent){Souvenir_Docent->Destroy();}
+					
+				}
+			}
+		}
+		FTimerHandle RestoreAttachedItemTimer;
+		GetWorld()->GetTimerManager().SetTimer(RestoreAttachedItemTimer , [this]()
+		{
+			SaveGI->RestoreAttachedItems();
+			// 아이템을 인벤토리에  복구하는 작업
+		} , 0.5f , false);
+		
 		if (SaveGI->bLevelMoveToDoor) // 그림으로 이동후 돌아올 때 
 		{
 			// 저장된 위치가 있으면 플레이어를 해당 위치로 이동
@@ -141,6 +128,8 @@ void ATestGameModeBase::BeginPlay()
 				MainCharacter->SetActorLocation(SaveGI->LoadedGame->PlayerLocation);
 				MainCharacter->SetActorRotation(SaveGI->LoadedGame->PlayerRotation);
 			} , 1.0f , false);
+
+			
 			
 			FTimerHandle GITimer2;
 			GetWorld()->GetTimerManager().SetTimer(GITimer2 , [this]()
@@ -148,53 +137,11 @@ void ATestGameModeBase::BeginPlay()
 				// 적용 후 다시 nullptr 변경 (새 게임 시작 시 영향 안 주도록)
 				SaveGI->LoadedGame=nullptr;
 			} , 2.5f , false);
-
 		}
-		
-		FTimerHandle RestoreAttachedItemTimer;
-		GetWorld()->GetTimerManager().SetTimer(RestoreAttachedItemTimer , [this]()
-		{
-			SaveGI->RestoreAttachedItems();
-			// 아이템을 인벤토리에  복구하는 작업
-		} , 1.0f , false);
-
-		// 인벤에 이미 있는 아이템은 맵에서 제거하는 함수
-		FTimerHandle RestoreItemTimer;
-		GetWorld()->GetTimerManager().SetTimer(RestoreItemTimer , [this]()
-		{
-			// 여기서 수정을 해야함 . 내가 저장한 아이템에 4,5이 있는지 더 나은 방법으로 
-			AItemActor* Item4 =PlayerHUD->InventoryUI->InvenSlots[4]->MyItem;
-			//
-			if (Item4) // MyItem이 있으면 획득했었다는 의미
-			{
-				 // 빵 아이템 hidden 처리
-				//BreadItem4->SetActorHiddenInGame(true);
-				if (ItemActorArray.Contains(4))
-				{
-					ItemActorArray[4]->SetActorHiddenInGame(true);
-				}
-				
-			}
-			
-			AItemActor* Item5 =PlayerHUD->InventoryUI->InvenSlots[4]->MyItem;
-			if (Item5) // MyItem이 있으면 획득했었다는 의미
-			{
-				 // 빵 아이템 hidden 처리
-				//BreadItem5->SetActorHiddenInGame(true);
-				if (ItemActorArray.Contains(5))
-				{
-					ItemActorArray[5]->SetActorHiddenInGame(true);
-				}
-				
-			}
-			
-			
-		} , 1.5f , false);
-		
-
-		//// 설정값 로드하기 
-		LoadSettingValue();
 	}
+	
+	//// 설정값 로드하기 ->게임로드 안해도 일관성 유지하기 위해서
+	LoadSettingValue();
 }
 
 void ATestGameModeBase::LoadSettingValue()
