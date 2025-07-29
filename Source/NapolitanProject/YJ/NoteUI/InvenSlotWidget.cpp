@@ -19,7 +19,7 @@ void UInvenSlotWidget::NativeConstruct()
 	Img_Thumnail->SetVisibility(ESlateVisibility::Hidden);
 	Btn_InvenSlot->SetIsEnabled(false);
 	
-	Btn_InvenSlot->OnHovered.AddDynamic(this,&UInvenSlotWidget::OnClickedInvenSlot);
+
 	Btn_InvenSlot->OnClicked.AddDynamic(this,&UInvenSlotWidget::OnClickedInvenSlot);
 }
 
@@ -30,19 +30,6 @@ void UInvenSlotWidget::OnClickedInvenSlot()
 		// 중복되면 안됨. 먼저 앞에들고있는걸 해제하고. 
 	//GI->DT_itemData->FindRow<FItemData>
 
-	if (InventoryUI&&InventoryUI->WBP_InvenSlot_Confirm)
-	{
-		InventoryUI->WBP_InvenSlot_Confirm->CurInvenSlot=this;
-		InventoryUI->WBP_InvenSlot_Confirm->Set_ImgThumnail(Mytexture2D);
-		InventoryUI->WBP_InvenSlot_Confirm->SetVisibility(ESlateVisibility::Visible);
-		InventoryUI->WBP_InvenSlot_Confirm->Set_TextItemInfo(ItemInfo);
-		InventoryUI->WBP_InvenSlot_Confirm->MyItem=MyItem;
-	}
-}
-
-void UInvenSlotWidget::OnHoverInvenSlot()
-{
-	// 사용 을 묻는 ui 나오도록 하기
 	if (InventoryUI&&InventoryUI->WBP_InvenSlot_Confirm)
 	{
 		InventoryUI->WBP_InvenSlot_Confirm->CurInvenSlot=this;
