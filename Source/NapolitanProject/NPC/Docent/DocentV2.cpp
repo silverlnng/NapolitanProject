@@ -444,9 +444,9 @@ void ADocentV2::PickUPNote()
 void ADocentV2::CloseUPCam()
 {
 	UE_LOG(LogTemp, Log, TEXT("🛑ADocentV2::CloseUPCam"));
-	if (DetectMontage)
+	if (CheckUnderMontage)
 	{
-		GetMesh()->PlayAnimation(DetectMontage,false);
+		GetMesh()->PlayAnimation(CheckUnderMontage,false);
 	}
 	
 	this->AttachToComponent(MainCharacter->CenterArrowComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale);

@@ -76,6 +76,7 @@ void ALevelMoveDoor::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 			
 			if (!TextLines.IsEmpty())
 			{
+				// 나올 독백이 있으면 끝내고 레벨 이동하기 
 				PlayerHUD->MonolugueWidgetUI->OnTimerFinished.AddDynamic(this, &ALevelMoveDoor::LevelMove);
 			
 				PlayerHUD->MonolugueWidgetUI->SetOutputLines(TextLines);
