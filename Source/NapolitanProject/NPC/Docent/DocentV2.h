@@ -131,7 +131,7 @@ public:
 	class UAnimMontage* DetectMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = AnimMontage)
-	class UAnimMontage* GoingUpMontage;
+	class UAnimMontage* CheckUnderMontage;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Sound")
 	class USoundWave* AttackSound;
