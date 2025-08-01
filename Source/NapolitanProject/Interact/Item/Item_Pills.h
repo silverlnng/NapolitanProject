@@ -17,6 +17,6 @@ class NAPOLITANPROJECT_API AItem_Pills : public AItemActor
 	virtual void BeginPlay() override;
 	
 public:
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
+	
 	int32 ItemID=0;
 };
