@@ -52,5 +52,9 @@ public:
 	class UAnimMontage* FlyHighMontage;
 
 	void PlayWingMontage();
+
+	void PlayEatMontage();
+
+	void PlayFlyHighMontage();
 };
 

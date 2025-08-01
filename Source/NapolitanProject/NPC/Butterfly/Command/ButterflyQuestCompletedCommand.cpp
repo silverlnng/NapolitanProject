@@ -4,6 +4,7 @@
 #include "ButterflyQuestCompletedCommand.h"
 
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/NPC/Butterfly/NPC_Butterfly.h"
 
@@ -26,9 +27,12 @@ void ButterflyQuestCompletedCommand::Execute()
 		PlayerHUD->InteractUI->RemoveQuestSlot(QuestText);
 	},1.0f,false);
 
-	// 여기서 이제 공중으로 날아가는 애니메이션 실행
-
-	// 애니메이션 끝날때 가까이 날라오는거 연출
+	// 여기서 먹는 애니메이션 실행하기
+	ANPC_Butterfly* NPC_Butterfly= Cast<ANPC_Butterfly>(PC->curNPC);
+	if (NPC_Butterfly)
+	{
+		NPC_Butterfly->PlayEatMontage();
+	}
 }
 
 ButterflyQuestCompletedCommand::~ButterflyQuestCompletedCommand()

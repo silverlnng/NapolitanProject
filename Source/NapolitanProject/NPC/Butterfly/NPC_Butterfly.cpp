@@ -72,5 +72,24 @@ void ANPC_Butterfly::SpawnItems()
 
 void ANPC_Butterfly::PlayWingMontage()
 {
-	GetMesh()->PlayAnimation(WingMontage,true);
+	if (WingMontage)
+	{
+		GetMesh()->PlayAnimation(WingMontage,true);
+	}
+}
+
+void ANPC_Butterfly::PlayEatMontage()
+{
+	if (EatMontage)
+	{
+		GetMesh()->PlayAnimation(EatMontage,false);
+	}
+}
+
+void ANPC_Butterfly::PlayFlyHighMontage()
+{
+	if (FlyHighMontage)
+	{
+		GetMesh()->PlayAnimation(FlyHighMontage,false);
+	}
 }

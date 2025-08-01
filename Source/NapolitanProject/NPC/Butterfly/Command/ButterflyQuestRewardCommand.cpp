@@ -54,4 +54,12 @@ void ButterflyQuestRewardCommand::Execute()
 		PlayerHUD->NoteUI->State=EEventState::ButterflyEvent;
 		
 	},2.5f,false);
+
+	// 여기서 이제 공중으로 날아가는 애니메이션 실행
+	if (NPC_Butterfly)
+	{
+		NPC_Butterfly->PlayFlyHighMontage();
+	}
+	// 애니메이션 끝날때 가까이 날라오는거 연출
+	
 }
