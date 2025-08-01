@@ -63,6 +63,8 @@ void ButterflyQuestRewardCommand::Execute()
 	if (NPC_Butterfly)
 	{
 		NPC_Butterfly->PlayFlyHighMontage();
+		// 콜리전 변경
+		NPC_Butterfly->Cleared();
 	}
 	// 애니메이션 끝날때 가까이 날라오는거 연출
 }

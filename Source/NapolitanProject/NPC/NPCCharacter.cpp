@@ -30,7 +30,9 @@ ANPCCharacter::ANPCCharacter()
 	// 카메라를 생성해서 스프링암에 붙이고싶다.
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
-	
+
+	// 스켈레탈 메쉬 자체는 노콜리전으로 설정 
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called when the game starts or when spawned
