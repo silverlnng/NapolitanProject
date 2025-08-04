@@ -104,8 +104,7 @@ void UEventComponent::CommandAdd()
 		MakeShared<DocentCloseUpCommand>(TestPC , MainCharacter , GetWorld()));
 	CommandMap.Add(
 		"DocentPlayEnd" ,
-		MakeShared<DocentEndCommand>(TestPC , MainCharacter , GetWorld()));
-
+		MakeShared<DocentEndCommand>(TestPC , MainCharacter , GetWorld(),GI));
 	
 	CommandMap.Add(
 		"SecurityCompleted" ,

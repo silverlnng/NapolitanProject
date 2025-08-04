@@ -23,7 +23,7 @@ ButterflyQuestRewardCommand::~ButterflyQuestRewardCommand()
 
 void ButterflyQuestRewardCommand::Execute()
 {
-	PC->StartEndNPCDialougue(false);
+	
 	
 	// 스폰시키고
 	ANPC_Butterfly* NPC_Butterfly= Cast<ANPC_Butterfly>(PC->curNPC);
@@ -32,18 +32,22 @@ void ButterflyQuestRewardCommand::Execute()
 		NPC_Butterfly->SpawnItems();
 	}
 
-	MainCharacter->SetPlayerState(EPlayerState::UI);
+	FTimerHandle DelayTimer;
+	World->GetTimerManager().SetTimer(DelayTimer,[this]()
+	{
+		PC->StartEndNPCDialougue(false);
+		MainCharacter->SetPlayerState(EPlayerState::UI);
+	},4.5f,false);
 
 	// 시간지연
 	FTimerHandle UITimer;
-
 	World->GetTimerManager().SetTimer(UITimer,[this]()
 	{
 		PlayerHUD->NoteUI->SetVisibility(ESlateVisibility::Visible);
 
 		PlayerHUD->NoteUI->OnClickBtn_Btn_Butterfly();
 		
-	},2.0f,false);
+	},6.5f,false);
 
 	FTimerHandle UITimer2;
 
@@ -53,13 +57,14 @@ void ButterflyQuestRewardCommand::Execute()
 		
 		PlayerHUD->NoteUI->State=EEventState::ButterflyEvent;
 		
-	},2.5f,false);
+	},7.0f,false);
 
 	// 여기서 이제 공중으로 날아가는 애니메이션 실행
 	if (NPC_Butterfly)
 	{
 		NPC_Butterfly->PlayFlyHighMontage();
+		// 콜리전 변경
+		NPC_Butterfly->Cleared();
 	}
 	// 애니메이션 끝날때 가까이 날라오는거 연출
-	
 }

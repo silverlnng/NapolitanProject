@@ -97,10 +97,9 @@ void ADocentV2::Tick(float DeltaTime)
 			}
 			else
 			{
-				// 이때부터 StartTurnDetect(); 시작함
+				// 이때부터 StartTurnDetect(); 딱한번 시작함
 				StartTurnDetect();
 			}
-			
 			
 		}
 		if (InMaxDetectionDistance&&DistanceToPlayer>MaxDetectionDistance)
@@ -164,8 +163,6 @@ void ADocentV2::StartTurnDetect()
 	}
 
 	UE_LOG(LogTemp, Log, TEXT("뒤 돌아볼때까지 딜레이: %.1f초"), ChosenDelay);
-
-
 	
 	GetWorldTimerManager().SetTimer(
 			  PlayTurnRightAnim,
@@ -512,19 +509,11 @@ void ADocentV2::SwitchToMonsterCamera()
 void ADocentV2::StopAllTurnDetect()
 {
 	// 타이머 종료하고 
+	GetWorldTimerManager().ClearTimer(StartDetectionTimerHandle);
+	UE_LOG(LogTemp, Log, TEXT("🛑 StartDetectionTimerHandle 타이머 취소됨"));
 	
-	if (GetWorldTimerManager().IsTimerActive(StartDetectionTimerHandle))
-	{
-		GetWorldTimerManager().ClearTimer(StartDetectionTimerHandle);
-		UE_LOG(LogTemp, Log, TEXT("🛑 StartDetectionTimerHandle 타이머 취소됨"));
-	}
-	
-	if (GetWorldTimerManager().IsTimerActive(PlayTurnRightAnim))
-	{
-		GetWorldTimerManager().ClearTimer(PlayTurnRightAnim);
-		UE_LOG(LogTemp, Log, TEXT("🛑 PlayTurnRightAnim 타이머 취소됨"));
-	}
-
+	GetWorldTimerManager().ClearTimer(PlayTurnRightAnim);
+	UE_LOG(LogTemp, Log, TEXT("🛑 PlayTurnRightAnim 타이머 취소됨"));
 	
 	StopMovementDetection();
 }

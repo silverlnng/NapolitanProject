@@ -8,13 +8,14 @@
 class ATestCharacter;
 class ATestPlayerController;
 class ADocentV2;
+class UMyTestGameInstance;
 /**
  * 
  */
 class NAPOLITANPROJECT_API DocentEndCommand: public IEventCommand
 {
 public:
-	DocentEndCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,UWorld* InWorld);
+	DocentEndCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,UWorld* InWorld,UMyTestGameInstance* InGI);
 	~DocentEndCommand();
 	virtual void Execute() override;
 private:
@@ -22,4 +23,5 @@ private:
 	ATestPlayerController* PC;
 	ATestCharacter* MainCharacter;
 	ADocentV2* Docent;
+	UMyTestGameInstance* GI;
 };

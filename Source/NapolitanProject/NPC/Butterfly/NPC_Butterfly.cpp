@@ -2,12 +2,32 @@
 
 
 #include "NPC_Butterfly.h"
+
+#include "Components/ArrowComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/Interact/Item/ItemActor.h"
 #include "NapolitanProject/Interact/TargetForItem_BurgerPlate.h"
 
 void ANPC_Butterfly::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// State 값 로드시키기
+
+	if (SaveGI->LoadedGame)
+	{
+		FName eventKey =TEXT("ButterflyQuestStart");
+		if (GI->QuestCommandsMap.Contains(eventKey))
+		{
+			if (GI->QuestCommandsMap[eventKey].Done)
+			{
+				State=2;
+			}
+		}
+	}
+	
 }
 
 void ANPC_Butterfly::Tick(float DeltaSeconds)
@@ -92,4 +112,25 @@ void ANPC_Butterfly::PlayFlyHighMontage()
 	{
 		GetMesh()->PlayAnimation(FlyHighMontage,false);
 	}
+}
+
+void ANPC_Butterfly::Cleared()
+{
+	GetComponentByClass<UCapsuleComponent>()->SetCollisionProfileName(FName("ClearedNPC"));
+	SaveGI->ClearedNPC.Add(GetNPCID());
+	FString id =FString::FromInt(GetNPCID());
+}
+
+void ANPC_Butterfly::CloseUpCam()
+{
+	UE_LOG(LogTemp, Log, TEXT("🛑ADocentV2::CloseUPCam"));
+
+	PlayWingMontage();
+	
+	this->AttachToComponent(MainCharacter->CenterArrowComp, FAttachmentTransformRules::SnapToTargetNotIncludingScale);
+
+	// Arrow를 바라보도록 회전 보간
+	FRotator DesiredRot = (MainCharacter->GetActorLocation() - this->GetActorLocation()).Rotation();
+	
+	this->SetActorRotation(DesiredRot);
 }

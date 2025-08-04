@@ -4,13 +4,15 @@
 #include "DocentEndCommand.h"
 
 #include "../DocentV2.h"
+#include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
-DocentEndCommand::DocentEndCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,UWorld* InWorld)
+DocentEndCommand::DocentEndCommand(ATestPlayerController* INPC,ATestCharacter* INMainCharacter,UWorld* InWorld,UMyTestGameInstance* InGI)
 {
 	PC=INPC;
 	MainCharacter=INMainCharacter;
 	World=InWorld;
+	GI=InGI;
 }
 
 DocentEndCommand::~DocentEndCommand()
@@ -23,6 +25,16 @@ void DocentEndCommand::Execute()
 	{
 		Docent=Cast<ADocentV2>(PC->curNPC);
 	}
+
+	FTimerHandle UITimer3;
+	World->GetTimerManager().SetTimer(UITimer3,[this]()
+	{
+		FName eventKey =TEXT("DocentPlayEnd");
+		if (GI->QuestCommandsMap.Contains(eventKey))
+		{
+			GI->QuestCommandsMap[eventKey].Done = true;
+		}
+	},1.0f,false);
 	
 	FTimerHandle UITimer2;
 	World->GetTimerManager().SetTimer(UITimer2,[this]()

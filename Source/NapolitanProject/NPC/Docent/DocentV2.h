@@ -80,7 +80,8 @@ public:
 	float MaxDetectionDistance = 1800.0f; // 감지 거리 제한 (단위: cm)
 	
 	bool bCanDetectMovement=false;
-	bool InMaxDetectionDistance=false;
+	
+	bool InMaxDetectionDistance=false; //한번만 작동시키게 하는 플래그 
 	void StartMovementDetection();
 	
 	void DetectPlayerMovement();

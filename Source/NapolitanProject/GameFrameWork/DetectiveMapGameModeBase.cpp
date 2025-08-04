@@ -4,6 +4,7 @@
 #include "DetectiveMapGameModeBase.h"
 
 #include "LevelSequencePlayer.h"
+#include "MediaPlayer.h"
 #include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
 #include "TestCharacter.h"
@@ -17,7 +18,7 @@ void ADetectiveMapGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	PC=Cast<ATestPlayerController>(GetWorld()->GetFirstPlayerController());
+	/*PC=Cast<ATestPlayerController>(GetWorld()->GetFirstPlayerController());
 	PC->SetInputMode(FInputModeGameOnly());
 	PC->SetShowMouseCursor(false);
 	
@@ -37,7 +38,7 @@ void ADetectiveMapGameModeBase::BeginPlay()
 		{
 			PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
 		}
-	},0.5f,false);
+	},0.5f,false);*/
 
 	// state 에 따라서 구분되도록 하기
 	// 스폰되는 게 달라야함 .
@@ -59,7 +60,7 @@ void ADetectiveMapGameModeBase::BeginPlay()
 			///Script/Engine.World'/Game/JI/Level/HWM_map.HWM_map'
 			FName PathString = TEXT("/Game/JI/Level/HWM_map.HWM_map");
 			GI->PreloadLevel(PathString);
-			OpeningUI->SequencePlayer->OnFinished.AddDynamic(this,&ADetectiveMapGameModeBase::OpenHWLevel);
+			OpeningUI->MediaPlayer->OnEndReached.AddDynamic(this,&ADetectiveMapGameModeBase::OpenHWLevel);
 		}
 		break;
 	case EDetectiveMapState::FirstEnding:

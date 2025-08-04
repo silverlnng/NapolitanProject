@@ -56,5 +56,9 @@ public:
 	void PlayEatMontage();
 
 	void PlayFlyHighMontage();
+	
+	void Cleared();
+	
+	void CloseUpCam();
 };
 

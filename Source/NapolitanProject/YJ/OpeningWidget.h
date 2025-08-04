@@ -27,7 +27,7 @@ class NAPOLITANPROJECT_API UOpeningWidget : public UUserWidget
 	class ULevelSequence* TicketSequence;
 
 public:
-	class ULevelSequencePlayer* SequencePlayer;
+	//class ULevelSequencePlayer* SequencePlayer;
 	
 	UPROPERTY(Transient,meta=(BindWidgetAnim),BlueprintReadWrite);
 	class UWidgetAnimation* TextAnim_0;
@@ -43,6 +43,11 @@ public:
 
 	UPROPERTY(Transient,meta=(BindWidgetAnim),BlueprintReadWrite);
 	class UWidgetAnimation* TextAnim_4;
+
+	UPROPERTY(meta=(BindWidget))
+	class URetainerBox* RetainerBox;
+	UPROPERTY(meta=(BindWidget))
+	class UCanvasPanel* Media_CanvasPanel;
 	
 private:
 	
@@ -60,7 +65,12 @@ private:
 
 	UFUNCTION()
 	void OnfifthAnimationFinished();
-	
-	class ALevelSequenceActor* outActor;
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Media")
+	class UMediaPlayer* MediaPlayer;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Media")
+	class UMediaSource* MediaSource;
 	
 };
