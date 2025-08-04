@@ -18,28 +18,13 @@ void ADetectiveMapGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	/*PC=Cast<ATestPlayerController>(GetWorld()->GetFirstPlayerController());
-	PC->SetInputMode(FInputModeGameOnly());
-	PC->SetShowMouseCursor(false);
-	
-	MainCharacter=Cast<ATestCharacter>(PC->GetPawn());
-	// Q,R 키를 막기. 
-	MainCharacter->b_IA_Note_Allowed=false;
-	MainCharacter->b_IA_Inven_Allowed=false;
-	
-	PlayerHUD =PC->GetHUD<APlayerHUD>();
-
-	FTimerHandle GITimer;
-
-	GetWorld()->GetTimerManager().SetTimer(GITimer,[this]()
+	APlayerController* PC=Cast<APlayerController>(GetWorld()->GetFirstPlayerController());
+	if (PC)
 	{
-		//퀘스트 UI 도 안보이도록 !
-		if (PlayerHUD&&PlayerHUD->InteractUI)
-		{
-			PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
-		}
-	},0.5f,false);*/
-
+		PC->SetInputMode(FInputModeGameOnly());
+		PC->SetShowMouseCursor(false);
+	}
+	
 	// state 에 따라서 구분되도록 하기
 	// 스폰되는 게 달라야함 .
 	GI =GetGameInstance<UMyTestGameInstance>();

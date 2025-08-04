@@ -39,6 +39,12 @@ public:
 	
 	UPROPERTY()
 	class UInventoryWidget* InventoryUI;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* HoverSoundWave;
+	
+	UFUNCTION()
+	void OnHoverPlaySound();
 	
 	UFUNCTION()
 	void OnClickedInvenSlot();

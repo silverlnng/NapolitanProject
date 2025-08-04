@@ -47,6 +47,9 @@ void ULoadScreenWidget::NativeConstruct()
 	SaveSlotSwitcherWidget_2->WBP_VacantSlot->Btn_SaveGame->OnClicked.AddDynamic(this,&ULoadScreenWidget::OnSaveQuestionWidgetCreate_2);
 	SaveSlotSwitcherWidget_2->WBP_SavedSlot->Btn_LoadSelectSlot->OnClicked.AddDynamic(this,&ULoadScreenWidget::OnLoadConfirm_2);
 
+
+	// 호버할때 소리 넣기 
+
 	OnVisibilityChanged.AddDynamic(this,&ULoadScreenWidget::HandleVisibilityChanged);
 	GameSaveController = NewObject<UGameSaveController>(this);
 

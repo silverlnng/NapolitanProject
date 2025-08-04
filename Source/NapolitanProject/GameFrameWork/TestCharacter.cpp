@@ -351,6 +351,7 @@ void ATestCharacter::ESCUIToggle(const FInputActionValue& Value)
 		PlayerHUD->UESC_UI->SetVisibility(ESlateVisibility::Hidden); // Inventory를 닫아라
 		
 		PC->SetInputMode(FInputModeGameOnly());
+		UWidgetBlueprintLibrary::SetFocusToGameViewport();
 		PC->SetShowMouseCursor(false);
 		if (NoteUICloseSound)
 		{
@@ -359,7 +360,6 @@ void ATestCharacter::ESCUIToggle(const FInputActionValue& Value)
 	}
 	else
 	{
-		UWidgetBlueprintLibrary::SetFocusToGameViewport();
 		PlayerHUD->UESC_UI->SetVisibility(ESlateVisibility::Visible);
 		PC->SetInputMode(FInputModeGameAndUI());
 		PC->SetShowMouseCursor(true);

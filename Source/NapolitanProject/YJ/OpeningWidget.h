@@ -48,6 +48,9 @@ public:
 	class URetainerBox* RetainerBox;
 	UPROPERTY(meta=(BindWidget))
 	class UCanvasPanel* Media_CanvasPanel;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* TTSSoundWave;
 	
 private:
 	
