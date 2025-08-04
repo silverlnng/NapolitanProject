@@ -3,12 +3,17 @@
 
 #include "OpeningWidget.h"
 #include "LevelSequencePlayer.h"
+#include "MediaPlayer.h"
 #include "Animation/WidgetAnimation.h"
+#include "Components/CanvasPanel.h"
+#include "Components/RetainerBox.h"
 #include "Kismet/GameplayStatics.h"
 
 void UOpeningWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+	
+	Media_CanvasPanel->SetVisibility(ESlateVisibility::Hidden);
 	
 	// 첫 번째 애니메이션이 끝났을 때 실행될 델리게이트 바인딩
 	Anim0nFinishedDelegate.BindDynamic(this, &UOpeningWidget::OnFirstAnimationFinished);
@@ -26,8 +31,6 @@ void UOpeningWidget::NativeConstruct()
 	// 첫 번째 애니메이션 재생
 	PlayAnimation(TextAnim_0);
 	
-	SequencePlayer = ULevelSequencePlayer::CreateLevelSequencePlayer(
-		GetWorld() , TicketSequence , FMovieSceneSequencePlaybackSettings() , outActor);
 }
 
 void UOpeningWidget::OnFirstAnimationFinished()
@@ -57,13 +60,22 @@ void UOpeningWidget::OnFourthAnimationFinished()
 void UOpeningWidget::OnfifthAnimationFinished()
 {
 	// 자기자신은 hidden 처리
-	this->SetVisibility(ESlateVisibility::Hidden);
-	// 시퀀스 실행
-	if (TicketSequence)
+	RetainerBox->SetVisibility(ESlateVisibility::Hidden);
+
+	Media_CanvasPanel->SetVisibility(ESlateVisibility::Visible);
+	
+	// 미디어 플레이실행
+	if (MediaPlayer && MediaSource)
 	{
-		if (SequencePlayer)
+		// MediaSource 열기 시도
+		if (MediaPlayer->OpenSource(MediaSource))
 		{
-			SequencePlayer->Play();
+			UE_LOG(LogTemp, Log, TEXT("Media source opened successfully!"));
+			MediaPlayer->Play(); // 자동 재생
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Failed to open media source!"));
 		}
 	}
 }

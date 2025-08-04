@@ -13,6 +13,21 @@
 void ANPC_Butterfly::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// State 값 로드시키기
+
+	if (SaveGI->LoadedGame)
+	{
+		FName eventKey =TEXT("ButterflyQuestStart");
+		if (GI->QuestCommandsMap.Contains(eventKey))
+		{
+			if (GI->QuestCommandsMap[eventKey].Done)
+			{
+				State=2;
+			}
+		}
+	}
+	
 }
 
 void ANPC_Butterfly::Tick(float DeltaSeconds)
