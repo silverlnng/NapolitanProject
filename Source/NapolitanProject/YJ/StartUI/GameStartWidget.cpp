@@ -7,12 +7,14 @@
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
+#include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/SaveUI/LoadScreenWidget.h"
 
 void UGameStartWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+	
 	Btn_NewGame->OnClicked.AddDynamic(this,&UGameStartWidget::OnClickedNewGame);
 	Btn_Load->OnClicked.AddDynamic(this,&UGameStartWidget::OnClickedLoad);
 	Btn_Setting->OnClicked.AddDynamic(this,&UGameStartWidget::OnClickedSetting);
@@ -21,8 +23,17 @@ void UGameStartWidget::NativeConstruct()
 	
 	Btn_Achievement->SetVisibility(ESlateVisibility::Hidden);
 	SettingUI->SetVisibility(ESlateVisibility::Hidden);
-
+	
 	WBP_LoadScreen->SetVisibility(ESlateVisibility::Hidden);
+	
+	GI =GetGameInstance<UMyTestGameInstance>();
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
+	
+	if (SaveGI)
+	{
+		WBP_LoadScreen->LoadUpdateUI(SaveGI->SaveSlotInfos);
+	}
+	
 }
 
 void UGameStartWidget::OnClickedNewGame()
@@ -35,15 +46,7 @@ void UGameStartWidget::OnClickedNewGame()
 
 void UGameStartWidget::OnClickedLoad()
 {
-	ATestPlayerController* TestPC=GetOwningPlayer<ATestPlayerController>();
-	if (TestPC)
-	{
-		APlayerHUD* PlayerHUD=TestPC->GetHUD<APlayerHUD>();
-		if (PlayerHUD)
-		{
-			PlayerHUD->LoadScreenUI->SetVisibility(ESlateVisibility::Visible);
-		}
-	}
+	WBP_LoadScreen->SetVisibility(ESlateVisibility::Visible);
 }
 
 void UGameStartWidget::OnClickedSetting()

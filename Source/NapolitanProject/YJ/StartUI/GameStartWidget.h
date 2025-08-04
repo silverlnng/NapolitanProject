@@ -35,7 +35,12 @@ public:
 	
 	UPROPERTY(meta = (BindWidget))
 	class ULoadScreenWidget* WBP_LoadScreen;
-
+	
+	UPROPERTY(VisibleAnywhere)
+	class UMyTestGameInstance* GI;
+	UPROPERTY()
+	class USaveGISubsystem* SaveGI;
+	
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> MainLevel;
 

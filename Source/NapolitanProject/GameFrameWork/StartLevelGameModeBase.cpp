@@ -2,35 +2,25 @@
 
 
 #include "StartLevelGameModeBase.h"
-#include "PlayerHUD.h"
-#include "TestPlayerController.h"
+#include "MyTestGameInstance.h"
+#include "SaveGISubsystem.h"
 #include "Blueprint/UserWidget.h"
-#include "NapolitanProject/Interact/InteractWidget.h"
 #include "NapolitanProject/YJ/StartUI/GameStartWidget.h"
 
 void AStartLevelGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	PC=Cast<ATestPlayerController>(GetWorld()->GetFirstPlayerController());
-	PC->SetInputMode(FInputModeUIOnly());
-	PC->SetShowMouseCursor(true);
-	
-	PlayerHUD =PC->GetHUD<APlayerHUD>();
 
-	FTimerHandle DelayTimer;
-	GetWorld()->GetTimerManager().SetTimer(DelayTimer,[this]()
-	{
-		//퀘스트 UI 도 안보이도록 !
-		if (PlayerHUD&&PlayerHUD->InteractUI)
-		{
-			PlayerHUD->InteractUI->SetVisibility(ESlateVisibility::Hidden);
-		}
-	},0.5f,false);
-	
+	GI =GetGameInstance<UMyTestGameInstance>();
+	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
+
 	StartWidgetUI =CreateWidget<UGameStartWidget>(GetWorld(),StartWidgetFactory);
 	if (StartWidgetUI)
 	{
 		StartWidgetUI->AddToViewport(0);
+		if (SaveGI)
+		{
+			StartWidgetUI->SaveGI=SaveGI;
+		}
 	}
 }

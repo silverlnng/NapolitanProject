@@ -30,13 +30,18 @@ void UOpeningWidget::NativeConstruct()
 	
 	// 첫 번째 애니메이션 재생
 	PlayAnimation(TextAnim_0);
-	
+	// 소리 재생
+	if (TTSSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, TTSSoundWave);
+	}
 }
 
 void UOpeningWidget::OnFirstAnimationFinished()
 {
 	// 첫 번째 애니메이션 재생
 	PlayAnimation(TextAnim_1);
+
 }
 
 void UOpeningWidget::OnSecondAnimationFinished()

@@ -25,12 +25,6 @@ public:
 	
 	virtual void BeginPlay() override;
 	
-	class ATestPlayerController* PC;
-		
-	class ATestCharacter* MainCharacter;
-	
-	class APlayerHUD* PlayerHUD;
-
 	UPROPERTY()
 	class UMyTestGameInstance* GI;
 
