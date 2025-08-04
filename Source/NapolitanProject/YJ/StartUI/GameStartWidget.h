@@ -44,6 +44,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> MainLevel;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+	USoundWave* HoverSoundWave;
+	
 	UFUNCTION()
 	void OnClickedNewGame();
 	UFUNCTION()
@@ -54,4 +57,7 @@ public:
 	void OnClick_Exit();
 	UFUNCTION()
 	void OnClick_Achievement();
+
+	UFUNCTION()
+	void OnHoverPlaySound();
 };

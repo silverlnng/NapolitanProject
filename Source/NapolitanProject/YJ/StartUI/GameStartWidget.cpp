@@ -6,9 +6,7 @@
 #include "SettingWidget.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
-#include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/SaveGISubsystem.h"
-#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/SaveUI/LoadScreenWidget.h"
 
 void UGameStartWidget::NativeConstruct()
@@ -20,6 +18,14 @@ void UGameStartWidget::NativeConstruct()
 	Btn_Setting->OnClicked.AddDynamic(this,&UGameStartWidget::OnClickedSetting);
 	Btn_Exit->OnClicked.AddDynamic(this,&UGameStartWidget::OnClick_Exit);
 	Btn_Achievement->OnClicked.AddDynamic(this,&UGameStartWidget::OnClick_Achievement);
+
+	// 호버할때 사운드 넣기 
+	Btn_NewGame->OnHovered.AddDynamic(this,&UGameStartWidget::OnHoverPlaySound);
+	Btn_Load->OnHovered.AddDynamic(this,&UGameStartWidget::OnHoverPlaySound);
+	Btn_Setting->OnHovered.AddDynamic(this,&UGameStartWidget::OnHoverPlaySound);
+	Btn_Exit->OnHovered.AddDynamic(this,&UGameStartWidget::OnHoverPlaySound);
+	Btn_Achievement->OnHovered.AddDynamic(this,&UGameStartWidget::OnHoverPlaySound);
+
 	
 	Btn_Achievement->SetVisibility(ESlateVisibility::Hidden);
 	SettingUI->SetVisibility(ESlateVisibility::Hidden);
@@ -62,4 +68,12 @@ void UGameStartWidget::OnClick_Exit()
 void UGameStartWidget::OnClick_Achievement()
 {
 	
+}
+
+void UGameStartWidget::OnHoverPlaySound()
+{
+	if (HoverSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, HoverSoundWave);
+	}
 }

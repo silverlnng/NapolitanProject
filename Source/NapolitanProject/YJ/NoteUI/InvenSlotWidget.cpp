@@ -8,6 +8,7 @@
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
+#include "Kismet/GameplayStatics.h"
 
 void UInvenSlotWidget::NativeConstruct()
 {
@@ -19,8 +20,18 @@ void UInvenSlotWidget::NativeConstruct()
 	Img_Thumnail->SetVisibility(ESlateVisibility::Hidden);
 	Btn_InvenSlot->SetIsEnabled(false);
 	
-
+	// 호버할때 소리 넣기 
+	Btn_InvenSlot->OnHovered.AddDynamic(this,&UInvenSlotWidget::OnHoverPlaySound);
+	
 	Btn_InvenSlot->OnClicked.AddDynamic(this,&UInvenSlotWidget::OnClickedInvenSlot);
+}
+
+void UInvenSlotWidget::OnHoverPlaySound()
+{
+	if (HoverSoundWave)
+	{
+		UGameplayStatics::PlaySound2D(this, HoverSoundWave);
+	}
 }
 
 void UInvenSlotWidget::OnClickedInvenSlot()

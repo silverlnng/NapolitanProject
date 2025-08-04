@@ -11,6 +11,13 @@ void AStartLevelGameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
 
+	APlayerController* PC=Cast<APlayerController>(GetWorld()->GetFirstPlayerController());
+	if (PC)
+	{
+		PC->SetInputMode(FInputModeUIOnly());
+		PC->SetShowMouseCursor(true);
+	}
+	
 	GI =GetGameInstance<UMyTestGameInstance>();
 	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
 
