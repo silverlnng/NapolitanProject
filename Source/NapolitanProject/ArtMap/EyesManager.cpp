@@ -4,7 +4,11 @@
 #include "EyesManager.h"
 
 #include "OriginEye.h"
+#include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "NapolitanProject/GameFrameWork/TestCharacter.h"
+#include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 
 // Sets default values
 AEyesManager::AEyesManager()
@@ -38,6 +42,47 @@ void AEyesManager::BeginPlay()
 
 	bIsLockOpen = false;
 	
+	TestPC = GetWorld()->GetFirstPlayerController<ATestPlayerController>();
+	if (TestPC)
+	{
+		MainCharacter =TestPC->GetPawn<ATestCharacter>();
+	}
+
+	// 1. "Lock" 태그를 가진 자물쇠 액터를 찾기
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("Lock"), FoundActors);
+
+	if (FoundActors.Num() == 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("LockActor not found!"));
+		return;
+	}
+
+	DigitLockActor = FoundActors[0];
+	UE_LOG(LogTemp, Log, TEXT("Found TargetActor: %s"), *DigitLockActor->GetName());
+
+	// 2. 자물쇠 액터 안의 CameraComponent 중 Tag가 "TargetCamera" 인 것을 찾기
+	TArray<UCameraComponent*> CameraComponents;
+	DigitLockActor->GetComponents<UCameraComponent>(CameraComponents);
+
+	for (UCameraComponent* CamComp : CameraComponents)
+	{
+		if (CamComp->ComponentHasTag(FName("TargetCamera")))
+		{
+			DeathCameraComp = CamComp;
+			UE_LOG(LogTemp, Log, TEXT("Found TargetCameraComponent: %s"), *DeathCameraComp->GetName());
+		}
+		else
+		{
+			baseCameraComp = CamComp;
+		}
+	}
+
+	if (!DeathCameraComp)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TargetCameraComponent with tag 'TargetCamera' not found!"));
+	}
+
 }
 
 // Called every frame
@@ -83,6 +128,15 @@ void AEyesManager::UpdateEyeVisibility()
 void AEyesManager::OnAllEyesRevealed()
 {
 	UE_LOG(LogTemp, Warning, TEXT("모든 OriginEye가 나타났습니다!"));
+
+	// 이때 자물쇠 인터렉트 중이면 카메라를 회전하기
+	if (IsViewingDigitLockActor())
+	{
+		baseCameraComp->SetActive(false);
+		DeathCameraComp->SetActive(true);
+		TestPC->SetViewTargetWithBlend(DigitLockActor,0.1f);
+		//위젯도 안보이게 처리하기 
+	}
 	
 	// 모든 눈알들을 추격 모드로 전환
 	for (AOriginEye* Eye : OriginEyes)
@@ -91,6 +145,29 @@ void AEyesManager::OnAllEyesRevealed()
 		{
 			Eye->UpdateChasing(GetWorld()->GetDeltaSeconds());
 		}
+	}
+}
+
+bool AEyesManager::IsViewingDigitLockActor()
+{
+	if (TestPC->PlayerCameraManager)
+	{
+		AActor* CurrentViewTarget = TestPC->PlayerCameraManager->GetViewTarget();
+
+		if (CurrentViewTarget)
+		{
+			return CurrentViewTarget->ActorHasTag(FName("Lock"));
+			// 또는 포인터 비교:
+			// return CurrentViewTarget == DigitLockActor;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
 	}
 }
 

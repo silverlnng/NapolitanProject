@@ -46,6 +46,7 @@ void ADetectiveMapGameModeBase::BeginPlay()
 			FName PathString = TEXT("/Game/JI/Level/HWM_map.HWM_map");
 			GI->PreloadLevel(PathString);
 			OpeningUI->MediaPlayer->OnEndReached.AddDynamic(this,&ADetectiveMapGameModeBase::OpenHWLevel);
+			OpeningUI->MediaPlayer->OnEndReached.AddDynamic(this,&ADetectiveMapGameModeBase::ReleasePreloadHandle);
 		}
 		break;
 	case EDetectiveMapState::FirstEnding:
@@ -95,4 +96,12 @@ void ADetectiveMapGameModeBase::OpenHWLevel()
 {
 	UGameplayStatics::OpenLevelBySoftObjectPtr(GetWorld() , HWLevel , true);
 	UE_LOG(LogTemp , Warning , TEXT("DetectiveMap:: OpenLevel"))
+}
+
+void ADetectiveMapGameModeBase::ReleasePreloadHandle()
+{
+	if (GI)
+	{
+		GI->ReleasePreloadHandle();
+	}
 }

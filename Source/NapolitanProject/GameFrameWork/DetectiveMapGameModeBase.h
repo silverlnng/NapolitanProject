@@ -56,4 +56,7 @@ public:
 
 	FTimerHandle UITimer;
 	FTimerHandle UITimer2;
+
+	UFUNCTION()
+	void ReleasePreloadHandle();
 };

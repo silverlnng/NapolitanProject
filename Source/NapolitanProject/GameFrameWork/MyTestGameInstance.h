@@ -232,6 +232,8 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void PreloadLevel(FName& LevelName);
+
+	void ReleasePreloadHandle();
 	
 	TSharedPtr<FStreamableHandle> PreloadHandle;
 	
