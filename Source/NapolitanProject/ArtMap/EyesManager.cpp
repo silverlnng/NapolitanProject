@@ -4,11 +4,14 @@
 #include "EyesManager.h"
 
 #include "OriginEye.h"
+#include "Blueprint/UserWidget.h"
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
+#include "Components/SlateWrapperTypes.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
+#include "NapolitanProject/Interact/DigitLockActor.h"
 
 // Sets default values
 AEyesManager::AEyesManager()
@@ -58,7 +61,7 @@ void AEyesManager::BeginPlay()
 		return;
 	}
 
-	DigitLockActor = FoundActors[0];
+	DigitLockActor = Cast<ADigitLockActor>(FoundActors[0]);
 	UE_LOG(LogTemp, Log, TEXT("Found TargetActor: %s"), *DigitLockActor->GetName());
 
 	// 2. 자물쇠 액터 안의 CameraComponent 중 Tag가 "TargetCamera" 인 것을 찾기
@@ -128,14 +131,17 @@ void AEyesManager::UpdateEyeVisibility()
 void AEyesManager::OnAllEyesRevealed()
 {
 	UE_LOG(LogTemp, Warning, TEXT("모든 OriginEye가 나타났습니다!"));
-
+	// 눈알 shake 효과 시간 길었음 좋겠음
+	
 	// 이때 자물쇠 인터렉트 중이면 카메라를 회전하기
 	if (IsViewingDigitLockActor())
 	{
 		baseCameraComp->SetActive(false);
 		DeathCameraComp->SetActive(true);
 		TestPC->SetViewTargetWithBlend(DigitLockActor,0.1f);
-		//위젯도 안보이게 처리하기 
+		//위젯도 안보이게 처리하기
+		DigitLockActor->DigitLockUi->SetVisibility(ESlateVisibility::Hidden);
+		//
 	}
 	
 	// 모든 눈알들을 추격 모드로 전환
@@ -150,20 +156,9 @@ void AEyesManager::OnAllEyesRevealed()
 
 bool AEyesManager::IsViewingDigitLockActor()
 {
-	if (TestPC->PlayerCameraManager)
+	if (DigitLockActor->isInUi)
 	{
-		AActor* CurrentViewTarget = TestPC->PlayerCameraManager->GetViewTarget();
-
-		if (CurrentViewTarget)
-		{
-			return CurrentViewTarget->ActorHasTag(FName("Lock"));
-			// 또는 포인터 비교:
-			// return CurrentViewTarget == DigitLockActor;
-		}
-		else
-		{
-			return false;
-		}
+		return true;
 	}
 	else
 	{

@@ -31,4 +31,6 @@ void CuratorCompletedCommand::Execute()
 	{
 		GI->QuestCommandsMap[eventKey].Done = true;
 	}
+	// 큐레이터와의 만남 후 체크 되는것.
+		// 해바라기 그림문에서 체크하기 
 }

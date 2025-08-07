@@ -50,7 +50,7 @@ public:
 	class ATestPlayerController* TestPC;
 
 	UPROPERTY()
-	AActor* DigitLockActor;
+	class ADigitLockActor* DigitLockActor;
 	
 	UPROPERTY()
 	class UCameraComponent* baseCameraComp;
