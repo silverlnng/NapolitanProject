@@ -363,6 +363,15 @@ void UMyTestGameInstance::PreloadLevel(FName& LevelName)
 	}));
 }
 
+void UMyTestGameInstance::ReleasePreloadHandle()
+{
+	if (PreloadHandle.IsValid())
+	{
+		PreloadHandle->ReleaseHandle();
+		PreloadHandle.Reset();
+	}
+}
+
 void UMyTestGameInstance::UnlockAchievement(FString AchievementId)
 {
 	/*IOnlineSubsystem* OnlineSub = Online::GetSubsystem(GetWorld());

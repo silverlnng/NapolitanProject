@@ -130,7 +130,8 @@ void ALevelMoveDoor::LevelMove()
 		}
 			
 		//GI->AsyncLoadLoadLevel(MoveToLevel); //레벨 이동할때 로딩이 되도록
-		GI->PreloadLevel(MoveToLevelPathString);
+		// GI->PreloadLevel(MoveToLevelPathString);
+		// 그림으로 레벨이동은 preload 를 안하고 해보기 
 		
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()

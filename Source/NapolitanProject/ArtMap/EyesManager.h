@@ -45,5 +45,20 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Gimmick")
 	bool bIsLockOpen;
 
+	class ATestCharacter* MainCharacter;
+	
+	class ATestPlayerController* TestPC;
+
+	UPROPERTY()
+	class ADigitLockActor* DigitLockActor;
+	
+	UPROPERTY()
+	class UCameraComponent* baseCameraComp;
+
+	UPROPERTY()
+	class UCameraComponent* DeathCameraComp;
+
+	UFUNCTION()
+	bool IsViewingDigitLockActor();
 
 };

@@ -123,7 +123,7 @@ void ASpiderMapGameModeBase::BeginPlay()
 	
 	GI =GetGameInstance<UMyTestGameInstance>();
 	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
-	if (GI) // 로드플레이 아닐때도 해야함
+	if (GI&&SaveGI) // 로드플레이 아닐때도 해야함
 	{
 		// 시간 지연을 주기
 		FTimerHandle GITimer;
@@ -134,7 +134,7 @@ void ASpiderMapGameModeBase::BeginPlay()
 			SaveGI->RestoreAttachedItems();
 			
 			CatchSpiderCount=FCString::Atoi(*SaveGI->CatchSpiderNum);
-		},0.5f,false);
+		},1.0f,false);
 		
 		if (!SaveGI->ClearedNPC.IsEmpty())
 		{
