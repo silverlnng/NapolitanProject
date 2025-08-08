@@ -7,6 +7,15 @@
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 
 
+void ASimpleTrigger_Curator::BeginPlay()
+{
+	Super::BeginPlay();
+	if (ZombieMutant)
+	{
+		ZombieMutant->SetActorHiddenInGame(true);
+	}
+}
+
 void ASimpleTrigger_Curator::BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
                                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -20,11 +29,17 @@ void ASimpleTrigger_Curator::BeginOverlap(UPrimitiveComponent* OverlappedCompone
 		if (GI->QuestCommandsMap[eventKey].Done)
 		{
 			// 오직한번만 
+			if (bOnlyOnce){return;}
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green,TEXT("ASimpleTrigger_Curator"));
+			bOnlyOnce=true;
+			// 문이열리면서 점프스케어 튀어나오기
+			ZombieMutant->SetActorHiddenInGame(false);
+			ZombieMutant->PlayAnimMontage(attackAM);
 			
-			// 문이열리면서 점프스케어 튀어나오기 
 		}
 		else
 		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green,TEXT("Not CuratorCompleted"));
 			return;
 		}
 	}
