@@ -147,6 +147,7 @@ void ALevelMoveDoor::LevelMove()
 	
 		if (LoadedGame)
 		{
+			// 거미 방에서만 실행시켜도 되는 거 //
 			LoadedGame->SavedItems=SaveGI->SavedItems;
 			LoadedGame->CatchSpiderNum=SaveGI->CatchSpiderNum;
 			UGameplayStatics::SaveGameToSlot(LoadedGame , SlotName , 0);

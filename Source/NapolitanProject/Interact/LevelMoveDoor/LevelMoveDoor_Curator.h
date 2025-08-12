@@ -14,4 +14,11 @@ class NAPOLITANPROJECT_API ALevelMoveDoor_Curator : public ALevelMoveDoor
 {
 	GENERATED_BODY()
 	
+	virtual void BeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
+
+	virtual void LevelMove() override;
+
+	UPROPERTY(EditDefaultsOnly)
+	const TSoftObjectPtr<UWorld> FinalLevel;
 };
