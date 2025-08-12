@@ -143,7 +143,7 @@ void AOriginEye::UpdateChasing(float DeltaTime)
 				{
 					PlayerHUD->PlayDeadVignetteEffect();
 				}
-			},0.2f,false);
+			},1.f,false);
 		
 			//시간 지연 주고 사망 UI 나오도록
 			FTimerHandle UITimer;
@@ -157,7 +157,7 @@ void AOriginEye::UpdateChasing(float DeltaTime)
 					PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
 					bIsDeadEnding = true; //한번만 재생하도록 수정
 				}
-			},0.6f,false); //사망
+			},1.4f,false); //사망
 		}
 	}
 }
