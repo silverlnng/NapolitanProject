@@ -250,7 +250,8 @@ public:
 	
 	UPROPERTY(VisibleAnywhere)
 	class AItemActor* curItem =nullptr;
-	
+
+	UPROPERTY(BlueprintReadWrite)
 	bool bIsBeingAttacked=false;
 
 	UPROPERTY(VisibleAnywhere)
