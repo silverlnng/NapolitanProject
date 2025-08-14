@@ -10,6 +10,9 @@
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
 #include "NapolitanProject/YJ/DeadEndingWidget.h"
 
+bool AOriginEye::bIsDeadEnding = false;
+bool AOriginEye::bStopChase = false;
+
 // Sets default values
 AOriginEye::AOriginEye()
 {
@@ -26,7 +29,6 @@ AOriginEye::AOriginEye()
 
 	EyeMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EyeMesh"));
 	EyeMesh->SetupAttachment(Arrow); //애로우 컴포넌트에 붙이기
-	
 }
 
 // Called when the game starts or when spawned
@@ -48,6 +50,7 @@ void AOriginEye::BeginPlay()
 	RandomSpeed = FMath::RandRange(180.0f, 300.0f);
 	
 	bIsDeadEnding = false;
+	bStopChase = false;
 }
 
 // Called every frame
@@ -107,7 +110,7 @@ void AOriginEye::UpdateChasing(float DeltaTime)
 	//제한 시간 내에 자물쇠를 못풀었을 시 플레이어를 향해 달려옴
 
 	if (!MainCharacter) return;
-
+	if (bStopChase) return;
 	FVector PlayerLocation = MainCharacter->GetActorLocation();
     
 	// 플레이어 주변 구형으로 분산
@@ -134,19 +137,23 @@ void AOriginEye::UpdateChasing(float DeltaTime)
 	{
 		// 플레이어와 충돌 거리 체크 (게임오버 조건)
 		float DistanceToPlayer = FVector::Dist(PlayerLocation, EyeLocation);
-		if (DistanceToPlayer < 200.0f) // 1미터 이내로 접근하면
+		if (DistanceToPlayer < 150.0f) // 1미터 이내로 접근하면
 		{
-			FTimerHandle UITimer2;
-			GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+			bIsDeadEnding=true;
+			if (MainCharacter)
 			{
-				if (PlayerHUD)
-				{
-					PlayerHUD->PlayDeadVignetteEffect();
-				}
-			},1.f,false);
-		
+				MainCharacter->PlayGetDownAnimMontage();
+				//PlayerHUD->PlayDeadVignetteEffect();
+			}
+			FTimerHandle DelayTimer;
+			GetWorldTimerManager().SetTimer(DelayTimer, []()
+			{
+				bStopChase = true; //한번만 재생하도록 수정
+				
+			},0.8f,false);
+			
 			//시간 지연 주고 사망 UI 나오도록
-			FTimerHandle UITimer;
+			/*FTimerHandle UITimer;
 			GetWorldTimerManager().SetTimer(UITimer, [this]()
 			{
 				MainCharacter->SetPlayerState(EPlayerState::UI);
@@ -157,7 +164,7 @@ void AOriginEye::UpdateChasing(float DeltaTime)
 					PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
 					bIsDeadEnding = true; //한번만 재생하도록 수정
 				}
-			},1.4f,false); //사망
+			},1.4f,false); //사망#1#*/
 		}
 	}
 }

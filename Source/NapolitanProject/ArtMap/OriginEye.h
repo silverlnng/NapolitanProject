@@ -72,7 +72,7 @@ public:
 	//각 눈알의 고유한 목표 오프셋
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Chase")
 	FVector UniqueTargetOffset;
-
-	bool bIsDeadEnding;
-
+	
+	static bool bIsDeadEnding;
+	static bool bStopChase;
 };

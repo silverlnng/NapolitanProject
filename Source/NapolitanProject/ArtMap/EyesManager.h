@@ -59,6 +59,7 @@ public:
 	class UCameraComponent* DeathCameraComp;
 
 	UFUNCTION()
-	bool IsViewingDigitLockActor();
+	void CheckViewingDigitLockActor();
 
+	bool CheckViewing=false;
 };

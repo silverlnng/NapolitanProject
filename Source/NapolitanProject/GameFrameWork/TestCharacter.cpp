@@ -702,3 +702,38 @@ void ATestCharacter::PlayGetUpAnimMontage()
 		//PlayAnimMontage(GetUp);
 	}
 }
+
+void ATestCharacter::PlayGetDownAnimMontage()
+{
+
+	if (GetCharacterMovement())
+	{
+		GetCharacterMovement()->StopMovementImmediately();
+	}
+	// 이동 입력 을 못하게하고
+	bIsBeingAttacked=true;
+	
+	if (GetDown)
+	{
+		// 메쉬 안보이게 
+		//GetMesh()->SetHiddenInGame(true);
+		GetMesh()->PlayAnimation(GetDown,false);
+
+		// 타이머로 딜레이 주고
+		FTimerHandle delayTimer;
+		GetWorldTimerManager().SetTimer(delayTimer,[this]()
+		{
+			GetMesh()->SetOwnerNoSee(true);
+		},2.0f,false);
+
+		FTimerHandle UITimer2;
+		GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
+		{
+			if (PlayerHUD)
+			{
+				PlayerHUD->PlayDeadVignetteEffect();
+			}
+		},4.0f,false);
+		
+	}
+}
