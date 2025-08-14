@@ -290,11 +290,16 @@ public:
 	UPROPERTY(VisibleAnywhere) // 저장한 장소
 	FTransform SaveTransform;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly,Category="Anim")
 	class UAnimMontage* GetUp;
-	
+	UPROPERTY(EditDefaultsOnly,Category="Anim")
+	class UAnimMontage* GetDown;
 	UFUNCTION()
 	void PlayGetUpAnimMontage();
+
+	UFUNCTION(BlueprintCallable)
+	void PlayGetDownAnimMontage();
+	
 	
 };
 	

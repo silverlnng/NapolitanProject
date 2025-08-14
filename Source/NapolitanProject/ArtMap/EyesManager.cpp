@@ -105,6 +105,7 @@ void AEyesManager::Tick(float DeltaTime)
 		//제한시간이 끝났을 경우 사망 이벤트 발생
 		if(TimeElapsed >= EndTime && bIsLockOpen == false)
 		{
+			CheckViewingDigitLockActor();
 			OnAllEyesRevealed(); // 시간 종료 → 이벤트 실행
 		}
 	}
@@ -133,17 +134,6 @@ void AEyesManager::OnAllEyesRevealed()
 	UE_LOG(LogTemp, Warning, TEXT("모든 OriginEye가 나타났습니다!"));
 	// 눈알 shake 효과 시간 길었음 좋겠음
 	
-	// 이때 자물쇠 인터렉트 중이면 카메라를 회전하기
-	if (IsViewingDigitLockActor())
-	{
-		baseCameraComp->SetActive(false);
-		DeathCameraComp->SetActive(true);
-		TestPC->SetViewTargetWithBlend(DigitLockActor,0.1f);
-		//위젯도 안보이게 처리하기
-		DigitLockActor->DigitLockUi->SetVisibility(ESlateVisibility::Hidden);
-		//
-	}
-	
 	// 모든 눈알들을 추격 모드로 전환
 	for (AOriginEye* Eye : OriginEyes)
 	{
@@ -154,15 +144,20 @@ void AEyesManager::OnAllEyesRevealed()
 	}
 }
 
-bool AEyesManager::IsViewingDigitLockActor()
+void AEyesManager::CheckViewingDigitLockActor()
 {
-	if (DigitLockActor->isInUi)
+	if (!CheckViewing)
 	{
-		return true;
-	}
-	else
-	{
-		return false;
+		CheckViewing=true;
+		
+		if (DigitLockActor->isInUi)
+		{
+			baseCameraComp->SetActive(false);
+			DeathCameraComp->SetActive(true);
+			TestPC->SetViewTargetWithBlend(DigitLockActor,0.1f);
+			//위젯도 안보이게 처리하기
+			DigitLockActor->DigitLockUi->SetVisibility(ESlateVisibility::Hidden);
+		}
 	}
 }
 
