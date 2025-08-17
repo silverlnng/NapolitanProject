@@ -352,24 +352,11 @@ void ADocentV2::PlayAttackAnimation()
 	FTimerHandle UITimer2;
 	GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
 	{
-		if (PlayerHUD )
-		{
-		
-			PlayerHUD->PlayDeadVignetteEffect();
-		}
+		// 카메라 캐릭터쪽으로 돌리고
+		TestPC->SetViewTargetWithBlend(TestPC, 0.01f);
+		MainCharacter->PlayDeathEffect();
 	},2.5f,false);
 	
-	//시간지연 주고 사망 UI 나오도록 
-	FTimerHandle UITimer;
-	GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
-	{
-		MainCharacter->SetPlayerState(EPlayerState::UI);
-		
-		if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
-		{
-			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-		}
-	},3.5f,false);
 }
 
 void ADocentV2::PickUPNote()

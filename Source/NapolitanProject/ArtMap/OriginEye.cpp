@@ -143,7 +143,7 @@ void AOriginEye::UpdateChasing(float DeltaTime)
 			if (MainCharacter)
 			{
 				// 캐릭터가 쓰러지도록 + 사망 비네트 효과 있음
-				MainCharacter->PlayGetDownAnimMontage();
+				MainCharacter->PlayDeathEffect();
 			}
 			FTimerHandle DelayTimer;
 			GetWorldTimerManager().SetTimer(DelayTimer, []()

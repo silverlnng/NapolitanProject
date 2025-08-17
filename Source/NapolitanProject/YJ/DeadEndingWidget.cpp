@@ -29,9 +29,8 @@ void UDeadEndingWidget::NativeConstruct()
 	GI=GetGameInstance<UMyTestGameInstance>();
 	SaveGI=GI->GetSubsystem<USaveGISubsystem>();
 	
-	IMG_BG->SetVisibility(ESlateVisibility::Hidden);
 	TextBlock_description->SetText(FText::FromString(TEXT("")));
-	
+	TextBlock_description->SetVisibility(ESlateVisibility::Hidden);
 	RestartButton->SetVisibility(ESlateVisibility::Hidden);
 	QuitButton->SetVisibility(ESlateVisibility::Hidden);
 }

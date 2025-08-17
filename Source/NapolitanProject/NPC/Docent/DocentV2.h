@@ -92,7 +92,7 @@ public:
 	bool bHasDetectedPlayer = false;
 	
 	UPROPERTY(EditAnywhere)
-	float AttackRange = 300.0f;
+	float AttackRange = 150.0f;
 
 	void PlayAttackAnimation();
 

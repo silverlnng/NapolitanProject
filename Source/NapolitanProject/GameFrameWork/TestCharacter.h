@@ -298,7 +298,7 @@ public:
 	void PlayGetUpAnimMontage();
 
 	UFUNCTION(BlueprintCallable)
-	void PlayGetDownAnimMontage();
+	void PlayDeathEffect();
 	
 	
 };

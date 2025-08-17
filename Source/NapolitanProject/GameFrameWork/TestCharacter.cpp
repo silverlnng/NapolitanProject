@@ -703,7 +703,7 @@ void ATestCharacter::PlayGetUpAnimMontage()
 	}
 }
 
-void ATestCharacter::PlayGetDownAnimMontage()
+void ATestCharacter::PlayDeathEffect()
 {
 
 	if (GetCharacterMovement())
@@ -726,6 +726,7 @@ void ATestCharacter::PlayGetDownAnimMontage()
 			GetMesh()->SetOwnerNoSee(true);
 		},1.7f,false);
 
+		//쓰러지고 난뒤 비네트 효과주기 
 		FTimerHandle UITimer2;
 		GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
 		{
@@ -734,6 +735,15 @@ void ATestCharacter::PlayGetDownAnimMontage()
 				PlayerHUD->PlayDeadVignetteEffect();
 			}
 		},4.0f,false);
-		
+
+		// 여기서 DeadEndingWidgetUI 까지 나오도록 하기  
+		FTimerHandle UITimer;
+		GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
+		{
+			if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
+			{
+				PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+			}
+		},6.0f,false);
 	}
 }
