@@ -28,20 +28,7 @@ public:
 
 	UPROPERTY()
 	class UGameSaveController* GameSaveController;
-//////////////////////////////////////////////////////////////
-///
-	UPROPERTY(meta=(BindWidget))
-	class UOverlay* Overlay_LeeSeo;
-	UPROPERTY(meta=(BindWidget))
-	class UTextBlock* TextBlock_LeeSeo;
-	UPROPERTY(meta=(BindWidget))
-	class UOverlay* Overlay_Docent;
 
-	UPROPERTY(meta=(BindWidget))
-	class UOverlay* Overlay_Seciruty;
-
-
-	
 ////////////////////////////// 새롭게 사망 글 적기//////////////////	
 	UPROPERTY(meta=(BindWidget))
 	class UTextBlock* TextBlock_description;

@@ -724,7 +724,7 @@ void ATestCharacter::PlayGetDownAnimMontage()
 		GetWorldTimerManager().SetTimer(delayTimer,[this]()
 		{
 			GetMesh()->SetOwnerNoSee(true);
-		},2.0f,false);
+		},1.7f,false);
 
 		FTimerHandle UITimer2;
 		GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()

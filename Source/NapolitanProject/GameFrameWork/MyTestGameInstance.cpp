@@ -417,7 +417,7 @@ void UMyTestGameInstance::UnlockAchievement(FString AchievementId)
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Achievements interface invalid"));
+		c
 		}
 	}*/
 }

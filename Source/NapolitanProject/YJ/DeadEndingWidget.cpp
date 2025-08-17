@@ -31,10 +31,9 @@ void UDeadEndingWidget::NativeConstruct()
 	
 	IMG_BG->SetVisibility(ESlateVisibility::Hidden);
 	TextBlock_description->SetText(FText::FromString(TEXT("")));
-
-	Overlay_LeeSeo->SetVisibility(ESlateVisibility::Hidden);
-	Overlay_Docent->SetVisibility(ESlateVisibility::Hidden);				 Overlay_Seciruty->SetVisibility(ESlateVisibility::Hidden);
 	
+	RestartButton->SetVisibility(ESlateVisibility::Hidden);
+	QuitButton->SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UDeadEndingWidget::SetTextBlock_description(const FString& Str)

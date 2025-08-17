@@ -142,8 +142,8 @@ void AOriginEye::UpdateChasing(float DeltaTime)
 			bIsDeadEnding=true;
 			if (MainCharacter)
 			{
+				// 캐릭터가 쓰러지도록 + 사망 비네트 효과 있음
 				MainCharacter->PlayGetDownAnimMontage();
-				//PlayerHUD->PlayDeadVignetteEffect();
 			}
 			FTimerHandle DelayTimer;
 			GetWorldTimerManager().SetTimer(DelayTimer, []()
@@ -152,19 +152,7 @@ void AOriginEye::UpdateChasing(float DeltaTime)
 				
 			},0.8f,false);
 			
-			//시간 지연 주고 사망 UI 나오도록
-			/*FTimerHandle UITimer;
-			GetWorldTimerManager().SetTimer(UITimer, [this]()
-			{
-				MainCharacter->SetPlayerState(EPlayerState::UI);
-
-				if(PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
-				{
-					PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-					PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
-					bIsDeadEnding = true; //한번만 재생하도록 수정
-				}
-			},1.4f,false); //사망#1#*/
+		
 		}
 	}
 }

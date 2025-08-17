@@ -368,8 +368,6 @@ void ADocentV2::PlayAttackAnimation()
 		if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
 		{
 			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-			PlayerHUD->DeadEndingWidgetUI->Overlay_Docent->SetVisibility(ESlateVisibility::Visible);		
-			PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
 		}
 	},3.5f,false);
 }
