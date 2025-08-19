@@ -48,6 +48,16 @@ void ANPC_Cleaner::BeginPlay()
 	bIsMoving = false;
 	bCleaning = false;
 
+	// CleanerPoint 태그를 가진 액터들을 찾아서 배열에 저장
+	UGameplayStatics::GetAllActorsWithTag(GetWorld(), FName("CleanerPoint"), CleanerPointActors);
+	
+	// 첫 번째 타겟 포인트를 랜덤으로 설정 (첫 시작이므로 이전 방문 지점이 없음)
+	if (CleanerPointActors.Num() > 0)
+	{
+		randomIndex = FMath::RandRange(0, CleanerPointActors.Num() - 1);
+		LastVisitedPointActor = CleanerPointActors[randomIndex];
+	}
+
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
@@ -65,7 +75,7 @@ void ANPC_Cleaner::Tick(float DeltaTime)
 
 	//현재 상태 뜨게 하기
 	FString myState = UEnum::GetValueAsString(mState);
-	//DrawDebugString(GetWorld() , GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
+	DrawDebugString(GetWorld() , GetActorLocation() , myState , nullptr , FColor::Yellow , 0 , true , 1);
 	
 	switch ( mState )
 	{
@@ -86,7 +96,7 @@ void ANPC_Cleaner::Tick(float DeltaTime)
 	//랜덤 시간이 지날 경우 어떤 경우든 청소모드로 변경
 	CleaningTime += DeltaTime;
 	//40초에서 2분 랜덤 시간 설정
-	RandomCleaningTime = FMath::RandRange(40.0f, 120.0f);
+	RandomCleaningTime = FMath::RandRange(20.0f, 100.0f);
 	// 40~120초 사이 시간이 지나면 Cleaning 상태로 전환
 	if (CleaningTime >= RandomCleaningTime)
 	{
@@ -167,22 +177,33 @@ void ANPC_Cleaner::TickIdle(const float& DeltaTime)
 	CurrentTime += DeltaTime;
 	if (CurrentTime > IdleDelayTime)
 	{
-	
-		// Idle 상태에서 목표 지점 설정
-		
-		// 마지막 방문한 위치 제외하고 랜덤으로 선택
-		if (points.Contains(LastVisitedPoint))
+		// CleanerPoint 액터들이 존재하는지 확인
+		if (CleanerPointActors.Num() == 0)
 		{
-			points.Remove(LastVisitedPoint);
+			UE_LOG(LogTemp, Warning, TEXT("No CleanerPoint actors found!"));
+			return;
 		}
-		randomIndex = FMath::RandRange(0, points.Num() - 1);
 
-		points.Add(LastVisitedPoint);
-		
-		TargetPoint = points[randomIndex];
-		LastVisitedPoint = TargetPoint;
+		// 첫 시작시에만 목표 지점 설정 (이후로는 TickMove에서 연속 처리)
+		if (!TargetPointActor)
+		{
+			// 임시 배열을 만들어서 마지막 방문한 액터를 제외
+			TArray<AActor*> AvailablePoints = CleanerPointActors;
+			if (LastVisitedPointActor && AvailablePoints.Contains(LastVisitedPointActor))
+			{
+				AvailablePoints.Remove(LastVisitedPointActor);
+			}
 
-		//UE_LOG(LogTemp, Error, TEXT("New target point set: X=%f, Y=%f, Z=%f"), TargetPoint.X, TargetPoint.Y, TargetPoint.Z);
+			// 사용 가능한 포인트가 있는지 확인
+			if (AvailablePoints.Num() > 0)
+			{
+				// 랜덤으로 다음 목표 지점 선택
+				randomIndex = FMath::RandRange(0, AvailablePoints.Num() - 1);
+				TargetPointActor = AvailablePoints[randomIndex];
+				TargetPoint = TargetPointActor->GetActorLocation();
+				LastVisitedPointActor = TargetPointActor;
+			}
+		}
 
 		// Move 상태로 전환
 		SetState(CleanerState::Move);
@@ -209,11 +230,49 @@ void ANPC_Cleaner::TickMove(const float& DeltaTime)
 	{
 		// 목표 지점으로 이동
 		AI->MoveToLocation(TargetPoint);
-		// 목표 지점 근처에 도달하면 다시 멈췄다가 목적지 설정
+		// 목표 지점 근처에 도달하면 바로 새로운 목적지 설정
 		if (FVector::Dist(GetActorLocation(), TargetPoint) <= 100.f)
 		{
-			//AI->StopMovement();
-			SetState(CleanerState::Idle);
+			// CleanerPoint 액터들이 존재하는지 확인
+			if (CleanerPointActors.Num() == 0)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("No CleanerPoint actors found in TickMove!"));
+				SetState(CleanerState::Idle);
+				return;
+			}
+
+			// 임시 배열을 만들어서 마지막 방문한 액터를 제외
+			TArray<AActor*> AvailablePoints = CleanerPointActors;
+			if (LastVisitedPointActor && AvailablePoints.Contains(LastVisitedPointActor))
+			{
+				AvailablePoints.Remove(LastVisitedPointActor);
+			}
+
+			// 사용 가능한 포인트가 있는지 확인
+			if (AvailablePoints.Num() > 0)
+			{
+				// 랜덤으로 다음 목표 지점 선택
+				randomIndex = FMath::RandRange(0, AvailablePoints.Num() - 1);
+				TargetPointActor = AvailablePoints[randomIndex];
+				TargetPoint = TargetPointActor->GetActorLocation();
+				LastVisitedPointActor = TargetPointActor;
+
+				// 바로 새로운 목적지로 이동 (상태 변경 없이 계속 Move 상태 유지)
+				AI->MoveToLocation(TargetPoint);
+			}
+			else
+			{
+				// 모든 포인트를 방문했다면 마지막 방문 지점 리셋하고 새로운 목적지 설정
+				LastVisitedPointActor = nullptr;
+				if (CleanerPointActors.Num() > 0)
+				{
+					randomIndex = FMath::RandRange(0, CleanerPointActors.Num() - 1);
+					TargetPointActor = CleanerPointActors[randomIndex];
+					TargetPoint = TargetPointActor->GetActorLocation();
+					LastVisitedPointActor = TargetPointActor;
+					AI->MoveToLocation(TargetPoint);
+				}
+			}
 		}
 	}
 
@@ -224,11 +283,9 @@ void ANPC_Cleaner::TickMove(const float& DeltaTime)
 		bCleaning = false;
 	}
 
-	//UE_LOG(LogTemp,Warning,TEXT("%s,%s"),*CALLINFO,TEXT("TickMove"));
 	if (MainCharacter->curState==EPlayerState::Talking)
 	{
 		SetState(CleanerState::Stop); // Stop 상태로 변경
-		//UE_LOG(LogTemp,Error,TEXT("%s,%s"),*CALLINFO,TEXT("TickMove->stop"));
 	}
 }
 

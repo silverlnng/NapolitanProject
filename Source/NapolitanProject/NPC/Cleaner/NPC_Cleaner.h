@@ -91,7 +91,7 @@ public:
 	void TickStop(const float& DeltaTime); //플레이어와 대화시 완전 멈춤
 
 	float CurrentTime = 0; //현재 시간
-	float IdleDelayTime = 1.5f; //대기 시간
+	float IdleDelayTime = 1.f; //대기 시간
 
 	float CleaningTime = 0;
 	float RandomCleaningTime;
@@ -137,12 +137,6 @@ public:
 
 	bool bIsMoving = false;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category= "Point")
-	TSubclassOf<AActor> PointClass;
-
-	UPROPERTY()
-	TArray<AActor*> BP_PointsArray;
-
 	int32 randomIndex;
 
 public:
@@ -170,18 +164,17 @@ public:
 
 	bool bIsResult = false;
 	
-	UPROPERTY(EditAnywhere)
-	TArray<FVector> points = {
-		FVector(-2188.554545f, -3640.667534f, 47.877220f),
-		FVector(-1638.554545f, -3640.667534f, 47.877220f),
-		FVector(-1218.554545f, -3640.667534f, 47.877220f),
-		FVector(-1148.554545f, -3310.667534f, 47.877220f),
-		FVector(-1148.554545f, -2970.667534f, 47.877220f),
-		FVector(-1208.554545f, -2590.667534f, 47.877220f),
-		FVector(-1468.554545f, -2470.667534f, 47.877220f),
-		FVector(-1928.554545f, -2430.667534f, 47.877220f),
-		FVector(-2408.554545f, -2380.667534f, 47.877220f),
-		FVector(-1648.554545f, -2930.667534f, 47.877220f),
-		FVector(-1478.554545f, -3310.667534f, 47.877220f)
-	};
+public:
+	// CleanerPoint 태그를 가진 액터들을 저장할 배열
+	UPROPERTY()
+	TArray<AActor*> CleanerPointActors;
+
+	// 현재 타겟 포인트 액터
+	UPROPERTY()
+	AActor* TargetPointActor;
+
+	// 마지막으로 방문한 포인트 액터
+	UPROPERTY()
+	AActor* LastVisitedPointActor;
+
 };
