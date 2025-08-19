@@ -20,6 +20,16 @@ void ASimpleTrigger_Curator::BeginOverlap(UPrimitiveComponent* OverlappedCompone
                                           UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (!OtherActor || !OtherActor->IsA(ATestCharacter::StaticClass())) return;
+
+	// 테스트 용으로 그냥 연출하기 
+	/*if (bOnlyOnce){return;}
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green,TEXT("ASimpleTrigger_Curator"));
+	bOnlyOnce=true;
+	// 문이열리면서 점프스케어 튀어나오기
+	ZombieMutant->SetActorHiddenInGame(false);
+	ZombieMutant->PlayAnimMontage(attackAM);*/
+
+
 	
 	// 큐레이터를 만난후인지 체크하기
 	
