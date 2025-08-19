@@ -33,6 +33,9 @@ void UDeadEndingWidget::NativeConstruct()
 	TextBlock_description->SetVisibility(ESlateVisibility::Hidden);
 	RestartButton->SetVisibility(ESlateVisibility::Hidden);
 	QuitButton->SetVisibility(ESlateVisibility::Hidden);
+
+	// DeadEndingWidget 이 나오면 자동으로 OnRestart 되도록 수정
+	OnVisibilityChanged.AddDynamic(this,&UDeadEndingWidget::HandleVisibilityChanged);
 }
 
 void UDeadEndingWidget::SetTextBlock_description(const FString& Str)
@@ -139,13 +142,9 @@ void UDeadEndingWidget::OnRestart()
 			// 없으면 지하 처음자리에서 시작하기
 			// 그냥 로비레벨 열기
 			UGameplayStatics::OpenLevelBySoftObjectPtr(this,LobbyLevel,true); //레벨 변경
-		
 		}
 		// 저장한것 없으면 처음 시작 .
 	}
-	
-	
-	
 }
 
 void UDeadEndingWidget::OnQuit()
@@ -154,4 +153,12 @@ void UDeadEndingWidget::OnQuit()
 	//종료 버튼 누르면 게임 종료
 	auto* pc = GetWorld()->GetFirstPlayerController();
 	UKismetSystemLibrary::QuitGame(GetWorld(), pc, EQuitPreference::Quit, false);
+}
+
+void UDeadEndingWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
+{
+	if (InVisibility == ESlateVisibility::Visible)
+	{
+		OnRestart();
+	}
 }

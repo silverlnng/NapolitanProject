@@ -66,6 +66,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	const TSoftObjectPtr<UWorld> LobbyLevel;
-	
+
+
+	UFUNCTION()
+	void HandleVisibilityChanged(ESlateVisibility InVisibility);
 };
 
