@@ -2,8 +2,11 @@
 
 
 #include "ControllableLightActor.h"
+
+#include "AIController.h"
 #include "Components/RectLightComponent.h"
 #include "Components/SphereComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "NapolitanProject/NPC/Security/NPC_Security.h"
 
@@ -38,12 +41,6 @@ AControllableLightActor::AControllableLightActor()
 
 	RectLightComp5=CreateDefaultSubobject<URectLightComponent>(TEXT("RectLightComponent5"));
 	RectLightComp5->SetupAttachment(RootComponent);
-
-	//BP_Drop_Ceiling_01=CreateDefaultSubobject<UChildActorComponent>(TEXT("Drop_Ceiling_01"));
-	//BP_Drop_Ceiling_01->SetupAttachment(RootComponent);
-	
-	//BP_Drop_Ceiling_02=CreateDefaultSubobject<UChildActorComponent>(TEXT("Drop_Ceiling_02"));
-	//BP_Drop_Ceiling_02->SetupAttachment(RootComponent);
 	
 }
 
@@ -69,13 +66,19 @@ void AControllableLightActor::Tick(float DeltaTime)
 void AControllableLightActor::BtnMeshOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	// OtherActor->
 	// OtherActor 가 플레이어이고 플레이어가 interact 버튼 누를때 라이트가 켜지도록 작동
-	ANPC_Security* NPC_Security= Cast<ANPC_Security>(OtherActor);
+	NPC_Security= Cast<ANPC_Security>(OtherActor);
 	if (IsTurnOn&&NPC_Security)
 	{
-		TurnOnLight(false);
-		NPC_Security->MinimumLightDist=100000;
+		NPC_Security->EnemyAI->StopMovement();
+		
+		FTimerHandle DelayTimer;
+		// 여기서 잠시 NPC_Security 를 멈추게 하고싶다.
+		GetWorld()->GetTimerManager().SetTimer(DelayTimer,[this]()
+		{
+			TurnOnLight(false);
+			NPC_Security->MinimumLightDist=100000;
+		},1.5f,false);
 	}
 }
 
@@ -89,10 +92,6 @@ void AControllableLightActor::TurnOnLight(bool value)
 		{
 			RectLight->SetIntensity(RectLightIntensity);
 		}
-		/*RectLightComp0->SetIntensity(RectLightIntensity);
-		RectLightComp1->SetIntensity(RectLightIntensity);
-		RectLightComp2->SetIntensity(RectLightIntensity);
-		RectLightComp3->SetIntensity(RectLightIntensity);*/
 		IsTurnOn=true;
 		// 소리
 		if (LightSwitchSoundWave)

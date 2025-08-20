@@ -146,17 +146,17 @@ void ANPC_Security::Tick(float DeltaSeconds)
 		MinimumLightDist=100000;
 	}
 
-	
-	if (Target&& SecurityState!=ESecurityState::Attack)
+	// NearLight 도 있고 Target 도있으면,  ESecurityState::TurnOff 으로 
+	if (NearLight)
+	{
+		MainCharacter->StopSound();
+		SetState(ESecurityState::TurnOff);
+	}
+	else if (!NearLight&&Target&& SecurityState!=ESecurityState::Attack)
 	{
 		// 타겟은 심장소리 나오도록
 		MainCharacter->PlayHeartSound();
 		SetState(ESecurityState::ChasePlayer);
-	}
-	else if (NearLight&&!Target)
-	{
-		MainCharacter->StopSound();
-		SetState(ESecurityState::TurnOff);
 	}
 	else if (!NearLight&&!Target)
 	{
@@ -305,7 +305,6 @@ void ANPC_Security::TickPatrol(const float& DeltaTime)
 
 void ANPC_Security::TickTurnOff(const float& DeltaTime)
 {
-
 	if (EnemyAI&&NearLight)
 	{
 		GetCharacterMovement()->MaxWalkSpeed=TurnOffSpeed;
