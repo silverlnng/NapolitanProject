@@ -611,53 +611,16 @@ void ATestCharacter::EndCapsuleOverlap(UPrimitiveComponent* OverlappedComponent,
 
 void ATestCharacter::DamagedToSecurity()
 {
-	if (Health<0){return;}
 	Health--;
+	if (Health<0){return;}
 	PlaySound(DamagedSound);
-	// 피격시 나오는 ui 나오도록 하기
-	PlayerHUD->PlayDamagedVignetteEffect();
-	//PlayerHUD->InteractUI->PlayHitAnim();
-
-	// 피격 효과를 다르게 만들기 
-
 	// health 체크해서 0 이하이면 사망이벤트 나오도록 해야함 
+	PlayerHUD->PlayDamagedVignetteEffect();
 	if (Health==0)
 	{
-		SetPlayerState(EPlayerState::UI);
-
-		FTimerHandle UITimer2;
-		GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
-		{
-			if (PlayerHUD )
-			{
-		
-				PlayerHUD->PlayDeadVignetteEffect();
-			}
-		},1.5f,false);
-
-		FTimerHandle UITimer;
-		GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
-		{
-			if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
-			{
-				PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-				FString description=FString(TEXT("검은 경비원에게 당했다"));
-				PlayerHUD->DeadEndingWidgetUI->SetTextBlock_description(description);
-			}
-		},3.0f,false);
-		
-		if (GetCharacterMovement())
-		{
-			GetCharacterMovement()->StopMovementImmediately();
-		}
-		// 이동 입력 을 못하게하고
-		bIsBeingAttacked=true;
-
+		PlayDeathEffect();
 		StopSound();
-		
-		
 	}
-	
 }
 
 void ATestCharacter::PlayHeartSound()

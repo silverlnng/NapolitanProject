@@ -210,11 +210,6 @@ void ANPC_Security::SetState(ESecurityState curState)
 
 void ANPC_Security::OnSeePawn(APawn *OtherPawn)
 {
-	/*if (OtherPawn)
-	{
-		FString message = TEXT("Saw Actor ") + OtherPawn->GetName();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
-	}*/
 	auto* testCha =Cast<ATestCharacter>(OtherPawn);
 	if (testCha)
 	{
@@ -223,8 +218,8 @@ void ANPC_Security::OnSeePawn(APawn *OtherPawn)
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
 
 		// 이때만 chase를 작동시키기
-		// 공격이 아닐때
-		if (SecurityState!=ESecurityState::Attack)
+		// 공격이 아니고 켜진 라이트가 없을때 
+		if (!NearLight&&SecurityState!=ESecurityState::Attack)
 		{
 			SetState(ESecurityState::ChasePlayer);
 		}
