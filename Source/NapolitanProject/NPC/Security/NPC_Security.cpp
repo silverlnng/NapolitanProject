@@ -146,17 +146,17 @@ void ANPC_Security::Tick(float DeltaSeconds)
 		MinimumLightDist=100000;
 	}
 
-	
-	if (Target&& SecurityState!=ESecurityState::Attack)
+	// NearLight 도 있고 Target 도있으면,  ESecurityState::TurnOff 으로 
+	if (NearLight)
+	{
+		MainCharacter->StopSound();
+		SetState(ESecurityState::TurnOff);
+	}
+	else if (!NearLight&&Target&& SecurityState!=ESecurityState::Attack)
 	{
 		// 타겟은 심장소리 나오도록
 		MainCharacter->PlayHeartSound();
 		SetState(ESecurityState::ChasePlayer);
-	}
-	else if (NearLight&&!Target)
-	{
-		MainCharacter->StopSound();
-		SetState(ESecurityState::TurnOff);
 	}
 	else if (!NearLight&&!Target)
 	{
@@ -210,11 +210,6 @@ void ANPC_Security::SetState(ESecurityState curState)
 
 void ANPC_Security::OnSeePawn(APawn *OtherPawn)
 {
-	/*if (OtherPawn)
-	{
-		FString message = TEXT("Saw Actor ") + OtherPawn->GetName();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
-	}*/
 	auto* testCha =Cast<ATestCharacter>(OtherPawn);
 	if (testCha)
 	{
@@ -223,8 +218,8 @@ void ANPC_Security::OnSeePawn(APawn *OtherPawn)
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, message);
 
 		// 이때만 chase를 작동시키기
-		// 공격이 아닐때
-		if (SecurityState!=ESecurityState::Attack)
+		// 공격이 아니고 켜진 라이트가 없을때 
+		if (!NearLight&&SecurityState!=ESecurityState::Attack)
 		{
 			SetState(ESecurityState::ChasePlayer);
 		}
@@ -305,7 +300,6 @@ void ANPC_Security::TickPatrol(const float& DeltaTime)
 
 void ANPC_Security::TickTurnOff(const float& DeltaTime)
 {
-
 	if (EnemyAI&&NearLight)
 	{
 		GetCharacterMovement()->MaxWalkSpeed=TurnOffSpeed;

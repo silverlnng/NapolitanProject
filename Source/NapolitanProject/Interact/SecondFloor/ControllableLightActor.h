@@ -80,6 +80,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
 	USoundWave* LightSwitchSoundWave;
 	
-
+	class ANPC_Security* NPC_Security=NULL;
+	float NPC_SecurityOriginMaxSpeed;
 };
 
