@@ -37,7 +37,7 @@ public:
 	//////////////획득한 아이템 관리하기 ///////////////////////	
 
 	UPROPERTY(VisibleAnywhere)
-	TArray<TSubclassOf<class AItemActor>> SavedItems;
+	TSet<TSubclassOf<class AItemActor>> SavedItems;
 	
 	//  아이템 저장
 	UFUNCTION(BlueprintCallable)

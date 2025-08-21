@@ -59,7 +59,7 @@ public:
 	TMap<int32,FItemData> SaveditemDataMap;
 	
 	UPROPERTY()
-	TArray<TSubclassOf<class AItemActor>> SavedItems;
+	TSet<TSubclassOf<class AItemActor>> SavedItems;
 
 	UPROPERTY()
 	FString CatchSpiderNum=TEXT("0");
