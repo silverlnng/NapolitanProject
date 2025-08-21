@@ -164,7 +164,7 @@ void ANPC_Security::Tick(float DeltaSeconds)
 		MainCharacter->StopSound();
 	}
 
-	if (Target&&!(PawnSensingComp->CouldSeePawn(Target,false)))
+	if (Target&&!(PawnSensingComp->CouldSeePawn(Target,true)))
 	{
 		// 보일 가능성이 없으면 
 		Target=nullptr;

@@ -612,6 +612,7 @@ void ATestCharacter::EndCapsuleOverlap(UPrimitiveComponent* OverlappedComponent,
 void ATestCharacter::DamagedToSecurity()
 {
 	Health--;
+	UE_LOG(LogTemp,Warning,TEXT("Health: %d"),Health);
 	if (Health<0){return;}
 	PlaySound(DamagedSound);
 	// health 체크해서 0 이하이면 사망이벤트 나오도록 해야함 
@@ -707,6 +708,6 @@ void ATestCharacter::PlayDeathEffect()
 			{
 				PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
 			}
-		},6.0f,false);
+		},5.5f,false);
 	}
 }

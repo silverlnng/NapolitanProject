@@ -3,6 +3,7 @@
 
 #include "SimpleTrigger_Curator.h"
 
+#include "Components/CapsuleComponent.h"
 #include "NapolitanProject/GameFrameWork/MyTestGameInstance.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 
@@ -13,6 +14,8 @@ void ASimpleTrigger_Curator::BeginPlay()
 	if (ZombieMutant)
 	{
 		ZombieMutant->SetActorHiddenInGame(true);
+		//콜리전 설정
+		ZombieMutant->GetComponentByClass<UCapsuleComponent>()->SetCollisionObjectType(ECC_GameTraceChannel5);
 	}
 }
 
@@ -43,6 +46,7 @@ void ASimpleTrigger_Curator::BeginOverlap(UPrimitiveComponent* OverlappedCompone
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green,TEXT("ASimpleTrigger_Curator"));
 			bOnlyOnce=true;
 			// 문이열리면서 점프스케어 튀어나오기
+			ZombieMutant->GetComponentByClass<UCapsuleComponent>()->SetCollisionObjectType(ECC_Pawn);
 			ZombieMutant->SetActorHiddenInGame(false);
 			ZombieMutant->PlayAnimMontage(attackAM);
 			
