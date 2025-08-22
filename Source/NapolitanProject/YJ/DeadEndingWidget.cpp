@@ -35,7 +35,7 @@ void UDeadEndingWidget::NativeConstruct()
 	QuitButton->SetVisibility(ESlateVisibility::Hidden);
 
 	// DeadEndingWidget 이 나오면 자동으로 OnRestart 되도록 수정
-	OnVisibilityChanged.AddDynamic(this,&UDeadEndingWidget::HandleVisibilityChanged);
+	this->OnVisibilityChanged.AddDynamic(this,&UDeadEndingWidget::HandleVisibilityChanged);
 }
 
 void UDeadEndingWidget::SetTextBlock_description(const FString& Str)
@@ -105,27 +105,33 @@ void UDeadEndingWidget::OnRestart()
 {
 	//재시작 버튼을 누르면 현재 레벨을 다시 시작하고 싶다.
 	
-	MainCharacter->bIsBeingAttacked=false;
+	/*MainCharacter->bIsBeingAttacked=false;
 	
 	MainCharacter->StopSound();
 		
 	MainCharacter->SetPlayerState(EPlayerState::Idle);
-	this->SetVisibility(ESlateVisibility::Hidden);
+	this->SetVisibility(ESlateVisibility::Hidden);*/
 
+	UE_LOG(LogTemp , Warning , TEXT("%s : OnRestart"),*CALLINFO);
+	
 	// 가장 최근에 저장한것을 로드하기
-	if (!GameSaveController)
+	if (SaveGI->GameSaveController==nullptr)
 	{
 		UE_LOG(LogTemp , Warning , TEXT("%s : GameSaveController is nullptr!"),*CALLINFO);
 	}
-
 
 	// IsFromLoad true 이면 불러온것을 로드함
 	if (SaveGI->IsFromLoad)
 	{
 		if (SaveGI->LoadedGame)
 		{
+			UE_LOG(LogTemp , Warning , TEXT("%s SaveGI->LoadedGame"),*CALLINFO);
 			int SlotNum=SaveGI->LoadedGame->SlotNum;
 			SaveGI->GameSaveController->LoadGameFromSlot(SlotNum);
+		}
+		else
+		{
+			UE_LOG(LogTemp , Warning , TEXT("%s SaveGI->LoadedGame null"),*CALLINFO);
 		}
 	}
 	else // 레벨 이동,로드플레이가 아닌경우, 로드 플레이중 한번이라도 저장한게 있는경우.  
@@ -133,7 +139,7 @@ void UDeadEndingWidget::OnRestart()
 		if (GameSaveController&&GameSaveController->FindLatestSaveGame()!=-1)
 		{
 			int32 SlotNum=GameSaveController->FindLatestSaveGame(); //최근껄 로드 
-			GameSaveController->LoadGameFromSlot(SlotNum);
+			SaveGI->GameSaveController->LoadGameFromSlot(SlotNum);
 			UE_LOG(LogTemp , Warning , TEXT("%s : FindLatestSaveGame is: %d!"),*CALLINFO,SlotNum);
 	
 		}
@@ -159,6 +165,7 @@ void UDeadEndingWidget::HandleVisibilityChanged(ESlateVisibility InVisibility)
 {
 	if (InVisibility == ESlateVisibility::Visible)
 	{
+		UE_LOG(LogTemp , Warning , TEXT("%s : HandleVisibilityChanged!"),*CALLINFO);
 		OnRestart();
 	}
 }

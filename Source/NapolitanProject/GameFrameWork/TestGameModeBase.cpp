@@ -107,7 +107,7 @@ void ATestGameModeBase::BeginPlay()
 			SaveGI->SetLevelMoveToDoor(false);
 			
 		}
-		else if (SaveGI->LoadedGame) // 로드플레이 중 이다
+		else if (SaveGI->IsFromLoad) // 로드플레이 중 이다
 		{
 			
 			FTimerHandle GITimer;
@@ -118,12 +118,12 @@ void ATestGameModeBase::BeginPlay()
 			} , 1.0f , false);
 
 			
-			FTimerHandle GITimer2;
+			/*FTimerHandle GITimer2;
 			GetWorld()->GetTimerManager().SetTimer(GITimer2 , [this]()
 			{
 				// 적용 후 다시 nullptr 변경 (새 게임 시작 시 영향 안 주도록)
 				SaveGI->LoadedGame=nullptr;
-			} , 2.5f , false);
+			} , 2.5f , false);*/
 		}
 	}
 	

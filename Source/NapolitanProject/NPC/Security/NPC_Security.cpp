@@ -346,7 +346,7 @@ void ANPC_Security::OnMyAttackMiddle()
 	float dist = GetDistanceTo(Target);
 	if ( dist <= AttackDistance) {
 		// 플레이어에게 데미지를 입히고싶다.
-		MainCharacter->DamagedToSecurity();
+		MainCharacter->DamagedToSecurity(this);
 	}
 	else
 	{

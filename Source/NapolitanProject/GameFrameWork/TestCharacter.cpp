@@ -26,6 +26,8 @@
 #include "NapolitanProject/YJ/DialogueUI/NPCResultWidget.h"
 #include "NapolitanProject/YJ/NoteUI/InventoryWidget.h"
 #include "NapolitanProject/Interface/InteractInterface.h"
+#include "NapolitanProject/NPC/Security/NPC_Security.h"
+#include "Perception/PawnSensingComponent.h"
 
 
 ATestCharacter::ATestCharacter()
@@ -609,11 +611,14 @@ void ATestCharacter::EndCapsuleOverlap(UPrimitiveComponent* OverlappedComponent,
 	}
 }
 
-void ATestCharacter::DamagedToSecurity()
+void ATestCharacter::DamagedToSecurity(ANPC_Security* NPC_Security)
 {
 	Health--;
 	UE_LOG(LogTemp,Warning,TEXT("Health: %d"),Health);
-	if (Health<0){return;}
+	if (Health<0)
+	{
+		return;
+	}
 	PlaySound(DamagedSound);
 	// health 체크해서 0 이하이면 사망이벤트 나오도록 해야함 
 	PlayerHUD->PlayDamagedVignetteEffect();
@@ -621,6 +626,11 @@ void ATestCharacter::DamagedToSecurity()
 	{
 		PlayDeathEffect();
 		StopSound();
+		NPC_Security->SetActorTickEnabled(false);
+		NPC_Security->PawnSensingComp->bSeePawns=false;
+		NPC_Security->Target=nullptr;
+		// 경비원 도 그만 멈추도록 하기
+		
 	}
 }
 
@@ -669,45 +679,48 @@ void ATestCharacter::PlayGetUpAnimMontage()
 
 void ATestCharacter::PlayDeathEffect()
 {
+	UE_LOG(LogTemp , Warning , TEXT("PlayDeathEffect Start"));
 
 	if (GetCharacterMovement())
 	{
 		GetCharacterMovement()->StopMovementImmediately();
 	}
 	// 이동 입력 을 못하게하고
+	SetPlayerState(EPlayerState::UI);
 	bIsBeingAttacked=true;
-	
+
 	if (GetDown)
 	{
 		// 메쉬 안보이게 
 		//GetMesh()->SetHiddenInGame(true);
-		GetMesh()->PlayAnimation(GetDown,false);
-
-		// 타이머로 딜레이 주고
-		FTimerHandle delayTimer;
-		GetWorldTimerManager().SetTimer(delayTimer,[this]()
-		{
-			GetMesh()->SetOwnerNoSee(true);
-		},1.7f,false);
-
-		//쓰러지고 난뒤 비네트 효과주기 
-		FTimerHandle UITimer2;
-		GetWorld()->GetTimerManager().SetTimer(UITimer2,[this]()
-		{
-			if (PlayerHUD)
-			{
-				PlayerHUD->PlayDeadVignetteEffect();
-			}
-		},4.0f,false);
-
-		// 여기서 DeadEndingWidgetUI 까지 나오도록 하기  
-		FTimerHandle UITimer;
-		GetWorld()->GetTimerManager().SetTimer(UITimer,[this]()
-		{
-			if (PlayerHUD &&PlayerHUD->DeadEndingWidgetUI)
-			{
-				PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
-			}
-		},5.5f,false);
+		GetMesh()->PlayAnimation(GetDown , false);
 	}
+	//쓰러지고 난뒤 비네트 효과주기 
+	FTimerHandle UITimer2;
+	GetWorld()->GetTimerManager().SetTimer(UITimer2 , [this]()
+	{
+		if (PlayerHUD)
+		{
+			PlayerHUD->PlayDeadVignetteEffect();
+		}
+	} , 4.0f , false);
+
+	// 여기서 DeadEndingWidgetUI 까지 나오도록 하기  
+	FTimerHandle UITimer;
+	GetWorld()->GetTimerManager().SetTimer(UITimer , [this]()
+	{
+		UE_LOG(LogTemp , Warning , TEXT("DeadEndingWidgetUI Timer"));
+		if (PlayerHUD && PlayerHUD->DeadEndingWidgetUI)
+		{
+			PlayerHUD->DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Visible);
+		}
+	} , 5.5f , false);
+
+	// 타이머로 딜레이 주고
+	FTimerHandle delayTimer;
+	GetWorldTimerManager().SetTimer(delayTimer , [this]()
+	{
+		GetMesh()->SetOwnerNoSee(true);
+	} , 1.7f , false);
+	
 }

@@ -255,10 +255,10 @@ public:
 	bool bIsBeingAttacked=false;
 
 	UPROPERTY(VisibleAnywhere)
-	int32 Health=3;
+	int32 Health=4;
 	
 	UFUNCTION()
-	void DamagedToSecurity();
+	void DamagedToSecurity(ANPC_Security* NPC_Security);
 
 	UPROPERTY(EditDefaultsOnly)
 	class UAudioComponent* AudioComp;

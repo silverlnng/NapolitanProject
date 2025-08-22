@@ -101,10 +101,6 @@ void APlayerHUD::BeginPlay()
 		DeadEndingWidgetUI->AddToViewport(3);
 		DeadEndingWidgetUI->SetVisibility(ESlateVisibility::Hidden);
 		DeadEndingWidgetUI->GI=GI;
-		if (SaveGI&&SaveGI->GameSaveController)
-		{
-			DeadEndingWidgetUI->GameSaveController=SaveGI->GameSaveController;
-		}
 	}
 	
 	MonolugueWidgetUI =CreateWidget<UMonolugueWidget>(GetWorld(),MonolugueWidgetFactory);
