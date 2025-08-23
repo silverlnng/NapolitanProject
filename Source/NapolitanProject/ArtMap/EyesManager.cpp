@@ -153,7 +153,6 @@ void AEyesManager::CheckViewingDigitLockActor()
 		if (DigitLockActor->isInUi)
 		{
 			OriginEyes[0]->StopChaseDelay=1.0f;
-			OriginEyes[0]->PlayDeathEffectDelay=1.8f;
 			baseCameraComp->SetActive(false);
 			DeathCameraComp->SetActive(true);
 			TestPC->SetViewTargetWithBlend(DigitLockActor,0.1f);
