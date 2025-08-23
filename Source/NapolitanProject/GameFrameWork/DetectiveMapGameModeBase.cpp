@@ -7,6 +7,7 @@
 #include "MediaPlayer.h"
 #include "MyTestGameInstance.h"
 #include "PlayerHUD.h"
+#include "SaveGISubsystem.h"
 #include "TestCharacter.h"
 #include "TestPlayerController.h"
 #include "Components/Border.h"
@@ -45,6 +46,9 @@ void ADetectiveMapGameModeBase::BeginPlay()
 			///Script/Engine.World'/Game/JI/Level/HWM_map.HWM_map'
 			FName PathString = TEXT("/Game/JI/Level/HWM_map.HWM_map");
 			GI->PreloadLevel(PathString);
+			
+			GI->SaveGISubsystem->IsFromLoad=false;
+			
 			OpeningUI->MediaPlayer->OnEndReached.AddDynamic(this,&ADetectiveMapGameModeBase::OpenHWLevel);
 			OpeningUI->MediaPlayer->OnEndReached.AddDynamic(this,&ADetectiveMapGameModeBase::ReleasePreloadHandle);
 		}

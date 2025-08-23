@@ -55,7 +55,7 @@ void ATestGameModeBase::BeginPlay()
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("NPCArray: %d"),key));
 	}	
 	
-	if (SaveGI)
+	if (SaveGI->IsFromLoad)
 	{
 		// 그림으로 레벨이동 때문에 로드플레이 아닐때도 해야함 
 		// GI->ClearedNPC 와 NPCArray 를 비교해서 삭제
@@ -84,30 +84,22 @@ void ATestGameModeBase::BeginPlay()
 		{
 			SaveGI->RestoreAttachedItems();
 			// 아이템을 인벤토리에  복구하는 작업
-		} , 0.5f , false);
+		} , 1.0f , false);
 		
 		if (SaveGI->bLevelMoveToDoor) // 그림으로 이동후 돌아올 때 
 		{
 			// 저장된 위치가 있으면 플레이어를 해당 위치로 이동
-			MainCharacter->SetActorLocation(SaveGI->GetSavedPlayerLocation().GetLocation());
-			MainCharacter->SetActorRotation(SaveGI->GetSavedPlayerLocation().GetRotation());
-			
-			FTimerHandle TimerHandle;
-			GetWorld()->GetTimerManager().SetTimer(TimerHandle, [this]()
+			FTimerHandle delayTimer;
+			GetWorld()->GetTimerManager().SetTimer(delayTimer , [this]()
 			{
-				FLatentActionInfo LatentAction;
-				for (auto subLevel:SaveGI->SubLevelArray)
-				{
-					UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(),subLevel,true,true,LatentAction);
-				}
-			
-			}, 1.0f, false);
-			
-			// 적용 후 다시 false로 변경 (새 게임 시작 시 영향 안 주도록)
-			SaveGI->SetLevelMoveToDoor(false);
+				MainCharacter->SetActorLocation(SaveGI->GetSavedPlayerLocation().GetLocation());
+				MainCharacter->SetActorRotation(SaveGI->GetSavedPlayerLocation().GetRotation());
+				// 적용 후 다시 false로 변경 (새 게임 시작 시 영향 안 주도록)
+				SaveGI->SetLevelMoveToDoor(false);
+			} , 1.0f , false);
 			
 		}
-		else if (SaveGI->IsFromLoad) // 로드플레이 중 이다
+		else  // 그림으로 이동후 돌아올 때는 아닐 때
 		{
 			
 			FTimerHandle GITimer;
@@ -116,14 +108,6 @@ void ATestGameModeBase::BeginPlay()
 				MainCharacter->SetActorLocation(SaveGI->LoadedGame->PlayerLocation);
 				MainCharacter->SetActorRotation(SaveGI->LoadedGame->PlayerRotation);
 			} , 1.0f , false);
-
-			
-			/*FTimerHandle GITimer2;
-			GetWorld()->GetTimerManager().SetTimer(GITimer2 , [this]()
-			{
-				// 적용 후 다시 nullptr 변경 (새 게임 시작 시 영향 안 주도록)
-				SaveGI->LoadedGame=nullptr;
-			} , 2.5f , false);*/
 		}
 	}
 	

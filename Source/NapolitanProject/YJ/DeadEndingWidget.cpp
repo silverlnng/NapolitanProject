@@ -136,20 +136,9 @@ void UDeadEndingWidget::OnRestart()
 	}
 	else // 레벨 이동,로드플레이가 아닌경우, 로드 플레이중 한번이라도 저장한게 있는경우.  
 	{
-		if (GameSaveController&&GameSaveController->FindLatestSaveGame()!=-1)
-		{
-			int32 SlotNum=GameSaveController->FindLatestSaveGame(); //최근껄 로드 
-			SaveGI->GameSaveController->LoadGameFromSlot(SlotNum);
-			UE_LOG(LogTemp , Warning , TEXT("%s : FindLatestSaveGame is: %d!"),*CALLINFO,SlotNum);
-	
-		}
-		else
-		{
-			// 없으면 지하 처음자리에서 시작하기
-			// 그냥 로비레벨 열기
-			UGameplayStatics::OpenLevelBySoftObjectPtr(this,LobbyLevel,true); //레벨 변경
-		}
-		// 저장한것 없으면 처음 시작 .
+		// 없으면 지하 처음자리에서 시작하기
+		// 그냥 로비레벨 열기
+		UGameplayStatics::OpenLevelBySoftObjectPtr(this,LobbyLevel,true); //레벨 변경
 	}
 }
 

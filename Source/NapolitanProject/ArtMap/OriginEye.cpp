@@ -5,6 +5,7 @@
 
 #include "Components/ArrowComponent.h"
 #include "Components/SphereComponent.h"
+#include "NapolitanProject/NapolitanProject.h"
 #include "NapolitanProject/GameFrameWork/PlayerHUD.h"
 #include "NapolitanProject/GameFrameWork/TestCharacter.h"
 #include "NapolitanProject/GameFrameWork/TestPlayerController.h"
@@ -12,7 +13,7 @@
 
 bool AOriginEye::bIsDeadEnding = false;
 bool AOriginEye::bStopChase = false;
-
+float AOriginEye::StopChaseDelay=0.6f;
 // Sets default values
 AOriginEye::AOriginEye()
 {
@@ -140,19 +141,20 @@ void AOriginEye::UpdateChasing(float DeltaTime)
 		if (DistanceToPlayer < 150.0f) // 1미터 이내로 접근하면
 		{
 			bIsDeadEnding=true;
+
 			if (MainCharacter)
 			{
 				// 캐릭터가 쓰러지도록 + 사망 비네트 효과 있음
 				MainCharacter->PlayDeathEffect();
 			}
-			FTimerHandle DelayTimer;
-			GetWorldTimerManager().SetTimer(DelayTimer, []()
+			UE_LOG(LogTemp , Warning , TEXT("%s StopChaseDelay: %f"),*CALLINFO,StopChaseDelay);
+			FTimerHandle StopChaseDelayTimer;
+			GetWorldTimerManager().SetTimer(StopChaseDelayTimer, []()
 			{
 				bStopChase = true; //한번만 재생하도록 수정
 				
-			},0.8f,false);
+			},StopChaseDelay,false);
 			
-		
 		}
 	}
 }

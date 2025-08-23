@@ -96,8 +96,12 @@ void UGameSaveController::SaveGameToSlot(int32 SlotIndex)
 	
 	SaveGameInstance->CatchSpiderNum=SaveGISubsystem->CatchSpiderNum;
 	UE_LOG(LogTemp,Warning,TEXT("%s SaveGI CatchSpider :%s"),*CALLINFO,*SaveGISubsystem->CatchSpiderNum);
+
 	
-	SaveGISubsystem->IsFromLoad = false;
+	
+	SaveGISubsystem->LoadedGame=SaveGameInstance; // 새롭게 저장한걸로 LoadedGame 을 바꾸기
+	//SaveGISubsystem->IsFromLoad = false;
+	
 	// 설정값을 저장하기
 	SaveGameInstance->TotalSoundMix = SaveGISubsystem->TotalSoundMix;
 	SaveGameInstance->BGSoundMix = SaveGISubsystem->BGSoundMix;
